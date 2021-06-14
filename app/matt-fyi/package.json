@@ -7,7 +7,8 @@
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",
-    "build": "gatsby build",
+    "lint": "tsc",
+    "build": "yarn lint && gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean"
   },
@@ -18,5 +19,8 @@
     "life": "0.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.2"
   }
 }
