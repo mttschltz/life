@@ -1,10 +1,19 @@
 {
   "name": "matt-fyi",
   "version": "0.0.1",
-  "main": "index.js",
-  "license": "MIT",
   "private": true,
+  "description": "Matt Schultz",
+  "author": "Matt Schultz",
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
   "dependencies": {
-    "life": "0.0.1"
+    "gatsby": "^3.6.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }
