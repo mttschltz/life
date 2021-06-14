@@ -1,0 +1,10 @@
+{
+  "name": "matt-fyi",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "life": "0.0.1"
+  }
+}
