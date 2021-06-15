@@ -11,7 +11,7 @@ publish = "public/"
 # Default build command.
 command = "yarn build"
 
-environment = { NETLIFY_USE_YARN=true, NODE_VERSION="14.16.1", YARN_VERSION="1.22.10" }
+environment = { NETLIFY_USE_YARN="true", NODE_VERSION="14.16.1", YARN_VERSION="1.22.10" }
 
 # [[plugins]]
 
