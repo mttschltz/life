@@ -3,5 +3,13 @@
   "workspaces": [
     "lib/life",
     "app/matt-fyi"
-  ]
+  ],
+  "scripts": {
+    "lint": "yarn workspaces run lint",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0"
+  }
 }
