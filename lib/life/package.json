@@ -5,6 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "lint": "echo 'no linting yet'"
+    "lint": "yarn lint:ts && yarn lint:eslint",
+    "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0",
+    "lint:ts": "tsc"
   }
 }

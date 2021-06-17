@@ -7,7 +7,9 @@
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",
-    "lint": "tsc",
+    "lint": "yarn lint:ts && yarn lint:eslint",
+    "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0",
+    "lint:ts": "tsc",
     "build": "yarn lint && gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean"
@@ -21,6 +23,7 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
+    "tsconfig-paths-webpack-plugin": "^3.5.1",
     "typescript": "^4.3.2"
   }
 }

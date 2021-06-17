@@ -5,10 +5,15 @@
     "app/matt-fyi"
   ],
   "scripts": {
-    "lint": "yarn workspaces run lint",
+    "lint": "yarn workspaces run lint:ts && yarn lint:eslint --fix",
+    "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0",
     "prepare": "husky install"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "eslint": "^7.28.0",
+    "eslint-plugin-react": "^7.24.0",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0"
   }

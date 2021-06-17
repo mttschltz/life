@@ -5,7 +5,7 @@ export class Plan {
     this.#name = name;
   }
 
-  get name() {
+  get name(): string {
     return this.#name;
   }
 }
