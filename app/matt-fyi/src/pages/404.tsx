@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react'
 
 const NotFoundPage = (): JSX.Element => {
-  return <main>Page not found</main>;
-};
+  return <main>Page not found</main>
+}
 
-export default NotFoundPage;
+export default NotFoundPage

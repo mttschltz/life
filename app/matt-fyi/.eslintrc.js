@@ -1,3 +1,3 @@
 module.exports = {
-  ignorePatterns: ["public/**/*"],
-};
+  ignorePatterns: ['public/**/*'],
+}

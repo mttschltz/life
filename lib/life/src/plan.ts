@@ -1,11 +1,11 @@
 export class Plan {
-  #name: string;
+  #name: string
 
   constructor(name: string) {
-    this.#name = name;
+    this.#name = name
   }
 
   get name(): string {
-    return this.#name;
+    return this.#name
   }
 }

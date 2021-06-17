@@ -1,10 +1,10 @@
-import * as React from "react";
-import { createPlan } from "@life/usecase/createPlan";
+import * as React from 'react'
+import { createPlan } from '@life/usecase/createPlan'
 
 const IndexPage = (): JSX.Element => {
-  const plan = createPlan("a plan");
+  const plan = createPlan('a plan')
 
-  return <main>Plan: {plan.name}</main>;
-};
+  return <main>Plan: {plan.name}</main>
+}
 
-export default IndexPage;
+export default IndexPage
