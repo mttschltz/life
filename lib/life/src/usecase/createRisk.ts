@@ -1,48 +1,66 @@
-import { Risk as UsecaseRisk } from '@life/usecase/usecaseType'
+// import { Category } from '@life/usecase/usecaseType'
+import { mapRiskToUsecase, Risk as UsecaseRisk } from '@life/usecase/usecaseType'
 import { Category, Impact, Likelihood, Risk, RiskType } from '@life/risk'
+import { Result } from '@life/result'
 
-export const createRisk = (): UsecaseRisk => {
-  // TODO:
+export interface CreateRiskRequest {
+  uriPart: string
+  name: string
+  category: Category
+  impact: Impact
+  likelihood: Likelihood
+  notes?: string
+  type: RiskType
+  parentId: string
+}
 
-  // Given a request with:
-  // uri-part
-  // risk details:
-  // - name
-  // - category
-  // - impact
-  // - likelihood
-  // - notes
-  // - type
-  // - optional: parent
-  // Where each item is valid // actually this should probably be handled by the domain?! except maybe existence of parent... since that's a repo concern
-  // TODO: Continue
+interface Repo {
+  fetchRisk: (id: string) => Result<Risk>
+}
 
-  const riskResult = Risk.create({
-    category: Category.Health,
-    impact: Impact.High,
-    likelihood: Likelihood.High,
-    name: 'name',
-    notes: '',
-    type: RiskType.Condition,
-    parent: undefined,
-  })
+export class CreateRiskInteractor {
+  #repo: Repo
 
-  if (!riskResult.isSuccess) {
-    throw new Error('Error creating risk')
+  constructor(repo: Repo) {
+    this.#repo = repo
   }
 
-  // const risk = riskResult.getValue()
-  // TODO: Mapping function
-  //
-  return {
-    id: 'id',
-    category: Category.Health,
-    impact: Impact.High,
-    likelihood: Likelihood.High,
-    name: 'name',
-    mitigations: [],
-    notes: '',
-    type: RiskType.Condition,
-    parent: undefined,
+  createRisk({
+    uriPart,
+    type,
+    parentId,
+    name,
+    likelihood,
+    impact,
+    category,
+    notes,
+  }: CreateRiskRequest): Result<UsecaseRisk> {
+    if (!uriPart || /^[a-z]+[a-z-]+[a-z]+$/.test(uriPart)) {
+      return Result.error(`Invalid URI part: ${uriPart}`)
+    }
+
+    let parent
+    if (parentId) {
+      const parentResult = this.#repo.fetchRisk(parentId)
+      if (!parentResult.isSuccess) {
+        return Result.error(`Error fetching parent risk: ${parentResult.errorMessage}`)
+      }
+      parent = parentResult.getValue()
+    }
+
+    const riskResult = Risk.create(uriPart, {
+      category,
+      impact,
+      likelihood,
+      name,
+      notes,
+      type,
+      parent,
+    })
+    if (!riskResult.isSuccess) {
+      throw new Error(`Error creating risk: ${riskResult.errorMessage}`)
+    }
+
+    return Result.success(mapRiskToUsecase(riskResult.getValue()))
   }
 }

@@ -1,6 +1,31 @@
-import { Risk as RiskEntity } from '@life/risk'
+import { Category, Impact, Likelihood, Risk as RiskEntity, RiskType } from '@life/risk'
 
-export type Risk = Pick<
-  RiskEntity,
-  'id' | 'category' | 'impact' | 'likelihood' | 'mitigations' | 'name' | 'notes' | 'parent' | 'type'
->
+export interface Risk {
+  id?: string
+
+  category: Category
+  impact: Impact
+  likelihood: Likelihood
+
+  name: string
+  notes?: string
+  parent?: Risk
+  type: RiskType
+}
+
+export const mapRiskToUsecase = ({ id, category, impact, likelihood, name, notes, parent, type }: RiskEntity): Risk => {
+  let usecaseParent
+  if (parent) {
+    usecaseParent = mapRiskToUsecase(parent)
+  }
+  return {
+    id,
+    category,
+    impact,
+    likelihood,
+    name,
+    notes,
+    parent: usecaseParent,
+    type,
+  }
+}

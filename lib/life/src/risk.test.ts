@@ -3,7 +3,7 @@ import { describe, expect, test } from '@jest/globals'
 
 describe('empty', () => {
   test('test', () => {
-    const risk = Risk.create({
+    const risk = Risk.create('id', {
       category: Category.Health,
       impact: Impact.High,
       likelihood: Likelihood.High,

@@ -1,5 +1,6 @@
 import { Mitigation } from '@life/mitigation'
 import { IsArray, IsEnum, IsOptional, MinLength, validateSync } from 'class-validator'
+import { Result } from '@life/result'
 
 export enum RiskType {
   Risk = 'Risk',
@@ -23,54 +24,6 @@ export enum Category {
   Security = 'Security',
 }
 
-class Result<T> {
-  public readonly errorMessage?: string
-  public readonly isSuccess: boolean
-  private readonly value?: T
-
-  private constructor(isSuccess: boolean, errorMessage?: string, value?: T) {
-    if (isSuccess && (value == null || errorMessage)) {
-      throw new Error('Success results must have a value and no error message')
-    }
-
-    if (!isSuccess && (value != null || !errorMessage)) {
-      throw new Error('Error results must have an error message and no value')
-    }
-
-    this.errorMessage = errorMessage
-    this.isSuccess = isSuccess
-    this.value = value
-  }
-
-  getValue(): T {
-    if (!this.isSuccess) {
-      throw new Error('Cannot get value of an error result')
-    }
-    if (!this.value) {
-      throw new Error('Missing value for success result')
-    }
-    return this.value
-  }
-
-  getErrorMessage(): string {
-    if (this.isSuccess) {
-      throw new Error('Cannot get error message of a success result')
-    }
-    if (!this.errorMessage) {
-      throw new Error('Missing error message for error result')
-    }
-    return this.errorMessage
-  }
-
-  public static success<U>(value: U): Result<U> {
-    return new Result<U>(true, undefined, value)
-  }
-
-  public static error<U>(errorMessage: string): Result<U> {
-    return new Result<U>(true, errorMessage)
-  }
-}
-
 type CreateDetails = Pick<Risk, 'category' | 'impact' | 'likelihood' | 'name' | 'notes' | 'parent' | 'type'>
 
 export interface Loader {
@@ -79,14 +32,14 @@ export interface Loader {
 
 // TODO: Implements reviewable?
 export class Risk {
-  #id?: string
+  #id: string
 
   #category: Category
   #impact: Impact
   #likelihood: Likelihood
 
   #name: string
-  #notes: string
+  #notes?: string
   #parent?: Risk
   #type: RiskType
 
@@ -101,7 +54,7 @@ export class Risk {
   private constructor(
     { category, impact, likelihood, name, notes, parent, type }: CreateDetails,
     loader: Loader,
-    id?: string,
+    id: string,
   ) {
     this.#id = id
 
@@ -119,7 +72,7 @@ export class Risk {
   }
 
   @IsOptional()
-  get id(): string | undefined {
+  get id(): string {
     return this.#id
   }
 
@@ -146,7 +99,7 @@ export class Risk {
   }
 
   @IsOptional()
-  get notes(): string {
+  get notes(): string | undefined {
     return this.#notes
   }
 
@@ -176,7 +129,7 @@ export class Risk {
     return this.#mitigations
   }
 
-  static create(details: CreateDetails): Result<Risk> {
+  static create(id: string, details: CreateDetails): Result<Risk> {
     if (!details) {
       return Result.error('Missing details')
     }
@@ -186,7 +139,7 @@ export class Risk {
       {
         loadMitigations: () => [], // TODO:
       },
-      undefined,
+      id,
     )
 
     const errors = validateSync(risk)
