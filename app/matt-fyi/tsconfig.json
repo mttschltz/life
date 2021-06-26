@@ -5,6 +5,6 @@
     "baseUrl": ".",
     "paths": {
       "@life/*": ["../../lib/life/src/*"]
-    }
+    },
   },
 }
