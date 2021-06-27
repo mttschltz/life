@@ -1,7 +1,7 @@
 // import { Category } from '@life/usecase/usecaseType'
 import { mapRiskToUsecase, Risk as UsecaseRisk } from '@life/usecase/usecaseType'
 import { Category, Impact, Likelihood, Risk, RiskType } from '@life/risk'
-import { Result } from '@life/result'
+import { Result } from '@util/result'
 
 export interface CreateRiskRequest {
   uriPart: string
@@ -14,14 +14,14 @@ export interface CreateRiskRequest {
   parentId: string
 }
 
-interface Repo {
+export interface CreateRiskRepo {
   fetchRisk: (id: string) => Result<Risk>
 }
 
 export class CreateRiskInteractor {
-  #repo: Repo
+  #repo: CreateRiskRepo
 
-  constructor(repo: Repo) {
+  constructor(repo: CreateRiskRepo) {
     this.#repo = repo
   }
 
