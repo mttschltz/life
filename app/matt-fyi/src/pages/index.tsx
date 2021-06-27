@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { createPlan } from '@life/usecase/createPlan'
+import { createPlan } from '@life/usecase'
 
 const IndexPage = (): JSX.Element => {
   const plan = createPlan('a plan')
