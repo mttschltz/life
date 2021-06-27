@@ -12,7 +12,8 @@
     "lint:ts": "tsc",
     "build": "yarn lint && gatsby build",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "test-repo": "jest --config=../../jest.config.ts"
   },
   "dependencies": {
     "@types/react": "^17.0.11",
