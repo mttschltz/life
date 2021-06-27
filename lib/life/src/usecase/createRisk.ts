@@ -43,7 +43,7 @@ export class CreateRiskInteractor {
     if (parentId) {
       const parentResult = this.#repo.fetchRisk(parentId)
       if (!parentResult.isSuccess) {
-        return Result.error(`Error fetching parent risk: ${parentResult.errorMessage}`)
+        return parentResult
       }
       parent = parentResult.getValue()
     }
@@ -58,7 +58,7 @@ export class CreateRiskInteractor {
       parent,
     })
     if (!riskResult.isSuccess) {
-      throw new Error(`Error creating risk: ${riskResult.errorMessage}`)
+      throw riskResult
     }
 
     return Result.success(mapRiskToUsecase(riskResult.getValue()))
