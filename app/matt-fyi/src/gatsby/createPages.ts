@@ -41,7 +41,7 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
       createPage({
         // Path for this page — required
         path: `/${edge.node.uriPart}`,
-        component: path.resolve('src/pages/risk.tsx'),
+        component: path.resolve('src/templates/risk.tsx'),
         context: {
           uriPart: edge.node.uriPart,
           // Add optional context data to be inserted
