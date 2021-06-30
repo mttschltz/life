@@ -6,7 +6,7 @@
       "lib": ["dom", "es2015", "es2017"],
       "strict": true,
       "noEmit": true,
-      "isolatedModules": true,
+      // "isolatedModules": true, // disabled because gatsby-plugin-typegen exports global types
       "esModuleInterop": true,
       "skipLibCheck": true,
       "noUnusedLocals": true,

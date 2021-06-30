@@ -5,9 +5,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "lint": "yarn lint:ts && yarn lint:eslint",
+    "lint": "yarn lint:types && yarn lint:eslint",
     "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0",
-    "lint:ts": "tsc"
+    "lint:types": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23"

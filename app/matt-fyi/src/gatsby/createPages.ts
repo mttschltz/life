@@ -21,7 +21,7 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
   // products, portfolio items, landing pages, etc.
   // Variables can be added as the second function parameter
   return graphql<Result>(`
-    query loadPagesQuery {
+    query LoadPagesQuery {
       allRisk {
         edges {
           node {
