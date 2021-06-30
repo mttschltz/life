@@ -10,7 +10,7 @@
     "lint": "yarn lint:types && yarn lint:eslint",
     "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0",
     "lint:types": "tsc",
-    "build": "yarn lint && gatsby build",
+    "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test-repo": "jest --config=../../jest.config.ts"
