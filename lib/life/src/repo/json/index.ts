@@ -1,7 +1,7 @@
-import { Repo } from '@life/repo'
-import { Risk } from '@life'
-import { Result } from '@util'
-import { CreateDetails } from '@life/risk'
+import { Repo } from 'life/src/repo'
+import { Risk } from 'life/src'
+import { Result } from 'lib/util'
+import { CreateDetails } from 'life/src/risk'
 
 type RiskJson = Omit<Risk, 'parent' | 'mitigations'> & { parentId?: string }
 

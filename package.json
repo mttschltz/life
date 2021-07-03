@@ -2,6 +2,7 @@
   "private": true,
   "workspaces": [
     "lib/life",
+    "lib",
     "app/matt-fyi"
   ],
   "scripts": {

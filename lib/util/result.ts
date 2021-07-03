@@ -59,7 +59,7 @@ export class Result<T> {
   }
 
   public static error<U>(errorMessage: string, error?: Error): Result<U> {
-    return new Result<U>(true, errorMessage, error)
+    return new Result<U>(false, errorMessage, error)
   }
 
   public static errorFrom<U, V>(result: Result<V>): Result<U> {

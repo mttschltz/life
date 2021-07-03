@@ -1,4 +1,4 @@
-import { Category, Impact, Likelihood, Risk, RiskType } from '@life'
+import { Category, Impact, Likelihood, Risk, RiskType } from 'life/src'
 import { describe, expect, test } from '@jest/globals'
 
 describe('empty', () => {

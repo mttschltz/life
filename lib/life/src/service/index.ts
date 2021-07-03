@@ -1,8 +1,8 @@
-import { Repo } from '@life/repo'
-import { Result } from '../../../util'
-import { CreateRiskInteractor, CreateRiskRequest } from '@life/usecase'
-import { Risk } from '@life/usecase'
-import { JsonRepo } from '@life/repo/json'
+import { Repo } from 'life/src/repo'
+import { Result } from 'lib/util'
+import { CreateRiskInteractor, CreateRiskRequest } from 'life/src/usecase'
+import { Risk } from 'life/src/usecase'
+import { JsonRepo } from 'life/src/repo/json'
 
 // // TODO:
 // // In theory, a handler might look like this:

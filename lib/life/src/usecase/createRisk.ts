@@ -1,6 +1,6 @@
-import { mapRiskToUsecase, Risk as UsecaseRisk } from '@life/usecase'
-import { Category, Impact, Likelihood, Risk, RiskType } from '@life'
-import { Result } from '@util'
+import { mapRiskToUsecase, Risk as UsecaseRisk } from 'life/src/usecase'
+import { Category, Impact, Likelihood, Risk, RiskType } from 'life/src'
+import { Result } from 'lib/util'
 
 export interface CreateRiskRequest {
   uriPart: string

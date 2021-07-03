@@ -1,5 +1,5 @@
-import { Result } from '@util'
-import { Risk } from '@life'
+import { Result } from 'lib/util'
+import { Risk } from 'life/src'
 
 export interface Repo {
   createRisk: (risk: Risk) => Result<void>
