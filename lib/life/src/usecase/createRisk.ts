@@ -10,10 +10,11 @@ export interface CreateRiskRequest {
   likelihood: Likelihood
   notes?: string
   type: RiskType
-  parentId: string
+  parentId?: string
 }
 
 export interface CreateRiskRepo {
+  createRisk: (risk: Risk) => Result<void>
   fetchRisk: (id: string) => Result<Risk>
 }
 
@@ -59,7 +60,13 @@ export class CreateRiskInteractor {
     if (!riskResult.isSuccess) {
       throw riskResult
     }
+    const risk = riskResult.getValue()
 
-    return Result.success(mapRiskToUsecase(riskResult.getValue()))
+    const persistResult = this.#repo.createRisk(risk)
+    if (!persistResult.isSuccess) {
+      return Result.errorFrom(persistResult)
+    }
+
+    return Result.success(mapRiskToUsecase(risk))
   }
 }

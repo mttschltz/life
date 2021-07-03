@@ -1,22 +1,65 @@
 import { Repo } from '@life/repo'
-import { Result } from '@util'
+import { Result } from '../../../util'
 import { CreateRiskInteractor, CreateRiskRequest } from '@life/usecase'
 import { Risk } from '@life/usecase'
+import { JsonRepo } from '@life/repo/json'
 
+// // TODO:
+// // In theory, a handler might look like this:
+// {
+//   interactors
+
+//   constructor(interactors){
+//     this.interactors
+//   }
+
+//   createRisk(request): respose {
+//     const result = this.#interactors.newCreateRiskInteractor().CreateRisk(parsedInfo)
+//   }
+//   listRisks(request): response{
+//     const result = this.#interactors.newCreateRiskInteractor().CreateRisk(parsedInfo)
+//   }
+// }
+
+// // in theory, service factory may look like this:
+// {
+
+//   constructor() {
+//     this.db = db
+//   }
+
+//   newCreateRiskInteractor() {
+//     riskRepo = repo.NewRiskRepo(this.db)
+//     return new CreateRiskUsecase(riskRepo)
+//   }
+// }
+
+// // Then 'main' would
+// const service = new Service(db)
+// const handler = new Handler(service)
+// handler.createRisk()
+
+// But also... is this all irrelevant if I can use graphql?!?!!??!?!?!!!!?!??!??!?
+
+// Reminder... main thing is being decoupled and being able to mock....
+// as long as usecases and domain aren't incorrectly coupled... how the service/handlers
+// are done may not matter much
 export class Service {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  #jsonRepo: any
+  #jsonRepo: Repo
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  constructor(jsonRepo: any) {
-    this.#jsonRepo = jsonRepo
+  constructor() {
+    this.#jsonRepo = new JsonRepo({})
   }
 
   createRisk(request: CreateRiskRequest): Result<Risk> {
     // TODO: Check to see if Repo and CreateRiskInteractor are
     // mockable with Jest https://jestjs.io/docs/es6-class-mocks
-    const repo = new Repo(this.#jsonRepo)
-    const createRisk = new CreateRiskInteractor(repo)
+    const createRisk = new CreateRiskInteractor(this.#jsonRepo)
     return createRisk.createRisk(request)
+  }
+
+  listRisks(): Result<Risk[]> {
+    // TODO:
+    return Result.success()
   }
 }

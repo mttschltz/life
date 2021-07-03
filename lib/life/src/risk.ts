@@ -1,4 +1,4 @@
-import { Mitigation } from '@life/mitigation'
+import { Mitigation } from '@life'
 import { IsArray, IsEnum, IsOptional, MinLength, validateSync } from 'class-validator'
 import { Result } from '@util'
 
@@ -24,7 +24,7 @@ export enum Category {
   Security = 'Security',
 }
 
-type CreateDetails = Pick<Risk, 'category' | 'impact' | 'likelihood' | 'name' | 'notes' | 'parent' | 'type'>
+export type CreateDetails = Pick<Risk, 'category' | 'impact' | 'likelihood' | 'name' | 'notes' | 'parent' | 'type'>
 
 export interface Loader {
   loadMitigations: (id: string) => Mitigation[]

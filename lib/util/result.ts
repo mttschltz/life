@@ -5,22 +5,23 @@ export class Result<T> {
   #errorMessage?: string
   #value?: T
 
-  private constructor(isSuccess: boolean, errorMessage?: string, value?: T) {
-    if (isSuccess && (value == null || errorMessage)) {
-      throw new Error('Success results must have a value and no error message')
+  private constructor(isSuccess: boolean, errorMessage?: string, error?: Error, value?: T) {
+    if (isSuccess && (errorMessage || error)) {
+      throw new Error('Success results must not have an error message or error')
     }
 
-    if (!isSuccess && (value != null || !errorMessage)) {
+    if (!isSuccess && (value || !errorMessage)) {
       throw new Error('Error results must have an error message and no value')
     }
 
-    this.#errorMessage = errorMessage
-    if (errorMessage) {
-      this.#error = new Error()
-    }
-
     this.isSuccess = isSuccess
-    this.#value = value
+
+    if (isSuccess) {
+      this.#value = value
+    } else {
+      this.#errorMessage = errorMessage
+      this.#error ||= new Error()
+    }
   }
 
   getValue(): T {
@@ -53,11 +54,18 @@ export class Result<T> {
     return this.#errorMessage
   }
 
-  public static success<U>(value: U): Result<U> {
-    return new Result<U>(true, undefined, value)
+  public static success<U>(value?: U): Result<U> {
+    return new Result<U>(true, undefined, undefined, value)
   }
 
-  public static error<U>(errorMessage: string): Result<U> {
-    return new Result<U>(true, errorMessage)
+  public static error<U>(errorMessage: string, error?: Error): Result<U> {
+    return new Result<U>(true, errorMessage, error)
+  }
+
+  public static errorFrom<U, V>(result: Result<V>): Result<U> {
+    if (result.isSuccess) {
+      throw new Error('Cannot create error from non-error result')
+    }
+    return Result.error(result.getErrorMessage())
   }
 }
