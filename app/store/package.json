@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --config webpack.development.js",
-    "start": "node dist/server"
+    "build": "NODE_ENV=development && webpack --config webpack.$NODE_ENV.js",
+    "start:env": "node --require dotenv/config dist/server",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/webpack-env": "^1.16.2",
+    "dotenv": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "ts-loader": "^9.2.3",
     "webpack": "^5.42.0",
