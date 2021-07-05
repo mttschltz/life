@@ -15,6 +15,8 @@ module.exports = merge(common, {
     'utf-8-validate',
     nodeExternals({
       allowlist: ['webpack/hot/poll?1000'],
+      // prevent graphql dependency issue
+      modulesDir: path.resolve(__dirname, '../../node_modules'),
     }),
   ],
   mode: 'development',
