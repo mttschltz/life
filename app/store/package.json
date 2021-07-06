@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "NODE_ENV=development && webpack --config webpack.$NODE_ENV.js",
+    "lint:types": "tsc",
     "start:env": "node --require dotenv/config dist/server",
     "test": "jest"
   },

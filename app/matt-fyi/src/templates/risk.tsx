@@ -4,17 +4,30 @@ import { graphql } from 'gatsby'
 import type { PageProps } from 'gatsby'
 import { FunctionComponent } from 'react'
 
-type RiskPageProps = PageProps<GatsbyTypes.RiskByPathQuery>
+type UserByID = {
+  test: {
+    post: {
+      id: string
+      title: string
+      content: string
+    }
+  }
+}
+
+type RiskPageProps = PageProps<UserByID>
 
 const IndexPage: FunctionComponent<RiskPageProps> = ({ data }): JSX.Element => {
-  return <main>Risk: {data.risk?.uriPart}</main>
+  return <main>Post: {data.test.post.id}</main>
 }
 
 export const query = graphql`
-  query RiskByPath($uriPart: String!) {
-    risk(uriPart: { eq: $uriPart }) {
-      uriPart
-      name
+  query PostByID($id: ID!) {
+    test {
+      post(id: $id) {
+        id
+        title
+        content
+      }
     }
   }
 `

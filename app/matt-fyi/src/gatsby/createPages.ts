@@ -2,14 +2,12 @@ import path from 'path'
 import type { CreatePagesArgs } from 'gatsby'
 
 interface Edge {
-  node: {
-    uriPart: string
-  }
+  id: string
 }
 
 interface Result {
-  allRisk: {
-    edges: Edge[]
+  test: {
+    post: Edge
   }
 }
 
@@ -22,12 +20,11 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
   // Variables can be added as the second function parameter
   return graphql<Result>(`
     query LoadPagesQuery {
-      allRisk {
-        edges {
-          node {
-            uriPart
-            name
-          }
+      test {
+        post(id: "test") {
+          title
+          id
+          content
         }
       }
     }
@@ -37,13 +34,17 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
     }
 
     // Create blog post pages.
-    result.data?.allRisk.edges.forEach((edge) => {
+    const post = result.data?.test.post
+    console.log(`!!post=${JSON.stringify(post)}`)
+    if (!post) {
+      console.log('no post')
+    } else {
       createPage({
         // Path for this page — required
-        path: `/${edge.node.uriPart}`,
+        path: `/post`,
         component: path.resolve('src/templates/risk.tsx'),
         context: {
-          uriPart: edge.node.uriPart,
+          id: post.id,
           // Add optional context data to be inserted
           // as props into the page component.
           //
@@ -54,7 +55,7 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
           // argument.
         },
       })
-    })
+    }
   })
 }
 
