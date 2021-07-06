@@ -4,9 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "NODE_ENV=development && webpack --config webpack.$NODE_ENV.js",
+    "build": "webpack --config webpack.$NODE_ENV.js",
+    "build:dev": "cross-env NODE_ENV=development yarn build",
+    "build:prod": "cross-env NODE_ENV=production yarn build",
     "lint:types": "tsc",
-    "start:env": "node --require dotenv/config dist/server",
+    "start:dev": "cross-env NODE_ENV=development node --require dotenv/config dist/server",
+    "start:prod": "cross-env NODE_ENV=production node --require dotenv/config dist/server",
+    "build-and-start:prod": "yarn build:prod && yarn start:prod",
     "test": "jest"
   },
   "devDependencies": {
