@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
   module: {
@@ -30,12 +31,14 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    plugins: [new TsconfigPathsPlugin()],
   },
   target: 'node',
   externals: [
     'bufferutil',
     'utf-8-validate',
     nodeExternals({
+      allowlist: ['webpack/hot/poll?1000'],
       // prevent graphql dependency issue
       modulesDir: path.resolve(__dirname, '../../node_modules'),
     }),

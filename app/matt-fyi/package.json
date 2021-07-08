@@ -28,7 +28,6 @@
   "devDependencies": {
     "eslint-plugin-graphql": "^4.0.0",
     "gatsby-plugin-typegen": "^2.2.4",
-    "tsconfig-paths-webpack-plugin": "^3.5.1",
     "babel-preset-gatsby": "^1.8.0"
   }
 }

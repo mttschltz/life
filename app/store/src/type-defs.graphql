@@ -1,3 +1,6 @@
+scalar Category
+scalar DateTime
+
 type User {
   """
   User ID.
@@ -45,6 +48,11 @@ type Post {
   title: String!
 
   """
+  Post categor.
+  """
+  category: Category!
+
+  """
   Post content.
   """
   content: String!
@@ -55,7 +63,7 @@ type Post {
   author: User!
 
   # Post published timestamp.
-  # publishedAt: TODO: Define type.
+  publishedAt: DateTime
 
   """
   Users who like this post.
