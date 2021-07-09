@@ -48,7 +48,7 @@ type Post {
   title: String!
 
   """
-  Post categor.
+  Post category.
   """
   category: Category!
 
@@ -71,11 +71,32 @@ type Post {
   likedBy: [User]
 }
 
+type Risk {
+  """
+  The id.
+  """
+  id: String!
+
+  """
+  The risk name.
+  """
+  name: String!
+
+  """
+  Risk category.
+  """
+  category: Category!
+}
+
 type Query {
   """
   Get post by ID.
   """
   post(id: ID!): Post
+  """
+  Get all risks.
+  """
+  risks: Risk
 }
 
 """
