@@ -1,0 +1,6 @@
+schema: ./src/**/*.graphql
+# extensions:
+#   codegen:
+#     ./src/graphql-codegen-typings.d.ts:
+#       plugins:
+#         - typescript
