@@ -18,9 +18,9 @@ module.exports = {
       resolve: 'gatsby-source-graphql',
       options: {
         // This type will contain remote schema Query type
-        typeName: 'User',
+        typeName: 'Store',
         // This is the field under which it's accessible
-        fieldName: 'test',
+        fieldName: 'store',
         // URL to query from
         url: 'http://localhost:4000',
       },

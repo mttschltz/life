@@ -5,28 +5,32 @@ import type { PageProps } from 'gatsby'
 import { FunctionComponent } from 'react'
 
 type UserByID = {
-  test: {
-    post: {
+  store: {
+    risks: {
       id: string
-      title: string
-      content: string
-    }
+      name: string
+    }[]
   }
 }
 
 type RiskPageProps = PageProps<UserByID>
 
 const IndexPage: FunctionComponent<RiskPageProps> = ({ data }): JSX.Element => {
-  return <main>Post: {data.test.post.id}</main>
+  return (
+    <main>
+      {data.store?.risks?.map((r) => (
+        <p key={r.id}>Risk: {r.id}</p>
+      ))}
+    </main>
+  )
 }
 
 export const query = graphql`
-  query PostByID($id: ID!) {
-    test {
-      post(id: $id) {
+  query RisksQuery {
+    store {
+      risks {
         id
-        title
-        content
+        name
       }
     }
   }

@@ -75,7 +75,7 @@ type Risk {
   """
   The id.
   """
-  id: String!
+  id: ID!
 
   """
   The risk name.
@@ -96,7 +96,7 @@ type Query {
   """
   Get all risks.
   """
-  risks: Risk
+  risks: [Risk]
 }
 
 """
