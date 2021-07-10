@@ -2,32 +2,34 @@
   "name": "matt-fyi",
   "version": "0.0.1",
   "private": true,
-  "description": "Matt Schultz",
-  "author": "Matt Schultz",
+  "description": "Website displaying content",
+  "author": {
+    "name": "Matt Schultz",
+    "email": "hey@matt.fyi",
+    "url": "https://www.matt.fyi"
+  },
   "scripts": {
+    "build": "gatsby build",
+    "clean": "gatsby clean",
     "develop": "gatsby develop",
-    "start": "gatsby develop",
     "lint": "yarn lint:types && yarn lint:eslint",
     "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0",
     "lint:types": "tsc",
-    "build": "gatsby build",
     "serve": "gatsby serve",
-    "clean": "gatsby clean",
+    "start": "gatsby develop",
     "test-repo": "jest --config=../../jest.config.ts"
   },
-  "dependencies": {
-    "ts-node": "^10.0.0",
-    "source-map-support": "^0.5.19",
-    "@types/react": "^17.0.11",
-    "@types/react-dom": "^17.0.7",
-    "gatsby": "^3.6.2",
-    "life": "0.0.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
-  },
   "devDependencies": {
-    "eslint-plugin-graphql": "^4.0.0",
-    "gatsby-plugin-typegen": "^2.2.4",
-    "babel-preset-gatsby": "^1.8.0"
+    "@types/react": "17.0.11",
+    "@types/react-dom": "17.0.7",
+    "babel-preset-gatsby": "1.8.0",
+    "eslint-plugin-graphql": "4.0.0",
+    "gatsby": "3.6.2",
+    "gatsby-plugin-typegen": "2.2.4",
+    "life": "0.0.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "source-map-support": "0.5.19",
+    "ts-node": "10.0.0"
   }
 }

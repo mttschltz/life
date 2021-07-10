@@ -1,15 +1,19 @@
 {
   "name": "life",
   "version": "0.0.1",
-  "main": "index.js",
-  "license": "MIT",
   "private": true,
+  "description": "Business rules",
+  "author": {
+    "name": "Matt Schultz",
+    "email": "hey@matt.fyi",
+    "url": "https://www.matt.fyi"
+  },
   "scripts": {
     "lint": "yarn lint:types && yarn lint:eslint",
     "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0",
     "lint:types": "tsc"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.23"
+    "@types/jest": "26.0.23"
   }
 }

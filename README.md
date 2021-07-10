@@ -1,3 +1,10 @@
+# Decisions
+
+## Dependencies
+
+- Exact versions to comply with https://12factor.net/dependencies
+- All devDependencies until needed otherwise: https://github.com/webpack/webpack/issues/520
+
 # TODOs
 
 ## Codebase quality

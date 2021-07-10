@@ -1,29 +1,32 @@
 {
   "name": "store",
   "version": "0.0.1",
-  "main": "index.js",
-  "license": "MIT",
+  "private": true,
+  "description": "In-memory store with GraphQL API",
+  "author": {
+    "name": "Matt Schultz",
+    "email": "hey@matt.fyi",
+    "url": "https://www.matt.fyi"
+  },
   "scripts": {
     "build": "webpack --config webpack.$NODE_ENV.js",
+    "build-and-start:prod": "yarn build:prod && yarn start:prod",
     "build:dev": "cross-env NODE_ENV=development yarn build",
     "build:prod": "cross-env NODE_ENV=production yarn build",
     "lint:types": "tsc",
     "start:dev": "cross-env NODE_ENV=development node --require dotenv/config dist/server",
     "start:prod": "cross-env NODE_ENV=production node --require dotenv/config dist/server",
-    "build-and-start:prod": "yarn build:prod && yarn start:prod",
     "test": "jest"
   },
-  "dependencies": {
-    "life": "0.0.1"
-  },
   "devDependencies": {
-    "@types/webpack-env": "^1.16.2",
-    "gatsby-source-graphql": "^3.8.0",
-    "dotenv": "^10.0.0",
-    "clean-webpack-plugin": "^4.0.0-alpha.0",
-    "ts-loader": "^9.2.3",
-    "webpack": "^5.42.0",
-    "webpack-cli": "^4.7.2",
-    "webpack-merge": "^5.8.0"
+    "@types/webpack-env": "1.16.2",
+    "clean-webpack-plugin": "4.0.0-alpha.0",
+    "dotenv": "10.0.0",
+    "gatsby-source-graphql": "3.8.0",
+    "life": "0.0.1",
+    "ts-loader": "9.2.3",
+    "webpack": "5.42.0",
+    "webpack-cli": "4.7.2",
+    "webpack-merge": "5.8.0"
   }
 }
