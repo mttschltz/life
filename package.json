@@ -2,15 +2,16 @@
   "private": true,
   "workspaces": [
     "lib/life",
-    "lib",
+    "lib/util",
     "app/store",
     "app/matt-fyi"
   ],
   "scripts": {
-    "build:matt-fyi": "start-server-and-test 'yarn workspace store build-and-start:prod' http-get://localhost:4000 'yarn ci:matt-fyi && yarn workspace matt-fyi build'",
-    "ci:matt-fyi": "yarn lint && yarn test",
-    "lint": "yarn workspaces run lint:types && yarn lint:eslint",
+    "build:matt-fyi": "start-server-and-test 'yarn workspace store build && yarn workspace store start' http-get://localhost:4000 'yarn ci && yarn workspace matt-fyi build'",
+    "ci": "yarn lint && yarn test",
+    "lint": "yarn lint:types && yarn lint:eslint",
     "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0 --fix",
+    "lint:types": "tsc",
     "prepare": "husky install",
     "test": "jest"
   },

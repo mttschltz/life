@@ -1,5 +1,5 @@
 import { Repo } from 'life/src/repo'
-import { Result } from 'lib/util'
+import { Result } from '@util'
 import { CreateRiskInteractor, CreateRiskRequest } from 'life/src/usecase'
 import { Risk } from 'life/src/usecase'
 import { JsonRepo } from 'life/src/repo/json'

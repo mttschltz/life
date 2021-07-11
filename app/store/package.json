@@ -9,18 +9,16 @@
     "url": "https://www.matt.fyi"
   },
   "scripts": {
-    "build": "webpack --config webpack.$NODE_ENV.js",
-    "build-and-start:prod": "yarn build:prod && yarn start:prod",
-    "build:dev": "cross-env NODE_ENV=development yarn build",
-    "build:prod": "cross-env NODE_ENV=production yarn build",
-    "lint:types": "tsc",
-    "start:dev": "cross-env NODE_ENV=development node dist/server",
-    "start:prod": "cross-env NODE_ENV=production node dist/server",
-    "test": "jest"
+    "build": "webpack --config webpack.production.js",
+    "build:dev": "webpack --config webpack.development.js",
+    "build:dev-watch": "webpack --env watch=true --config webpack.development.js",
+    "develop": "yarn build:dev && concurrently \"yarn build:dev-watch\" \"yarn start\"",
+    "start": "cross-env NODE_ENV=production node dist/server"
   },
   "devDependencies": {
     "@types/webpack-env": "1.16.2",
     "clean-webpack-plugin": "4.0.0-alpha.0",
+    "concurrently": "6.2.0",
     "gatsby-source-graphql": "3.8.0",
     "life": "0.0.1",
     "ts-loader": "9.2.3",

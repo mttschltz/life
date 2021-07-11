@@ -1,6 +1,6 @@
 import { mapRiskToUsecase, Risk as UsecaseRisk } from 'life/src/usecase'
 import { Risk } from 'life/src'
-import { Result } from 'lib/util'
+import { Result } from '@util'
 
 export interface ListRisksRepo {
   listRisks: () => Result<Risk[]>

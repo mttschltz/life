@@ -1,6 +1,6 @@
 import { Mitigation } from 'life/src'
 import { IsArray, IsEnum, IsOptional, MinLength, validateSync } from 'class-validator'
-import { Result } from 'lib/util'
+import { Result } from '@util'
 
 export enum RiskType {
   Risk = 'Risk',

@@ -1,4 +1,4 @@
-import { Result } from 'lib/util'
+import { Result } from '@util'
 import { Risk } from 'life/src'
 
 export interface Repo {

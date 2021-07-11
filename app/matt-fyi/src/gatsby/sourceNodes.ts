@@ -7,9 +7,9 @@
 const RISK_NODE_TYPE = `Risk`
 
 import type { SourceNodesArgs } from 'gatsby'
-import { Category, Impact, Likelihood, RiskType } from 'life/src'
 // import { Category, Impact, Likelihood, RiskType } from 'life/src'
-import { Service } from 'life/src/service'
+// import { Category, Impact, Likelihood, RiskType } from 'life/src'
+// import { Service } from 'life/src/service'
 
 // If we want to create our own schemas, we could do this from Typescript classes using annnotations
 // with this module: https://typegraphql.com/docs/installation.html
@@ -35,16 +35,16 @@ const sourceNodes = async ({ actions, createContentDigest, createNodeId }: Sourc
   //   convenience (e.g. in case lots of individual repo interfaces exist but want to be implemented at once)
   //   but it can't define the methods... the usecases and domain need to be able to call them and they can't
   //   know about repo implementations.
-  const service = new Service()
-  service.createRisk({
-    // const riskResult = service.createRisk({
-    category: Category.Health,
-    impact: Impact.High,
-    likelihood: Likelihood.High,
-    name: 'A risk',
-    type: RiskType.Condition,
-    uriPart: 'a-risk',
-  })
+  // const service = new Service()
+  // service.createRisk({
+  //   // const riskResult = service.createRisk({
+  //   category: Category.Health,
+  //   impact: Impact.High,
+  //   likelihood: Likelihood.High,
+  //   name: 'A risk',
+  //   type: RiskType.Condition,
+  //   uriPart: 'a-risk',
+  // })
   // TODO: list risks
 
   const data = {

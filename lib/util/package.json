@@ -1,15 +1,11 @@
 {
-  "name": "life",
+  "name": "util",
   "version": "0.0.1",
   "private": true,
-  "description": "Business rules",
+  "description": "Shared utilities",
   "author": {
     "name": "Matt Schultz",
     "email": "hey@matt.fyi",
     "url": "https://www.matt.fyi"
-  },
-  "devDependencies": {
-    "@types/jest": "26.0.23",
-    "util": "0.0.1"
   }
 }

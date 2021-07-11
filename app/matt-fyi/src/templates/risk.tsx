@@ -18,7 +18,7 @@ type RiskPageProps = PageProps<UserByID>
 const IndexPage: FunctionComponent<RiskPageProps> = ({ data }): JSX.Element => {
   return (
     <main>
-      {data.store?.risks?.map((r) => (
+      {data.store.risks.map((r) => (
         <p key={r.id}>Risk: {r.id}</p>
       ))}
     </main>

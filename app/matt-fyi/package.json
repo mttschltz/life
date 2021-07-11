@@ -12,12 +12,7 @@
     "build": "gatsby build",
     "clean": "gatsby clean",
     "develop": "gatsby develop",
-    "lint": "yarn lint:types && yarn lint:eslint",
-    "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0",
-    "lint:types": "tsc",
-    "serve": "gatsby serve",
-    "start": "gatsby develop",
-    "test-repo": "jest --config=../../jest.config.ts"
+    "serve": "gatsby serve"
   },
   "devDependencies": {
     "@types/react": "17.0.11",

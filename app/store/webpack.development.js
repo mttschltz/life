@@ -6,10 +6,14 @@ const webpack = require('webpack')
 
 const common = require('./webpack.common.js')
 
-module.exports = merge(common, {
-  devtool: 'inline-source-map',
-  entry: ['webpack/hot/poll?1000', path.join(__dirname, 'src/main.ts')],
-  mode: 'development',
-  plugins: [new CleanWebpackPlugin(), new webpack.HotModuleReplacementPlugin()],
-  watch: true,
-})
+module.exports = (env) => {
+  const watch = env.watch?.toLowerCase() === 'true'
+
+  return merge(common, {
+    devtool: 'inline-source-map',
+    entry: [path.join(__dirname, 'src/main.ts'), ...(watch ? ['webpack/hot/poll?1000'] : [])],
+    mode: 'development',
+    plugins: [new CleanWebpackPlugin(), new webpack.HotModuleReplacementPlugin()],
+    watch,
+  })
+}
