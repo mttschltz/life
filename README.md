@@ -13,6 +13,10 @@
 
 ## Developer experience
 
+### matt-fyi
+
 - [ ] **Intellisense for GraphQL.** Probably requires `gatsby-plugin-typegen` to have fixed this bug that prevents generation of documents: https://github.com/cometkim/gatsby-plugin-typegen/issues/113
 
 - [ ] **Generate types for GraphQL query inside `createPages.ts`.**
+
+- [ ] **Non-optional fields should not be typed as optional.** `gatsby-plugin-typegen` applies Maybe utility type to all fields.

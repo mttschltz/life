@@ -86,6 +86,11 @@ type Risk {
   Risk category.
   """
   category: Category!
+
+  """
+  Test optional field.
+  """
+  optional: String
 }
 
 type Query {
