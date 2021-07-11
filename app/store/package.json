@@ -14,14 +14,13 @@
     "build:dev": "cross-env NODE_ENV=development yarn build",
     "build:prod": "cross-env NODE_ENV=production yarn build",
     "lint:types": "tsc",
-    "start:dev": "cross-env NODE_ENV=development node --require dotenv/config dist/server",
-    "start:prod": "cross-env NODE_ENV=production node --require dotenv/config dist/server",
+    "start:dev": "cross-env NODE_ENV=development node dist/server",
+    "start:prod": "cross-env NODE_ENV=production node dist/server",
     "test": "jest"
   },
   "devDependencies": {
     "@types/webpack-env": "1.16.2",
     "clean-webpack-plugin": "4.0.0-alpha.0",
-    "dotenv": "10.0.0",
     "gatsby-source-graphql": "3.8.0",
     "life": "0.0.1",
     "ts-loader": "9.2.3",

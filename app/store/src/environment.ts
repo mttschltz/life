@@ -8,10 +8,11 @@ interface Environment {
   port: number | string
 }
 
+// TODO: Use this module for env vars... set local defaults in here... if ever need secrets, use 'dotenv' commit .env.template and add .env to gitignore
 export const environment: Environment = {
   apollo: {
-    introspection: process.env.APOLLO_INTROSPECTION === 'true',
-    playground: process.env.APOLLO_PLAYGROUND === 'true',
+    introspection: true,
+    playground: true,
   },
-  port: process.env.PORT || defaultPort,
+  port: process.env.PORT ? parseInt(process.env.PORT, 10) : defaultPort,
 }
