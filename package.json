@@ -3,6 +3,7 @@
   "workspaces": [
     "lib/life",
     "lib/util",
+    "app/content",
     "app/store",
     "app/matt-fyi"
   ],
