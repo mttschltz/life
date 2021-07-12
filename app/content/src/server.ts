@@ -7,14 +7,15 @@ const client = new ApolloClient({
 })
 
 client
-  .query({
-    query: gql`
-      query GetRisks {
-        risks {
-          id
-          name
-        }
+  .mutate({
+    mutation: gql`
+      mutation FollowUser($userId: ID!) {
+        followUser(userId: $userId)
       }
     `,
+    variables: {
+      userId: '1234',
+    },
   })
   .then((result) => console.log(JSON.stringify(result)))
+  .catch((e) => console.log(`error=${e}`))
