@@ -158,7 +158,3 @@ type Mutation {
     postId: ID!
   ): Int!
 }
-
-schema {
-  query: Query
-}
