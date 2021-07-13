@@ -9,9 +9,11 @@
     "url": "https://www.matt.fyi"
   },
   "scripts": {
-    "build": "webpack --config webpack.production.js",
-    "build:dev": "webpack --config webpack.development.js",
-    "build:dev-watch": "webpack --env watch=true --config webpack.development.js",
+    "build": "yarn codegen && webpack --config webpack.production.js",
+    "build:dev": "yarn codegen && webpack --config webpack.development.js",
+    "build:dev-watch": "yarn codegen:watch && webpack --env watch=true --config webpack.development.js",
+    "codegen": "yarn graphql-codegen --config graphql.yml",
+    "codegen:watch": "yarn graphql-codegen --config graphql.yml --watch",
     "develop": "yarn build:dev && concurrently \"yarn build:dev-watch\" \"yarn start\"",
     "start": "cross-env NODE_ENV=production node dist/server"
   },
