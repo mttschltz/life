@@ -34,11 +34,7 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
 
     // Create blog post pages.
     const risk = result.data?.store.risks[0]
-    console.log(`!!result.data=${JSON.stringify(result.data)}`)
-    console.log(`!!risk=${JSON.stringify(risk)}`)
-    if (!risk) {
-      console.log('no risk')
-    } else {
+    if (risk) {
       createPage({
         // Path for this page — required
         path: `/risk`,

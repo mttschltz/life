@@ -18,7 +18,7 @@ const server = new ApolloServer({
   playground: environment.apollo.playground,
 })
 
-server.listen(environment.port).then(({ url }) => console.log(`Server ready at2 ${url}. `))
+server.listen(environment.port).then(({ url }) => console.log(`Server ready at ${url}. `))
 
 if (module.hot) {
   module.hot.accept()
