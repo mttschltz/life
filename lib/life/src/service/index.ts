@@ -1,11 +1,10 @@
-import { Repo } from 'life/src/repo'
 import { Result } from '@util'
 import { CreateRiskInteractor, CreateRiskRequest } from 'life/src/usecase'
 import { Risk } from 'life/src/usecase'
 import { JsonRepo } from 'life/src/repo/json'
 
 export class Service {
-  #jsonRepo: Repo
+  #jsonRepo: JsonRepo
 
   constructor() {
     this.#jsonRepo = new JsonRepo({})

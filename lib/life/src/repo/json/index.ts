@@ -1,7 +1,7 @@
-import { Repo } from 'life/src/repo'
 import { Risk } from 'life/src'
 import { Result } from '@util'
-import { CreateDetails } from 'life/src/risk'
+import { Category, CreateDetails } from 'life/src/risk'
+import { RiskRepo } from 'life/src/repo'
 
 type RiskJson = Omit<Risk, 'parent' | 'mitigations'> & { parentId?: string }
 
@@ -39,7 +39,7 @@ const mapJsonToRiskCreateDetails = (
   }
 }
 
-export class JsonRepo implements Repo {
+export class JsonRepo implements RiskRepo {
   #json: Json
 
   constructor(json: Partial<Json>) {
@@ -68,11 +68,39 @@ export class JsonRepo implements Repo {
     const jsonRisk = this.#json.risk[id]
     if (!jsonRisk) return Result.error(`Could not find risk ${id}`)
 
+    const riskResult = this.fromJson(jsonRisk)
+    if (!riskResult.isSuccess) {
+      return riskResult
+    }
+
+    return Result.success(riskResult.getValue())
+  }
+
+  listRisks(category: Category | undefined): Result<Risk[]> {
+    const jsonRisks = Object.values(this.#json.risk)
+    const risks = []
+    for (let i = 0; i < jsonRisks.length; i++) {
+      const jsonRisk = jsonRisks[i]
+      if (category && jsonRisk.category !== category) {
+        continue
+      }
+
+      const riskResult = this.fromJson(jsonRisk)
+      if (!riskResult.isSuccess) {
+        return Result.errorFrom(riskResult)
+      }
+
+      risks.push(riskResult.getValue())
+    }
+    return Result.success(risks)
+  }
+
+  fromJson(jsonRisk: RiskJson): Result<Risk> {
     let parent
     if (jsonRisk.parentId) {
-      const parentJson = this.#json.risk[id]
+      const parentJson = this.#json.risk[jsonRisk.id]
       if (!parentJson) {
-        return Result.error(`Could not find parent with id ${jsonRisk.parentId} for risk with id ${id}`)
+        return Result.error(`Could not find parent with id ${jsonRisk.parentId} for risk with id ${jsonRisk.id}`)
       }
 
       const parentResult = Risk.create(jsonRisk.id, mapJsonToRiskCreateDetails(parentJson))
@@ -82,16 +110,6 @@ export class JsonRepo implements Repo {
       parent = parentResult.getValue()
     }
 
-    const riskResult = Risk.create(jsonRisk.id, mapJsonToRiskCreateDetails(jsonRisk, parent))
-    if (!riskResult.isSuccess) {
-      return riskResult
-    }
-
-    return Result.success(riskResult.getValue())
-  }
-
-  listRisks(): Risk[] {
-    // TODO: Loop through and get all :)
-    return []
+    return Risk.create(jsonRisk.id, mapJsonToRiskCreateDetails(jsonRisk, parent))
   }
 }

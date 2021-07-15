@@ -1,9 +1,13 @@
 import { mapRiskToUsecase, Risk as UsecaseRisk } from 'life/src/usecase'
-import { Risk } from 'life/src'
+import { Category, Risk } from 'life/src'
 import { Result } from '@util'
 
 export interface ListRisksRepo {
-  listRisks: () => Result<Risk[]>
+  listRisks(category: Category | undefined): Result<Risk[]>
+}
+
+export interface ListRisksCriteria {
+  category?: 'health' | 'wealth' | 'security'
 }
 
 export class ListRisksInteractor {
@@ -13,11 +17,20 @@ export class ListRisksInteractor {
     this.#repo = repo
   }
 
-  listRisks(): Result<UsecaseRisk[]> {
-    // TODO:
-    // get list using repo
-    // fetch parents
-    const risksResult = this.#repo.listRisks()
+  listRisks(criteria: ListRisksCriteria): Result<UsecaseRisk[]> {
+    let category
+    switch (criteria.category) {
+      case 'health':
+        category = Category.Health
+        break
+      case 'wealth':
+        category = Category.Wealth
+        break
+      case 'security':
+        category = Category.Security
+        break
+    }
+    const risksResult = this.#repo.listRisks(category)
     if (!risksResult.isSuccess) {
       return risksResult
     }
