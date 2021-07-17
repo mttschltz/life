@@ -1,0 +1,9 @@
+# "projects" syntax not supported by graphql-codegen yet https://github.com/dotansimha/graphql-code-generator/issues/6282
+overwrite: true
+schema: ./src/**/*.graphql
+documents: null
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'

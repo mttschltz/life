@@ -1,11 +1,11 @@
-import { Risk } from 'life/src'
+import { Risk } from '@life'
 import { Result } from '@util'
-import { Category, CreateDetails } from 'life/src/risk'
-import { RiskRepo } from 'life/src/repo'
+import { Category, CreateDetails } from '@life/risk'
+import { RiskRepo } from '@life/repo'
 
 type RiskJson = Omit<Risk, 'parent' | 'mitigations'> & { parentId?: string }
 
-interface Json {
+export interface Json {
   risk: {
     [key: string]: RiskJson
   }

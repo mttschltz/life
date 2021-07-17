@@ -11,5 +11,9 @@
   "devDependencies": {
     "@types/jest": "26.0.23",
     "util": "0.0.1"
+  },
+  "scripts": {
+    "codegen": "yarn graphql-codegen --config graphql.yml",
+    "codegen:watch": "yarn graphql-codegen --config graphql.yml --watch"
   }
 }

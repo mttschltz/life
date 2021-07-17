@@ -1,4 +1,4 @@
-import { Mitigation } from 'life/src'
+import { Mitigation } from '@life'
 import { IsArray, IsEnum, IsOptional, MinLength, validateSync } from 'class-validator'
 import { Result } from '@util'
 
