@@ -2,9 +2,27 @@ import { ApolloServer } from 'apollo-server'
 import { DateTimeMock } from 'graphql-scalars'
 
 import { environment } from '@store/environment'
-import { GraphService } from '@life/graph/index'
+import { GraphService } from '@life/service/graph/index'
+import { ServiceFactory } from '@life/service/factory'
+import { GraphMapper } from '@life/service/graph/toGraph'
+import { Category, Impact, Likelihood, RiskType } from '@life'
 
-const graphService = new GraphService({})
+// TODO: Remove seed data
+const serviceFactory = new ServiceFactory({
+  risk: {
+    id: {
+      id: 'id',
+      category: Category.Security,
+      impact: Impact.High,
+      likelihood: Likelihood.High,
+      name: 'name',
+      notes: 'notes',
+      type: RiskType.Goal,
+    },
+  },
+})
+const graphMapper = new GraphMapper()
+const graphService = new GraphService(serviceFactory, graphMapper)
 
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),

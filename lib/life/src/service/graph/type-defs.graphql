@@ -1,5 +1,10 @@
-scalar Category
 scalar DateTime
+
+enum Category {
+  HEALTH
+  WEALTH
+  SECURITY
+}
 
 type User {
   """
@@ -101,7 +106,7 @@ type Query {
   """
   Get all risks.
   """
-  risks: [Risk]
+  risks(category: Category): [Risk]
 }
 
 """

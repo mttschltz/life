@@ -1,4 +1,28 @@
-export class Result<T> {
+class Results<T> {
+  #results: Result<T>[]
+
+  private constructor(results: Result<T>[]) {
+    this.#results = results
+  }
+
+  hasError(): boolean {
+    return this.#results.some((r) => !r.isSuccess)
+  }
+
+  firstErrorResult(): Result<T> | undefined {
+    return this.#results.find((r) => !r.isSuccess)
+  }
+
+  getValues(): T[] {
+    return this.#results.map((r) => r.getValue())
+  }
+
+  public static new<U>(results: Result<U>[]): Results<U> {
+    return new Results(results)
+  }
+}
+
+class Result<T> {
   public readonly isSuccess: boolean
 
   #error?: Error
@@ -68,4 +92,10 @@ export class Result<T> {
     }
     return Result.error(result.getErrorMessage())
   }
+
+  public static firstErrorResult<U>(result: Result<U>[]): Result<U> | undefined {
+    return result.find((r) => !r.isSuccess)
+  }
 }
+
+export { Result, Results }
