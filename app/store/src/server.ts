@@ -4,7 +4,7 @@ import { DateTimeMock } from 'graphql-scalars'
 import { environment } from '@store/environment'
 import { GraphService } from '@life/service/graph/index'
 import { ServiceFactory } from '@life/service/factory'
-import { GraphMapper } from '@life/service/graph/toGraph'
+import { GraphMapper } from '@life/service/graph/mapper'
 import { Category, Impact, Likelihood, RiskType } from '@life'
 
 // TODO: Remove seed data
