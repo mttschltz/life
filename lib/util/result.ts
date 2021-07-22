@@ -5,10 +5,6 @@ class Results<T> {
     this.#results = results
   }
 
-  hasError(): boolean {
-    return this.#results.some((r) => !r.isSuccess)
-  }
-
   firstErrorResult(): Result<T> | undefined {
     return this.#results.find((r) => !r.isSuccess)
   }

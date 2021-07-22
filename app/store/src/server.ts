@@ -6,6 +6,7 @@ import { GraphService } from '@life/service/graph/index'
 import { ServiceFactory } from '@life/service/factory'
 import { GraphMapper } from '@life/service/graph/mapper'
 import { Category, Impact, Likelihood, RiskType } from '@life'
+import { Logger } from '@util/logger'
 
 // TODO: Remove seed data
 const serviceFactory = new ServiceFactory({
@@ -22,7 +23,7 @@ const serviceFactory = new ServiceFactory({
   },
 })
 const graphMapper = new GraphMapper()
-const graphService = new GraphService(serviceFactory, graphMapper)
+const graphService = new GraphService(serviceFactory, graphMapper, Logger.new())
 
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),

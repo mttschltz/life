@@ -1,16 +1,21 @@
+import { ApolloError } from 'apollo-server'
 import type { ListRisksCriteria } from '@life/usecase/listRisks'
 import { Category as GraphCategory, QueryRisksArgs, RequireFields, Resolvers } from '@life/generated/graphql'
 import * as typeDefs from '@life/service/graph/type-defs.graphql'
 import { ServiceFactory } from '@life/service/factory'
 import { GraphMapper } from '@life/service/graph/mapper'
+import { Logger } from '@util/logger'
+import { Result } from '@util/result'
 
 export class GraphService {
   #factory: ServiceFactory
   #mapper: GraphMapper
+  #logger: Logger
 
-  constructor(factory: ServiceFactory, mapper: GraphMapper) {
+  constructor(factory: ServiceFactory, mapper: GraphMapper, logger: Logger) {
     this.#factory = factory
     this.#mapper = mapper
+    this.#logger = logger
   }
 
   resolvers(): Resolvers {
@@ -37,12 +42,15 @@ export class GraphService {
 
           const result = this.#factory.listRisksInteractor().listRisks(criteria)
           if (!result.isSuccess) {
-            // TODO: return error
+            this.#logger.result(result)
+            throw this.resultError(result)
           }
 
           const mappingResults = this.#mapper.risks(result.getValue())
-          if (mappingResults.hasError()) {
-            // TODO: return error
+          const errorResult = mappingResults.firstErrorResult()
+          if (errorResult) {
+            this.#logger.result(errorResult)
+            throw this.resultError(errorResult)
           }
 
           return mappingResults.getValues()
@@ -54,5 +62,19 @@ export class GraphService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   typeDefs(): any {
     return typeDefs
+  }
+
+  private resultError<T>(result: Result<T>): ApolloError {
+    const error = result.getError()
+
+    if (error.stack) {
+      return new ApolloError(result.getErrorMessage(), undefined, {
+        exception: {
+          stacktrace: error.stack,
+        },
+      })
+    }
+
+    return new ApolloError(result.getErrorMessage())
   }
 }
