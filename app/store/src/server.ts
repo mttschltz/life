@@ -19,6 +19,16 @@ const serviceFactory = new ServiceFactory({
       name: 'name',
       notes: 'notes',
       type: RiskType.Goal,
+      parentId: 'parentId',
+    },
+    parentId: {
+      id: 'parentId',
+      category: Category.Health,
+      impact: Impact.Normal,
+      name: 'parent risk',
+      type: RiskType.Goal,
+      likelihood: Likelihood.Normal,
+      notes: 'parent notes',
     },
   },
 })

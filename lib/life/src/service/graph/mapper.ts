@@ -23,7 +23,6 @@ class GraphMapper {
       category: graphCategory,
       id,
       name,
-      optional: 'optional',
     })
   }
 
