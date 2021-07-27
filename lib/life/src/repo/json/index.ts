@@ -95,12 +95,16 @@ export class JsonRepo implements RiskRepo {
     return Result.success(riskResult.getValue())
   }
 
-  listRisks(category: Category | undefined): Result<Risk[]> {
+  listRisks(category: Category | undefined, includeDescendents: boolean): Result<Risk[]> {
     const jsonRisks = Object.values(this.#json.risk)
     const risks = []
     for (let i = 0; i < jsonRisks.length; i++) {
       const jsonRisk = jsonRisks[i]
       if (category && jsonRisk.category !== category) {
+        continue
+      }
+
+      if (!includeDescendents && jsonRisk.parentId) {
         continue
       }
 

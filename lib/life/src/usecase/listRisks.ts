@@ -3,11 +3,12 @@ import { Category, Risk } from '@life'
 import { Result } from '@util'
 
 export interface ListRisksRepo {
-  listRisks(category: Category | undefined): Result<Risk[]>
+  listRisks(category: Category | undefined, includeDescendents: boolean): Result<Risk[]>
 }
 
 export interface ListRisksCriteria {
   category?: 'health' | 'wealth' | 'security'
+  includeDescendents?: boolean
 }
 
 export class ListRisksInteractor {
@@ -30,7 +31,7 @@ export class ListRisksInteractor {
         category = Category.Security
         break
     }
-    const risksResult = this.#repo.listRisks(category)
+    const risksResult = this.#repo.listRisks(category, !!criteria.includeDescendents)
     if (!risksResult.isSuccess) {
       return risksResult
     }
