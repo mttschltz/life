@@ -22,8 +22,7 @@ const serviceFactory = new ServiceFactory({
     },
   },
 })
-const graphMapper = new GraphMapper()
-const graphService = new GraphService(serviceFactory, graphMapper, Logger.new())
+const graphService = new GraphService(serviceFactory, new GraphMapper(), Logger.new())
 
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),

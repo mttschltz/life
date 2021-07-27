@@ -25,6 +25,30 @@ export class GraphService {
           return 1
         },
       },
+      Risk: {
+        parent: async (risk) => {
+          // TODO: Test retrieving parent
+          // https://www.apollographql.com/docs/apollo-server/data/resolvers/
+          const parentResult = this.#factory.fetchRiskParentInteractor().fetchRiskParent(risk.id)
+          if (!parentResult.isSuccess) {
+            this.#logger.result(parentResult)
+            throw this.resultError(parentResult)
+          }
+
+          const parent = parentResult.getValue()
+          if (!parent) {
+            return null
+          }
+
+          const mappingResult = this.#mapper.risk(parent)
+          if (!mappingResult.isSuccess) {
+            this.#logger.result(mappingResult)
+            throw this.resultError(mappingResult)
+          }
+
+          return mappingResult.getValue()
+        },
+      },
       Query: {
         risks: async (_, args: RequireFields<QueryRisksArgs, never>) => {
           const criteria: ListRisksCriteria = {}

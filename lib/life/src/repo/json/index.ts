@@ -76,6 +76,25 @@ export class JsonRepo implements RiskRepo {
     return Result.success(riskResult.getValue())
   }
 
+  fetchRiskParent(id: string): Result<Risk | undefined> {
+    const jsonRisk = this.#json.risk[id]
+    if (!jsonRisk) return Result.error(`Could not find risk ${id}`)
+
+    if (!jsonRisk.parentId) {
+      return Result.success(undefined)
+    }
+
+    const jsonParentRisk = this.#json.risk[jsonRisk.parentId]
+    if (!jsonParentRisk) return Result.error(`Could not find parent risk ${jsonRisk.parentId}`)
+
+    const riskResult = this.fromJson(jsonParentRisk)
+    if (!riskResult.isSuccess) {
+      return riskResult
+    }
+
+    return Result.success(riskResult.getValue())
+  }
+
   listRisks(category: Category | undefined): Result<Risk[]> {
     const jsonRisks = Object.values(this.#json.risk)
     const risks = []
