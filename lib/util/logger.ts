@@ -6,7 +6,7 @@ interface Details {
 }
 
 interface ErrorDetails extends Details {
-  error: Error
+  error?: Error
 }
 
 type ConsoleArgs = [string, ...Array<Error | Pick<Details, 'data'>>]

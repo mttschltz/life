@@ -61,7 +61,7 @@ export class JsonRepo implements RiskRepo {
     }
 
     this.#json.risk[risk.id] = mapRiskToJson(risk)
-    return Result.success()
+    return Result.success(undefined)
   }
 
   fetchRisk(id: string): Result<Risk> {

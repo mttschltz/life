@@ -91,7 +91,7 @@ export class GraphService {
   private resultError<T>(result: Result<T>): ApolloError {
     const error = result.getError()
 
-    if (error.stack) {
+    if (error?.stack) {
       return new ApolloError(result.getErrorMessage(), undefined, {
         exception: {
           stacktrace: error.stack,

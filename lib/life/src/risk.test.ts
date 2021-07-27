@@ -12,6 +12,6 @@ describe('empty', () => {
       parent: undefined,
       type: RiskType.Condition,
     })
-    expect(risk.isSuccess).toEqual(true)
+    expect(risk.isSuccess()).toEqual(true)
   })
 })

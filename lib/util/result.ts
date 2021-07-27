@@ -18,72 +18,70 @@ class Results<T> {
   }
 }
 
+interface SuccessResult<T> {
+  value: T
+}
+
+interface ErrorResult {
+  error?: Error
+  message: string
+}
+
 class Result<T> {
-  public readonly isSuccess: boolean
+  #success?: SuccessResult<T>
+  #error?: ErrorResult
 
-  #error?: Error
-  #errorMessage?: string
-  #value?: T
-
-  private constructor(isSuccess: boolean, errorMessage?: string, error?: Error, value?: T) {
-    if (isSuccess && (errorMessage || error)) {
-      throw new Error('Success results must not have an error message or error')
+  private constructor(success?: SuccessResult<T>, error?: ErrorResult) {
+    if (success && error) {
+      throw new Error('Only one success or one error must be provided')
+    }
+    if (!success && !error) {
+      throw new Error('Either a success or error must be provided')
     }
 
-    if (!isSuccess && (value || !errorMessage)) {
-      throw new Error('Error results must have an error message and no value')
+    if (success) {
+      this.#success = success
     }
-
-    this.isSuccess = isSuccess
-
-    if (isSuccess) {
-      this.#value = value
-    } else {
-      this.#errorMessage = errorMessage
-      this.#error ||= new Error()
+    if (error) {
+      this.#error = error
     }
+  }
+
+  isSuccess(): boolean {
+    return !!this.#success
   }
 
   getValue(): T {
-    if (!this.isSuccess) {
+    if (!this.#success) {
       throw new Error('Cannot get value of an error result')
     }
-    if (!this.#value) {
-      throw new Error('Missing value for success result')
-    }
-    return this.#value
+    return this.#success.value
   }
 
-  getError(): Error {
-    if (this.isSuccess) {
-      throw new Error('Cannot get error message of a success result')
-    }
+  getError(): Error | undefined {
     if (!this.#error) {
-      throw new Error('Missing error message for error result')
+      throw new Error('Cannot get error of a success result')
     }
-    return this.#error
+    return this.#error.error
   }
 
   getErrorMessage(): string {
-    if (this.isSuccess) {
+    if (!this.#error) {
       throw new Error('Cannot get error message of a success result')
     }
-    if (!this.#errorMessage) {
-      throw new Error('Missing error message for error result')
-    }
-    return this.#errorMessage
+    return this.#error.message
   }
 
-  public static success<U>(value?: U): Result<U> {
-    return new Result<U>(true, undefined, undefined, value)
+  public static success<U>(value: U): Result<U> {
+    return new Result<U>({ value }, undefined)
   }
 
-  public static error<U>(errorMessage: string, error?: Error): Result<U> {
-    return new Result<U>(false, errorMessage, error)
+  public static error<U>(message: string, error?: Error): Result<U> {
+    return new Result<U>(undefined, { message, error })
   }
 
   public static errorFrom<U, V>(result: Result<V>): Result<U> {
-    if (result.isSuccess) {
+    if (result.isSuccess()) {
       throw new Error('Cannot create error from non-error result')
     }
     return Result.error(result.getErrorMessage())
