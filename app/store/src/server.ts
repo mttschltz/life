@@ -37,13 +37,11 @@ const graphService = new GraphService(serviceFactory, new GraphMapper(), Logger.
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),
   typeDefs: graphService.typeDefs(),
-  introspection: environment.apollo.introspection,
   mocks: {
     DateTime: DateTimeMock,
     Category: () => 'HEALTH',
   }, // TODO: Remove in PROD.
   mockEntireSchema: false, // TODO: Remove in PROD.
-  playground: environment.apollo.playground,
 })
 
 server.listen(environment.port).then(({ url }) => console.log(`Server ready at ${url}. `))
