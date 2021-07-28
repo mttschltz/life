@@ -1,4 +1,4 @@
-import { mapRiskToUsecase, Risk as UsecaseRisk } from '@life/usecase'
+import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
 import { Category, Impact, Likelihood, Risk, RiskType } from '@life'
 import { Result } from '@util'
 
@@ -20,9 +20,11 @@ export interface CreateRiskRepo {
 
 export class CreateRiskInteractor {
   #repo: CreateRiskRepo
+  #mapper: RiskMapper
 
-  constructor(repo: CreateRiskRepo) {
+  constructor(repo: CreateRiskRepo, mapper: RiskMapper) {
     this.#repo = repo
+    this.#mapper = mapper
   }
 
   createRisk({
@@ -67,6 +69,6 @@ export class CreateRiskInteractor {
       return Result.errorFrom(persistResult)
     }
 
-    return Result.success(mapRiskToUsecase(risk))
+    return Result.success(this.#mapper.risk(risk))
   }
 }

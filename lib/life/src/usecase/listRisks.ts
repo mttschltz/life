@@ -1,4 +1,4 @@
-import { mapRiskToUsecase, Risk as UsecaseRisk } from '@life/usecase'
+import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
 import { Category, Risk } from '@life'
 import { Result } from '@util'
 
@@ -13,9 +13,11 @@ export interface ListRisksCriteria {
 
 export class ListRisksInteractor {
   #repo: ListRisksRepo
+  #mapper: RiskMapper
 
-  constructor(repo: ListRisksRepo) {
+  constructor(repo: ListRisksRepo, mapper: RiskMapper) {
     this.#repo = repo
+    this.#mapper = mapper
   }
 
   listRisks(criteria: ListRisksCriteria): Result<UsecaseRisk[]> {
@@ -36,6 +38,6 @@ export class ListRisksInteractor {
       return risksResult
     }
 
-    return Result.success(risksResult.getValue().map(mapRiskToUsecase))
+    return Result.success(risksResult.getValue().map(this.#mapper.risk))
   }
 }

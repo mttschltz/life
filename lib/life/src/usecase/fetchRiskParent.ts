@@ -1,4 +1,4 @@
-import { mapRiskToUsecase, Risk as UsecaseRisk } from '@life/usecase'
+import { RiskMapper, Risk as UsecaseRisk } from '@life/usecase'
 import { Risk } from '@life'
 import { Result } from '@util'
 
@@ -8,9 +8,11 @@ export interface FetchRiskParentRepo {
 
 export class FetchRiskParentInteractor {
   #repo: FetchRiskParentRepo
+  #mapper: RiskMapper
 
-  constructor(repo: FetchRiskParentRepo) {
+  constructor(repo: FetchRiskParentRepo, mapper: RiskMapper) {
     this.#repo = repo
+    this.#mapper = mapper
   }
 
   fetchRiskParent(id: string): Result<UsecaseRisk | undefined> {
@@ -24,6 +26,6 @@ export class FetchRiskParentInteractor {
       return Result.success(undefined)
     }
 
-    return Result.success(mapRiskToUsecase(riskParent))
+    return Result.success(this.#mapper.risk(riskParent))
   }
 }
