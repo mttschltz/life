@@ -7,6 +7,7 @@ import { ServiceFactory } from '@life/service/factory'
 import { GraphMapper } from '@life/service/graph/mapper'
 import { Category, Impact, Likelihood, RiskType } from '@life'
 import { Logger } from '@util/logger'
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 
 // TODO: Remove seed data
 const serviceFactory = new ServiceFactory({
@@ -37,6 +38,8 @@ const graphService = new GraphService(serviceFactory, new GraphMapper(), Logger.
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),
   typeDefs: graphService.typeDefs(),
+  introspection: environment.apollo.introspection,
+  plugins: [ApolloServerPluginLandingPageLocalDefault()],
   mocks: {
     DateTime: DateTimeMock,
     Category: () => 'HEALTH',
