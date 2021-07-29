@@ -44,7 +44,7 @@ export class CreateRiskInteractor {
     let parent
     if (parentId) {
       const parentResult = this.#repo.fetchRisk(parentId)
-      if (!parentResult.isSuccess) {
+      if (!parentResult.isSuccess()) {
         return parentResult
       }
       parent = parentResult.getValue()
@@ -59,13 +59,13 @@ export class CreateRiskInteractor {
       type,
       parent,
     })
-    if (!riskResult.isSuccess) {
+    if (!riskResult.isSuccess()) {
       throw riskResult
     }
     const risk = riskResult.getValue()
 
     const persistResult = this.#repo.createRisk(risk)
-    if (!persistResult.isSuccess) {
+    if (!persistResult.isSuccess()) {
       return Result.errorFrom(persistResult)
     }
 

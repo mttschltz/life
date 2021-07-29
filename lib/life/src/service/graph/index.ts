@@ -6,6 +6,7 @@ import { ServiceFactory } from '@life/service/factory'
 import { GraphMapper } from '@life/service/graph/mapper'
 import { Logger } from '@util/logger'
 import { Result } from '@util/result'
+import { Impact, Likelihood, RiskType } from '@life/risk'
 
 export class GraphService {
   #factory: ServiceFactory
@@ -21,16 +22,41 @@ export class GraphService {
   resolvers(): Resolvers {
     return {
       Mutation: {
-        followUser: async () => {
-          return 1
+        createRisk: async (_, { input }) => {
+          // TODO: Instead of mapping each enum, etc individually, map CreateRiskInput
+          // to CreateRiskRequest. This should make testing easier.
+          const categoryResult = this.#mapper.toCategory(input.category)
+          if (!categoryResult.isSuccess()) {
+            this.#logger.result(categoryResult)
+            throw this.resultError(categoryResult)
+          }
+
+          const riskResult = this.#factory.createRiskInteractor().createRisk({
+            category: categoryResult.getValue(),
+            name: input.name,
+            parentId: input.parentId ? input.parentId : undefined,
+            impact: Impact.Normal,
+            likelihood: Likelihood.Normal,
+            type: RiskType.Condition,
+            uriPart: input.uriPart,
+          })
+          if (!riskResult.isSuccess()) {
+            this.#logger.result(riskResult)
+            throw this.resultError(riskResult)
+          }
+
+          const mappingResult = this.#mapper.fromRisk(riskResult.getValue())
+          if (!mappingResult.isSuccess()) {
+            this.#logger.result(mappingResult)
+            throw this.resultError(mappingResult)
+          }
+          return mappingResult.getValue()
         },
       },
       Risk: {
         parent: async (risk) => {
-          // TODO: Test retrieving parent
-          // https://www.apollographql.com/docs/apollo-server/data/resolvers/
           const parentResult = this.#factory.fetchRiskParentInteractor().fetchRiskParent(risk.id)
-          if (!parentResult.isSuccess) {
+          if (!parentResult.isSuccess()) {
             this.#logger.result(parentResult)
             throw this.resultError(parentResult)
           }
@@ -40,8 +66,8 @@ export class GraphService {
             return null
           }
 
-          const mappingResult = this.#mapper.risk(parent)
-          if (!mappingResult.isSuccess) {
+          const mappingResult = this.#mapper.fromRisk(parent)
+          if (!mappingResult.isSuccess()) {
             this.#logger.result(mappingResult)
             throw this.resultError(mappingResult)
           }
@@ -65,7 +91,7 @@ export class GraphService {
           }
 
           const result = this.#factory.listRisksInteractor().listRisks(criteria)
-          if (!result.isSuccess) {
+          if (!result.isSuccess()) {
             this.#logger.result(result)
             throw this.resultError(result)
           }

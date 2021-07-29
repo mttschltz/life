@@ -9,12 +9,18 @@ const client = new ApolloClient({
 client
   .mutate({
     mutation: gql`
-      mutation FollowUser($userId: ID!) {
-        followUser(userId: $userId)
+      mutation CreateRisk($input: CreateRiskInput!) {
+        createRisk(input: $input) {
+          id
+        }
       }
     `,
     variables: {
-      userId: '1234',
+      input: {
+        category: 'HEALTH',
+        name: 'risk1',
+        uriPart: '/uri-part-riskxxxx',
+      },
     },
   })
   .then((result) => console.log(JSON.stringify(result)))

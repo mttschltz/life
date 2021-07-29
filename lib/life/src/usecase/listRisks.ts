@@ -34,7 +34,7 @@ export class ListRisksInteractor {
         break
     }
     const risksResult = this.#repo.listRisks(category, !!criteria.includeDescendents)
-    if (!risksResult.isSuccess) {
+    if (!risksResult.isSuccess()) {
       return risksResult
     }
 

@@ -6,7 +6,7 @@ class Results<T> {
   }
 
   firstErrorResult(): Result<T> | undefined {
-    return this.#results.find((r) => !r.isSuccess)
+    return this.#results.find((r) => !r.isSuccess())
   }
 
   getValues(): T[] {
@@ -88,7 +88,7 @@ class Result<T> {
   }
 
   public static firstErrorResult<U>(result: Result<U>[]): Result<U> | undefined {
-    return result.find((r) => !r.isSuccess)
+    return result.find((r) => !r.isSuccess())
   }
 }
 

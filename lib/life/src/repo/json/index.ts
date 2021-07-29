@@ -69,7 +69,7 @@ export class JsonRepo implements RiskRepo {
     if (!jsonRisk) return Result.error(`Could not find risk ${id}`)
 
     const riskResult = this.fromJson(jsonRisk)
-    if (!riskResult.isSuccess) {
+    if (!riskResult.isSuccess()) {
       return riskResult
     }
 
@@ -88,7 +88,7 @@ export class JsonRepo implements RiskRepo {
     if (!jsonParentRisk) return Result.error(`Could not find parent risk ${jsonRisk.parentId}`)
 
     const riskResult = this.fromJson(jsonParentRisk)
-    if (!riskResult.isSuccess) {
+    if (!riskResult.isSuccess()) {
       return riskResult
     }
 
@@ -109,7 +109,7 @@ export class JsonRepo implements RiskRepo {
       }
 
       const riskResult = this.fromJson(jsonRisk)
-      if (!riskResult.isSuccess) {
+      if (!riskResult.isSuccess()) {
         return Result.errorFrom(riskResult)
       }
 
@@ -127,7 +127,7 @@ export class JsonRepo implements RiskRepo {
       }
 
       const parentResult = Risk.create(jsonRisk.id, mapJsonToRiskCreateDetails(parentJson))
-      if (!parentResult.isSuccess) {
+      if (!parentResult.isSuccess()) {
         return parentResult
       }
       parent = parentResult.getValue()

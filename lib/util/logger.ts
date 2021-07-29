@@ -36,7 +36,7 @@ class Logger {
   }
 
   public result<T>(result: Result<T>): void {
-    if (!result.isSuccess) {
+    if (!result.isSuccess()) {
       this.error({
         msg: result.getErrorMessage(),
         error: result.getError(),

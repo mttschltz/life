@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "gatsby build",
-    "clean": "gatsby clean",
+    "clean": "gatsby clean && rimraf matt-fyi/src/__generated__",
     "develop": "gatsby develop",
     "serve": "gatsby serve"
   },
@@ -24,6 +24,7 @@
     "life": "0.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "rimraf": "3.0.2",
     "source-map-support": "0.5.19",
     "ts-node": "10.0.0"
   }

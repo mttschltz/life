@@ -1,5 +1,5 @@
 import { Json, JsonRepo } from '@life/repo/json'
-import { ListRisksInteractor, RiskMapper } from '@life/usecase'
+import { CreateRiskInteractor, ListRisksInteractor, RiskMapper } from '@life/usecase'
 import { FetchRiskParentInteractor } from '@life/usecase/fetchRiskParent'
 
 export class ServiceFactory {
@@ -15,5 +15,9 @@ export class ServiceFactory {
 
   fetchRiskParentInteractor(): FetchRiskParentInteractor {
     return new FetchRiskParentInteractor(this.#jsonRepo, new RiskMapper())
+  }
+
+  createRiskInteractor(): CreateRiskInteractor {
+    return new CreateRiskInteractor(this.#jsonRepo, new RiskMapper())
   }
 }

@@ -17,7 +17,7 @@ export class FetchRiskParentInteractor {
 
   fetchRiskParent(id: string): Result<UsecaseRisk | undefined> {
     const riskParentResult = this.#repo.fetchRiskParent(id)
-    if (!riskParentResult.isSuccess) {
+    if (!riskParentResult.isSuccess()) {
       return riskParentResult
     }
 
