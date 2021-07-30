@@ -30,7 +30,7 @@ class GraphMapper {
     }
   }
 
-  fromRisk = ({ id, category, name }: UsecaseRisk): Result<GraphRisk> => {
+  fromRisk({ id, category, name }: UsecaseRisk): Result<GraphRisk> {
     const graphCategoryResult = this.fromCategory(category)
     if (!graphCategoryResult.isSuccess()) {
       return Result.errorFrom(graphCategoryResult)
@@ -43,8 +43,8 @@ class GraphMapper {
     })
   }
 
-  risks = (risks: UsecaseRisk[]): Results<GraphRisk> => {
-    return Results.new(risks.map(this.fromRisk))
+  risks(risks: UsecaseRisk[]): Results<GraphRisk> {
+    return Results.new(risks.map(this.fromRisk, this))
   }
 }
 
