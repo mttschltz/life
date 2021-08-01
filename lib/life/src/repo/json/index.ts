@@ -1,9 +1,8 @@
 import { Risk } from '@life'
 import { Result } from '@util'
-import { Category, CreateDetails } from '@life/risk'
+import { Category } from '@life/risk'
 import { RiskRepo } from '@life/repo'
-
-type RiskJson = Omit<Risk, 'parent' | 'mitigations'> & { parentId?: string }
+import { RiskJson, RiskMapper } from './mapper'
 
 export interface Json {
   risk: {
@@ -11,42 +10,16 @@ export interface Json {
   }
 }
 
-const mapRiskToJson = ({ category, id, impact, likelihood, name, notes, parent, type }: Risk): RiskJson => {
-  return {
-    category,
-    id,
-    impact,
-    likelihood,
-    name,
-    notes,
-    type,
-    parentId: parent?.id,
-  }
-}
-
-const mapJsonToRiskCreateDetails = (
-  { category, impact, likelihood, name, notes, type }: RiskJson,
-  parent?: Risk,
-): CreateDetails => {
-  return {
-    category,
-    impact,
-    likelihood,
-    name,
-    notes,
-    type,
-    parent,
-  }
-}
-
 export class JsonRepo implements RiskRepo {
   #json: Json
+  #mapper: RiskMapper
 
-  constructor(json: Partial<Json>) {
+  constructor(json: Partial<Json>, mapper: RiskMapper) {
     const risk = json.risk || {}
     this.#json = {
       risk,
     }
+    this.#mapper = mapper
   }
 
   createRisk(risk: Risk): Result<void> {
@@ -60,7 +33,7 @@ export class JsonRepo implements RiskRepo {
       }
     }
 
-    this.#json.risk[risk.id] = mapRiskToJson(risk)
+    this.#json.risk[risk.id] = this.#mapper.toJson(risk)
     return Result.success(undefined)
   }
 
@@ -68,7 +41,16 @@ export class JsonRepo implements RiskRepo {
     const jsonRisk = this.#json.risk[id]
     if (!jsonRisk) return Result.error(`Could not find risk ${id}`)
 
-    const riskResult = this.fromJson(jsonRisk)
+    let parent
+    if (jsonRisk.parentId) {
+      const parentResult = this.fetchRisk(jsonRisk.parentId)
+      if (!parentResult.isSuccess()) {
+        return parentResult
+      }
+      parent = parentResult.getValue()
+    }
+
+    const riskResult = this.#mapper.fromJson(jsonRisk, parent)
     if (!riskResult.isSuccess()) {
       return riskResult
     }
@@ -84,15 +66,12 @@ export class JsonRepo implements RiskRepo {
       return Result.success(undefined)
     }
 
-    const jsonParentRisk = this.#json.risk[jsonRisk.parentId]
-    if (!jsonParentRisk) return Result.error(`Could not find parent risk ${jsonRisk.parentId}`)
-
-    const riskResult = this.fromJson(jsonParentRisk)
-    if (!riskResult.isSuccess()) {
-      return riskResult
+    const parentRiskResult = this.fetchRisk(jsonRisk.parentId)
+    if (!parentRiskResult.isSuccess()) {
+      return parentRiskResult
     }
 
-    return Result.success(riskResult.getValue())
+    return Result.success(parentRiskResult.getValue())
   }
 
   listRisks(category: Category | undefined, includeDescendents: boolean): Result<Risk[]> {
@@ -108,7 +87,7 @@ export class JsonRepo implements RiskRepo {
         continue
       }
 
-      const riskResult = this.fromJson(jsonRisk)
+      const riskResult = this.fetchRisk(jsonRisk.id)
       if (!riskResult.isSuccess()) {
         return Result.errorFrom(riskResult)
       }
@@ -116,23 +95,5 @@ export class JsonRepo implements RiskRepo {
       risks.push(riskResult.getValue())
     }
     return Result.success(risks)
-  }
-
-  fromJson(jsonRisk: RiskJson): Result<Risk> {
-    let parent
-    if (jsonRisk.parentId) {
-      const parentJson = this.#json.risk[jsonRisk.id]
-      if (!parentJson) {
-        return Result.error(`Could not find parent with id ${jsonRisk.parentId} for risk with id ${jsonRisk.id}`)
-      }
-
-      const parentResult = Risk.create(jsonRisk.id, mapJsonToRiskCreateDetails(parentJson))
-      if (!parentResult.isSuccess()) {
-        return parentResult
-      }
-      parent = parentResult.getValue()
-    }
-
-    return Risk.create(jsonRisk.id, mapJsonToRiskCreateDetails(jsonRisk, parent))
   }
 }

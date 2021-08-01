@@ -1,5 +1,4 @@
-import { Mitigation } from '@life'
-import { IsArray, IsEnum, IsOptional, MinLength, validateSync } from 'class-validator'
+import { IsEnum, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
 import { Result } from '@util'
 
 export enum RiskType {
@@ -26,11 +25,6 @@ export enum Category {
 
 export type CreateDetails = Pick<Risk, 'category' | 'impact' | 'likelihood' | 'name' | 'notes' | 'parent' | 'type'>
 
-export interface Loader {
-  loadMitigations: (id: string) => Mitigation[]
-}
-
-// TODO: Implements reviewable?
 export class Risk {
   #id: string
 
@@ -43,19 +37,7 @@ export class Risk {
   #parent?: Risk
   #type: RiskType
 
-  // relationships
-  #mitigations?: Mitigation[]
-
-  #loader: Loader
-
-  // TODO:
-  // ready or not ready? maybe a part of reviewable? i.e. when added it's not 'approved'... eventually it is... then reviewable sets it to be checked again.
-
-  private constructor(
-    { category, impact, likelihood, name, notes, parent, type }: CreateDetails,
-    loader: Loader,
-    id: string,
-  ) {
+  private constructor({ category, impact, likelihood, name, notes, parent, type }: CreateDetails, id: string) {
     this.#id = id
 
     this.#category = category
@@ -65,10 +47,6 @@ export class Risk {
     this.#notes = notes
     this.#parent = parent
     this.#type = type
-
-    this.#mitigations = undefined
-
-    this.#loader = loader
   }
 
   @IsOptional()
@@ -76,7 +54,7 @@ export class Risk {
     return this.#id
   }
 
-  // details
+  // Details
 
   @IsEnum(Category)
   get category(): Category {
@@ -94,18 +72,20 @@ export class Risk {
   }
 
   @MinLength(1)
+  @IsString()
   get name(): string {
     return this.#name
   }
 
   @IsOptional()
+  @IsString()
   get notes(): string | undefined {
     return this.#notes
   }
 
   @IsOptional()
   get parent(): Risk | undefined {
-    return this.#parent // TODO: How to get this?
+    return this.#parent
   }
 
   @IsEnum(RiskType)
@@ -113,34 +93,12 @@ export class Risk {
     return this.#type
   }
 
-  @IsArray()
-  get mitigations(): Mitigation[] {
-    if (!this.#id) {
-      return []
-    }
-
-    if (!this.#mitigations) {
-      this.#mitigations = this.#loader.loadMitigations(this.#id)
-
-      if (!this.#mitigations) {
-        throw new Error('error loading mitigations')
-      }
-    }
-    return this.#mitigations
-  }
-
   static create(id: string, details: CreateDetails): Result<Risk> {
     if (!details) {
       return Result.error('Missing details')
     }
 
-    const risk = new Risk(
-      details,
-      {
-        loadMitigations: () => [], // TODO:
-      },
-      id,
-    )
+    const risk = new Risk(details, id)
 
     const errors = validateSync(risk)
     if (errors.length > 0) {
