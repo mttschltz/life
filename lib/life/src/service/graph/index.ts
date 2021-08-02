@@ -19,6 +19,9 @@ export class GraphService {
     this.#logger = logger
   }
 
+  // We may want to use Apollo dataSources at some point to leverage caching, deduplication and error handling.
+  // They would probably need to call the usecases, rather than JsonRepo, as they have the relevant logic.
+  // But for now, the benefits don't justify the overhead of adding another layer between resolvers and usecases.
   resolvers(): Resolvers {
     return {
       Mutation: {
