@@ -22,7 +22,7 @@ export class JsonRepo implements RiskRepo {
     this.#mapper = mapper
   }
 
-  createRisk(risk: Risk): Result<void> {
+  async createRisk(risk: Risk): Promise<Result<void>> {
     if (this.#json.risk[risk.id]) {
       return Result.error(`Risk with id '${risk.id}' already exists`)
     }
@@ -37,13 +37,13 @@ export class JsonRepo implements RiskRepo {
     return Result.success(undefined)
   }
 
-  fetchRisk(id: string): Result<Risk> {
+  async fetchRisk(id: string): Promise<Result<Risk>> {
     const jsonRisk = this.#json.risk[id]
     if (!jsonRisk) return Result.error(`Could not find risk ${id}`)
 
     let parent
     if (jsonRisk.parentId) {
-      const parentResult = this.fetchRisk(jsonRisk.parentId)
+      const parentResult = await this.fetchRisk(jsonRisk.parentId)
       if (!parentResult.isSuccess()) {
         return parentResult
       }
@@ -58,7 +58,7 @@ export class JsonRepo implements RiskRepo {
     return Result.success(riskResult.getValue())
   }
 
-  fetchRiskParent(id: string): Result<Risk | undefined> {
+  async fetchRiskParent(id: string): Promise<Result<Risk | undefined>> {
     const jsonRisk = this.#json.risk[id]
     if (!jsonRisk) return Result.error(`Could not find risk ${id}`)
 
@@ -66,7 +66,7 @@ export class JsonRepo implements RiskRepo {
       return Result.success(undefined)
     }
 
-    const parentRiskResult = this.fetchRisk(jsonRisk.parentId)
+    const parentRiskResult = await this.fetchRisk(jsonRisk.parentId)
     if (!parentRiskResult.isSuccess()) {
       return parentRiskResult
     }
@@ -74,7 +74,7 @@ export class JsonRepo implements RiskRepo {
     return Result.success(parentRiskResult.getValue())
   }
 
-  listRisks(category: Category | undefined, includeDescendents: boolean): Result<Risk[]> {
+  async listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
     const jsonRisks = Object.values(this.#json.risk)
     const risks = []
     for (let i = 0; i < jsonRisks.length; i++) {
@@ -87,7 +87,7 @@ export class JsonRepo implements RiskRepo {
         continue
       }
 
-      const riskResult = this.fetchRisk(jsonRisk.id)
+      const riskResult = await this.fetchRisk(jsonRisk.id)
       if (!riskResult.isSuccess()) {
         return Result.errorFrom(riskResult)
       }

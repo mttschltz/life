@@ -31,7 +31,7 @@ export class GraphService {
             throw this.resultError(categoryResult)
           }
 
-          const riskResult = this.#factory.createRiskInteractor().createRisk({
+          const riskResult = await this.#factory.createRiskInteractor().createRisk({
             category: categoryResult.getValue(),
             name: input.name,
             parentId: input.parentId ? input.parentId : undefined,
@@ -55,7 +55,7 @@ export class GraphService {
       },
       Risk: {
         parent: async (risk) => {
-          const parentResult = this.#factory.fetchRiskParentInteractor().fetchRiskParent(risk.id)
+          const parentResult = await this.#factory.fetchRiskParentInteractor().fetchRiskParent(risk.id)
           if (!parentResult.isSuccess()) {
             this.#logger.result(parentResult)
             throw this.resultError(parentResult)
@@ -90,7 +90,7 @@ export class GraphService {
               break
           }
 
-          const result = this.#factory.listRisksInteractor().listRisks(criteria)
+          const result = await this.#factory.listRisksInteractor().listRisks(criteria)
           if (!result.isSuccess()) {
             this.#logger.result(result)
             throw this.resultError(result)

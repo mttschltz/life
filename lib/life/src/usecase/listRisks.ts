@@ -3,7 +3,7 @@ import { Category, Risk } from '@life'
 import { Result } from '@util'
 
 export interface ListRisksRepo {
-  listRisks(category: Category | undefined, includeDescendents: boolean): Result<Risk[]>
+  listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>>
 }
 
 export interface ListRisksCriteria {
@@ -20,7 +20,7 @@ export class ListRisksInteractor {
     this.#mapper = mapper
   }
 
-  listRisks(criteria: ListRisksCriteria): Result<UsecaseRisk[]> {
+  async listRisks(criteria: ListRisksCriteria): Promise<Result<UsecaseRisk[]>> {
     let category
     switch (criteria.category) {
       case 'health':
@@ -33,7 +33,7 @@ export class ListRisksInteractor {
         category = Category.Security
         break
     }
-    const risksResult = this.#repo.listRisks(category, !!criteria.includeDescendents)
+    const risksResult = await this.#repo.listRisks(category, !!criteria.includeDescendents)
     if (!risksResult.isSuccess()) {
       return risksResult
     }

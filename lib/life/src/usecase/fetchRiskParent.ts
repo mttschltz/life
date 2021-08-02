@@ -3,7 +3,7 @@ import { Risk } from '@life'
 import { Result } from '@util'
 
 export interface FetchRiskParentRepo {
-  fetchRiskParent(id: string): Result<Risk | undefined>
+  fetchRiskParent(id: string): Promise<Result<Risk | undefined>>
 }
 
 export class FetchRiskParentInteractor {
@@ -15,8 +15,8 @@ export class FetchRiskParentInteractor {
     this.#mapper = mapper
   }
 
-  fetchRiskParent(id: string): Result<UsecaseRisk | undefined> {
-    const riskParentResult = this.#repo.fetchRiskParent(id)
+  async fetchRiskParent(id: string): Promise<Result<UsecaseRisk | undefined>> {
+    const riskParentResult = await this.#repo.fetchRiskParent(id)
     if (!riskParentResult.isSuccess()) {
       return riskParentResult
     }

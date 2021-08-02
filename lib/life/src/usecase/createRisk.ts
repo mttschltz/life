@@ -14,8 +14,8 @@ export interface CreateRiskRequest {
 }
 
 export interface CreateRiskRepo {
-  createRisk: (risk: Risk) => Result<void>
-  fetchRisk: (id: string) => Result<Risk>
+  createRisk: (risk: Risk) => Promise<Result<void>>
+  fetchRisk: (id: string) => Promise<Result<Risk>>
 }
 
 export class CreateRiskInteractor {
@@ -27,7 +27,7 @@ export class CreateRiskInteractor {
     this.#mapper = mapper
   }
 
-  createRisk({
+  async createRisk({
     uriPart,
     type,
     parentId,
@@ -36,14 +36,14 @@ export class CreateRiskInteractor {
     impact,
     category,
     notes,
-  }: CreateRiskRequest): Result<UsecaseRisk> {
+  }: CreateRiskRequest): Promise<Result<UsecaseRisk>> {
     if (!uriPart || /^[a-z]+[a-z-]+[a-z]+$/.test(uriPart)) {
       return Result.error(`Invalid URI part: ${uriPart}`)
     }
 
     let parent
     if (parentId) {
-      const parentResult = this.#repo.fetchRisk(parentId)
+      const parentResult = await this.#repo.fetchRisk(parentId)
       if (!parentResult.isSuccess()) {
         return parentResult
       }
@@ -64,7 +64,7 @@ export class CreateRiskInteractor {
     }
     const risk = riskResult.getValue()
 
-    const persistResult = this.#repo.createRisk(risk)
+    const persistResult = await this.#repo.createRisk(risk)
     if (!persistResult.isSuccess()) {
       return Result.errorFrom(persistResult)
     }
