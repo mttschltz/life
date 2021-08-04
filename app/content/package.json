@@ -12,6 +12,8 @@
     "build": "webpack --config webpack.production.js",
     "build:dev": "webpack --config webpack.development.js",
     "build:dev-watch": "webpack --env watch=true --config webpack.development.js",
+    "codegen": "yarn apollo codegen:generate src/__generated__ --outputFlat --localSchemaFile=../../lib/life/src/service/graph/type-defs.graphql --target=typescript --tagName=gql",
+    "codegen:watch": "yarn apollo codegen:generate src/__generated__ --outputFlat --localSchemaFile=../../lib/life/src/service/graph/type-defs.graphql --target=typescript --tagName=gql --watch",
     "develop": "yarn build:dev && concurrently \"yarn build:dev-watch\" \"yarn start\"",
     "start": "cross-env NODE_ENV=production node dist/server"
   },

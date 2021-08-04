@@ -1,6 +1,6 @@
 import { ApolloError } from 'apollo-server'
 import type { ListRisksCriteria } from '@life/usecase/listRisks'
-import { Category as GraphCategory, QueryRisksArgs, RequireFields, Resolvers } from '@life/generated/graphql'
+import { Category as GraphCategory, QueryRisksArgs, RequireFields, Resolvers } from '@life/__generated__/graphql'
 import * as typeDefs from '@life/service/graph/type-defs.graphql'
 import { ServiceFactory } from '@life/service/factory'
 import { GraphMapper } from '@life/service/graph/mapper'

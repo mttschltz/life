@@ -1,5 +1,5 @@
 import type { Risk as UsecaseRisk } from '@life/usecase'
-import { Category as GraphCategory, Risk as GraphRisk } from '@life/generated/graphql'
+import { Category as GraphCategory, Risk as GraphRisk } from '@life/__generated__/graphql'
 import { Category } from '@life'
 import { Result, Results } from '@util'
 
