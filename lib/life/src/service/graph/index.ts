@@ -78,6 +78,22 @@ export class GraphService {
 
           return mappingResult.getValue()
         },
+        children: async (risk) => {
+          const childrenResult = await this.#factory.fetchRiskChildrenInteractor().fetchRiskChildren(risk.id)
+          if (!childrenResult.isSuccess()) {
+            this.#logger.result(childrenResult)
+            throw this.resultError(childrenResult)
+          }
+
+          const mappingResults = this.#mapper.risks(childrenResult.getValue())
+          const errorResult = mappingResults.firstErrorResult()
+          if (errorResult) {
+            this.#logger.result(errorResult)
+            throw this.resultError(errorResult)
+          }
+
+          return mappingResults.getValues()
+        },
       },
       Query: {
         risks: async (_, args: RequireFields<QueryRisksArgs, never>) => {

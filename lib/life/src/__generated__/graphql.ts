@@ -47,7 +47,7 @@ export type MutationCreateRiskArgs = {
 export type Query = {
   __typename?: 'Query';
   /** Get all risks. */
-  risks?: Maybe<Array<Maybe<Risk>>>;
+  risks: Array<Maybe<Risk>>;
 };
 
 
@@ -67,6 +67,8 @@ export type Risk = {
   optional?: Maybe<Scalars['String']>;
   /** Parent risk. */
   parent?: Maybe<Risk>;
+  /** Child risks. */
+  children?: Maybe<Array<Maybe<Risk>>>;
 };
 
 
@@ -184,7 +186,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  risks?: Resolver<Maybe<Array<Maybe<ResolversTypes['Risk']>>>, ParentType, ContextType, RequireFields<QueryRisksArgs, never>>;
+  risks?: Resolver<Array<Maybe<ResolversTypes['Risk']>>, ParentType, ContextType, RequireFields<QueryRisksArgs, never>>;
 };
 
 export type RiskResolvers<ContextType = any, ParentType extends ResolversParentTypes['Risk'] = ResolversParentTypes['Risk']> = {
@@ -193,6 +195,7 @@ export type RiskResolvers<ContextType = any, ParentType extends ResolversParentT
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
   optional?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   parent?: Resolver<Maybe<ResolversTypes['Risk']>, ParentType, ContextType>;
+  children?: Resolver<Maybe<Array<Maybe<ResolversTypes['Risk']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

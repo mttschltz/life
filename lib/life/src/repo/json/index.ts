@@ -74,6 +74,24 @@ export class JsonRepo implements RiskRepo {
     return Result.success(parentRiskResult.getValue())
   }
 
+  async fetchRiskChildren(id: string): Promise<Result<Risk[]>> {
+    const jsonRisks = Object.values(this.#json.risk)
+    const riskChildren = []
+    for (const jsonRisk of jsonRisks) {
+      if (jsonRisk.parentId !== id) {
+        continue
+      }
+
+      const childResult = await this.fetchRisk(jsonRisk.id)
+      if (!childResult.isSuccess()) {
+        return Result.errorFrom(childResult)
+      }
+
+      riskChildren.push(childResult.getValue())
+    }
+    return Result.success(riskChildren)
+  }
+
   async listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
     const jsonRisks = Object.values(this.#json.risk)
     const risks = []

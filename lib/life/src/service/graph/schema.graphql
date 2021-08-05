@@ -31,13 +31,18 @@ type Risk {
   Parent risk.
   """
   parent: Risk
+
+  """
+  Child risks.
+  """
+  children: [Risk]
 }
 
 type Query {
   """
   Get all risks.
   """
-  risks(category: Category): [Risk]
+  risks(category: Category): [Risk]!
 }
 
 """

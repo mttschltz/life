@@ -30,6 +30,10 @@ class RiskMapper {
       type,
     }
   }
+
+  risks(risks: RiskEntity[]): Risk[] {
+    return risks.map(this.risk, this)
+  }
 }
 
 export { RiskMapper, Risk }
