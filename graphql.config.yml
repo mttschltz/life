@@ -1,6 +1,6 @@
 # For VSCode extension https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql
 
-# Seems to only work with one project at a time. Can toggle between them. See README for more.
+# Seems to only use the first project's schema. Can toggle between them.
 # Seems like it may be fixed in an upcoming release of vscode-graphql extension (current: 0.3.16).
 # Possibly related issues: https://github.com/dotansimha/graphql-eslint/issues/526, https://github.com/graphql/vscode-graphql/issues/316, https://github.com/cometkim/gatsby-plugin-typegen/issues/113
 projects:
