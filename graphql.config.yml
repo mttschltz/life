@@ -1,4 +1,5 @@
 # For VSCode extension https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql
+# The extension settings to specify a custom path for this files don't seem to work.
 
 # Seems to only use the first project's schema. Can toggle between them.
 # Seems like it may be fixed in an upcoming release of vscode-graphql extension (current: 0.3.16).
