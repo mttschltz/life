@@ -1,3 +1,9 @@
+# Development Environment
+
+## VSCode
+
+- Install https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql
+
 # Decisions
 
 ## Dependencies
@@ -13,9 +19,11 @@
 
 ## Developer experience
 
-### matt-fyi
+### General
 
-- [ ] **Intellisense for GraphQL.** Probably requires `gatsby-plugin-typegen` to have fixed this bug that prevents generation of documents: https://github.com/cometkim/gatsby-plugin-typegen/issues/113
+- [ ] **Intellisense for GraphQL.** See `graphql.config.yml`.
+
+### matt-fyi
 
 - [ ] **Generate types for GraphQL query inside `createPages.ts`.**
 
