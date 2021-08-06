@@ -20,7 +20,11 @@ export const query = graphql`
       risks {
         id
         name
-        optional
+        children {
+          id
+          name
+          category
+        }
       }
     }
   }

@@ -23,11 +23,6 @@ type Risk {
   category: Category!
 
   """
-  Test optional field.
-  """
-  optional: String
-
-  """
   Parent risk.
   """
   parent: Risk

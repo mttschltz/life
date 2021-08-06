@@ -1,6 +1,9 @@
 import path from 'path'
 import type { CreatePagesArgs } from 'gatsby'
+import { gql } from '@apollo/client/core'
+import { print } from 'graphql'
 
+// TODO: Use real Risk
 interface Risk {
   id: string
 }
@@ -18,8 +21,11 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
   // You can query for whatever data you want to create pages for e.g.
   // products, portfolio items, landing pages, etc.
   // Variables can be added as the second function parameter
-  return graphql<Result>(`
-    {
+
+  // Use gql for Intellisense then convert to string for graphql function using
+  // GraphQL's print function.
+  const queryRisks = gql`
+    query StoreQuery {
       store {
         risks {
           id
@@ -27,7 +33,8 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
         }
       }
     }
-  `).then((result) => {
+  `
+  return graphql<Result>(print(queryRisks)).then((result) => {
     if (result.errors) {
       throw result.errors
     }

@@ -63,8 +63,6 @@ export type Risk = {
   name: Scalars['String'];
   /** Risk category. */
   category: Category;
-  /** Test optional field. */
-  optional?: Maybe<Scalars['String']>;
   /** Parent risk. */
   parent?: Maybe<Risk>;
   /** Child risks. */
@@ -193,7 +191,6 @@ export type RiskResolvers<ContextType = any, ParentType extends ResolversParentT
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
-  optional?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   parent?: Resolver<Maybe<ResolversTypes['Risk']>, ParentType, ContextType>;
   children?: Resolver<Maybe<Array<Maybe<ResolversTypes['Risk']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

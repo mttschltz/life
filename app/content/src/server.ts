@@ -15,32 +15,54 @@ const createRiskMutation = gql`
     }
   }
 `
-
-client
-  .mutate<CreateRiskMutation, CreateRiskMutationVariables>({
-    mutation: createRiskMutation,
-    variables: {
-      input: {
-        name: 'risk parent',
-        category: Category.HEALTH,
-        uriPart: '/uri-part-risk-parent',
+;(async function () {
+  try {
+    const parent = await client.mutate<CreateRiskMutation, CreateRiskMutationVariables>({
+      mutation: createRiskMutation,
+      variables: {
+        input: {
+          name: 'risk parent',
+          category: Category.HEALTH,
+          uriPart: '/uri-part-risk-parent',
+        },
       },
-    },
-  })
-  .then((result) => console.log(JSON.stringify(result)))
-  .catch((e) => console.log(`error=${e}`))
+    })
 
-client
-  .mutate<CreateRiskMutation, CreateRiskMutationVariables>({
-    mutation: createRiskMutation,
-    variables: {
-      input: {
-        category: Category.SECURITY,
-        name: 'risk child',
-        uriPart: '/uri-part-risk-child',
-        parentId: '/uri-part-risk-parent',
+    await client.mutate<CreateRiskMutation, CreateRiskMutationVariables>({
+      mutation: createRiskMutation,
+      variables: {
+        input: {
+          category: Category.SECURITY,
+          name: 'risk child',
+          uriPart: '/uri-part-risk-child',
+          parentId: parent.data?.createRisk.id,
+        },
       },
-    },
-  })
-  .then((result) => console.log(JSON.stringify(result)))
-  .catch((e) => console.log(`error=${e}`))
+    })
+
+    await client.mutate<CreateRiskMutation, CreateRiskMutationVariables>({
+      mutation: createRiskMutation,
+      variables: {
+        input: {
+          category: Category.SECURITY,
+          name: 'risk child 2',
+          uriPart: '/uri-part-risk-child-2',
+          parentId: parent.data?.createRisk.id,
+        },
+      },
+    })
+
+    await client.mutate<CreateRiskMutation, CreateRiskMutationVariables>({
+      mutation: createRiskMutation,
+      variables: {
+        input: {
+          category: Category.WEALTH,
+          name: 'risk paent 2',
+          uriPart: '/uri-part-risk-parent-2',
+        },
+      },
+    })
+  } catch (e) {
+    console.log(`error=${e}`)
+  }
+})()

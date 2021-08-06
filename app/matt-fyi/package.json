@@ -11,7 +11,7 @@
   "scripts": {
     "build": "gatsby build",
     "clean": "gatsby clean && rimraf matt-fyi/src/__generated__",
-    "develop": "gatsby develop",
+    "develop": "yarn clean && gatsby develop",
     "serve": "gatsby serve"
   },
   "devDependencies": {

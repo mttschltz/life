@@ -2237,6 +2237,30 @@
             "deprecationReason": null
           },
           {
+            "name": "port",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "host",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "polyfill",
             "description": null,
             "args": [],
@@ -3829,18 +3853,6 @@
             "deprecationReason": null
           },
           {
-            "name": "optional",
-            "description": "Test optional field.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "parent",
             "description": "Parent risk.",
             "args": [],
@@ -3848,6 +3860,22 @@
               "kind": "OBJECT",
               "name": "Store_Risk",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "children",
+            "description": "Child risks.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Store_Risk",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -3954,12 +3982,16 @@
               }
             ],
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Store_Risk",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Store_Risk",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -4995,6 +5027,30 @@
                 "type": {
                   "kind": "INPUT_OBJECT",
                   "name": "SiteSiteMetadataFilterInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "port",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "IntQueryOperatorInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "host",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "StringQueryOperatorInput",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -10800,6 +10856,18 @@
             "deprecationReason": null
           },
           {
+            "name": "port",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "host",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "polyfill",
             "description": null,
             "isDeprecated": false,
@@ -11475,6 +11543,30 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "SiteSiteMetadataFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "port",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IntQueryOperatorInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "host",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringQueryOperatorInput",
               "ofType": null
             },
             "defaultValue": null,
