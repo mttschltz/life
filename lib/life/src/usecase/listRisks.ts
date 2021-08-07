@@ -1,17 +1,16 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
-import { Category, Risk } from '@life'
+import { Category } from '@life'
 import { Result } from '@util'
+import { RiskRepo } from '@life/repo'
 
-export interface ListRisksRepo {
-  listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>>
-}
+type ListRisksRepo = Pick<RiskRepo, 'listRisks'>
 
-export interface ListRisksCriteria {
+interface ListRisksCriteria {
   category?: 'health' | 'wealth' | 'security'
   includeDescendents?: boolean
 }
 
-export class ListRisksInteractor {
+class ListRisksInteractor {
   #repo: ListRisksRepo
   #mapper: RiskMapper
 
@@ -41,3 +40,5 @@ export class ListRisksInteractor {
     return Result.success(risksResult.getValue().map(this.#mapper.risk))
   }
 }
+
+export { ListRisksInteractor, ListRisksCriteria }

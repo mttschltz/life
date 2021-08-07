@@ -1,8 +1,9 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
 import { Category, Impact, Likelihood, Risk, RiskType } from '@life'
 import { Result } from '@util'
+import { RiskRepo } from '@life/repo'
 
-export interface CreateRiskRequest {
+interface CreateRiskRequest {
   uriPart: string
   name: string
   category: Category
@@ -13,12 +14,9 @@ export interface CreateRiskRequest {
   parentId?: string
 }
 
-export interface CreateRiskRepo {
-  createRisk: (risk: Risk) => Promise<Result<void>>
-  fetchRisk: (id: string) => Promise<Result<Risk>>
-}
+type CreateRiskRepo = Pick<RiskRepo, 'createRisk' | 'fetchRisk'>
 
-export class CreateRiskInteractor {
+class CreateRiskInteractor {
   #repo: CreateRiskRepo
   #mapper: RiskMapper
 
@@ -72,3 +70,5 @@ export class CreateRiskInteractor {
     return Result.success(this.#mapper.risk(risk))
   }
 }
+
+export { CreateRiskInteractor, CreateRiskRequest }
