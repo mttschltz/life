@@ -8,7 +8,27 @@ const IndexPage: FunctionComponent<PageProps<GatsbyTypes.RisksQueryQuery>> = ({ 
   return (
     <main>
       {data.store.risks?.map((r) => (
-        <p key={r?.id}>Risk: {r?.id}</p>
+        <>
+          <p key={r?.id}>Risk: {r?.id}</p>
+          <ul>
+            <li>Name: {r?.name}</li>
+            <li>
+              Children ({r?.children?.length}):{' '}
+              {r?.children?.length && (
+                <ul>
+                  {r.children.map((c) => (
+                    <>
+                      <p key={c?.id}>Risk: {c?.id}</p>
+                      <ul key={c?.id}>
+                        <li>name: {c?.name}</li>
+                      </ul>
+                    </>
+                  ))}
+                </ul>
+              )}
+            </li>
+          </ul>
+        </>
       ))}
     </main>
   )

@@ -3,11 +3,11 @@ import type { CreatePagesArgs } from 'gatsby'
 import { gql } from '@apollo/client/core'
 import { print } from 'graphql'
 
-// TODO: Use real Risk
+// Use these types rather than GatsbyTypes, which aren't available at this point on a clean build.
+// GatsbyTypes are built by gatsby-plugin-typegen on build.
 interface Risk {
   id: string
 }
-
 interface Result {
   store: {
     risks: Risk[]
@@ -29,7 +29,6 @@ const createPages = ({ graphql, actions }: CreatePagesArgs) => {
       store {
         risks {
           id
-          name
         }
       }
     }
