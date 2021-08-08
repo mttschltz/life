@@ -14,7 +14,8 @@
     "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0 --fix",
     "lint:types": "tsc",
     "prepare": "husky install",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "resolutions": {
     "graphql": "15.5.1"

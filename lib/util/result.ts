@@ -43,7 +43,11 @@ class Result<T> {
       this.#success = success
     }
     if (error) {
-      this.#error = error
+      const errorObj = error.error || new Error(error.message)
+      this.#error = {
+        ...error,
+        error: errorObj,
+      }
     }
   }
 

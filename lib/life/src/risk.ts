@@ -49,7 +49,8 @@ export class Risk {
     this.#type = type
   }
 
-  @IsOptional()
+  @MinLength(1)
+  @IsString()
   get id(): string {
     return this.#id
   }
@@ -71,7 +72,7 @@ export class Risk {
     return this.#likelihood
   }
 
-  @MinLength(1)
+  @MinLength(2)
   @IsString()
   get name(): string {
     return this.#name
@@ -98,8 +99,14 @@ export class Risk {
       return Result.error('Missing details')
     }
 
+    // Manual check as @IsInstance doesn't support private constructors
+    if (typeof details.parent !== 'undefined' && !(details.parent instanceof Risk)) {
+      return Result.error('parent must be instance of Risk')
+    }
+
     const risk = new Risk(details, id)
 
+    // Validate at runtime in addition to compile time
     const errors = validateSync(risk)
     if (errors.length > 0) {
       const constraints = errors[0].constraints
