@@ -35,7 +35,7 @@ class CreateRiskInteractor {
     category,
     notes,
   }: CreateRiskRequest): Promise<Result<UsecaseRisk>> {
-    if (!uriPart || /^[a-z]+[a-z-]+[a-z]+$/.test(uriPart)) {
+    if (!uriPart || !/^[a-z]+[a-z-]+[a-z]+$/.test(uriPart)) {
       return Result.error(`Invalid URI part: ${uriPart}`)
     }
 
@@ -71,4 +71,4 @@ class CreateRiskInteractor {
   }
 }
 
-export { CreateRiskInteractor, CreateRiskRequest }
+export { CreateRiskInteractor, CreateRiskRequest, CreateRiskRepo }
