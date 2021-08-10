@@ -36,7 +36,7 @@ class CreateRiskInteractor {
     notes,
   }: CreateRiskRequest): Promise<Result<UsecaseRisk>> {
     if (!uriPart || !/^[a-z]+[a-z-]+[a-z]+$/.test(uriPart)) {
-      return Result.error(`Invalid URI part: ${uriPart}`)
+      return Result.error(`Invalid URI part: '${uriPart}'`)
     }
 
     let parent
@@ -58,7 +58,7 @@ class CreateRiskInteractor {
       parent,
     })
     if (!riskResult.isSuccess()) {
-      throw riskResult
+      return riskResult
     }
     const risk = riskResult.getValue()
 
