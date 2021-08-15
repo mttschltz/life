@@ -11,13 +11,39 @@ describe('createRisk', () => {
     let createRepo: jest.MockedFunction<CreateRiskRepo['createRisk']>
     let mappedRisk: UsecaseRisk
     let interactor: CreateRiskInteractor
+    let newRiskMock: jest.MockedFunction<typeof newRisk>
     let risk: Risk
     let parentRisk: Risk
 
     beforeEach(() => {
+      // Risks
+      risk = {
+        id: 'uri-part',
+        category: Category.Health,
+        impact: Impact.High,
+        likelihood: Likelihood.High,
+        name: 'name',
+        type: RiskType.Condition,
+        notes: undefined,
+        parent: undefined,
+      }
+      parentRisk = {
+        id: 'parent id',
+        category: Category.Health,
+        impact: Impact.High,
+        likelihood: Likelihood.High,
+        name: 'parent name',
+        type: RiskType.Condition,
+        notes: undefined,
+        parent: undefined,
+      }
+      newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
+      newRiskMock.mockImplementation(() => Result.success(risk))
       // Repos
       fetchRepo = jest.fn()
+      fetchRepo.mockImplementation(async () => Result.success(parentRisk))
       createRepo = jest.fn()
+      createRepo.mockImplementation(async () => Result.success(undefined))
       // Mapper
       mappedRisk = {
         category: Category.Health,
@@ -40,27 +66,6 @@ describe('createRisk', () => {
           },
         },
       )
-      // Risks
-      risk = {
-        id: 'uri-part',
-        category: Category.Health,
-        impact: Impact.High,
-        likelihood: Likelihood.High,
-        name: 'name',
-        type: RiskType.Condition,
-        notes: undefined,
-        parent: undefined,
-      }
-      parentRisk = {
-        id: 'parent id',
-        category: Category.Health,
-        impact: Impact.High,
-        likelihood: Likelihood.High,
-        name: 'parent name',
-        type: RiskType.Condition,
-        notes: undefined,
-        parent: undefined,
-      }
     })
 
     describe('And a CreateRiskRequest', () => {
@@ -80,15 +85,6 @@ describe('createRisk', () => {
       })
 
       describe('When everything succeeds', () => {
-        let newRiskMock: jest.MockedFunction<typeof newRisk>
-        beforeEach(() => {
-          fetchRepo.mockImplementationOnce(async () => Result.success(parentRisk))
-          createRepo.mockImplementationOnce(async () => Result.success(undefined))
-
-          newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
-          newRiskMock.mockImplementationOnce(() => Result.success(risk))
-        })
-
         test('Then the expected result is returned', async () => {
           const riskResult = await interactor.createRisk(createDetails)
           expect(riskResult.isSuccess()).toBeTruthy()
@@ -139,12 +135,7 @@ describe('createRisk', () => {
         })
       })
       describe('When creating the risk fails', () => {
-        let newRiskMock: jest.MockedFunction<typeof newRisk>
         beforeEach(() => {
-          fetchRepo.mockImplementationOnce(async () => Result.success(parentRisk))
-          createRepo.mockImplementationOnce(async () => Result.success(undefined))
-
-          newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
           newRiskMock.mockImplementationOnce(() => Result.error('create entity error'))
         })
         test('Then an error is returned', async () => {
@@ -154,13 +145,8 @@ describe('createRisk', () => {
         })
       })
       describe('When persisting the risk fails', () => {
-        let newRiskMock: jest.MockedFunction<typeof newRisk>
         beforeEach(() => {
-          fetchRepo.mockImplementationOnce(async () => Result.success(parentRisk))
           createRepo.mockImplementationOnce(async () => Result.error('create repo error'))
-
-          newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
-          newRiskMock.mockImplementationOnce(() => Result.success(risk))
         })
         test('Then an error is returned', async () => {
           const riskResult = await interactor.createRisk({ ...createDetails })
@@ -182,16 +168,7 @@ describe('createRisk', () => {
           uriPart: 'uri-part',
         }
       })
-
       describe('When everything suceeds', () => {
-        let newRiskMock: jest.MockedFunction<typeof newRisk>
-        beforeEach(() => {
-          fetchRepo.mockImplementationOnce(async () => Result.success(parentRisk))
-          createRepo.mockImplementationOnce(async () => Result.success(undefined))
-
-          newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
-          newRiskMock.mockImplementationOnce(() => Result.success(risk))
-        })
         test('Then the expected result is returned', async () => {
           const riskResult = await interactor.createRisk(createDetails)
           expect(riskResult.isSuccess()).toBeTruthy()
