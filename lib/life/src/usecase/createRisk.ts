@@ -1,7 +1,8 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
-import { Category, Impact, Likelihood, Risk, RiskType } from '@life'
+import { Category, Impact, Likelihood, RiskType } from '@life'
 import { Result } from '@util'
 import { RiskRepo } from '@life/repo'
+import { newRisk } from '@life/risk'
 
 interface CreateRiskRequest {
   uriPart: string
@@ -48,7 +49,7 @@ class CreateRiskInteractor {
       parent = parentResult.getValue()
     }
 
-    const riskResult = Risk.create(uriPart, {
+    const riskResult = newRisk(uriPart, {
       category,
       impact,
       likelihood,

@@ -1,28 +1,23 @@
-import { Category, Impact, Likelihood, Risk, RiskType } from '@life/risk'
+import { Category, Impact, Likelihood, newRisk, Risk, RiskType } from '@life/risk'
 import { Result } from '@util'
 import { CreateRiskInteractor, CreateRiskRepo, CreateRiskRequest } from './createRisk'
-import { RiskMapper, Risk as UsecaseRisk } from './mapper'
+import { Risk as UsecaseRisk } from './mapper'
+
+jest.mock('@life/risk')
 
 describe('createRisk', () => {
   describe('Given a CreateRiskInteractor', () => {
-    let mapper: RiskMapper
-    let repo: CreateRiskRepo
-    let interactor: CreateRiskInteractor
-    let fetchRisk: jest.MockedFunction<CreateRiskRepo['fetchRisk']>
-    let createRisk: jest.MockedFunction<CreateRiskRepo['createRisk']>
+    let fetchRepo: jest.MockedFunction<CreateRiskRepo['fetchRisk']>
+    let createRepo: jest.MockedFunction<CreateRiskRepo['createRisk']>
     let mappedRisk: UsecaseRisk
-    let factoryRisk: Result<Risk>
-    let riskCreateFactory: jest.SpyInstance<Result<Risk>, Parameters<typeof Risk.create>>
-    let repoParentResult: Result<Risk>
+    let interactor: CreateRiskInteractor
+    let risk: Risk
+    let parentRisk: Risk
 
     beforeEach(() => {
       // Repos
-      fetchRisk = jest.fn()
-      createRisk = jest.fn()
-      repo = {
-        createRisk,
-        fetchRisk,
-      }
+      fetchRepo = jest.fn()
+      createRepo = jest.fn()
       // Mapper
       mappedRisk = {
         category: Category.Health,
@@ -32,16 +27,22 @@ describe('createRisk', () => {
         name: 'name',
         type: RiskType.Condition,
       }
-      mapper = {
-        risk: jest.fn().mockImplementationOnce(() => mappedRisk),
-        risks: () => {
-          throw new Error('Unexpected call')
-        },
-      }
       // Interactor
-      interactor = new CreateRiskInteractor(repo, mapper)
-      // Factory
-      factoryRisk = Risk.create('uri-part', {
+      interactor = new CreateRiskInteractor(
+        {
+          createRisk: createRepo,
+          fetchRisk: fetchRepo,
+        },
+        {
+          risk: jest.fn().mockImplementationOnce(() => mappedRisk),
+          risks: () => {
+            throw new Error('Unexpected call')
+          },
+        },
+      )
+      // Risks
+      risk = {
+        id: 'uri-part',
         category: Category.Health,
         impact: Impact.High,
         likelihood: Likelihood.High,
@@ -49,8 +50,9 @@ describe('createRisk', () => {
         type: RiskType.Condition,
         notes: undefined,
         parent: undefined,
-      })
-      repoParentResult = Risk.create('parent id', {
+      }
+      parentRisk = {
+        id: 'parent id',
         category: Category.Health,
         impact: Impact.High,
         likelihood: Likelihood.High,
@@ -58,7 +60,7 @@ describe('createRisk', () => {
         type: RiskType.Condition,
         notes: undefined,
         parent: undefined,
-      })
+      }
     })
 
     describe('And a CreateRiskRequest', () => {
@@ -78,11 +80,13 @@ describe('createRisk', () => {
       })
 
       describe('When everything succeeds', () => {
+        let newRiskMock: jest.MockedFunction<typeof newRisk>
         beforeEach(() => {
-          fetchRisk.mockImplementationOnce(async () => repoParentResult)
-          riskCreateFactory = jest.spyOn(Risk, 'create').mockImplementationOnce(() => factoryRisk)
-          riskCreateFactory.mockClear() // Clear after spying as Jest seems to cache the mock
-          createRisk.mockImplementationOnce(async () => Result.success(undefined))
+          fetchRepo.mockImplementationOnce(async () => Result.success(parentRisk))
+          createRepo.mockImplementationOnce(async () => Result.success(undefined))
+
+          newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
+          newRiskMock.mockImplementationOnce(() => Result.success(risk))
         })
 
         test('Then the expected result is returned', async () => {
@@ -91,24 +95,24 @@ describe('createRisk', () => {
           expect(riskResult.getValue()).toBe(mappedRisk)
 
           // And the parent risk is fetched
-          expect(fetchRisk).toBeCalledTimes(1)
-          expect(fetchRisk.mock.calls[0]).toEqual(['parent id'])
+          expect(fetchRepo).toBeCalledTimes(1)
+          expect(fetchRepo.mock.calls[0]).toEqual(['parent id'])
 
-          // And the risk is created using the class factory
-          expect(riskCreateFactory).toBeCalledTimes(1)
-          expect(riskCreateFactory.mock.calls[0]).toEqual([
+          // And the risk is constructed as expected
+          expect(newRiskMock).toBeCalledTimes(1)
+          expect(newRiskMock.mock.calls[0]).toEqual([
             'uri-part',
             {
               ...createDetails,
               uriPart: undefined,
               parentId: undefined,
-              parent: repoParentResult,
+              parent: parentRisk,
             },
           ])
 
           // And the risk is persisted to the repo
-          expect(createRisk).toBeCalledTimes(1)
-          expect(createRisk.mock.calls[0]).toEqual([factoryRisk])
+          expect(createRepo).toBeCalledTimes(1)
+          expect(createRepo.mock.calls[0]).toEqual([risk])
         })
       })
       describe('When the URI part is invalid', () => {
@@ -128,31 +132,35 @@ describe('createRisk', () => {
       })
       describe('When fetching the parent fails', () => {
         test('Then an error is returned', async () => {
-          fetchRisk.mockImplementationOnce(async () => Result.error('fetch repo error'))
+          fetchRepo.mockImplementationOnce(async () => Result.error('fetch repo error'))
           const riskResult = await interactor.createRisk({ ...createDetails })
           expect(riskResult.isSuccess()).toBeFalsy()
           expect(riskResult.getErrorMessage()).toBe('fetch repo error')
         })
       })
       describe('When creating the risk fails', () => {
+        let newRiskMock: jest.MockedFunction<typeof newRisk>
         beforeEach(() => {
-          fetchRisk.mockImplementationOnce(async () => repoParentResult)
-          riskCreateFactory = jest
-            .spyOn(Risk, 'create')
-            .mockImplementationOnce(() => Result.error('create entity error'))
-          riskCreateFactory.mockClear() // Clear after spying as Jest seems to cache the mock
+          fetchRepo.mockImplementationOnce(async () => Result.success(parentRisk))
+          createRepo.mockImplementationOnce(async () => Result.success(undefined))
+
+          newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
+          newRiskMock.mockImplementationOnce(() => Result.error('create entity error'))
         })
         test('Then an error is returned', async () => {
-          // fetchRisk.mockImplementationOnce(async () => Result.error('fetch error'))
           const riskResult = await interactor.createRisk({ ...createDetails })
           expect(riskResult.isSuccess()).toBeFalsy()
           expect(riskResult.getErrorMessage()).toBe('create entity error')
         })
       })
       describe('When persisting the risk fails', () => {
+        let newRiskMock: jest.MockedFunction<typeof newRisk>
         beforeEach(() => {
-          fetchRisk.mockImplementationOnce(async () => repoParentResult)
-          createRisk.mockImplementationOnce(async () => Result.error('create repo error'))
+          fetchRepo.mockImplementationOnce(async () => Result.success(parentRisk))
+          createRepo.mockImplementationOnce(async () => Result.error('create repo error'))
+
+          newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
+          newRiskMock.mockImplementationOnce(() => Result.success(risk))
         })
         test('Then an error is returned', async () => {
           const riskResult = await interactor.createRisk({ ...createDetails })
@@ -176,10 +184,13 @@ describe('createRisk', () => {
       })
 
       describe('When everything suceeds', () => {
+        let newRiskMock: jest.MockedFunction<typeof newRisk>
         beforeEach(() => {
-          riskCreateFactory = jest.spyOn(Risk, 'create').mockImplementationOnce(() => factoryRisk)
-          riskCreateFactory.mockClear() // Clear after spying as Jest seems to cache the mock
-          createRisk.mockImplementationOnce(async () => Result.success(undefined))
+          fetchRepo.mockImplementationOnce(async () => Result.success(parentRisk))
+          createRepo.mockImplementationOnce(async () => Result.success(undefined))
+
+          newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
+          newRiskMock.mockImplementationOnce(() => Result.success(risk))
         })
         test('Then the expected result is returned', async () => {
           const riskResult = await interactor.createRisk(createDetails)
@@ -188,11 +199,11 @@ describe('createRisk', () => {
           expect(usecaseRisk).toBe(mappedRisk)
 
           // And the parent risk is not fetched
-          expect(fetchRisk).not.toBeCalled()
+          expect(fetchRepo).not.toBeCalled()
 
-          // And the risk is created using the class factory
-          expect(riskCreateFactory).toBeCalledTimes(1)
-          expect(riskCreateFactory.mock.calls[0]).toEqual([
+          // And the risk is constructed as expected
+          expect(newRiskMock).toBeCalledTimes(1)
+          expect(newRiskMock.mock.calls[0]).toEqual([
             'uri-part',
             {
               ...createDetails,
@@ -203,8 +214,8 @@ describe('createRisk', () => {
           ])
 
           // And the risk is persisted to the repo
-          expect(createRisk).toBeCalledTimes(1)
-          expect(createRisk.mock.calls[0]).toEqual([factoryRisk])
+          expect(createRepo).toBeCalledTimes(1)
+          expect(createRepo.mock.calls[0]).toEqual([risk])
         })
       })
     })

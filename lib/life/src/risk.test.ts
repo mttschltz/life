@@ -1,4 +1,5 @@
-import { Category, CreateDetails, Impact, Likelihood, Risk, RiskType } from '@life'
+import { newRisk, Category, Impact, Likelihood, RiskType } from '@life'
+import type { CreateDetails } from '@life'
 import { describe, expect, test } from '@jest/globals'
 
 describe('Risk', () => {
@@ -18,7 +19,7 @@ describe('Risk', () => {
 
     describe('Given a valid CreateDetails without optional fields', () => {
       test('Then it successfully creates a Risk', () => {
-        const riskResult = Risk.create('id', {
+        const riskResult = newRisk('id', {
           ...createDetails,
           notes: undefined,
         })
@@ -36,7 +37,7 @@ describe('Risk', () => {
     })
     describe('Given a valid CreateDetails with optional fields but no parent', () => {
       test('Then it successfully creates a Risk', () => {
-        const riskResult = Risk.create('id', createDetails)
+        const riskResult = newRisk('id', createDetails)
         expect(riskResult.isSuccess()).toEqual(true)
 
         const risk = riskResult.getValue()
@@ -61,11 +62,11 @@ describe('Risk', () => {
           parent: undefined,
           type: RiskType.Goal,
         }
-        const parentRiskResult = Risk.create('parentId', parentCreateDetails)
+        const parentRiskResult = newRisk('parentId', parentCreateDetails)
         expect(parentRiskResult.isSuccess()).toEqual(true)
 
         // Create risk
-        const riskResult = Risk.create('id', {
+        const riskResult = newRisk('id', {
           ...createDetails,
           parent: parentRiskResult.getValue(),
         })
@@ -87,7 +88,7 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const riskResult = Risk.create('id', undefined)
+        const riskResult = newRisk('id', undefined)
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('Missing details')
       })
@@ -96,26 +97,26 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        let riskResult = Risk.create(undefined, createDetails)
+        let riskResult = newRisk(undefined, createDetails)
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('id must be a string')
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        riskResult = Risk.create('', createDetails)
+        riskResult = newRisk('', createDetails)
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('id must be longer than or equal to 1 characters')
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        riskResult = Risk.create(5, createDetails)
+        riskResult = newRisk(5, createDetails)
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('id must be a string')
       })
     })
     describe('Given an invalid category', () => {
       test('Then an error result is returned', () => {
-        let riskResult = Risk.create('id', {
+        let riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -124,7 +125,7 @@ describe('Risk', () => {
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('category must be a valid enum value')
 
-        riskResult = Risk.create('id', {
+        riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -136,7 +137,7 @@ describe('Risk', () => {
     })
     describe('Given an invalid impact', () => {
       test('Then an error result is returned', () => {
-        let riskResult = Risk.create('id', {
+        let riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -145,7 +146,7 @@ describe('Risk', () => {
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('impact must be a valid enum value')
 
-        riskResult = Risk.create('id', {
+        riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -157,7 +158,7 @@ describe('Risk', () => {
     })
     describe('Given an invalid likelihood', () => {
       test('Then an error result is returned', () => {
-        let riskResult = Risk.create('id', {
+        let riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -166,7 +167,7 @@ describe('Risk', () => {
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('likelihood must be a valid enum value')
 
-        riskResult = Risk.create('id', {
+        riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -178,7 +179,7 @@ describe('Risk', () => {
     })
     describe('Given an invalid name', () => {
       test('Then an error result is returned', () => {
-        let riskResult = Risk.create('id', {
+        let riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -187,7 +188,7 @@ describe('Risk', () => {
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('name must be a string')
 
-        riskResult = Risk.create('id', {
+        riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -199,7 +200,7 @@ describe('Risk', () => {
     })
     describe('Given an invalid notes', () => {
       test('Then an error result is returned', () => {
-        const riskResult = Risk.create('id', {
+        const riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -211,7 +212,7 @@ describe('Risk', () => {
     })
     describe('Given an invalid parent', () => {
       test('Then an error result is returned', () => {
-        const riskResult = Risk.create('id', {
+        const riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -223,7 +224,7 @@ describe('Risk', () => {
     })
     describe('Given an invalid risk type', () => {
       test('Then an error result is returned', () => {
-        let riskResult = Risk.create('id', {
+        let riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -232,7 +233,7 @@ describe('Risk', () => {
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('type must be a valid enum value')
 
-        riskResult = Risk.create('id', {
+        riskResult = newRisk('id', {
           ...createDetails,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -246,7 +247,7 @@ describe('Risk', () => {
       test('Then an error result with the first error is returned', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const riskResult = Risk.create('id', {})
+        const riskResult = newRisk('id', {})
         expect(riskResult.isSuccess()).toEqual(false)
         expect(riskResult.getErrorMessage()).toEqual('category must be a valid enum value')
       })

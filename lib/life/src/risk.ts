@@ -1,31 +1,68 @@
-import { IsEnum, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
+import { IsEnum, isInstance, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
 import { Result } from '@util'
 
-export enum RiskType {
+enum RiskType {
   Risk = 'Risk',
   Goal = 'Goal',
   Condition = 'Condition',
 }
 
-export enum Impact {
+enum Impact {
   High = 'High',
   Normal = 'Normal',
 }
 
-export enum Likelihood {
+enum Likelihood {
   High = 'High',
   Normal = 'Normal',
 }
 
-export enum Category {
+enum Category {
   Health = 'Category',
   Wealth = 'Wealth',
   Security = 'Security',
 }
 
-export type CreateDetails = Pick<Risk, 'category' | 'impact' | 'likelihood' | 'name' | 'notes' | 'parent' | 'type'>
+type CreateDetails = Pick<Risk, 'category' | 'impact' | 'likelihood' | 'name' | 'notes' | 'parent' | 'type'>
 
-export class Risk {
+interface Risk {
+  id: string
+  category: Category
+  impact: Impact
+  likelihood: Likelihood
+
+  name: string
+  notes?: string
+  parent?: Risk
+  type: RiskType
+}
+
+function newRisk(id: string, details: CreateDetails): Result<Risk> {
+  if (!details) {
+    return Result.error('Missing details')
+  }
+
+  // Manual check as @IsInstance(RiskImpl) will result in "Cannot access before initialization" error
+  if (typeof details.parent !== 'undefined' && !isInstance(details.parent, RiskImpl)) {
+    return Result.error('parent must be instance of Risk')
+  }
+
+  const risk = new RiskImpl(details, id)
+
+  // Validate at runtime in addition to compile time
+  const errors = validateSync(risk)
+  if (errors.length > 0) {
+    const constraints = errors[0].constraints
+    if (!constraints) {
+      return Result.error('Validation failed')
+    }
+    return Result.error(Object.values(constraints)[0])
+  }
+
+  return Result.success(risk)
+}
+
+class RiskImpl implements Risk {
   #id: string
 
   #category: Category
@@ -37,7 +74,7 @@ export class Risk {
   #parent?: Risk
   #type: RiskType
 
-  private constructor({ category, impact, likelihood, name, notes, parent, type }: CreateDetails, id: string) {
+  constructor({ category, impact, likelihood, name, notes, parent, type }: CreateDetails, id: string) {
     this.#id = id
 
     this.#category = category
@@ -93,29 +130,7 @@ export class Risk {
   get type(): RiskType {
     return this.#type
   }
-
-  static create(id: string, details: CreateDetails): Result<Risk> {
-    if (!details) {
-      return Result.error('Missing details')
-    }
-
-    // Manual check as @IsInstance doesn't support private constructors
-    if (typeof details.parent !== 'undefined' && !(details.parent instanceof Risk)) {
-      return Result.error('parent must be instance of Risk')
-    }
-
-    const risk = new Risk(details, id)
-
-    // Validate at runtime in addition to compile time
-    const errors = validateSync(risk)
-    if (errors.length > 0) {
-      const constraints = errors[0].constraints
-      if (!constraints) {
-        return Result.error('Validation failed')
-      }
-      return Result.error(Object.values(constraints)[0])
-    }
-
-    return Result.success(risk)
-  }
 }
+
+export type { Risk, CreateDetails }
+export { newRisk, Category, RiskType, Impact, Likelihood }
