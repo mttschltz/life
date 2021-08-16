@@ -30,13 +30,13 @@ export class GraphService {
           // TODO: Instead of mapping each enum, etc individually, map CreateRiskInput
           // to CreateRiskRequest. This should make testing easier.
           const categoryResult = this.#mapper.toCategory(input.category)
-          if (!categoryResult.isSuccess()) {
+          if (!categoryResult.ok) {
             this.#logger.result(categoryResult)
             throw this.resultError(categoryResult)
           }
 
           const riskResult = await this.#factory.createRiskInteractor().createRisk({
-            category: categoryResult.getValue(),
+            category: categoryResult.value,
             name: input.name,
             parentId: input.parentId ? input.parentId : undefined,
             impact: Impact.Normal,
@@ -44,55 +44,55 @@ export class GraphService {
             type: RiskType.Condition,
             uriPart: input.uriPart,
           })
-          if (!riskResult.isSuccess()) {
+          if (!riskResult.ok) {
             this.#logger.result(riskResult)
             throw this.resultError(riskResult)
           }
 
-          const mappingResult = this.#mapper.fromRisk(riskResult.getValue())
-          if (!mappingResult.isSuccess()) {
+          const mappingResult = this.#mapper.fromRisk(riskResult.value)
+          if (!mappingResult.ok) {
             this.#logger.result(mappingResult)
             throw this.resultError(mappingResult)
           }
-          return mappingResult.getValue()
+          return mappingResult.value
         },
       },
       Risk: {
         parent: async (risk) => {
           const parentResult = await this.#factory.fetchRiskParentInteractor().fetchRiskParent(risk.id)
-          if (!parentResult.isSuccess()) {
+          if (!parentResult.ok) {
             this.#logger.result(parentResult)
             throw this.resultError(parentResult)
           }
 
-          const parent = parentResult.getValue()
+          const parent = parentResult.value
           if (!parent) {
             return null
           }
 
           const mappingResult = this.#mapper.fromRisk(parent)
-          if (!mappingResult.isSuccess()) {
+          if (!mappingResult.ok) {
             this.#logger.result(mappingResult)
             throw this.resultError(mappingResult)
           }
 
-          return mappingResult.getValue()
+          return mappingResult.value
         },
         children: async (risk) => {
           const childrenResult = await this.#factory.fetchRiskChildrenInteractor().fetchRiskChildren(risk.id)
-          if (!childrenResult.isSuccess()) {
+          if (!childrenResult.ok) {
             this.#logger.result(childrenResult)
             throw this.resultError(childrenResult)
           }
 
-          const mappingResults = this.#mapper.risks(childrenResult.getValue())
-          const errorResult = mappingResults.firstErrorResult()
+          const mappingResults = this.#mapper.risks(childrenResult.value)
+          const errorResult = mappingResults.firstErrorResult
           if (errorResult) {
             this.#logger.result(errorResult)
             throw this.resultError(errorResult)
           }
 
-          return mappingResults.getValues()
+          return mappingResults.okValues
         },
       },
       Query: {
@@ -111,19 +111,19 @@ export class GraphService {
           }
 
           const result = await this.#factory.listRisksInteractor().listRisks(criteria)
-          if (!result.isSuccess()) {
+          if (!result.ok) {
             this.#logger.result(result)
             throw this.resultError(result)
           }
 
-          const mappingResults = this.#mapper.risks(result.getValue())
-          const errorResult = mappingResults.firstErrorResult()
+          const mappingResults = this.#mapper.risks(result.value)
+          const errorResult = mappingResults.firstErrorResult
           if (errorResult) {
             this.#logger.result(errorResult)
             throw this.resultError(errorResult)
           }
 
-          return mappingResults.getValues()
+          return mappingResults.okValues
         },
       },
     }
@@ -135,16 +135,16 @@ export class GraphService {
   }
 
   private resultError<T>(result: Result<T>): ApolloError {
-    const error = result.getError()
+    const error = result.error
 
     if (error?.stack) {
-      return new ApolloError(result.getErrorMessage(), undefined, {
+      return new ApolloError(result.errorMessage || 'Unknown error', undefined, {
         exception: {
           stacktrace: error.stack,
         },
       })
     }
 
-    return new ApolloError(result.getErrorMessage())
+    return new ApolloError(result.errorMessage || 'Unknown error')
   }
 }

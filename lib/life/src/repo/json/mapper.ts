@@ -1,4 +1,5 @@
 import { Risk } from '@life'
+import { newRisk } from '@life/risk'
 import { Result } from '@util'
 
 type RiskJson = Omit<Risk, 'parent' | 'mitigations'> & { parentId?: string }
@@ -27,7 +28,7 @@ class RiskMapper {
       type,
       parent,
     }
-    return Risk.create(id, createDetails)
+    return newRisk(id, createDetails)
   }
 }
 

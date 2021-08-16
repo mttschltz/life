@@ -1,6 +1,6 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
 import { Category, Impact, Likelihood, RiskType } from '@life'
-import { Result } from '@util'
+import { Result, resultError, resultErrorFrom, resultOk } from '@util'
 import { RiskRepo } from '@life/repo'
 import { newRisk } from '@life/risk'
 
@@ -37,16 +37,16 @@ class CreateRiskInteractor {
     notes,
   }: CreateRiskRequest): Promise<Result<UsecaseRisk>> {
     if (!uriPart || !/^[a-z]+[a-z-]+[a-z]+$/.test(uriPart)) {
-      return Result.error(`Invalid URI part: '${uriPart}'`)
+      return resultError(`Invalid URI part: '${uriPart}'`)
     }
 
     let parent
     if (parentId) {
       const parentResult = await this.#repo.fetchRisk(parentId)
-      if (!parentResult.isSuccess()) {
+      if (!parentResult.ok) {
         return parentResult
       }
-      parent = parentResult.getValue()
+      parent = parentResult.value
     }
 
     const riskResult = newRisk(uriPart, {
@@ -58,17 +58,17 @@ class CreateRiskInteractor {
       type,
       parent,
     })
-    if (!riskResult.isSuccess()) {
+    if (!riskResult.ok) {
       return riskResult
     }
-    const risk = riskResult.getValue()
+    const risk = riskResult.value
 
     const persistResult = await this.#repo.createRisk(risk)
-    if (!persistResult.isSuccess()) {
-      return Result.errorFrom(persistResult)
+    if (!persistResult.ok) {
+      return resultErrorFrom(persistResult)
     }
 
-    return Result.success(this.#mapper.risk(risk))
+    return resultOk(this.#mapper.risk(risk))
   }
 }
 

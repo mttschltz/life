@@ -1,5 +1,5 @@
 import { RiskMapper, Risk as UsecaseRisk } from '@life/usecase'
-import { Result } from '@util'
+import { Result, resultOk } from '@util'
 import { RiskRepo } from '@life/repo'
 
 type FetchRiskChildrenRepo = Pick<RiskRepo, 'fetchRiskChildren'>
@@ -15,11 +15,11 @@ class FetchRiskChildrenInteractor {
 
   async fetchRiskChildren(id: string): Promise<Result<UsecaseRisk[]>> {
     const riskChildrenResult = await this.#repo.fetchRiskChildren(id)
-    if (!riskChildrenResult.isSuccess()) {
+    if (!riskChildrenResult.ok) {
       return riskChildrenResult
     }
 
-    return Result.success(this.#mapper.risks(riskChildrenResult.getValue()))
+    return resultOk(this.#mapper.risks(riskChildrenResult.value))
   }
 }
 

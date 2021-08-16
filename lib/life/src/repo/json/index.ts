@@ -1,5 +1,5 @@
 import { Risk } from '@life'
-import { Result } from '@util'
+import { Result, resultError, resultErrorFrom, resultOk } from '@util'
 import { Category } from '@life/risk'
 import { RiskRepo } from '@life/repo'
 import { RiskJson, RiskMapper } from './mapper'
@@ -24,54 +24,54 @@ export class JsonRepo implements RiskRepo {
 
   async createRisk(risk: Risk): Promise<Result<void>> {
     if (this.#json.risk[risk.id]) {
-      return Result.error(`Risk with id '${risk.id}' already exists`)
+      return resultError(`Risk with id '${risk.id}' already exists`)
     }
 
     if (risk.parent) {
       if (!this.#json.risk[risk.parent.id]) {
-        return Result.error(`Could not find parent with id ${risk.parent.id} for risk with id ${risk.id}`)
+        return resultError(`Could not find parent with id ${risk.parent.id} for risk with id ${risk.id}`)
       }
     }
 
     this.#json.risk[risk.id] = this.#mapper.toJson(risk)
-    return Result.success(undefined)
+    return resultOk(undefined)
   }
 
   async fetchRisk(id: string): Promise<Result<Risk>> {
     const jsonRisk = this.#json.risk[id]
-    if (!jsonRisk) return Result.error(`Could not find risk ${id}`)
+    if (!jsonRisk) return resultError(`Could not find risk ${id}`)
 
     let parent
     if (jsonRisk.parentId) {
       const parentResult = await this.fetchRisk(jsonRisk.parentId)
-      if (!parentResult.isSuccess()) {
+      if (!parentResult.ok) {
         return parentResult
       }
-      parent = parentResult.getValue()
+      parent = parentResult.value
     }
 
     const riskResult = this.#mapper.fromJson(jsonRisk, parent)
-    if (!riskResult.isSuccess()) {
+    if (!riskResult.ok) {
       return riskResult
     }
 
-    return Result.success(riskResult.getValue())
+    return resultOk(riskResult.value)
   }
 
   async fetchRiskParent(id: string): Promise<Result<Risk | undefined>> {
     const jsonRisk = this.#json.risk[id]
-    if (!jsonRisk) return Result.error(`Could not find risk ${id}`)
+    if (!jsonRisk) return resultError(`Could not find risk ${id}`)
 
     if (!jsonRisk.parentId) {
-      return Result.success(undefined)
+      return resultOk(undefined)
     }
 
     const parentRiskResult = await this.fetchRisk(jsonRisk.parentId)
-    if (!parentRiskResult.isSuccess()) {
+    if (!parentRiskResult.ok) {
       return parentRiskResult
     }
 
-    return Result.success(parentRiskResult.getValue())
+    return resultOk(parentRiskResult.value)
   }
 
   async fetchRiskChildren(id: string): Promise<Result<Risk[]>> {
@@ -83,13 +83,13 @@ export class JsonRepo implements RiskRepo {
       }
 
       const childResult = await this.fetchRisk(jsonRisk.id)
-      if (!childResult.isSuccess()) {
-        return Result.errorFrom(childResult)
+      if (!childResult.ok) {
+        return resultErrorFrom(childResult)
       }
 
-      riskChildren.push(childResult.getValue())
+      riskChildren.push(childResult.value)
     }
-    return Result.success(riskChildren)
+    return resultOk(riskChildren)
   }
 
   async listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
@@ -106,12 +106,12 @@ export class JsonRepo implements RiskRepo {
       }
 
       const riskResult = await this.fetchRisk(jsonRisk.id)
-      if (!riskResult.isSuccess()) {
-        return Result.errorFrom(riskResult)
+      if (!riskResult.ok) {
+        return resultErrorFrom(riskResult)
       }
 
-      risks.push(riskResult.getValue())
+      risks.push(riskResult.value)
     }
-    return Result.success(risks)
+    return resultOk(risks)
   }
 }

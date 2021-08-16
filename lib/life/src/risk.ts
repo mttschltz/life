@@ -1,5 +1,5 @@
 import { IsEnum, isInstance, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
-import { Result } from '@util'
+import { Result, resultError, resultOk } from '@util'
 
 enum RiskType {
   Risk = 'Risk',
@@ -39,12 +39,12 @@ interface Risk {
 
 function newRisk(id: string, details: CreateDetails): Result<Risk> {
   if (!details) {
-    return Result.error('Missing details')
+    return resultError('Missing details')
   }
 
   // Manual check as @IsInstance(RiskImpl) will result in "Cannot access before initialization" error
   if (typeof details.parent !== 'undefined' && !isInstance(details.parent, RiskImpl)) {
-    return Result.error('parent must be instance of Risk')
+    return resultError('parent must be instance of Risk')
   }
 
   const risk = new RiskImpl(details, id)
@@ -54,12 +54,12 @@ function newRisk(id: string, details: CreateDetails): Result<Risk> {
   if (errors.length > 0) {
     const constraints = errors[0].constraints
     if (!constraints) {
-      return Result.error('Validation failed')
+      return resultError('Validation failed')
     }
-    return Result.error(Object.values(constraints)[0])
+    return resultError(Object.values(constraints)[0])
   }
 
-  return Result.success(risk)
+  return resultOk(risk)
 }
 
 class RiskImpl implements Risk {

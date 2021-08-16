@@ -1,24 +1,4 @@
-class Results<T> {
-  #results: Result<T>[]
-
-  private constructor(results: Result<T>[]) {
-    this.#results = results
-  }
-
-  firstErrorResult(): Result<T> | undefined {
-    return this.#results.find((r) => !r.isSuccess())
-  }
-
-  getValues(): T[] {
-    return this.#results.map((r) => r.getValue())
-  }
-
-  public static new<U>(results: Result<U>[]): Results<U> {
-    return new Results(results)
-  }
-}
-
-interface SuccessResult<T> {
+interface OkResult<T> {
   value: T
 }
 
@@ -27,20 +7,27 @@ interface ErrorResult {
   message: string
 }
 
-class Result<T> {
-  #success?: SuccessResult<T>
+interface Result<T> {
+  readonly ok: boolean
+  readonly value: T
+  readonly error?: Error
+  readonly errorMessage?: string
+}
+
+class ResultImpl<T> implements Result<T> {
+  #ok?: OkResult<T>
   #error?: ErrorResult
 
-  private constructor(success?: SuccessResult<T>, error?: ErrorResult) {
-    if (success && error) {
-      throw new Error('Only one success or one error must be provided')
+  constructor(ok?: OkResult<T>, error?: ErrorResult) {
+    if (ok && error) {
+      throw new Error('Only one ok or one error must be provided')
     }
-    if (!success && !error) {
-      throw new Error('Either a success or error must be provided')
+    if (!ok && !error) {
+      throw new Error('Either a ok or error must be provided')
     }
 
-    if (success) {
-      this.#success = success
+    if (ok) {
+      this.#ok = ok
     }
     if (error) {
       const errorObj = error.error || new Error(error.message)
@@ -51,49 +38,76 @@ class Result<T> {
     }
   }
 
-  isSuccess(): boolean {
-    return !!this.#success
+  get ok(): boolean {
+    return !!this.#ok
   }
 
-  getValue(): T {
-    if (!this.#success) {
+  get value(): T {
+    if (!this.#ok) {
       throw new Error('Cannot get value of an error result')
     }
-    return this.#success.value
+    return this.#ok.value
   }
 
-  getError(): Error | undefined {
+  get error(): Error | undefined {
     if (!this.#error) {
-      throw new Error('Cannot get error of a success result')
+      throw new Error('Cannot get error of an ok result')
     }
     return this.#error.error
   }
 
-  getErrorMessage(): string {
+  get errorMessage(): string {
     if (!this.#error) {
-      throw new Error('Cannot get error message of a success result')
+      throw new Error('Cannot get error message of an ok result')
     }
     return this.#error.message
   }
+}
 
-  public static success<U>(value: U): Result<U> {
-    return new Result<U>({ value }, undefined)
+function resultOk<T>(value: T): Result<T> {
+  return new ResultImpl<T>({ value }, undefined)
+}
+
+function resultError<T>(message: string, error?: Error): Result<T> {
+  return new ResultImpl<T>(undefined, { message, error })
+}
+
+function resultErrorFrom<U, V>(result: Result<V>): Result<U> {
+  if (result.ok || !result.errorMessage) {
+    throw new Error('Cannot create error from non-error result')
+  }
+  return resultError(result.errorMessage, result.error)
+}
+
+interface Results<T> {
+  values: (T | undefined)[]
+  okValues: T[]
+  firstErrorResult: Result<T> | undefined
+}
+
+class ResultsImpl<T> implements Results<T> {
+  #results: Result<T>[]
+
+  constructor(results: Result<T>[]) {
+    this.#results = results
   }
 
-  public static error<U>(message: string, error?: Error): Result<U> {
-    return new Result<U>(undefined, { message, error })
+  get firstErrorResult(): Result<T> | undefined {
+    return this.#results.find((r) => !r.ok)
   }
 
-  public static errorFrom<U, V>(result: Result<V>): Result<U> {
-    if (result.isSuccess()) {
-      throw new Error('Cannot create error from non-error result')
-    }
-    return Result.error(result.getErrorMessage())
+  get values(): (T | undefined)[] {
+    return this.#results.map((r) => (r.ok ? r.value : undefined))
   }
 
-  public static firstErrorResult<U>(result: Result<U>[]): Result<U> | undefined {
-    return result.find((r) => !r.isSuccess())
+  get okValues(): T[] {
+    return this.#results.filter((r) => r.ok).map((r) => r.value)
   }
 }
 
-export { Result, Results }
+function results<T>(results: Result<T>[]): Results<T> {
+  return new ResultsImpl(results)
+}
+
+export type { Result, Results }
+export { resultOk as resultOk, resultError as resultError, results, resultErrorFrom }

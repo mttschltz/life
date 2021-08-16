@@ -1,50 +1,50 @@
 import type { Risk as UsecaseRisk } from '@life/usecase'
 import { Category as GraphCategory, Risk as GraphRisk } from '@life/__generated__/graphql'
 import { Category } from '@life'
-import { Result, Results } from '@util'
+import { Result, resultError, resultErrorFrom, resultOk, results, Results } from '@util'
 
 class GraphMapper {
   toCategory(graphCategory: GraphCategory): Result<Category> {
     switch (graphCategory) {
       case GraphCategory.Health:
-        return Result.success(Category.Health)
+        return resultOk(Category.Health)
       case GraphCategory.Wealth:
-        return Result.success(Category.Wealth)
+        return resultOk(Category.Wealth)
       case GraphCategory.Security:
-        return Result.success(Category.Security)
+        return resultOk(Category.Security)
       default:
-        return Result.error('Unhandled category type')
+        return resultError('Unhandled category type')
     }
   }
 
   fromCategory(category: Category): Result<GraphCategory> {
     switch (category) {
       case Category.Health:
-        return Result.success(GraphCategory.Health)
+        return resultOk(GraphCategory.Health)
       case Category.Wealth:
-        return Result.success(GraphCategory.Wealth)
+        return resultOk(GraphCategory.Wealth)
       case Category.Security:
-        return Result.success(GraphCategory.Security)
+        return resultOk(GraphCategory.Security)
       default:
-        return Result.error('Unhandled category type')
+        return resultError('Unhandled category type')
     }
   }
 
   fromRisk({ id, category, name }: UsecaseRisk): Result<GraphRisk> {
     const graphCategoryResult = this.fromCategory(category)
-    if (!graphCategoryResult.isSuccess()) {
-      return Result.errorFrom(graphCategoryResult)
+    if (!graphCategoryResult.ok) {
+      return resultErrorFrom(graphCategoryResult)
     }
 
-    return Result.success({
-      category: graphCategoryResult.getValue(),
+    return resultOk({
+      category: graphCategoryResult.value,
       id,
       name,
     })
   }
 
   risks(risks: UsecaseRisk[]): Results<GraphRisk> {
-    return Results.new(risks.map(this.fromRisk, this))
+    return results(risks.map(this.fromRisk, this))
   }
 }
 

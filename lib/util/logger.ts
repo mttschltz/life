@@ -36,16 +36,16 @@ class Logger {
   }
 
   public result<T>(result: Result<T>): void {
-    if (!result.isSuccess()) {
+    if (!result.ok) {
       this.error({
-        msg: result.getErrorMessage(),
-        error: result.getError(),
+        msg: result.errorMessage || 'unknown error',
+        error: result.error,
       })
     } else {
       this.info({
-        msg: 'success result',
+        msg: 'ok result',
         data: {
-          value: result.getValue(),
+          value: result.value,
         },
       })
     }

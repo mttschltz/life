@@ -1,6 +1,6 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
 import { Category } from '@life'
-import { Result } from '@util'
+import { Result, resultOk } from '@util'
 import { RiskRepo } from '@life/repo'
 
 type ListRisksRepo = Pick<RiskRepo, 'listRisks'>
@@ -33,11 +33,11 @@ class ListRisksInteractor {
         break
     }
     const risksResult = await this.#repo.listRisks(category, !!criteria.includeDescendents)
-    if (!risksResult.isSuccess()) {
+    if (!risksResult.ok) {
       return risksResult
     }
 
-    return Result.success(risksResult.getValue().map(this.#mapper.risk))
+    return resultOk(risksResult.value.map(this.#mapper.risk))
   }
 }
 
