@@ -82,10 +82,10 @@ export default {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '@life': ['<rootDir>/lib/life/src'],
     '@life/(.*)': ['<rootDir>/lib/life/src/$1'],
-    '@util': ['<rootDir>/lib/util'],
+    '@life': ['<rootDir>/lib/life/src'],
     '@util/(.*)': ['<rootDir>/lib/util/$1'],
+    '@util': ['<rootDir>/lib/util'],
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

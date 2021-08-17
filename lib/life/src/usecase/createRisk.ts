@@ -1,6 +1,6 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
 import { Category, Impact, Likelihood, RiskType } from '@life'
-import { Result, resultError, resultErrorFrom, resultOk } from '@util'
+import { Result, resultError, resultOk } from '@util'
 import { RiskRepo } from '@life/repo'
 import { newRisk } from '@life/risk'
 
@@ -65,7 +65,7 @@ class CreateRiskInteractor {
 
     const persistResult = await this.#repo.createRisk(risk)
     if (!persistResult.ok) {
-      return resultErrorFrom(persistResult)
+      return persistResult
     }
 
     return resultOk(this.#mapper.risk(risk))

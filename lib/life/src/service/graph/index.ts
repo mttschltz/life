@@ -6,7 +6,7 @@ import * as typeDefs from '@life/service/graph/schema.graphql'
 import { ServiceFactory } from '@life/service/factory'
 import { GraphMapper } from '@life/service/graph/mapper'
 import { Logger } from '@util/logger'
-import { Result } from '@util/result'
+import { ResultError } from '@util/result'
 import { Impact, Likelihood, RiskType } from '@life/risk'
 
 export class GraphService {
@@ -134,17 +134,17 @@ export class GraphService {
     return typeDefs
   }
 
-  private resultError<T>(result: Result<T>): ApolloError {
+  private resultError(result: ResultError): ApolloError {
     const error = result.error
 
     if (error?.stack) {
-      return new ApolloError(result.errorMessage || 'Unknown error', undefined, {
+      return new ApolloError(result.message || 'Unknown error', undefined, {
         exception: {
           stacktrace: error.stack,
         },
       })
     }
 
-    return new ApolloError(result.errorMessage || 'Unknown error')
+    return new ApolloError(result.message || 'Unknown error')
   }
 }

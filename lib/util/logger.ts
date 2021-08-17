@@ -38,7 +38,7 @@ class Logger {
   public result<T>(result: Result<T>): void {
     if (!result.ok) {
       this.error({
-        msg: result.errorMessage || 'unknown error',
+        msg: result.message,
         error: result.error,
       })
     } else {

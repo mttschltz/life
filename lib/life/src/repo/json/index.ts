@@ -1,5 +1,5 @@
 import { Risk } from '@life'
-import { Result, resultError, resultErrorFrom, resultOk } from '@util'
+import { Result, resultError, resultOk } from '@util'
 import { Category } from '@life/risk'
 import { RiskRepo } from '@life/repo'
 import { RiskJson, RiskMapper } from './mapper'
@@ -84,7 +84,7 @@ export class JsonRepo implements RiskRepo {
 
       const childResult = await this.fetchRisk(jsonRisk.id)
       if (!childResult.ok) {
-        return resultErrorFrom(childResult)
+        return childResult
       }
 
       riskChildren.push(childResult.value)
@@ -107,7 +107,7 @@ export class JsonRepo implements RiskRepo {
 
       const riskResult = await this.fetchRisk(jsonRisk.id)
       if (!riskResult.ok) {
-        return resultErrorFrom(riskResult)
+        return riskResult
       }
 
       risks.push(riskResult.value)

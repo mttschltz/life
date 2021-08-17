@@ -16,6 +16,7 @@
 ## Codebase quality
 
 - [ ] **Re-enable `tsconfig.json->isolatedModules`.** Requires graphql types to not be exported globally, which `gatsby-plugin-typegen` does.
+- [ ] Move `lib/util/test.ts` to somewhere more relevant to unit testing utilities
 
 ## Developer experience
 

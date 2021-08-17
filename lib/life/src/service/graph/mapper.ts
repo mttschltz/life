@@ -1,7 +1,7 @@
 import type { Risk as UsecaseRisk } from '@life/usecase'
 import { Category as GraphCategory, Risk as GraphRisk } from '@life/__generated__/graphql'
 import { Category } from '@life'
-import { Result, resultError, resultErrorFrom, resultOk, results, Results } from '@util'
+import { Result, resultError, resultOk, results, Results } from '@util'
 
 class GraphMapper {
   toCategory(graphCategory: GraphCategory): Result<Category> {
@@ -33,7 +33,7 @@ class GraphMapper {
   fromRisk({ id, category, name }: UsecaseRisk): Result<GraphRisk> {
     const graphCategoryResult = this.fromCategory(category)
     if (!graphCategoryResult.ok) {
-      return resultErrorFrom(graphCategoryResult)
+      return graphCategoryResult
     }
 
     return resultOk({

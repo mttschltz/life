@@ -1,88 +1,66 @@
-interface OkResult<T> {
-  value: T
-}
-
-interface ErrorResult {
-  error?: Error
-  message: string
-}
-
-interface Result<T> {
-  readonly ok: boolean
+interface ResultOk<T> {
+  readonly ok: true
   readonly value: T
+}
+
+class ResultOkImpl<T> implements ResultOk<T> {
+  #value: T
+
+  constructor(value: T) {
+    this.#value = value
+  }
+
+  get ok(): true {
+    return true
+  }
+
+  get value() {
+    return this.#value
+  }
+}
+
+interface ResultError {
+  readonly ok: false
   readonly error?: Error
-  readonly errorMessage?: string
+  readonly message: string
 }
 
-class ResultImpl<T> implements Result<T> {
-  #ok?: OkResult<T>
-  #error?: ErrorResult
+class ResultErrorImpl implements ResultError {
+  #message: string
+  #error?: Error
 
-  constructor(ok?: OkResult<T>, error?: ErrorResult) {
-    if (ok && error) {
-      throw new Error('Only one ok or one error must be provided')
-    }
-    if (!ok && !error) {
-      throw new Error('Either a ok or error must be provided')
-    }
-
-    if (ok) {
-      this.#ok = ok
-    }
-    if (error) {
-      const errorObj = error.error || new Error(error.message)
-      this.#error = {
-        ...error,
-        error: errorObj,
-      }
-    }
+  constructor(message: string, error?: Error) {
+    this.#message = message
+    this.#error = error
   }
 
-  get ok(): boolean {
-    return !!this.#ok
+  get ok(): false {
+    return false
   }
 
-  get value(): T {
-    if (!this.#ok) {
-      throw new Error('Cannot get value of an error result')
-    }
-    return this.#ok.value
+  get message() {
+    return this.#message
   }
 
-  get error(): Error | undefined {
-    if (!this.#error) {
-      throw new Error('Cannot get error of an ok result')
-    }
-    return this.#error.error
-  }
-
-  get errorMessage(): string {
-    if (!this.#error) {
-      throw new Error('Cannot get error message of an ok result')
-    }
-    return this.#error.message
+  get error() {
+    return this.#error
   }
 }
+
+type Result<T> = ResultOk<T> | ResultError
 
 function resultOk<T>(value: T): Result<T> {
-  return new ResultImpl<T>({ value }, undefined)
+  return new ResultOkImpl<T>(value)
 }
 
 function resultError<T>(message: string, error?: Error): Result<T> {
-  return new ResultImpl<T>(undefined, { message, error })
-}
-
-function resultErrorFrom<U, V>(result: Result<V>): Result<U> {
-  if (result.ok || !result.errorMessage) {
-    throw new Error('Cannot create error from non-error result')
-  }
-  return resultError(result.errorMessage, result.error)
+  return new ResultErrorImpl(message, error)
 }
 
 interface Results<T> {
-  values: (T | undefined)[]
-  okValues: T[]
-  firstErrorResult: Result<T> | undefined
+  readonly values: (T | undefined)[]
+  readonly okValues: T[]
+  readonly firstErrorResult: ResultError | undefined
 }
 
 class ResultsImpl<T> implements Results<T> {
@@ -92,8 +70,8 @@ class ResultsImpl<T> implements Results<T> {
     this.#results = results
   }
 
-  get firstErrorResult(): Result<T> | undefined {
-    return this.#results.find((r) => !r.ok)
+  get firstErrorResult(): ResultError | undefined {
+    return this.#results.find((r): r is ResultError => !r.ok)
   }
 
   get values(): (T | undefined)[] {
@@ -101,7 +79,7 @@ class ResultsImpl<T> implements Results<T> {
   }
 
   get okValues(): T[] {
-    return this.#results.filter((r) => r.ok).map((r) => r.value)
+    return this.#results.filter((r): r is ResultOk<T> => r.ok).map((r) => r.value)
   }
 }
 
@@ -109,5 +87,5 @@ function results<T>(results: Result<T>[]): Results<T> {
   return new ResultsImpl(results)
 }
 
-export type { Result, Results }
-export { resultOk as resultOk, resultError as resultError, results, resultErrorFrom }
+export type { Result, ResultError, ResultOk, Results }
+export { resultOk, resultError, results }

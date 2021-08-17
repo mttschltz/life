@@ -1,5 +1,6 @@
 import { Category, Impact, Likelihood, newRisk, Risk, RiskType } from '@life/risk'
-import { Result } from '@util'
+import { assertResultError, assertResultOk } from '@util'
+import { Result, ResultError } from '@util/result'
 import { CreateRiskInteractor, CreateRiskRepo, CreateRiskRequest } from './createRisk'
 import { Risk as UsecaseRisk } from './mapper'
 
@@ -105,7 +106,7 @@ describe('createRisk', () => {
       describe('When everything succeeds', () => {
         test('Then the expected result is returned', async () => {
           const riskResult = await interactor.createRisk(createDetails)
-          expect(riskResult.ok).toBeTruthy()
+          assertResultOk(riskResult)
           expect(riskResult.value).toBe(mappedRisk)
 
           // And the parent risk is fetched
@@ -132,16 +133,17 @@ describe('createRisk', () => {
       describe('When the URI part is invalid', () => {
         test('Then an error is returned', async () => {
           let riskResult = await interactor.createRisk({ ...createDetails, uriPart: '' })
-          expect(riskResult.ok).toBeFalsy()
-          expect(riskResult.errorMessage).toBe("Invalid URI part: ''")
+          assertResultError(riskResult)
+          assertResultError(riskResult)
+          expect(riskResult.message).toBe("Invalid URI part: ''")
 
           riskResult = await interactor.createRisk({ ...createDetails, uriPart: ' ' })
-          expect(riskResult.ok).toBeFalsy()
-          expect(riskResult.errorMessage).toBe("Invalid URI part: ' '")
+          assertResultError(riskResult)
+          expect(riskResult.message).toBe("Invalid URI part: ' '")
 
           riskResult = await interactor.createRisk({ ...createDetails, uriPart: '^' })
-          expect(riskResult.ok).toBeFalsy()
-          expect(riskResult.errorMessage).toBe("Invalid URI part: '^'")
+          assertResultError(riskResult)
+          expect(riskResult.message).toBe("Invalid URI part: '^'")
         })
       })
       describe('When fetching the parent fails', () => {
@@ -149,12 +151,12 @@ describe('createRisk', () => {
           fetchRepo.mockImplementationOnce(
             async () =>
               ({
-                errorMessage: 'fetch repo error',
-              } as Result<Risk>),
+                message: 'fetch repo error',
+              } as ResultError),
           )
           const riskResult = await interactor.createRisk({ ...createDetails })
-          expect(riskResult.ok).toBeFalsy()
-          expect(riskResult.errorMessage).toBe('fetch repo error')
+          assertResultError(riskResult)
+          expect(riskResult.message).toBe('fetch repo error')
         })
       })
       describe('When creating the risk fails', () => {
@@ -162,14 +164,14 @@ describe('createRisk', () => {
           newRiskMock.mockImplementationOnce(
             () =>
               ({
-                errorMessage: 'create entity error',
-              } as Result<Risk>),
+                message: 'create entity error',
+              } as ResultError),
           )
         })
         test('Then an error is returned', async () => {
           const riskResult = await interactor.createRisk({ ...createDetails })
-          expect(riskResult.ok).toBeFalsy()
-          expect(riskResult.errorMessage).toBe('create entity error')
+          assertResultError(riskResult)
+          expect(riskResult.message).toBe('create entity error')
         })
       })
       describe('When persisting the risk fails', () => {
@@ -177,14 +179,14 @@ describe('createRisk', () => {
           createRepo.mockImplementationOnce(
             async () =>
               ({
-                errorMessage: 'create repo error',
-              } as Result<undefined>),
+                message: 'create repo error',
+              } as ResultError),
           )
         })
         test('Then an error is returned', async () => {
           const riskResult = await interactor.createRisk({ ...createDetails })
-          expect(riskResult.ok).toBeFalsy()
-          expect(riskResult.errorMessage).toBe('create repo error')
+          assertResultError(riskResult)
+          expect(riskResult.message).toBe('create repo error')
         })
       })
     })
@@ -204,7 +206,7 @@ describe('createRisk', () => {
       describe('When everything suceeds', () => {
         test('Then the expected result is returned', async () => {
           const riskResult = await interactor.createRisk(createDetails)
-          expect(riskResult.ok).toBeTruthy()
+          assertResultOk(riskResult)
           const usecaseRisk = riskResult.value
           expect(usecaseRisk).toBe(mappedRisk)
 
