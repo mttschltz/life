@@ -77,5 +77,5 @@
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*.ts", "../../lib/life/src/api/graph/graphql.d.ts"]
+  "include": ["src/**/*.ts", "../../lib/life/src/api/graph/types/graphql.d.ts"]
 }
