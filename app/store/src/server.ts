@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server'
 import { DateTimeMock } from 'graphql-scalars'
 
 import { environment } from '@store/environment'
-import { GraphService } from '@life/service/graph/index'
+import { GraphService } from '@life/service/graph/service'
 import { ServiceFactory } from '@life/service/factory'
 import { GraphMapper } from '@life/service/graph/mapper'
 import { Logger } from '@util/logger'

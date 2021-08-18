@@ -1,4 +1,4 @@
-import { Json, JsonRepo } from '@life/repo/json'
+import { Json, JsonRepo } from '@life/repo/json/service'
 import { RiskMapper as JsonRiskMapper } from '@life/repo/json/mapper'
 import { RiskMapper as UsecaseRiskMapper } from '@life/usecase/mapper'
 import { ListRisksInteractor } from '@life/usecase/listRisks'
