@@ -6,7 +6,7 @@ import { FetchRiskChildrenInteractor } from '@life/usecase/fetchRiskChildren'
 import { FetchRiskParentInteractor } from '@life/usecase/fetchRiskParent'
 import { CreateRiskInteractor } from '@life/usecase/createRisk'
 
-export class ServiceFactory {
+export class InteractorFactory {
   #jsonRepo: JsonRepo
 
   constructor(json: Partial<Json>) {
