@@ -1,8 +1,10 @@
 import { Json, JsonRepo } from '@life/repo/json'
 import { RiskMapper as JsonRiskMapper } from '@life/repo/json/mapper'
-import { CreateRiskInteractor, ListRisksInteractor, RiskMapper as UsecaseRiskMapper } from '@life/usecase'
+import { RiskMapper as UsecaseRiskMapper } from '@life/usecase/mapper'
+import { ListRisksInteractor } from '@life/usecase/listRisks'
 import { FetchRiskChildrenInteractor } from '@life/usecase/fetchRiskChildren'
 import { FetchRiskParentInteractor } from '@life/usecase/fetchRiskParent'
+import { CreateRiskInteractor } from '@life/usecase/createRisk'
 
 export class ServiceFactory {
   #jsonRepo: JsonRepo

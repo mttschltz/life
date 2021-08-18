@@ -1,4 +1,4 @@
-import { RiskMapper, Risk as UsecaseRisk } from '@life/usecase'
+import { RiskMapper, Risk as UsecaseRisk } from '@life/usecase/mapper'
 import { Result, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 
