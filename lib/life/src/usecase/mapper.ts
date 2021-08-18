@@ -36,4 +36,5 @@ class RiskMapper {
   }
 }
 
-export { RiskMapper, Risk }
+export { RiskMapper }
+export type { Risk }

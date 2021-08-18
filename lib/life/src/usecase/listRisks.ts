@@ -41,4 +41,5 @@ class ListRisksInteractor {
   }
 }
 
-export { ListRisksInteractor, ListRisksCriteria }
+export { ListRisksInteractor }
+export type { ListRisksCriteria }

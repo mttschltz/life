@@ -72,4 +72,5 @@ class CreateRiskInteractor {
   }
 }
 
-export { CreateRiskInteractor, CreateRiskRequest, CreateRiskRepo }
+export { CreateRiskInteractor }
+export type { CreateRiskRequest, CreateRiskRepo }

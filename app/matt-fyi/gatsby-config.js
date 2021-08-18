@@ -17,6 +17,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-typegen`,
       options: {
+        outputPath: `src/__generated__/gatsby-types.d.ts`, // Needs to be .d.ts otherwise it won't pass isolatedModules rule
         emitSchema: {
           // Used by eslint-plugin-graphql
           'src/__generated__/gatsby-introspection.json': true,
