@@ -18,6 +18,7 @@
 - [ ] **Re-enable `tsconfig.json->isolatedModules`.** Requires graphql types to not be exported globally, which `gatsby-plugin-typegen` does.
 - [ ] Move `lib/util/test.ts` to somewhere more relevant to unit testing utilities
 - [ ] ESLint rules: No relative imports (tried this but didn't work: https://github.com/import-js/eslint-plugin-import/blob/HEAD/docs/rules/no-relative-packages.md)
+- [ ] Less tsconfig duplication
 
 ## Developer experience
 

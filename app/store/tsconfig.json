@@ -51,7 +51,6 @@
     "paths": {
       "@life/*": ["../../lib/life/src/*"],
       "@util/*": ["../../lib/util/*"],
-      "@store": ["./src"],
       "@store/*": ["./src/*"],
     },
     // "rootDirs": [],                              /* List of root folders whose combined content represents the structure of the project at runtime. */
