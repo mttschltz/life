@@ -1,5 +1,5 @@
 import { IsEnum, isInstance, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
-import { Result, resultError, resultOk } from '@util'
+import { Result, resultError, resultOk } from '@util/result'
 
 enum RiskType {
   Risk = 'Risk',

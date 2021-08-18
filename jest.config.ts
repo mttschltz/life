@@ -85,7 +85,6 @@ export default {
     '@life/(.*)': ['<rootDir>/lib/life/src/$1'],
     '@life': ['<rootDir>/lib/life/src'],
     '@util/(.*)': ['<rootDir>/lib/util/$1'],
-    '@util': ['<rootDir>/lib/util'],
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

@@ -1,6 +1,6 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
 import { Category } from '@life'
-import { Result, resultOk } from '@util'
+import { Result, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 
 type ListRisksRepo = Pick<RiskRepo, 'listRisks'>

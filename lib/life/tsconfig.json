@@ -6,7 +6,6 @@
     "paths": {
       "@life": ["src"],
       "@life/*": ["src/*"],
-      "@util": ["../util"],
       "@util/*": ["../util/*"],
     }
   }

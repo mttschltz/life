@@ -1,6 +1,6 @@
 import { Risk } from '@life'
 import { newRisk } from '@life/risk'
-import { Result } from '@util'
+import { Result } from '@util/result'
 
 type RiskJson = Omit<Risk, 'parent' | 'mitigations'> & { parentId?: string }
 

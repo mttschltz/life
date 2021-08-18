@@ -1,5 +1,5 @@
 import { Category, Impact, Likelihood, newRisk, Risk, RiskType } from '@life/risk'
-import { assertResultError, assertResultOk } from '@util'
+import { assertResultError, assertResultOk } from '@util/testing'
 import { Result, ResultError } from '@util/result'
 import { CreateRiskInteractor, CreateRiskRepo, CreateRiskRequest } from './createRisk'
 import { Risk as UsecaseRisk } from './mapper'

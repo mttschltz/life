@@ -1,5 +1,5 @@
 import { Risk } from '@life'
-import { Result, resultError, resultOk } from '@util'
+import { Result, resultError, resultOk } from '@util/result'
 import { Category } from '@life/risk'
 import { RiskRepo } from '@life/repo'
 import { RiskJson, RiskMapper } from './mapper'

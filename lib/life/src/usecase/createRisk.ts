@@ -1,6 +1,6 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
 import { Category, Impact, Likelihood, RiskType } from '@life'
-import { Result, resultError, resultOk } from '@util'
+import { Result, resultError, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 import { newRisk } from '@life/risk'
 

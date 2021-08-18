@@ -51,7 +51,6 @@
     "paths": {
       "@life": ["../../lib/life/src"],
       "@life/*": ["../../lib/life/src/*"],
-      "@util": ["../../lib/util"],
       "@util/*": ["../../lib/util/*"],
       "@store": ["./src"],
       "@store/*": ["./src/*"],

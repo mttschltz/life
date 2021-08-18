@@ -1,7 +1,7 @@
 import { newRisk, Category, Impact, Likelihood, RiskType } from '@life/risk'
 import type { CreateDetails } from '@life'
 import { describe, expect, test } from '@jest/globals'
-import { assertResultError, assertResultOk } from '@util'
+import { assertResultError, assertResultOk } from '@util/testing'
 
 describe('Risk', () => {
   describe('Create', () => {

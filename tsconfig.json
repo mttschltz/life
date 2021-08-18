@@ -19,7 +19,6 @@
         "@life/*": ["./lib/life/src/*"],
         "@store": ["./app/store/src"],
         "@store/*": ["./app/store/src/*"],
-        "@util": ["./lib/util"],
         "@util/*": ["./lib/util/*"],
       }
     }
