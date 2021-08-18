@@ -9,7 +9,7 @@ import { Logger } from '@util/logger'
 import { ResultError } from '@util/result'
 import { Impact, Likelihood, RiskType } from '@life/risk'
 
-export class GraphService {
+class GraphService {
   #factory: InteractorFactory
   #mapper: GraphMapper
   #logger: Logger
@@ -148,3 +148,5 @@ export class GraphService {
     return new ApolloError(result.message || 'Unknown error')
   }
 }
+
+export { GraphService }

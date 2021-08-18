@@ -18,9 +18,14 @@ module.exports = {
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
     'prettier', // Disable other rules that may conflict with Prettier; via 'eslint-config-prettier'
     'plugin:prettier/recommended', // Adds ESLint warnings/errors for Prettier warnings/errors.
+    'plugin:import/typescript', // this line does the trick
   ],
+  plugins: ['import'],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
+    'import/group-exports': 2,
+    'import/exports-last': 2,
+    'import/no-default-export': 2,
   },
 }

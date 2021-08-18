@@ -4,13 +4,13 @@ import { Category } from '@life/risk'
 import { RiskRepo } from '@life/repo'
 import { RiskJson, RiskMapper } from './mapper'
 
-export interface Json {
+interface Json {
   risk: {
     [key: string]: RiskJson
   }
 }
 
-export class JsonRepo implements RiskRepo {
+class JsonRepo implements RiskRepo {
   #json: Json
   #mapper: RiskMapper
 
@@ -115,3 +115,6 @@ export class JsonRepo implements RiskRepo {
     return resultOk(risks)
   }
 }
+
+export type { Json }
+export { JsonRepo }

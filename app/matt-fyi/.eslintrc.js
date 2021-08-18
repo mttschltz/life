@@ -3,6 +3,10 @@
 
 module.exports = {
   ignorePatterns: ['public/**/*'],
+  rules: {
+    'import/no-default-export': 0,
+    'import/group-exports': 0,
+  },
   // plugins: ['graphql'],
   // rules: {
   //   'graphql/template-strings': [
