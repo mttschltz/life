@@ -1,4 +1,4 @@
-import { Risk } from '@life'
+import { Risk } from '@life/risk'
 import { newRisk } from '@life/risk'
 import { Result } from '@util/result'
 

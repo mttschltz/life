@@ -1,5 +1,5 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase'
-import { Category } from '@life'
+import { Category } from '@life/risk'
 import { Result, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 

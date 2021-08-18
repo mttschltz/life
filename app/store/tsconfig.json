@@ -49,7 +49,6 @@
     // "paths": {},                                 /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     "baseUrl": ".",
     "paths": {
-      "@life": ["../../lib/life/src"],
       "@life/*": ["../../lib/life/src/*"],
       "@util/*": ["../../lib/util/*"],
       "@store": ["./src"],

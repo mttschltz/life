@@ -1,4 +1,4 @@
-import { Category, Impact, Likelihood, Risk as RiskEntity, RiskType } from '@life'
+import { Category, Impact, Likelihood, Risk as RiskEntity, RiskType } from '@life/risk'
 
 interface Risk {
   id: string
