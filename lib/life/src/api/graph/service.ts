@@ -3,18 +3,18 @@ import type { ListRisksCriteria } from '@life/usecase/listRisks'
 import { Category as GraphCategory } from '@life/__generated__/graphql'
 import type { QueryRisksArgs, RequireFields, Resolvers } from '@life/__generated__/graphql'
 import * as typeDefs from '@life/api/graph/schema.graphql'
-import { ServiceFactory } from '@life/api/interactorFactory'
+import { InteractorFactory } from '@life/api/interactorFactory'
 import { GraphMapper } from '@life/api/graph/mapper'
 import { Logger } from '@util/logger'
 import { ResultError } from '@util/result'
 import { Impact, Likelihood, RiskType } from '@life/risk'
 
 export class GraphService {
-  #factory: ServiceFactory
+  #factory: InteractorFactory
   #mapper: GraphMapper
   #logger: Logger
 
-  constructor(factory: ServiceFactory, mapper: GraphMapper, logger: Logger) {
+  constructor(factory: InteractorFactory, mapper: GraphMapper, logger: Logger) {
     this.#factory = factory
     this.#mapper = mapper
     this.#logger = logger

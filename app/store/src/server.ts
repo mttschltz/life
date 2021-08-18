@@ -3,13 +3,13 @@ import { DateTimeMock } from 'graphql-scalars'
 
 import { environment } from '@store/environment'
 import { GraphService } from '@life/api/graph/service'
-import { ServiceFactory } from '@life/api/factory'
+import { InteractorFactory } from '@life/api/interactorFactory'
 import { GraphMapper } from '@life/api/graph/mapper'
 import { Logger } from '@util/logger'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 
-const serviceFactory = new ServiceFactory({})
-const graphService = new GraphService(serviceFactory, new GraphMapper(), Logger.new())
+const interactorFactory = new InteractorFactory({})
+const graphService = new GraphService(interactorFactory, new GraphMapper(), Logger.new())
 
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),
