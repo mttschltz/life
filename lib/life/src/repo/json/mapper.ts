@@ -5,7 +5,7 @@ import { Result } from '@util/result'
 type RiskJson = Omit<Risk, 'parent' | 'mitigations'> & { parentId?: string }
 
 class RiskMapper {
-  toJson({ category, id, impact, likelihood, name, notes, parent, type }: Risk): RiskJson {
+  public toJson({ category, id, impact, likelihood, name, notes, parent, type }: Risk): RiskJson {
     return {
       category,
       id,
@@ -18,7 +18,10 @@ class RiskMapper {
     }
   }
 
-  fromJson({ id, category, impact, likelihood, name, notes, type }: RiskJson, parent: Risk | undefined): Result<Risk> {
+  public fromJson(
+    { id, category, impact, likelihood, name, notes, type }: RiskJson,
+    parent: Risk | undefined,
+  ): Result<Risk> {
     const createDetails = {
       category,
       impact,

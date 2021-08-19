@@ -7,25 +7,27 @@ import { FetchRiskParentInteractor } from '@life/usecase/fetchRiskParent'
 import { CreateRiskInteractor } from '@life/usecase/createRisk'
 
 export class InteractorFactory {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #jsonRepo: JsonRepo
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(json: Partial<Json>) {
+  public constructor(json: Partial<Json>) {
     this.#jsonRepo = new JsonRepo(json, new JsonRiskMapper())
   }
 
-  listRisksInteractor(): ListRisksInteractor {
+  public listRisksInteractor(): ListRisksInteractor {
     return new ListRisksInteractor(this.#jsonRepo, new UsecaseRiskMapper())
   }
 
-  fetchRiskParentInteractor(): FetchRiskParentInteractor {
+  public fetchRiskParentInteractor(): FetchRiskParentInteractor {
     return new FetchRiskParentInteractor(this.#jsonRepo, new UsecaseRiskMapper())
   }
 
-  fetchRiskChildrenInteractor(): FetchRiskChildrenInteractor {
+  public fetchRiskChildrenInteractor(): FetchRiskChildrenInteractor {
     return new FetchRiskChildrenInteractor(this.#jsonRepo, new UsecaseRiskMapper())
   }
 
-  createRiskInteractor(): CreateRiskInteractor {
+  public createRiskInteractor(): CreateRiskInteractor {
     return new CreateRiskInteractor(this.#jsonRepo, new UsecaseRiskMapper())
   }
 }

@@ -11,15 +11,17 @@ interface ListRisksCriteria {
 }
 
 class ListRisksInteractor {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #repo: ListRisksRepo
   #mapper: RiskMapper
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(repo: ListRisksRepo, mapper: RiskMapper) {
+  public constructor(repo: ListRisksRepo, mapper: RiskMapper) {
     this.#repo = repo
     this.#mapper = mapper
   }
 
-  async listRisks(criteria: ListRisksCriteria): Promise<Result<UsecaseRisk[]>> {
+  public async listRisks(criteria: ListRisksCriteria): Promise<Result<UsecaseRisk[]>> {
     let category
     switch (criteria.category) {
       case 'health':

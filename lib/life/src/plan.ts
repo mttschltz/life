@@ -1,11 +1,13 @@
 export class Plan {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #name: string
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(name: string) {
+  public constructor(name: string) {
     this.#name = name
   }
 
-  get name(): string {
+  public get name(): string {
     return this.#name
   }
 }

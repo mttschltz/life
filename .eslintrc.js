@@ -31,5 +31,6 @@ module.exports = {
     'import/group-exports': 2,
     'import/exports-last': 2,
     'import/no-default-export': 2,
+    '@typescript-eslint/explicit-member-accessibility': ['error'],
   },
 }

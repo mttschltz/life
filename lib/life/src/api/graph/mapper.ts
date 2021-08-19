@@ -4,7 +4,7 @@ import { Category } from '@life/risk'
 import { Result, resultError, resultOk, results, Results } from '@util/result'
 
 class GraphMapper {
-  toCategory(graphCategory: GraphCategory): Result<Category> {
+  public toCategory(graphCategory: GraphCategory): Result<Category> {
     switch (graphCategory) {
       case GraphCategory.Health:
         return resultOk(Category.Health)
@@ -17,7 +17,7 @@ class GraphMapper {
     }
   }
 
-  fromCategory(category: Category): Result<GraphCategory> {
+  public fromCategory(category: Category): Result<GraphCategory> {
     switch (category) {
       case Category.Health:
         return resultOk(GraphCategory.Health)
@@ -30,7 +30,7 @@ class GraphMapper {
     }
   }
 
-  fromRisk({ id, category, name }: UsecaseRisk): Result<GraphRisk> {
+  public fromRisk({ id, category, name }: UsecaseRisk): Result<GraphRisk> {
     const graphCategoryResult = this.fromCategory(category)
     if (!graphCategoryResult.ok) {
       return graphCategoryResult
@@ -43,7 +43,7 @@ class GraphMapper {
     })
   }
 
-  risks(risks: UsecaseRisk[]): Results<GraphRisk> {
+  public risks(risks: UsecaseRisk[]): Results<GraphRisk> {
     return results(risks.map((risk) => this.fromRisk(risk)))
   }
 }

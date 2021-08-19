@@ -10,11 +10,13 @@ import { ResultError } from '@util/result'
 import { Impact, Likelihood, RiskType } from '@life/risk'
 
 class GraphService {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #factory: InteractorFactory
   #mapper: GraphMapper
   #logger: Logger
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(factory: InteractorFactory, mapper: GraphMapper, logger: Logger) {
+  public constructor(factory: InteractorFactory, mapper: GraphMapper, logger: Logger) {
     this.#factory = factory
     this.#mapper = mapper
     this.#logger = logger
@@ -23,7 +25,7 @@ class GraphService {
   // We may want to use Apollo dataSources at some point to leverage caching, deduplication and error handling.
   // They would probably need to call the usecases, rather than JsonRepo, as they have the relevant logic.
   // But for now, the benefits don't justify the overhead of adding another layer between resolvers and usecases.
-  resolvers(): Resolvers {
+  public resolvers(): Resolvers {
     return {
       Mutation: {
         createRisk: async (_, { input }) => {
@@ -130,7 +132,7 @@ class GraphService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  typeDefs(): any {
+  public typeDefs(): any {
     return typeDefs
   }
 

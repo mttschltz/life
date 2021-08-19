@@ -14,7 +14,7 @@ interface Risk {
 }
 
 class RiskMapper {
-  risk({ id, category, impact, likelihood, name, notes, parent, type }: RiskEntity): Risk {
+  public risk({ id, category, impact, likelihood, name, notes, parent, type }: RiskEntity): Risk {
     let usecaseParent
     if (parent) {
       usecaseParent = this.risk(parent)
@@ -31,7 +31,7 @@ class RiskMapper {
     }
   }
 
-  risks(risks: RiskEntity[]): Risk[] {
+  public risks(risks: RiskEntity[]): Risk[] {
     return risks.map((risk) => this.risk(risk))
   }
 }

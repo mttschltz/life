@@ -11,10 +11,12 @@ interface Json {
 }
 
 class JsonRepo implements RiskRepo {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #json: Json
   #mapper: RiskMapper
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(json: Partial<Json>, mapper: RiskMapper) {
+  public constructor(json: Partial<Json>, mapper: RiskMapper) {
     const risk = json.risk || {}
     this.#json = {
       risk,
@@ -23,7 +25,7 @@ class JsonRepo implements RiskRepo {
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  async createRisk(risk: Risk): Promise<Result<void>> {
+  public async createRisk(risk: Risk): Promise<Result<void>> {
     if (this.#json.risk[risk.id]) {
       return resultError(`Risk with id '${risk.id}' already exists`)
     }
@@ -38,7 +40,7 @@ class JsonRepo implements RiskRepo {
     return resultOk(undefined)
   }
 
-  async fetchRisk(id: string): Promise<Result<Risk>> {
+  public async fetchRisk(id: string): Promise<Result<Risk>> {
     const jsonRisk = this.#json.risk[id]
     if (!jsonRisk) return resultError(`Could not find risk ${id}`)
 
@@ -59,7 +61,7 @@ class JsonRepo implements RiskRepo {
     return resultOk(riskResult.value)
   }
 
-  async fetchRiskParent(id: string): Promise<Result<Risk | undefined>> {
+  public async fetchRiskParent(id: string): Promise<Result<Risk | undefined>> {
     const jsonRisk = this.#json.risk[id]
     if (!jsonRisk) return resultError(`Could not find risk ${id}`)
 
@@ -75,7 +77,7 @@ class JsonRepo implements RiskRepo {
     return resultOk(parentRiskResult.value)
   }
 
-  async fetchRiskChildren(id: string): Promise<Result<Risk[]>> {
+  public async fetchRiskChildren(id: string): Promise<Result<Risk[]>> {
     const jsonRisks = Object.values(this.#json.risk)
     const riskChildren = []
     for (const jsonRisk of jsonRisks) {
@@ -93,7 +95,7 @@ class JsonRepo implements RiskRepo {
     return resultOk(riskChildren)
   }
 
-  async listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
+  public async listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
     const jsonRisks = Object.values(this.#json.risk)
     const risks = []
     for (let i = 0; i < jsonRisks.length; i++) {

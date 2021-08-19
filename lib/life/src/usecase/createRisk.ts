@@ -18,15 +18,17 @@ interface CreateRiskRequest {
 type CreateRiskRepo = Pick<RiskRepo, 'createRisk' | 'fetchRisk'>
 
 class CreateRiskInteractor {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #repo: CreateRiskRepo
   #mapper: RiskMapper
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(repo: CreateRiskRepo, mapper: RiskMapper) {
+  public constructor(repo: CreateRiskRepo, mapper: RiskMapper) {
     this.#repo = repo
     this.#mapper = mapper
   }
 
-  async createRisk({
+  public async createRisk({
     uriPart,
     type,
     parentId,

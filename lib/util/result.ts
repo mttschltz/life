@@ -4,17 +4,19 @@ interface ResultOk<T> {
 }
 
 class ResultOkImpl<T> implements ResultOk<T> {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #value: T
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(value: T) {
+  public constructor(value: T) {
     this.#value = value
   }
 
-  get ok(): true {
+  public get ok(): true {
     return true
   }
 
-  get value() {
+  public get value() {
     return this.#value
   }
 }
@@ -26,23 +28,25 @@ interface ResultError {
 }
 
 class ResultErrorImpl implements ResultError {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #message: string
   #error?: Error
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(message: string, error?: Error) {
+  public constructor(message: string, error?: Error) {
     this.#message = message
     this.#error = error
   }
 
-  get ok(): false {
+  public get ok(): false {
     return false
   }
 
-  get message() {
+  public get message() {
     return this.#message
   }
 
-  get error() {
+  public get error() {
     return this.#error
   }
 }
@@ -64,21 +68,23 @@ interface Results<T> {
 }
 
 class ResultsImpl<T> implements Results<T> {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #results: Result<T>[]
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(results: Result<T>[]) {
+  public constructor(results: Result<T>[]) {
     this.#results = results
   }
 
-  get firstErrorResult(): ResultError | undefined {
+  public get firstErrorResult(): ResultError | undefined {
     return this.#results.find((r): r is ResultError => !r.ok)
   }
 
-  get values(): (T | undefined)[] {
+  public get values(): (T | undefined)[] {
     return this.#results.map((r) => (r.ok ? r.value : undefined))
   }
 
-  get okValues(): T[] {
+  public get okValues(): T[] {
     return this.#results.filter((r): r is ResultOk<T> => r.ok).map((r) => r.value)
   }
 }

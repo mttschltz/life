@@ -5,15 +5,17 @@ import { RiskRepo } from '@life/repo'
 type FetchRiskParentRepo = Pick<RiskRepo, 'fetchRiskParent'>
 
 class FetchRiskParentInteractor {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #repo: FetchRiskParentRepo
   #mapper: RiskMapper
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor(repo: FetchRiskParentRepo, mapper: RiskMapper) {
+  public constructor(repo: FetchRiskParentRepo, mapper: RiskMapper) {
     this.#repo = repo
     this.#mapper = mapper
   }
 
-  async fetchRiskParent(id: string): Promise<Result<UsecaseRisk | undefined>> {
+  public async fetchRiskParent(id: string): Promise<Result<UsecaseRisk | undefined>> {
     const riskParentResult = await this.#repo.fetchRiskParent(id)
     if (!riskParentResult.ok) {
       return riskParentResult

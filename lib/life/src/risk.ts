@@ -63,6 +63,7 @@ function newRisk(id: string, details: CreateDetails): Result<Risk> {
 }
 
 class RiskImpl implements Risk {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #id: string
 
   #category: Category
@@ -73,8 +74,9 @@ class RiskImpl implements Risk {
   #notes?: string
   #parent?: Risk
   #type: RiskType
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  constructor({ category, impact, likelihood, name, notes, parent, type }: CreateDetails, id: string) {
+  public constructor({ category, impact, likelihood, name, notes, parent, type }: CreateDetails, id: string) {
     this.#id = id
 
     this.#category = category
@@ -88,46 +90,46 @@ class RiskImpl implements Risk {
 
   @MinLength(1)
   @IsString()
-  get id(): string {
+  public get id(): string {
     return this.#id
   }
 
   // Details
 
   @IsEnum(Category)
-  get category(): Category {
+  public get category(): Category {
     return this.#category
   }
 
   @IsEnum(Impact)
-  get impact(): Impact {
+  public get impact(): Impact {
     return this.#impact
   }
 
   @IsEnum(Likelihood)
-  get likelihood(): Likelihood {
+  public get likelihood(): Likelihood {
     return this.#likelihood
   }
 
   @MinLength(2)
   @IsString()
-  get name(): string {
+  public get name(): string {
     return this.#name
   }
 
   @IsOptional()
   @IsString()
-  get notes(): string | undefined {
+  public get notes(): string | undefined {
     return this.#notes
   }
 
   @IsOptional()
-  get parent(): Risk | undefined {
+  public get parent(): Risk | undefined {
     return this.#parent
   }
 
   @IsEnum(RiskType)
-  get type(): RiskType {
+  public get type(): RiskType {
     return this.#type
   }
 }
