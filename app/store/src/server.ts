@@ -13,6 +13,7 @@ const graphService = new GraphService(interactorFactory, new GraphMapper(), Logg
 
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   typeDefs: graphService.typeDefs(),
   introspection: environment.apollo.introspection,
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
@@ -23,9 +24,11 @@ const server = new ApolloServer({
   mockEntireSchema: false, // TODO: Remove in PROD.
 })
 
-server.listen(environment.port).then(({ url }) => console.log(`Server ready at ${url}. `))
+void server.listen(environment.port).then(({ url }) => console.log(`Server ready at ${url}. `))
 
 if (module.hot) {
   module.hot.accept()
-  module.hot.dispose(() => server.stop())
+  module.hot.dispose(() => {
+    void server.stop()
+  })
 }

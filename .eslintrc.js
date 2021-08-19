@@ -2,6 +2,9 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   parserOptions: {
+    // These two properties enable type aware linting rules for @typescript-eslint
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
     ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
     sourceType: 'module', // Allows for the use of imports
     ecmaFeatures: {
@@ -16,6 +19,7 @@ module.exports = {
   extends: [
     'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier', // Disable other rules that may conflict with Prettier; via 'eslint-config-prettier'
     'plugin:prettier/recommended', // Adds ESLint warnings/errors for Prettier warnings/errors.
     'plugin:import/typescript', // this line does the trick

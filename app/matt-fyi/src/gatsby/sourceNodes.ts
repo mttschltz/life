@@ -8,7 +8,9 @@ import type { SourceNodesArgs } from 'gatsby'
 // with this module: https://typegraphql.com/docs/installation.html
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const sourceNodes = async ({ actions, createContentDigest, createNodeId }: SourceNodesArgs) => {
+// eslint-disable-next-line @typescript-eslint/require-await
+const sourceNodes = async ({ actions, createContentDigest, createNodeId }: SourceNodesArgs): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { createNode } = actions
 
   const data = {

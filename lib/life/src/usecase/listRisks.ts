@@ -37,7 +37,7 @@ class ListRisksInteractor {
       return risksResult
     }
 
-    return resultOk(risksResult.value.map(this.#mapper.risk))
+    return resultOk(risksResult.value.map((risk) => this.#mapper.risk(risk)))
   }
 }
 

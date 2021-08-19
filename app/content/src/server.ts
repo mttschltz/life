@@ -15,6 +15,7 @@ const createRiskMutation = gql`
     }
   }
 `
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 ;(async function () {
   try {
     const parent = await client.mutate<CreateRiskMutation, CreateRiskMutationVariables>({
@@ -63,6 +64,6 @@ const createRiskMutation = gql`
       },
     })
   } catch (e) {
-    console.log(`error=${e}`)
+    console.log(`error=${JSON.stringify(e)}`)
   }
 })()

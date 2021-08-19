@@ -32,7 +32,7 @@ class RiskMapper {
   }
 
   risks(risks: RiskEntity[]): Risk[] {
-    return risks.map(this.risk, this)
+    return risks.map((risk) => this.risk(risk))
   }
 }
 

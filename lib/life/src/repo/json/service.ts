@@ -22,6 +22,7 @@ class JsonRepo implements RiskRepo {
     this.#mapper = mapper
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   async createRisk(risk: Risk): Promise<Result<void>> {
     if (this.#json.risk[risk.id]) {
       return resultError(`Risk with id '${risk.id}' already exists`)

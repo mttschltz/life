@@ -44,7 +44,7 @@ class GraphMapper {
   }
 
   risks(risks: UsecaseRisk[]): Results<GraphRisk> {
-    return results(risks.map(this.fromRisk, this))
+    return results(risks.map((risk) => this.fromRisk(risk)))
   }
 }
 
