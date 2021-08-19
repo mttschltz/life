@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/require-await */
 import { Category, Impact, Likelihood, newRisk, Risk, RiskType } from '@life/risk'
 import { assertResultError, assertResultOk } from '@util/testing'

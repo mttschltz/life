@@ -1,7 +1,7 @@
-import { ApolloError } from 'apollo-server'
+import { ApolloError, Config } from 'apollo-server'
 import type { ListRisksCriteria } from '@life/usecase/listRisks'
 import { Category as GraphCategory } from '@life/__generated__/graphql'
-import type { QueryRisksArgs, RequireFields, Resolvers } from '@life/__generated__/graphql'
+import type { QueryRisksArgs, RequireFields, Resolvers, Risk as GraphRisk } from '@life/__generated__/graphql'
 import * as typeDefs from '@life/api/graph/schema.graphql'
 import { InteractorFactory } from '@life/api/interactorFactory'
 import { GraphMapper } from '@life/api/graph/mapper'
@@ -28,7 +28,7 @@ class GraphService {
   public resolvers(): Resolvers {
     return {
       Mutation: {
-        createRisk: async (_, { input }) => {
+        createRisk: async (_, { input }): Promise<GraphRisk> => {
           // TODO: Instead of mapping each enum, etc individually, map CreateRiskInput
           // to CreateRiskRequest. This should make testing easier.
           const categoryResult = this.#mapper.toCategory(input.category)
@@ -60,7 +60,7 @@ class GraphService {
         },
       },
       Risk: {
-        parent: async (risk) => {
+        parent: async (risk): Promise<GraphRisk | null> => {
           const parentResult = await this.#factory.fetchRiskParentInteractor().fetchRiskParent(risk.id)
           if (!parentResult.ok) {
             this.#logger.result(parentResult)
@@ -80,7 +80,7 @@ class GraphService {
 
           return mappingResult.value
         },
-        children: async (risk) => {
+        children: async (risk): Promise<GraphRisk[]> => {
           const childrenResult = await this.#factory.fetchRiskChildrenInteractor().fetchRiskChildren(risk.id)
           if (!childrenResult.ok) {
             this.#logger.result(childrenResult)
@@ -98,7 +98,7 @@ class GraphService {
         },
       },
       Query: {
-        risks: async (_, args: RequireFields<QueryRisksArgs, never>) => {
+        risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<GraphRisk[]> => {
           const criteria: ListRisksCriteria = {}
           switch (args.category) {
             case GraphCategory.Health:
@@ -131,8 +131,7 @@ class GraphService {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public typeDefs(): any {
+  public typeDefs(): Config['typeDefs'] {
     return typeDefs
   }
 

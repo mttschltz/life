@@ -16,7 +16,7 @@ class ResultOkImpl<T> implements ResultOk<T> {
     return true
   }
 
-  public get value() {
+  public get value(): T {
     return this.#value
   }
 }
@@ -42,11 +42,11 @@ class ResultErrorImpl implements ResultError {
     return false
   }
 
-  public get message() {
+  public get message(): string {
     return this.#message
   }
 
-  public get error() {
+  public get error(): Error | undefined {
     return this.#error
   }
 }

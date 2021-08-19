@@ -16,7 +16,7 @@ const createRiskMutation = gql`
   }
 `
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-;(async function () {
+;(async function (): Promise<void> {
   try {
     const parent = await client.mutate<CreateRiskMutation, CreateRiskMutationVariables>({
       mutation: createRiskMutation,

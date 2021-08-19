@@ -19,7 +19,7 @@ const server = new ApolloServer({
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
   mocks: {
     DateTime: DateTimeMock,
-    Category: () => 'HEALTH',
+    Category: (): string => 'HEALTH',
   }, // TODO: Remove in PROD.
   mockEntireSchema: false, // TODO: Remove in PROD.
 })

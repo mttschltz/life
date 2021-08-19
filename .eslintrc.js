@@ -31,6 +31,15 @@ module.exports = {
     'import/group-exports': 2,
     'import/exports-last': 2,
     'import/no-default-export': 2,
-    '@typescript-eslint/explicit-member-accessibility': ['error'],
   },
+  overrides: [
+    {
+      // enable the rule specifically for TypeScript files
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/explicit-member-accessibility': 2,
+        '@typescript-eslint/explicit-function-return-type': 2,
+      },
+    },
+  ],
 }
