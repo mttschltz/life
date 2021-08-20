@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 module.exports = {
   'app/matt-fyi/**/*.{ts,tsx}': [
     () => {

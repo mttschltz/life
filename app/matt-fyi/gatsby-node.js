@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 'use strict'
-/* eslint-disable @typescript-eslint/no-var-requires */
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
