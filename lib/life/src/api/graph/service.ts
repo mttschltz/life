@@ -27,6 +27,7 @@ class GraphService {
   // But for now, the benefits don't justify the overhead of adding another layer between resolvers and usecases.
   public resolvers(): Resolvers {
     return {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Mutation: {
         createRisk: async (_, { input }): Promise<GraphRisk> => {
           // TODO: Instead of mapping each enum, etc individually, map CreateRiskInput
@@ -59,6 +60,7 @@ class GraphService {
           return mappingResult.value
         },
       },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Risk: {
         parent: async (risk): Promise<GraphRisk | null> => {
           const parentResult = await this.#factory.fetchRiskParentInteractor().fetchRiskParent(risk.id)
@@ -97,6 +99,7 @@ class GraphService {
           return mappingResults.okValues
         },
       },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Query: {
         risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<GraphRisk[]> => {
           const criteria: ListRisksCriteria = {}

@@ -72,6 +72,48 @@ module.exports = {
           },
         ],
         '@typescript-eslint/method-signature-style': [2, 'property'],
+        '@typescript-eslint/naming-convention': [
+          'error',
+          {
+            selector: 'variableLike',
+            format: ['strictCamelCase'],
+            filter: {
+              regex: '^_+$',
+              match: false,
+            },
+          },
+          {
+            selector: 'variable',
+            format: ['strictCamelCase', 'StrictPascalCase'], // StrictPascalCase for JSX component names
+            modifiers: ['const'],
+            types: ['function'],
+          },
+          {
+            selector: 'variable',
+            format: ['strictCamelCase', 'UPPER_CASE'],
+            modifiers: ['const'],
+          },
+          {
+            selector: 'memberLike',
+            format: ['strictCamelCase'],
+          },
+          {
+            selector: 'enumMember',
+            format: ['StrictPascalCase'],
+          },
+          {
+            selector: 'typeLike',
+            format: ['StrictPascalCase'],
+          },
+          {
+            selector: 'property',
+            format: ['strictCamelCase'],
+          },
+          {
+            selector: 'method',
+            format: ['strictCamelCase'],
+          },
+        ],
       },
     },
   ],

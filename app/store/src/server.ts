@@ -18,8 +18,10 @@ const server = new ApolloServer({
   introspection: environment.apollo.introspection,
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
   mocks: {
+    /* eslint-disable @typescript-eslint/naming-convention */
     DateTime: DateTimeMock,
     Category: (): string => 'HEALTH',
+    /* eslint-enable @typescript-eslint/naming-convention */
   }, // TODO: Remove in PROD.
   mockEntireSchema: false, // TODO: Remove in PROD.
 })
