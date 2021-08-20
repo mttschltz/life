@@ -63,6 +63,15 @@ module.exports = {
         'import/no-default-export': 2,
         '@typescript-eslint/explicit-member-accessibility': 2,
         '@typescript-eslint/explicit-function-return-type': 2,
+        '@typescript-eslint/member-ordering': [
+          2,
+          {
+            interfaces: ['signature', 'field', 'constructor', 'method'],
+            typeLiterals: ['signature', 'field', 'constructor', 'method'],
+            classes: ['field', 'constructor', 'method'],
+          },
+        ],
+        '@typescript-eslint/method-signature-style': [2, 'property'],
       },
     },
   ],

@@ -16,6 +16,10 @@ class Logger {
     // empty
   }
 
+  public static new(): Logger {
+    return new Logger()
+  }
+
   public info(details: Details): void {
     const args: ConsoleArgs = [details.msg]
     details.data && args.push(details.data)
@@ -49,10 +53,6 @@ class Logger {
         },
       })
     }
-  }
-
-  public static new(): Logger {
-    return new Logger()
   }
 }
 
