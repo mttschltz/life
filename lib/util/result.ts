@@ -72,8 +72,8 @@ class ResultsImpl<T> implements Results<T> {
   #results: Result<T>[]
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  public constructor(results: Result<T>[]) {
-    this.#results = results
+  public constructor(rs: Result<T>[]) {
+    this.#results = rs
   }
 
   public get firstErrorResult(): ResultError | undefined {
@@ -89,8 +89,8 @@ class ResultsImpl<T> implements Results<T> {
   }
 }
 
-function results<T>(results: Result<T>[]): Results<T> {
-  return new ResultsImpl(results)
+function results<T>(rs: Result<T>[]): Results<T> {
+  return new ResultsImpl(rs)
 }
 
 export type { Result, ResultError, ResultOk, Results }
