@@ -4,13 +4,6 @@
     "lib": ["dom","es6"],
     "outDir": "dist",
     "noEmit": false,
-    "baseUrl": ".",
-    "paths": {
-      "@life/*": ["../../lib/life/src/*"],
-      "@util/*": ["../../lib/util/*"],
-      "@store/*": ["./src/*"],
-    },
   },
-  "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "../../lib/life/src/api/graph/types/graphql.d.ts"]
 }
