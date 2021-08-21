@@ -24,7 +24,7 @@ const createRiskMutation = gql`
         input: {
           name: 'risk parent',
           category: Category.HEALTH,
-          uriPart: '/uri-part-risk-parent',
+          uriPart: 'uri-part-risk-parent',
         },
       },
     })
@@ -35,7 +35,7 @@ const createRiskMutation = gql`
         input: {
           category: Category.SECURITY,
           name: 'risk child',
-          uriPart: '/uri-part-risk-child',
+          uriPart: 'uri-part-risk-child',
           parentId: parent.data?.createRisk.id,
         },
       },
@@ -47,7 +47,7 @@ const createRiskMutation = gql`
         input: {
           category: Category.SECURITY,
           name: 'risk child 2',
-          uriPart: '/uri-part-risk-child-2',
+          uriPart: 'uri-part-risk-child-2',
           parentId: parent.data?.createRisk.id,
         },
       },
@@ -59,11 +59,12 @@ const createRiskMutation = gql`
         input: {
           category: Category.WEALTH,
           name: 'risk paent 2',
-          uriPart: '/uri-part-risk-parent-2',
+          uriPart: 'uri-part-risk-parent-2',
         },
       },
     })
   } catch (e: unknown) {
     console.log(`error=${JSON.stringify(e)}`)
+    process.exit(1)
   }
 })()

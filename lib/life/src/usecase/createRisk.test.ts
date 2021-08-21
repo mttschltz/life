@@ -146,6 +146,10 @@ describe('createRisk', () => {
           riskResult = await interactor.createRisk({ ...createDetails, uriPart: '^' })
           assertResultError(riskResult)
           expect(riskResult.message).toBe("Invalid URI part: '^'")
+
+          riskResult = await interactor.createRisk({ ...createDetails, uriPart: '/start-with-slash' })
+          assertResultError(riskResult)
+          expect(riskResult.message).toBe("Invalid URI part: '/start-with-slash'")
         })
       })
       describe('When fetching the parent fails', () => {
@@ -202,7 +206,7 @@ describe('createRisk', () => {
           likelihood: Likelihood.High,
           name: 'name',
           type: RiskType.Condition,
-          uriPart: 'uri-part',
+          uriPart: 'uri-part-1',
         }
       })
       describe('When everything suceeds', () => {
@@ -218,7 +222,7 @@ describe('createRisk', () => {
           // And the risk is constructed as expected
           expect(newRiskMock).toBeCalledTimes(1)
           expect(newRiskMock.mock.calls[0]).toEqual([
-            'uri-part',
+            'uri-part-1',
             {
               ...createDetails,
               uriPart: undefined,
