@@ -41,7 +41,7 @@ class GraphService {
           const riskResult = await this.#factory.createRiskInteractor().createRisk({
             category: categoryResult.value,
             name: input.name,
-            parentId: input.parentId ? input.parentId : undefined,
+            parentId: input.parentId ?? undefined,
             impact: Impact.Normal,
             likelihood: Likelihood.Normal,
             type: RiskType.Condition,

@@ -87,12 +87,10 @@ describe('Risk', () => {
     })
     describe('Given an invalid CreateDetails', () => {
       test('Then an error result is returned', () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error: In the domain we want to protect against runtime type errors
         expect(() => newRisk('id', undefined)).toThrow()
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error: In the domain we want to protect against runtime type errors
         const riskResult = newRisk('id', {})
         assertResultError(riskResult)
         expect(riskResult.message).toEqual('category must be a valid enum value')
@@ -100,20 +98,16 @@ describe('Risk', () => {
     })
     describe('Given an invalid id', () => {
       test('Then an error result is returned', () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error: In the domain we want to protect against runtime type errors
         let riskResult = newRisk(undefined, createDetails)
         assertResultError(riskResult)
         expect(riskResult.message).toEqual('id must be a string')
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         riskResult = newRisk('', createDetails)
         assertResultError(riskResult)
         expect(riskResult.message).toEqual('id must be longer than or equal to 1 characters')
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error: In the domain we want to protect against runtime type errors
         riskResult = newRisk(5, createDetails)
         assertResultError(riskResult)
         expect(riskResult.message).toEqual('id must be a string')
@@ -123,8 +117,7 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         let riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           category: undefined,
         })
         assertResultError(riskResult)
@@ -132,8 +125,7 @@ describe('Risk', () => {
 
         riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           category: 'invalid category',
         })
         assertResultError(riskResult)
@@ -144,8 +136,7 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         let riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           impact: undefined,
         })
         assertResultError(riskResult)
@@ -153,8 +144,7 @@ describe('Risk', () => {
 
         riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           impact: 'invalid impact',
         })
         assertResultError(riskResult)
@@ -165,8 +155,7 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         let riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           likelihood: undefined,
         })
         assertResultError(riskResult)
@@ -174,8 +163,7 @@ describe('Risk', () => {
 
         riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           likelihood: 'invalid likelihood',
         })
         assertResultError(riskResult)
@@ -186,8 +174,7 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         let riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           name: undefined,
         })
         assertResultError(riskResult)
@@ -195,8 +182,6 @@ describe('Risk', () => {
 
         riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           name: 'x',
         })
         assertResultError(riskResult)
@@ -207,8 +192,7 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         const riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           notes: 5,
         })
         assertResultError(riskResult)
@@ -219,8 +203,7 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         const riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           parent: 'parent',
         })
         assertResultError(riskResult)
@@ -231,8 +214,7 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         let riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           type: undefined,
         })
         assertResultError(riskResult)
@@ -240,8 +222,7 @@ describe('Risk', () => {
 
         riskResult = newRisk('id', {
           ...createDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
           type: 'x',
         })
         assertResultError(riskResult)
@@ -250,8 +231,7 @@ describe('Risk', () => {
     })
     describe('Given a CreateDetails with multiple missing fields', () => {
       test('Then an error result with the first error is returned', () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error: In the domain we want to protect against runtime type errors
         const riskResult = newRisk('id', {})
         assertResultError(riskResult)
         expect(riskResult.message).toEqual('category must be a valid enum value')

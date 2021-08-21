@@ -15,7 +15,7 @@ interface Result {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const createPages = ({ graphql, actions }: CreatePagesArgs): Promise<void> => {
+const createPages = async ({ graphql, actions }: CreatePagesArgs): Promise<void> => {
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const { createPage } = actions
   // Query for markdown nodes to use in creating pages.

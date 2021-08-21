@@ -97,6 +97,11 @@ module.exports = {
         '@typescript-eslint/prefer-nullish-coalescing': [2],
         '@typescript-eslint/prefer-optional-chain': [2],
         '@typescript-eslint/prefer-readonly': [2],
+        // '@typescript-eslint/prefer-return-this-type': [2], // Not yet merged in plugin... could enable once it is
+        '@typescript-eslint/prefer-string-starts-ends-with': [2],
+        '@typescript-eslint/prefer-ts-expect-error': [2],
+        '@typescript-eslint/promise-function-async': [2],
+        '@typescript-eslint/require-array-sort-compare': [2],
         '@typescript-eslint/naming-convention': [
           'error',
           {

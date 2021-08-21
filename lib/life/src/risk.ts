@@ -42,7 +42,6 @@ function newRisk(id: string, details: CreateDetails): Result<Risk> {
   if (typeof details.parent !== 'undefined' && !isInstance(details.parent, RiskImpl)) {
     return resultError('parent must be instance of Risk')
   }
-
   const risk = new RiskImpl(details, id)
 
   // Validate at runtime in addition to compile time
