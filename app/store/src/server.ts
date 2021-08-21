@@ -26,7 +26,9 @@ const server = new ApolloServer({
   mockEntireSchema: false, // TODO: Remove in PROD.
 })
 
-void server.listen(environment.port).then(({ url }) => console.log(`Server ready at ${url}. `))
+void server.listen(environment.port).then(({ url }) => {
+  console.log(`Server ready at ${url}. `)
+})
 
 if (module.hot) {
   module.hot.accept()

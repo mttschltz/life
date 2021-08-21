@@ -22,7 +22,7 @@ const sourceNodes = async ({ actions, createContentDigest, createNodeId }: Sourc
   }
 
   // loop through data and create Gatsby nodes
-  data.risks.forEach((risk) =>
+  data.risks.forEach((risk) => {
     createNode({
       ...risk,
       id: createNodeId(`${RISK_NODE_TYPE}-${risk.uriPart}`),
@@ -33,8 +33,8 @@ const sourceNodes = async ({ actions, createContentDigest, createNodeId }: Sourc
         content: JSON.stringify(risk),
         contentDigest: createContentDigest(risk),
       },
-    }),
-  )
+    })
+  })
 
   return
 }

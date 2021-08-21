@@ -51,6 +51,7 @@ module.exports = {
 
       extends: [
         'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
+        'plugin:@typescript-eslint/eslint-recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'prettier', // Disable other rules that may conflict with Prettier; via 'eslint-config-prettier'
@@ -72,6 +73,11 @@ module.exports = {
           },
         ],
         '@typescript-eslint/method-signature-style': [2, 'property'],
+        '@typescript-eslint/no-dynamic-delete': [2],
+        '@typescript-eslint/no-implicit-any-catch': [2],
+        '@typescript-eslint/no-require-imports': [2],
+        '@typescript-eslint/no-unnecessary-boolean-literal-compare': [2],
+        '@typescript-eslint/no-unnecessary-condition': [2],
         '@typescript-eslint/naming-convention': [
           'error',
           {

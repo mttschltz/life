@@ -7,7 +7,7 @@ import { FunctionComponent } from 'react'
 const IndexPage: FunctionComponent<PageProps<GatsbyTypes.RisksQueryQuery>> = ({ data }): JSX.Element => {
   return (
     <main>
-      {data.store.risks?.map((r) => (
+      {data.store.risks.map((r) => (
         <>
           <p key={r?.id}>Risk: {r?.id}</p>
           <ul>

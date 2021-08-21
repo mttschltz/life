@@ -38,10 +38,6 @@ interface Risk {
 }
 
 function newRisk(id: string, details: CreateDetails): Result<Risk> {
-  if (!details) {
-    return resultError('Missing details')
-  }
-
   // Manual check as @IsInstance(RiskImpl) will result in "Cannot access before initialization" error
   if (typeof details.parent !== 'undefined' && !isInstance(details.parent, RiskImpl)) {
     return resultError('parent must be instance of Risk')

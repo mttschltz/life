@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Risk } from '@life/risk'
 import { Result, resultError, resultOk } from '@util/result'
 import { Category } from '@life/risk'

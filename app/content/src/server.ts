@@ -63,7 +63,7 @@ const createRiskMutation = gql`
         },
       },
     })
-  } catch (e) {
+  } catch (e: unknown) {
     console.log(`error=${JSON.stringify(e)}`)
   }
 })()

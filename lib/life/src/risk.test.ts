@@ -89,9 +89,13 @@ describe('Risk', () => {
       test('Then an error result is returned', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const riskResult = newRisk('id', undefined)
+        expect(() => newRisk('id', undefined)).toThrow()
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const riskResult = newRisk('id', {})
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('Missing details')
+        expect(riskResult.message).toEqual('category must be a valid enum value')
       })
     })
     describe('Given an invalid id', () => {
