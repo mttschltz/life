@@ -1,3 +1,7 @@
+// Treat errors and warnings the same: There should be none.
+//
+// If there is a justified reason for breaking a rule, add a single-line exception.
+// Only add a file-evel exception if the file's context is what justifies breaking the rule.
 module.exports = {
   root: true,
   // -----
@@ -21,6 +25,7 @@ module.exports = {
     'import/group-exports': 2,
     'import/exports-last': 2,
     'import/no-default-export': 2,
+    'no-param-reassign': [2, { props: true }],
   },
 
   settings: {
@@ -62,6 +67,7 @@ module.exports = {
         'import/group-exports': 2,
         'import/exports-last': 2,
         'import/no-default-export': 2,
+        'no-param-reassign': [2, { props: true }],
         '@typescript-eslint/explicit-member-accessibility': 2,
         '@typescript-eslint/explicit-function-return-type': 2,
         '@typescript-eslint/member-ordering': [
@@ -78,6 +84,19 @@ module.exports = {
         '@typescript-eslint/no-require-imports': [2],
         '@typescript-eslint/no-unnecessary-boolean-literal-compare': [2],
         '@typescript-eslint/no-unnecessary-condition': [2],
+        '@typescript-eslint/no-unnecessary-qualifier': [2],
+        '@typescript-eslint/no-unnecessary-type-arguments': [2],
+        '@typescript-eslint/no-unnecessary-type-constraint': [2],
+        '@typescript-eslint/no-unsafe-argument': [2],
+        '@typescript-eslint/non-nullable-type-assertion-style': [2],
+        '@typescript-eslint/prefer-enum-initializers': [2],
+        '@typescript-eslint/prefer-for-of': [2],
+        '@typescript-eslint/prefer-function-type': [2],
+        '@typescript-eslint/prefer-includes': [2],
+        '@typescript-eslint/prefer-literal-enum-member': [2],
+        '@typescript-eslint/prefer-nullish-coalescing': [2],
+        '@typescript-eslint/prefer-optional-chain': [2],
+        '@typescript-eslint/prefer-readonly': [2],
         '@typescript-eslint/naming-convention': [
           'error',
           {

@@ -18,7 +18,7 @@ class JsonRepo implements RiskRepo {
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
   public constructor(json: Partial<Json>, mapper: RiskMapper) {
-    const risk = json.risk || {}
+    const risk = json.risk ?? {}
     this.#json = {
       risk,
     }
@@ -99,8 +99,7 @@ class JsonRepo implements RiskRepo {
   public async listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
     const jsonRisks = Object.values(this.#json.risk)
     const risks = []
-    for (let i = 0; i < jsonRisks.length; i++) {
-      const jsonRisk = jsonRisks[i]
+    for (const jsonRisk of jsonRisks) {
       if (category && jsonRisk.category !== category) {
         continue
       }
