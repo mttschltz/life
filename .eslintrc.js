@@ -102,6 +102,10 @@ module.exports = {
         '@typescript-eslint/prefer-ts-expect-error': [2],
         '@typescript-eslint/promise-function-async': [2],
         '@typescript-eslint/require-array-sort-compare': [2],
+        '@typescript-eslint/sort-type-union-intersection-members': [2],
+        '@typescript-eslint/unified-signatures': [2],
+        '@typescript-eslint/dot-notation': [2],
+        '@typescript-eslint/no-duplicate-imports': [2],
         '@typescript-eslint/naming-convention': [
           'error',
           {

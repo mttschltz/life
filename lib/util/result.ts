@@ -51,7 +51,7 @@ class ResultErrorImpl implements ResultError {
   }
 }
 
-type Result<T> = ResultOk<T> | ResultError
+type Result<T> = ResultError | ResultOk<T>
 
 function resultOk<T>(value: T): Result<T> {
   return new ResultOkImpl<T>(value)

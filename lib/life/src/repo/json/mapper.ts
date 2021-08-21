@@ -1,8 +1,7 @@
-import { Risk } from '@life/risk'
-import { newRisk } from '@life/risk'
+import { Risk, newRisk } from '@life/risk'
 import { Result } from '@util/result'
 
-type RiskJson = Omit<Risk, 'parent' | 'mitigations'> & { parentId?: string }
+type RiskJson = Omit<Risk, 'mitigations' | 'parent'> & { parentId?: string }
 
 class RiskMapper {
   public toJson({ category, id, impact, likelihood, name, notes, parent, type }: Risk): RiskJson {

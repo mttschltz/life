@@ -6,7 +6,7 @@ import { RiskRepo } from '@life/repo'
 type ListRisksRepo = Pick<RiskRepo, 'listRisks'>
 
 interface ListRisksCriteria {
-  category?: 'health' | 'wealth' | 'security'
+  category?: 'health' | 'security' | 'wealth'
   includeDescendents?: boolean
 }
 
