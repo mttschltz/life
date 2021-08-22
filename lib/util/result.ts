@@ -23,19 +23,19 @@ class ResultOkImpl<T> implements ResultOk<T> {
 
 interface ResultError {
   readonly ok: false
-  readonly error?: Error
+  readonly error: Error
   readonly message: string
 }
 
 class ResultErrorImpl implements ResultError {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #message: string
-  #error?: Error
+  #error: Error
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
   public constructor(message: string, error?: Error) {
     this.#message = message
-    this.#error = error
+    this.#error = error ?? new Error('Result error')
   }
 
   public get ok(): false {
@@ -46,7 +46,7 @@ class ResultErrorImpl implements ResultError {
     return this.#message
   }
 
-  public get error(): Error | undefined {
+  public get error(): Error {
     return this.#error
   }
 }
