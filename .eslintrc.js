@@ -1,7 +1,8 @@
-// Treat errors and warnings the same: There should be none.
+// Treat errors and warnings the same: The codebase should have 0 of both to prevent normalizing error states.
 //
-// If there is a justified reason for breaking a rule, add a single-line exception.
-// Only add a file-evel exception if the file's context is what justifies breaking the rule.
+// - If there is a justified reason for breaking a rule, add a single-line exception.
+// - Only add a file-level exception if the file's context justifies breaking the rule.
+// - If a rule hurts more than it helps, or we constantly add exceptions to it, we can consider removing it.
 module.exports = {
   root: true,
   // -----
@@ -14,23 +15,18 @@ module.exports = {
     sourceType: 'module',
   },
 
-  extends: [
-    'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
-    'prettier', // Disable other rules that may conflict with Prettier; via 'eslint-config-prettier'
-    'plugin:prettier/recommended', // Adds ESLint warnings/errors for Prettier warnings/errors.
-  ],
+  extends: ['plugin:react/recommended', 'prettier', 'plugin:prettier/recommended'],
   rules: {
-    // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-    // e.g. "@typescript-eslint/explicit-function-return-type": "off",
     'import/group-exports': 'error',
     'import/exports-last': 'error',
     'import/no-default-export': 'error',
+    'import/no-relative-parent-imports': 'error',
     'no-param-reassign': ['error', { props: true }],
   },
 
   settings: {
     react: {
-      version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
+      version: 'detect',
     },
   },
   plugins: ['import'],
@@ -42,31 +38,32 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
 
-      parser: '@typescript-eslint/parser', // Specifies the ESLint parser
+      parser: '@typescript-eslint/parser',
       parserOptions: {
-        // These two properties enable type aware linting rules for @typescript-eslint
+        // `tsconfigRootDir` and `project` enable type aware linting rules for @typescript-eslint
         tsconfigRootDir: __dirname,
         project: ['./tsconfig.json'],
-        ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
-        sourceType: 'module', // Allows for the use of imports
+        ecmaVersion: 2020,
+        sourceType: 'module',
         ecmaFeatures: {
-          jsx: true, // Allows for the parsing of JSX
+          jsx: true,
         },
       },
 
       extends: [
-        'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
-        'plugin:@typescript-eslint/eslint-recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
-        'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
+        'plugin:react/recommended',
+        'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'prettier', // Disable other rules that may conflict with Prettier; via 'eslint-config-prettier'
-        'plugin:prettier/recommended', // Adds ESLint warnings/errors for Prettier warnings/errors.
-        'plugin:import/typescript', // this line does the trick
+        'prettier',
+        'plugin:prettier/recommended',
+        'plugin:import/typescript',
       ],
       rules: {
         'import/group-exports': 'error',
         'import/exports-last': 'error',
         'import/no-default-export': 'error',
+        'import/no-relative-parent-imports': 'error',
         'no-param-reassign': ['error', { props: true }],
         '@typescript-eslint/explicit-member-accessibility': 'error',
         '@typescript-eslint/explicit-function-return-type': 'error',
