@@ -2,10 +2,6 @@
   "extends": "../../tsconfig.json",
   "include": ["./src/**/*"],
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@life/*": ["../../lib/life/src/*"],
-      "@util/*": ["../../lib/util/*"],
-    },
+    "lib": ["dom", "es2020"],
   },
 }
