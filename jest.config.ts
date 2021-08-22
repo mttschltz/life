@@ -27,9 +27,12 @@ export default {
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    // Branches with throw aren't counted despite being entered in tests, and using
+    // 'istanbul ignore next' seems to increase test coverage for other files to 100%.
+    'lib/util/testing.ts',
+  ],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'v8',
