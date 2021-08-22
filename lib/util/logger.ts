@@ -11,15 +11,18 @@ interface ErrorDetails extends Details {
 
 type ConsoleArgs = [string, ...Array<Error | Pick<Details, 'data'>>]
 
-class Logger {
-  private constructor() {
-    // empty
-  }
+interface Logger {
+  info: (details: Details) => void
+  warn: (details: Details) => void
+  error: (details: Details) => void
+  result: <T>(result: Result<T>) => void
+}
 
-  public static new(): Logger {
-    return new Logger()
-  }
+function newLogger(): Logger {
+  return new LoggerImpl()
+}
 
+class LoggerImpl implements Logger {
   public info(details: Details): void {
     const args: ConsoleArgs = [details.msg]
     details.data && args.push(details.data)
@@ -56,4 +59,5 @@ class Logger {
   }
 }
 
-export { Logger }
+export { newLogger }
+export type { Logger }
