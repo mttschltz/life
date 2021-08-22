@@ -5,11 +5,11 @@ import { environment } from '@store/environment'
 import { GraphService } from '@life/api/graph/service'
 import { InteractorFactory } from '@life/api/interactorFactory'
 import { GraphMapper } from '@life/api/graph/mapper'
-import { Logger } from '@util/logger'
+import { newLogger } from '@util/logger'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 
 const interactorFactory = new InteractorFactory({})
-const graphService = new GraphService(interactorFactory, new GraphMapper(), Logger.new())
+const graphService = new GraphService(interactorFactory, new GraphMapper(), newLogger())
 
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),
