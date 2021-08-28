@@ -1,8 +1,8 @@
 module.exports = {
   ignorePatterns: ['public/**/*'],
   rules: {
-    'import/no-default-export': 0,
-    'import/group-exports': 0,
+    'import/no-default-export': 'off',
+    'import/group-exports': 'off',
   },
   // plugins: ['graphql'],
   // rules: {
