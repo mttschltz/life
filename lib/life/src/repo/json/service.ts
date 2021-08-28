@@ -1,3 +1,4 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Category, Risk } from '@life/risk'
 import { Result, resultError, resultOk } from '@util/result'

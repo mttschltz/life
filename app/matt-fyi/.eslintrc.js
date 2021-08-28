@@ -1,5 +1,5 @@
 module.exports = {
-  ignorePatterns: ['public/**/*'],
+  ignorePatterns: ['public/**/*', 'src/__generated__/**/*'],
   rules: {
     'import/no-default-export': 'off',
     'import/group-exports': 'off',

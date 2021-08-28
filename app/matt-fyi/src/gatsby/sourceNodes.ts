@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const RISK_NODE_TYPE = `Risk`
 
 import type { SourceNodesArgs } from 'gatsby'

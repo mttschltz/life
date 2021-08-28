@@ -1,5 +1,5 @@
 module.exports = {
-  ignorePatterns: ['dist/**/*'],
+  ignorePatterns: ['dist/**/*', 'src/__generated__/**/*'],
   extends: ['plugin:node/recommended'],
   rules: {
     'node/no-unsupported-features/es-syntax': 'off',

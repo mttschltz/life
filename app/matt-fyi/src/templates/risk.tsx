@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import * as React from 'react'
 import { graphql } from 'gatsby'
 import type { PageProps } from 'gatsby'

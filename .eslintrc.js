@@ -14,14 +14,23 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
+  ignorePatterns: ['coverage/**/*'],
 
-  extends: ['plugin:react/recommended', 'prettier', 'plugin:prettier/recommended'],
+  extends: [
+    'plugin:react/recommended',
+    'prettier',
+    'plugin:prettier/recommended',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
+    'plugin:eslint-comments/recommended',
+  ],
   rules: {
     'import/group-exports': 'error',
     'import/exports-last': 'error',
     'import/no-default-export': 'error',
     'import/no-relative-parent-imports': 'error',
     'no-param-reassign': ['error', { props: true }],
+    'react/prop-types': 'off',
   },
 
   settings: {
@@ -60,6 +69,7 @@ module.exports = {
         'plugin:import/typescript',
         'plugin:jest/recommended',
         'plugin:jest/style',
+        'plugin:eslint-comments/recommended',
       ],
       rules: {
         'import/group-exports': 'error',
@@ -67,6 +77,7 @@ module.exports = {
         'import/no-default-export': 'error',
         'import/no-relative-parent-imports': 'error',
         'no-param-reassign': ['error', { props: true }],
+        'react/prop-types': 'off',
         '@typescript-eslint/explicit-member-accessibility': 'error',
         '@typescript-eslint/explicit-function-return-type': 'error',
         '@typescript-eslint/member-ordering': [

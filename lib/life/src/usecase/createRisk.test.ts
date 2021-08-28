@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/require-await */
 import { Category, Impact, Likelihood, newRisk, Risk, RiskType } from '@life/risk'
 import { assertResultError, assertResultOk } from '@util/testing'
 import { Result, ResultError } from '@util/result'
@@ -50,20 +48,18 @@ describe('createRisk', () => {
       )
       // Repos
       fetchRepo = jest.fn()
-      fetchRepo.mockImplementation(
-        async () =>
-          ({
-            value: parentRisk,
-            ok: true,
-          } as Result<Risk>),
+      fetchRepo.mockImplementation(async () =>
+        Promise.resolve({
+          value: parentRisk,
+          ok: true,
+        } as Result<Risk>),
       )
       createRepo = jest.fn()
-      createRepo.mockImplementation(
-        async () =>
-          ({
-            value: undefined,
-            ok: true,
-          } as Result<undefined>),
+      createRepo.mockImplementation(async () =>
+        Promise.resolve({
+          value: undefined,
+          ok: true,
+        } as Result<undefined>),
       )
       // Mapper
       mappedRisk = {
@@ -82,6 +78,7 @@ describe('createRisk', () => {
         },
         {
           risk: jest.fn().mockImplementationOnce(() => mappedRisk),
+          // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
           risks: () => {
             throw new Error('Unexpected call')
           },
@@ -154,11 +151,10 @@ describe('createRisk', () => {
       })
       describe('When fetching the parent fails', () => {
         test('Then an error is returned', async () => {
-          fetchRepo.mockImplementationOnce(
-            async () =>
-              ({
-                message: 'fetch repo error',
-              } as ResultError),
+          fetchRepo.mockImplementationOnce(async () =>
+            Promise.resolve({
+              message: 'fetch repo error',
+            } as ResultError),
           )
           const riskResult = await interactor.createRisk({ ...createDetails })
           assertResultError(riskResult)
@@ -182,11 +178,10 @@ describe('createRisk', () => {
       })
       describe('When persisting the risk fails', () => {
         beforeEach(() => {
-          createRepo.mockImplementationOnce(
-            async () =>
-              ({
-                message: 'create repo error',
-              } as ResultError),
+          createRepo.mockImplementationOnce(async () =>
+            Promise.resolve({
+              message: 'create repo error',
+            } as ResultError),
           )
         })
         test('Then an error is returned', async () => {
