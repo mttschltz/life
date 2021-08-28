@@ -19,7 +19,7 @@ describe('testing', () => {
       expect(() => assertResultError(errorResult)).not.toThrow()
     })
     test('Then calling assertResultOk errors', () => {
-      expect(() => assertResultOk(errorResult)).toThrowError('Not a ResultOk')
+      expect(() => assertResultOk(errorResult)).toThrow('Not a ResultOk')
     })
   })
   describe('Given an ok Result', () => {
@@ -36,7 +36,7 @@ describe('testing', () => {
       expect(() => assertResultOk(okResult)).not.toThrow()
     })
     test('Then calling assertResultError errors', () => {
-      expect(() => assertResultError(okResult)).toThrowError('Not a ResultError')
+      expect(() => assertResultError(okResult)).toThrow('Not a ResultError')
     })
   })
 })

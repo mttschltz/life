@@ -112,11 +112,11 @@ describe('createRisk', () => {
           expect(riskResult.value).toBe(mappedRisk)
 
           // And the parent risk is fetched
-          expect(fetchRepo).toBeCalledTimes(1)
+          expect(fetchRepo).toHaveBeenCalledTimes(1)
           expect(fetchRepo.mock.calls[0]).toEqual(['parent id'])
 
           // And the risk is constructed as expected
-          expect(newRiskMock).toBeCalledTimes(1)
+          expect(newRiskMock).toHaveBeenCalledTimes(1)
           expect(newRiskMock.mock.calls[0]).toEqual([
             'uri-part',
             {
@@ -128,7 +128,7 @@ describe('createRisk', () => {
           ])
 
           // And the risk is persisted to the repo
-          expect(createRepo).toBeCalledTimes(1)
+          expect(createRepo).toHaveBeenCalledTimes(1)
           expect(createRepo.mock.calls[0]).toEqual([risk])
         })
       })
@@ -217,10 +217,10 @@ describe('createRisk', () => {
           expect(usecaseRisk).toBe(mappedRisk)
 
           // And the parent risk is not fetched
-          expect(fetchRepo).not.toBeCalled()
+          expect(fetchRepo).not.toHaveBeenCalled()
 
           // And the risk is constructed as expected
-          expect(newRiskMock).toBeCalledTimes(1)
+          expect(newRiskMock).toHaveBeenCalledTimes(1)
           expect(newRiskMock.mock.calls[0]).toEqual([
             'uri-part-1',
             {
@@ -232,7 +232,7 @@ describe('createRisk', () => {
           ])
 
           // And the risk is persisted to the repo
-          expect(createRepo).toBeCalledTimes(1)
+          expect(createRepo).toHaveBeenCalledTimes(1)
           expect(createRepo.mock.calls[0]).toEqual([risk])
         })
       })

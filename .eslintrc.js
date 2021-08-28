@@ -58,6 +58,8 @@ module.exports = {
         'prettier',
         'plugin:prettier/recommended',
         'plugin:import/typescript',
+        'plugin:jest/recommended',
+        'plugin:jest/style',
       ],
       rules: {
         'import/group-exports': 'error',

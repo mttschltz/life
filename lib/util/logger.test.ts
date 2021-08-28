@@ -18,12 +18,12 @@ describe('Logger', () => {
         log.info({
           msg: 'info message',
         })
-        expect(info.mock.calls.length).toEqual(1)
+        expect(info.mock.calls).toHaveLength(1)
         expect(info.mock.calls[0]).toEqual(['info message'])
 
         // And doesn't log to other console methods
-        expect(warn.mock.calls.length).toEqual(0)
-        expect(error.mock.calls.length).toEqual(0)
+        expect(warn.mock.calls).toHaveLength(0)
+        expect(error.mock.calls).toHaveLength(0)
       })
     })
     describe('When calling info with data', () => {
@@ -35,7 +35,7 @@ describe('Logger', () => {
           msg: 'info message',
           data,
         })
-        expect(info.mock.calls.length).toEqual(1)
+        expect(info.mock.calls).toHaveLength(1)
         expect(info.mock.calls[0]).toEqual(['info message', data])
       })
     })
@@ -44,12 +44,12 @@ describe('Logger', () => {
         log.warn({
           msg: 'warn message',
         })
-        expect(warn.mock.calls.length).toEqual(1)
+        expect(warn.mock.calls).toHaveLength(1)
         expect(warn.mock.calls[0]).toEqual(['warn message'])
 
         // And doesn't log to other console methods
-        expect(info.mock.calls.length).toEqual(0)
-        expect(error.mock.calls.length).toEqual(0)
+        expect(info.mock.calls).toHaveLength(0)
+        expect(error.mock.calls).toHaveLength(0)
       })
     })
     describe('When calling warn with data', () => {
@@ -61,7 +61,7 @@ describe('Logger', () => {
           msg: 'warn message',
           data,
         })
-        expect(warn.mock.calls.length).toEqual(1)
+        expect(warn.mock.calls).toHaveLength(1)
         expect(warn.mock.calls[0]).toEqual(['warn message', data])
       })
     })
@@ -70,12 +70,12 @@ describe('Logger', () => {
         log.error({
           msg: 'error message',
         })
-        expect(error.mock.calls.length).toEqual(1)
+        expect(error.mock.calls).toHaveLength(1)
         expect(error.mock.calls[0]).toEqual(['error message'])
 
         // And doesn't log to other console methods
-        expect(info.mock.calls.length).toEqual(0)
-        expect(warn.mock.calls.length).toEqual(0)
+        expect(info.mock.calls).toHaveLength(0)
+        expect(warn.mock.calls).toHaveLength(0)
       })
     })
     describe('When calling error with data', () => {
@@ -87,11 +87,11 @@ describe('Logger', () => {
           msg: 'error message',
           data,
         })
-        expect(error.mock.calls.length).toEqual(1)
+        expect(error.mock.calls).toHaveLength(1)
         expect(error.mock.calls[0]).toEqual(['error message', data])
       })
     })
-    describe('When calling result with an error', () => {
+    describe('When calling result with an error result', () => {
       test('Then it logs to console.error', () => {
         const anError = new Error('an error')
         log.result({
@@ -99,16 +99,16 @@ describe('Logger', () => {
           ok: false,
           error: anError,
         } as ResultError)
-        expect(error.mock.calls.length).toEqual(1)
+        expect(error.mock.calls).toHaveLength(1)
         expect(error.mock.calls[0]).toEqual(['an error message', anError])
 
         // And doesn't log to other console methods
-        expect(info.mock.calls.length).toEqual(0)
-        expect(warn.mock.calls.length).toEqual(0)
+        expect(info.mock.calls).toHaveLength(0)
+        expect(warn.mock.calls).toHaveLength(0)
       })
     })
-    describe('When calling result with an error', () => {
-      test('Then it logs to console.error', () => {
+    describe('When calling result with an ok result', () => {
+      test('Then it logs to console.info', () => {
         const value = {
           cat: 'dog',
         }
@@ -116,12 +116,12 @@ describe('Logger', () => {
           ok: true,
           value,
         } as ResultOk<typeof value>)
-        expect(info.mock.calls.length).toEqual(1)
+        expect(info.mock.calls).toHaveLength(1)
         expect(info.mock.calls[0]).toEqual(['ok result', { value }])
 
         // And doesn't log to other console methods
-        expect(warn.mock.calls.length).toEqual(0)
-        expect(error.mock.calls.length).toEqual(0)
+        expect(warn.mock.calls).toHaveLength(0)
+        expect(error.mock.calls).toHaveLength(0)
       })
     })
   })
