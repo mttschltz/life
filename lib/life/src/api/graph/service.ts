@@ -46,6 +46,7 @@ class GraphService {
             likelihood: Likelihood.Normal,
             type: RiskType.Condition,
             uriPart: input.uriPart,
+            notes: input.notes ?? undefined,
           })
           if (!riskResult.ok) {
             this.#logger.result(riskResult)

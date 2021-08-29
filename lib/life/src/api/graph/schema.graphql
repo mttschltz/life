@@ -31,6 +31,11 @@ type Risk {
   Child risks.
   """
   children: [Risk]
+
+  """
+  Risk notes.
+  """
+  notes: String
 }
 
 type Query {
@@ -63,6 +68,11 @@ input CreateRiskInput {
   Risk parent ID.
   """
   parentId: ID
+
+  """
+  Risk notes.
+  """
+  notes: String
 }
 
 type Mutation {

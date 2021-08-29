@@ -246,6 +246,8 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
+  readonly port: Maybe<Scalars['Int']>;
+  readonly host: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
@@ -292,8 +294,13 @@ type SitePage = Node & {
   readonly children: ReadonlyArray<Node>;
   readonly internal: Internal;
   readonly isCreatedByStatefulCreatePages: Maybe<Scalars['Boolean']>;
+  readonly context: Maybe<SitePageContext>;
   readonly pluginCreator: Maybe<SitePlugin>;
   readonly pluginCreatorId: Maybe<Scalars['String']>;
+};
+
+type SitePageContext = {
+  readonly id: Maybe<Scalars['String']>;
 };
 
 type Risk = Node & {
@@ -405,6 +412,8 @@ type Store_Risk = {
   readonly parent: Maybe<Store_Risk>;
   /** Child risks. */
   readonly children: Maybe<ReadonlyArray<Maybe<Store_Risk>>>;
+  /** Risk notes. */
+  readonly notes: Maybe<Scalars['String']>;
 };
 
 /** Create risk input. */
@@ -417,6 +426,8 @@ type Store_CreateRiskInput = {
   readonly name: Scalars['String'];
   /** Risk parent ID. */
   readonly parentId: Maybe<Scalars['ID']>;
+  /** Risk notes. */
+  readonly notes: Maybe<Scalars['String']>;
 };
 
 type Store = {
@@ -549,6 +560,8 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  port: Maybe<IntQueryOperatorInput>;
+  host: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
@@ -600,6 +613,7 @@ type Query_sitePageArgs = {
   children: Maybe<NodeFilterListInput>;
   internal: Maybe<InternalFilterInput>;
   isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
+  context: Maybe<SitePageContextFilterInput>;
   pluginCreator: Maybe<SitePluginFilterInput>;
   pluginCreatorId: Maybe<StringQueryOperatorInput>;
 };
@@ -1259,6 +1273,8 @@ type SiteFieldsEnum =
   | 'buildTime'
   | 'siteMetadata.title'
   | 'siteMetadata.description'
+  | 'port'
+  | 'host'
   | 'polyfill'
   | 'pathPrefix'
   | 'id'
@@ -1360,6 +1376,8 @@ type SiteGroupConnection = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  readonly port: Maybe<IntQueryOperatorInput>;
+  readonly host: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
@@ -1539,6 +1557,10 @@ type SiteFunctionFilterInput = {
 type SiteFunctionSortInput = {
   readonly fields: Maybe<ReadonlyArray<Maybe<SiteFunctionFieldsEnum>>>;
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
+type SitePageContextFilterInput = {
+  readonly id: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePluginFilterInput = {
@@ -1749,6 +1771,7 @@ type SitePageFieldsEnum =
   | 'internal.owner'
   | 'internal.type'
   | 'isCreatedByStatefulCreatePages'
+  | 'context.id'
   | 'pluginCreator.id'
   | 'pluginCreator.parent.id'
   | 'pluginCreator.parent.parent.id'
@@ -1839,6 +1862,7 @@ type SitePageFilterInput = {
   readonly children: Maybe<NodeFilterListInput>;
   readonly internal: Maybe<InternalFilterInput>;
   readonly isCreatedByStatefulCreatePages: Maybe<BooleanQueryOperatorInput>;
+  readonly context: Maybe<SitePageContextFilterInput>;
   readonly pluginCreator: Maybe<SitePluginFilterInput>;
   readonly pluginCreatorId: Maybe<StringQueryOperatorInput>;
 };
@@ -2501,8 +2525,13 @@ type RisksQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type RisksQueryQuery = { readonly store: { readonly risks: ReadonlyArray<Maybe<(
-      Pick<Store_Risk, 'id' | 'name'>
-      & { readonly children: Maybe<ReadonlyArray<Maybe<Pick<Store_Risk, 'id' | 'name' | 'category'>>>> }
+      Pick<Store_Risk, 'id' | 'name' | 'notes'>
+      & { readonly children: Maybe<ReadonlyArray<Maybe<Pick<Store_Risk, 'id' | 'name' | 'category' | 'notes'>>>> }
     )>> } };
+
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

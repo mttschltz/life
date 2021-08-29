@@ -30,6 +30,8 @@ export type CreateRiskInput = {
   name: Scalars['String'];
   /** Risk parent ID. */
   parentId?: Maybe<Scalars['ID']>;
+  /** Risk notes. */
+  notes?: Maybe<Scalars['String']>;
 };
 
 
@@ -67,6 +69,8 @@ export type Risk = {
   parent?: Maybe<Risk>;
   /** Child risks. */
   children?: Maybe<Array<Maybe<Risk>>>;
+  /** Risk notes. */
+  notes?: Maybe<Scalars['String']>;
 };
 
 
@@ -193,6 +197,7 @@ export type RiskResolvers<ContextType = any, ParentType extends ResolversParentT
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
   parent?: Resolver<Maybe<ResolversTypes['Risk']>, ParentType, ContextType>;
   children?: Resolver<Maybe<Array<Maybe<ResolversTypes['Risk']>>>, ParentType, ContextType>;
+  notes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

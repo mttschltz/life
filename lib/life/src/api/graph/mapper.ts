@@ -30,7 +30,7 @@ class GraphMapper {
     }
   }
 
-  public fromRisk({ id, category, name }: UsecaseRisk): Result<GraphRisk> {
+  public fromRisk({ id, category, name, notes }: UsecaseRisk): Result<GraphRisk> {
     const graphCategoryResult = this.fromCategory(category)
     if (!graphCategoryResult.ok) {
       return graphCategoryResult
@@ -40,6 +40,7 @@ class GraphMapper {
       category: graphCategoryResult.value,
       id,
       name,
+      notes,
     })
   }
 

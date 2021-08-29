@@ -21,6 +21,7 @@ export interface CreateRiskInput {
   category: Category;
   name: string;
   parentId?: string | null;
+  notes?: string | null;
 }
 
 //==============================================================
