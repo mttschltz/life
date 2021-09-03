@@ -26,10 +26,10 @@ const createRiskMutation = gql`
           category: Category.HEALTH,
           uriPart: 'uri-part-risk-parent',
           notes: `
-            # Heading
-            
-            <p>Here's a <a href="https://www.google.com">link<a></p>
-          `,
+# Heading
+
+<p>Here's a <a href="https://www.google.com">link</a></p>
+          `.trim(),
         },
       },
     })
@@ -43,10 +43,10 @@ const createRiskMutation = gql`
           uriPart: 'uri-part-risk-child',
           parentId: parent.data?.createRisk.id,
           notes: `
-            # Heading
-            
-            <p>Here's a <a href="https://www.google.com">link<a></p>
-          `,
+# Heading
+
+<p>Here's a <a href="https://www.google.com">link</a></p>
+          `.trim(),
         },
       },
     })
@@ -60,10 +60,10 @@ const createRiskMutation = gql`
           uriPart: 'uri-part-risk-child-2',
           parentId: parent.data?.createRisk.id,
           notes: `
-            # Heading
-            
-            <p>Here's a <a href="https://www.google.com">link<a></p>
-          `,
+# Heading
+
+<p>Here's a <a href="https://www.google.com">link</a></p>
+          `.trim(),
         },
       },
     })
@@ -76,10 +76,10 @@ const createRiskMutation = gql`
           name: 'risk paent 2',
           uriPart: 'uri-part-risk-parent-2',
           notes: `
-            # Heading
-            
-            <p>Here's a <a href="https://www.google.com">link<a></p>
-          `,
+# Heading
+
+<p>Here's a <a href="https://www.google.com">link</a></p>
+          `.trim(),
         },
       },
     })
