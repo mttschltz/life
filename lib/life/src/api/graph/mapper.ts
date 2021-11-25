@@ -17,8 +17,10 @@ function newGraphMapper(mdxTranspiler: MdxTranspiler): GraphMapper {
 }
 
 class GraphMapperImpl implements GraphMapper {
-  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
+  //@ts-expect-error sdf
   #mdxTranspiler: MdxTranspiler
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
   public constructor(mdxTranspiler: MdxTranspiler) {
     this.#mdxTranspiler = mdxTranspiler
@@ -60,7 +62,8 @@ class GraphMapperImpl implements GraphMapper {
       category: graphCategoryResult.value,
       id,
       name,
-      notes: this.#mdxTranspiler(notes),
+      notes,
+      // notes: this.#mdxTranspiler(notes),
     })
   }
 

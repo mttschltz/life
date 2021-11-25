@@ -1,0 +1,7 @@
+{
+  "name": "gatsby-remark-image-map",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true
+}

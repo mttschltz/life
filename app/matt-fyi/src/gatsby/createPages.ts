@@ -7,10 +7,11 @@ import { print } from 'graphql'
 // GatsbyTypes are built by gatsby-plugin-typegen on build.
 interface Risk {
   id: string
+  name: string
 }
 interface Result {
-  store: {
-    risks: Risk[]
+  allRisk?: {
+    edges?: { node?: Risk }[]
   }
 }
 
@@ -27,9 +28,12 @@ const createPages = async ({ graphql, actions }: CreatePagesArgs): Promise<void>
   // GraphQL's print function.
   const queryRisks = gql`
     query StoreQuery {
-      store {
-        risks {
-          id
+      allRisk {
+        edges {
+          node {
+            id
+            notesMdx
+          }
         }
       }
     }
@@ -40,7 +44,7 @@ const createPages = async ({ graphql, actions }: CreatePagesArgs): Promise<void>
     }
 
     // Create blog post pages.
-    const risk = result.data?.store.risks[0]
+    const risk = result.data?.allRisk?.edges?.[0]?.node
     if (risk) {
       createPage({
         // Path for this page — required

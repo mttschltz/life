@@ -23,5 +23,5 @@ require('ts-node').register({
   },
 })
 
-exports.sourceNodes = require('./src/gatsby/sourceNodes').default
+// exports.sourceNodes = require('./src/gatsby/sourceNodes').default
 exports.createPages = require('./src/gatsby/createPages').default
