@@ -3,6 +3,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -14,18 +15,38 @@ export type Scalars = {
   DateTime: any;
 };
 
-export enum Category {
+/** A Category is an ordered collection of Risks or other Categories. */
+export type Category = {
+  __typename?: 'Category';
+  /** The id. */
+  id: Scalars['ID'];
+  /** The path used in the first URL segment. */
+  path: Scalars['String'];
+  /** The name. */
+  name: Scalars['String'];
+  /** The description. */
+  description?: Maybe<Scalars['String']>;
+  /** An ordered list of Risks or Categories. */
+  children: Array<Maybe<Concern>>;
+  /** The parent. */
+  parent?: Maybe<Category>;
+};
+
+export enum CategoryTopLevel {
   Health = 'HEALTH',
   Wealth = 'WEALTH',
   Security = 'SECURITY'
 }
+
+/** A Concern needs addressing. It can be a single Risk or group (Category) of Risks. */
+export type Concern = Category | Risk;
 
 /** Create risk input. */
 export type CreateRiskInput = {
   /** URI part. */
   uriPart: Scalars['String'];
   /** Risk category. */
-  category: Category;
+  category: CategoryTopLevel;
   /** Risk name. */
   name: Scalars['String'];
   /** Risk parent ID. */
@@ -50,21 +71,29 @@ export type Query = {
   __typename?: 'Query';
   /** Get all risks. */
   risks: Array<Maybe<Risk>>;
+  /** Get all categories. */
+  categories: Array<Maybe<Category>>;
 };
 
 
 export type QueryRisksArgs = {
-  category?: Maybe<Category>;
+  category?: Maybe<CategoryTopLevel>;
 };
 
+
+export type QueryCategoriesArgs = {
+  parentID?: Maybe<Scalars['ID']>;
+};
+
+/** A Risk is something that may cause harm to yourself, your family, or your goals. */
 export type Risk = {
   __typename?: 'Risk';
   /** The id. */
   id: Scalars['ID'];
-  /** The risk name. */
+  /** The name. */
   name: Scalars['String'];
   /** Risk category. */
-  category: Category;
+  category: CategoryTopLevel;
   /** Parent risk. */
   parent?: Maybe<Risk>;
   /** Child risks. */
@@ -156,10 +185,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Category: Category;
-  CreateRiskInput: CreateRiskInput;
-  String: ResolverTypeWrapper<Scalars['String']>;
+  Category: ResolverTypeWrapper<Omit<Category, 'children'> & { children: Array<Maybe<ResolversTypes['Concern']>> }>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  String: ResolverTypeWrapper<Scalars['String']>;
+  CategoryTopLevel: CategoryTopLevel;
+  Concern: ResolversTypes['Category'] | ResolversTypes['Risk'];
+  CreateRiskInput: CreateRiskInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
@@ -169,14 +200,30 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  CreateRiskInput: CreateRiskInput;
-  String: Scalars['String'];
+  Category: Omit<Category, 'children'> & { children: Array<Maybe<ResolversParentTypes['Concern']>> };
   ID: Scalars['ID'];
+  String: Scalars['String'];
+  Concern: ResolversParentTypes['Category'] | ResolversParentTypes['Risk'];
+  CreateRiskInput: CreateRiskInput;
   DateTime: Scalars['DateTime'];
   Mutation: {};
   Query: {};
   Risk: Risk;
   Boolean: Scalars['Boolean'];
+};
+
+export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  children?: Resolver<Array<Maybe<ResolversTypes['Concern']>>, ParentType, ContextType>;
+  parent?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ConcernResolvers<ContextType = any, ParentType extends ResolversParentTypes['Concern'] = ResolversParentTypes['Concern']> = {
+  __resolveType: TypeResolveFn<'Category' | 'Risk', ParentType, ContextType>;
 };
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
@@ -189,12 +236,13 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   risks?: Resolver<Array<Maybe<ResolversTypes['Risk']>>, ParentType, ContextType, RequireFields<QueryRisksArgs, never>>;
+  categories?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType, RequireFields<QueryCategoriesArgs, never>>;
 };
 
 export type RiskResolvers<ContextType = any, ParentType extends ResolversParentTypes['Risk'] = ResolversParentTypes['Risk']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
+  category?: Resolver<ResolversTypes['CategoryTopLevel'], ParentType, ContextType>;
   parent?: Resolver<Maybe<ResolversTypes['Risk']>, ParentType, ContextType>;
   children?: Resolver<Maybe<Array<Maybe<ResolversTypes['Risk']>>>, ParentType, ContextType>;
   notes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -202,6 +250,8 @@ export type RiskResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type Resolvers<ContextType = any> = {
+  Category?: CategoryResolvers<ContextType>;
+  Concern?: ConcernResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

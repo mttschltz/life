@@ -21,7 +21,7 @@ const server = new ApolloServer({
   mocks: {
     /* eslint-disable @typescript-eslint/naming-convention */
     DateTime: DateTimeMock,
-    Category: (): string => 'HEALTH',
+    CategoryTopLevel: (): string => 'HEALTH',
     /* eslint-enable @typescript-eslint/naming-convention */
   }, // TODO: Remove in PROD.
   mockEntireSchema: false, // TODO: Remove in PROD.

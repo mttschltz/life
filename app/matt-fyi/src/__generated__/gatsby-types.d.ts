@@ -396,18 +396,38 @@ type SitePluginPackageJsonPeerDependencies = {
 };
 
 
-type Store_Category =
+type Store_CategoryTopLevel =
   | 'HEALTH'
   | 'WEALTH'
   | 'SECURITY';
 
+/** A Concern needs addressing. It can be a single Risk or group (Category) of Risks. */
+type Store_Concern = Store_Category | Store_Risk;
+
+/** A Category is an ordered collection of Risks or other Categories. */
+type Store_Category = {
+  /** The id. */
+  readonly id: Scalars['ID'];
+  /** The path used in the first URL segment. */
+  readonly path: Scalars['String'];
+  /** The name. */
+  readonly name: Scalars['String'];
+  /** The description. */
+  readonly description: Maybe<Scalars['String']>;
+  /** An ordered list of Risks or Categories. */
+  readonly children: ReadonlyArray<Maybe<Store_Concern>>;
+  /** The parent. */
+  readonly parent: Maybe<Store_Category>;
+};
+
+/** A Risk is something that may cause harm to yourself, your family, or your goals. */
 type Store_Risk = {
   /** The id. */
   readonly id: Scalars['ID'];
-  /** The risk name. */
+  /** The name. */
   readonly name: Scalars['String'];
   /** Risk category. */
-  readonly category: Store_Category;
+  readonly category: Store_CategoryTopLevel;
   /** Parent risk. */
   readonly parent: Maybe<Store_Risk>;
   /** Child risks. */
@@ -421,7 +441,7 @@ type Store_CreateRiskInput = {
   /** URI part. */
   readonly uriPart: Scalars['String'];
   /** Risk category. */
-  readonly category: Store_Category;
+  readonly category: Store_CategoryTopLevel;
   /** Risk name. */
   readonly name: Scalars['String'];
   /** Risk parent ID. */
@@ -433,11 +453,18 @@ type Store_CreateRiskInput = {
 type Store = {
   /** Get all risks. */
   readonly risks: ReadonlyArray<Maybe<Store_Risk>>;
+  /** Get all categories. */
+  readonly categories: ReadonlyArray<Maybe<Store_Category>>;
 };
 
 
 type Store_risksArgs = {
-  category: Maybe<Store_Category>;
+  category: Maybe<Store_CategoryTopLevel>;
+};
+
+
+type Store_categoriesArgs = {
+  parentID: Maybe<Scalars['ID']>;
 };
 
 type Query = {

@@ -1,11 +1,49 @@
 scalar DateTime
 
-enum Category {
+enum CategoryTopLevel {
   HEALTH
   WEALTH
   SECURITY
 }
 
+"""
+A Concern needs addressing. It can be a single Risk or group (Category) of Risks.
+"""
+union Concern = Category | Risk
+
+"""
+A Category is an ordered collection of Risks or other Categories.
+"""
+type Category {
+  """
+  The id.
+  """
+  id: ID!
+  """
+  The path used in the first URL segment.
+  """
+  path: String!
+  """
+  The name.
+  """
+  name: String!
+  """
+  The description.
+  """
+  description: String
+  """
+  An ordered list of Risks or Categories.
+  """
+  children: [Concern]!
+  """
+  The parent.
+  """
+  parent: Category
+}
+
+"""
+A Risk is something that may cause harm to yourself, your family, or your goals.
+"""
 type Risk {
   """
   The id.
@@ -13,14 +51,14 @@ type Risk {
   id: ID!
 
   """
-  The risk name.
+  The name.
   """
   name: String!
 
   """
   Risk category.
   """
-  category: Category!
+  category: CategoryTopLevel!
 
   """
   Parent risk.
@@ -42,7 +80,11 @@ type Query {
   """
   Get all risks.
   """
-  risks(category: Category): [Risk]!
+  risks(category: CategoryTopLevel): [Risk]!
+  """
+  Get all categories.
+  """
+  categories(parentID: ID): [Category]!
 }
 
 """
@@ -57,7 +99,7 @@ input CreateRiskInput {
   """
   Risk category.
   """
-  category: Category!
+  category: CategoryTopLevel!
 
   """
   Risk name.

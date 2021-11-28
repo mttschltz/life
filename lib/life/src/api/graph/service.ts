@@ -1,6 +1,6 @@
 import { ApolloError, Config } from 'apollo-server'
 import type { ListRisksCriteria } from '@life/usecase/listRisks'
-import { Category as GraphCategory } from '@life/__generated__/graphql'
+import { CategoryTopLevel as GraphCategoryTopLevel } from '@life/__generated__/graphql'
 import type { QueryRisksArgs, RequireFields, Resolvers, Risk as GraphRisk } from '@life/__generated__/graphql'
 import * as typeDefs from '@life/api/graph/schema.graphql'
 import { InteractorFactory } from '@life/api/interactorFactory'
@@ -105,13 +105,13 @@ class GraphService {
         risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<GraphRisk[]> => {
           const criteria: ListRisksCriteria = {}
           switch (args.category) {
-            case GraphCategory.Health:
+            case GraphCategoryTopLevel.Health:
               criteria.category = 'health'
               break
-            case GraphCategory.Wealth:
+            case GraphCategoryTopLevel.Wealth:
               criteria.category = 'wealth'
               break
-            case GraphCategory.Security:
+            case GraphCategoryTopLevel.Security:
               criteria.category = 'security'
               break
           }

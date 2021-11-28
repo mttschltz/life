@@ -3782,7 +3782,7 @@
       },
       {
         "kind": "ENUM",
-        "name": "Store_Category",
+        "name": "Store_CategoryTopLevel",
         "description": null,
         "specifiedByUrl": null,
         "fields": null,
@@ -3811,9 +3811,135 @@
         "possibleTypes": null
       },
       {
+        "kind": "UNION",
+        "name": "Store_Concern",
+        "description": "A Concern needs addressing. It can be a single Risk or group (Category) of Risks.",
+        "specifiedByUrl": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "Store_Category",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Store_Risk",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Store_Category",
+        "description": "A Category is an ordered collection of Risks or other Categories.",
+        "specifiedByUrl": null,
+        "fields": [
+          {
+            "name": "id",
+            "description": "The id.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "path",
+            "description": "The path used in the first URL segment.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The name.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "description",
+            "description": "The description.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "children",
+            "description": "An ordered list of Risks or Categories.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "UNION",
+                  "name": "Store_Concern",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "parent",
+            "description": "The parent.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Store_Category",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Store_Risk",
-        "description": null,
+        "description": "A Risk is something that may cause harm to yourself, your family, or your goals.",
         "specifiedByUrl": null,
         "fields": [
           {
@@ -3834,7 +3960,7 @@
           },
           {
             "name": "name",
-            "description": "The risk name.",
+            "description": "The name.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -3857,7 +3983,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "Store_Category",
+                "name": "Store_CategoryTopLevel",
                 "ofType": null
               }
             },
@@ -3941,7 +4067,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "Store_Category",
+                "name": "Store_CategoryTopLevel",
                 "ofType": null
               }
             },
@@ -4009,7 +4135,7 @@
                 "description": null,
                 "type": {
                   "kind": "ENUM",
-                  "name": "Store_Category",
+                  "name": "Store_CategoryTopLevel",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -4026,6 +4152,39 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "Store_Risk",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "categories",
+            "description": "Get all categories.",
+            "args": [
+              {
+                "name": "parentID",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Store_Category",
                   "ofType": null
                 }
               }

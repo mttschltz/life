@@ -11,7 +11,7 @@
 - Exact versions to comply with https://12factor.net/dependencies
 - All devDependencies until needed otherwise: https://github.com/webpack/webpack/issues/520
 
-# TODOs
+# TODOs and issues
 
 ## Codebase quality
 
@@ -24,7 +24,7 @@
 
 ### General
 
-- [ ] **Intellisense for GraphQL.** See `graphql.config.yml`.
+- [ ] **Intellisense for GraphQL.** only works for one project at a time. Need to toggle between Life and matt.fyi. See `graphql.config.yml`.
 
 ### matt-fyi
 

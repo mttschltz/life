@@ -1,13 +1,13 @@
 import type { Risk as UsecaseRisk } from '@life/usecase/mapper'
-import { Category as GraphCategory, Risk as GraphRisk } from '@life/__generated__/graphql'
+import { CategoryTopLevel as GraphCategoryTopLevel, Risk as GraphRisk } from '@life/__generated__/graphql'
 import { Category } from '@life/risk'
 import { Result, resultError, resultOk, results, Results } from '@util/result'
 
 type MdxTranspiler = (mdx?: string) => string | undefined
 
 interface GraphMapper {
-  toCategory: (graphCategory: GraphCategory) => Result<Category>
-  fromCategory: (category: Category) => Result<GraphCategory>
+  toCategory: (graphCategory: GraphCategoryTopLevel) => Result<Category>
+  fromCategory: (category: Category) => Result<GraphCategoryTopLevel>
   fromRisk: ({ id, category, name, notes }: UsecaseRisk) => Result<GraphRisk>
   risks: (risks: UsecaseRisk[]) => Results<GraphRisk>
 }
@@ -24,27 +24,27 @@ class GraphMapperImpl implements GraphMapper {
     this.#mdxTranspiler = mdxTranspiler
   }
 
-  public toCategory(graphCategory: GraphCategory): Result<Category> {
+  public toCategory(graphCategory: GraphCategoryTopLevel): Result<Category> {
     switch (graphCategory) {
-      case GraphCategory.Health:
+      case GraphCategoryTopLevel.Health:
         return resultOk(Category.Health)
-      case GraphCategory.Wealth:
+      case GraphCategoryTopLevel.Wealth:
         return resultOk(Category.Wealth)
-      case GraphCategory.Security:
+      case GraphCategoryTopLevel.Security:
         return resultOk(Category.Security)
       default:
         return resultError('Unhandled category type')
     }
   }
 
-  public fromCategory(category: Category): Result<GraphCategory> {
+  public fromCategory(category: Category): Result<GraphCategoryTopLevel> {
     switch (category) {
       case Category.Health:
-        return resultOk(GraphCategory.Health)
+        return resultOk(GraphCategoryTopLevel.Health)
       case Category.Wealth:
-        return resultOk(GraphCategory.Wealth)
+        return resultOk(GraphCategoryTopLevel.Wealth)
       case Category.Security:
-        return resultOk(GraphCategory.Security)
+        return resultOk(GraphCategoryTopLevel.Security)
       default:
         return resultError('Unhandled category type')
     }

@@ -7,7 +7,7 @@
 // START Enums and Input Objects
 //==============================================================
 
-export enum Category {
+export enum CategoryTopLevel {
   HEALTH = "HEALTH",
   SECURITY = "SECURITY",
   WEALTH = "WEALTH",
@@ -18,7 +18,7 @@ export enum Category {
  */
 export interface CreateRiskInput {
   uriPart: string;
-  category: Category;
+  category: CategoryTopLevel;
   name: string;
   parentId?: string | null;
   notes?: string | null;
