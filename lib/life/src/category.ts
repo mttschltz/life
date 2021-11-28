@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, isInstance, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
+import { IsArray, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
 import { Result, resultError, resultOk } from '@util/result'
 
 // TODO: children can also be risks (Concerns)
