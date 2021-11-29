@@ -17,7 +17,7 @@ enum Likelihood {
   Normal = 'Normal',
 }
 
-enum Category {
+enum CategoryTopLevel {
   Health = 'Category',
   Wealth = 'Wealth',
   Security = 'Security',
@@ -27,7 +27,7 @@ type CreateDetails = Pick<Risk, 'category' | 'impact' | 'likelihood' | 'name' | 
 
 interface Risk {
   id: string
-  category: Category
+  category: CategoryTopLevel
   impact: Impact
   likelihood: Likelihood
 
@@ -61,7 +61,7 @@ class RiskImpl implements Risk {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #id: string
 
-  #category: Category
+  #category: CategoryTopLevel
   #impact: Impact
   #likelihood: Likelihood
 
@@ -91,8 +91,8 @@ class RiskImpl implements Risk {
 
   // Details
 
-  @IsEnum(Category)
-  public get category(): Category {
+  @IsEnum(CategoryTopLevel)
+  public get category(): CategoryTopLevel {
     return this.#category
   }
 
@@ -130,4 +130,4 @@ class RiskImpl implements Risk {
 }
 
 export type { Risk, CreateDetails }
-export { newRisk, Category, RiskType, Impact, Likelihood }
+export { newRisk, CategoryTopLevel, RiskType, Impact, Likelihood }

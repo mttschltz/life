@@ -1,4 +1,4 @@
-import { newRisk, Category, Impact, Likelihood, RiskType } from '@life/risk'
+import { newRisk, CategoryTopLevel, Impact, Likelihood, RiskType } from '@life/risk'
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase/mapper'
 import { Result, resultError, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
@@ -6,7 +6,7 @@ import { RiskRepo } from '@life/repo'
 interface CreateRiskRequest {
   uriPart: string
   name: string
-  category: Category
+  category: CategoryTopLevel
   impact: Impact
   likelihood: Likelihood
   notes?: string

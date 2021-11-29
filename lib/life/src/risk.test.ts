@@ -1,4 +1,4 @@
-import { newRisk, Category, Impact, Likelihood, RiskType } from '@life/risk'
+import { newRisk, CategoryTopLevel, Impact, Likelihood, RiskType } from '@life/risk'
 import type { CreateDetails } from '@life/risk'
 import { describe, expect, test } from '@jest/globals'
 import { assertResultError, assertResultOk } from '@util/testing'
@@ -8,7 +8,7 @@ describe('Risk', () => {
     let createDetails: CreateDetails
     beforeEach(() => {
       createDetails = {
-        category: Category.Health,
+        category: CategoryTopLevel.Health,
         impact: Impact.High,
         likelihood: Likelihood.High,
         name: 'name',
@@ -27,7 +27,7 @@ describe('Risk', () => {
         assertResultOk(riskResult)
 
         const risk = riskResult.value
-        expect(risk.category).toEqual(Category.Health)
+        expect(risk.category).toEqual(CategoryTopLevel.Health)
         expect(risk.impact).toEqual(Impact.High)
         expect(risk.likelihood).toEqual(Likelihood.High)
         expect(risk.name).toEqual('name')
@@ -42,7 +42,7 @@ describe('Risk', () => {
         assertResultOk(riskResult)
 
         const risk = riskResult.value
-        expect(risk.category).toEqual(Category.Health)
+        expect(risk.category).toEqual(CategoryTopLevel.Health)
         expect(risk.impact).toEqual(Impact.High)
         expect(risk.likelihood).toEqual(Likelihood.High)
         expect(risk.name).toEqual('name')
@@ -55,7 +55,7 @@ describe('Risk', () => {
       test('Then it successfully creates a Risk with that parent', () => {
         // Create parent risk
         const parentCreateDetails: CreateDetails = {
-          category: Category.Security,
+          category: CategoryTopLevel.Security,
           impact: Impact.Normal,
           likelihood: Likelihood.Normal,
           name: 'parent name',
@@ -76,7 +76,7 @@ describe('Risk', () => {
         // Validate parent risk
         const risk = riskResult.value
         expect(risk.parent).not.toBeUndefined()
-        expect(risk.parent?.category).toEqual(Category.Security)
+        expect(risk.parent?.category).toEqual(CategoryTopLevel.Security)
         expect(risk.parent?.impact).toEqual(Impact.Normal)
         expect(risk.parent?.likelihood).toEqual(Likelihood.Normal)
         expect(risk.parent?.name).toEqual('parent name')

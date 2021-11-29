@@ -1,6 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Category, Risk } from '@life/risk'
+import { CategoryTopLevel, Risk } from '@life/risk'
 import { Result, resultError, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 import { RiskJson, RiskMapper } from '@life/repo/json/mapper'
@@ -96,7 +96,7 @@ class JsonRepo implements RiskRepo {
     return resultOk(riskChildren)
   }
 
-  public async listRisks(category: Category | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
+  public async listRisks(category: CategoryTopLevel | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
     const jsonRisks = Object.values(this.#json.risk)
     const risks = []
     for (const jsonRisk of jsonRisks) {

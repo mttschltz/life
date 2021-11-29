@@ -1,5 +1,5 @@
 import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase/mapper'
-import { Category } from '@life/risk'
+import { CategoryTopLevel } from '@life/risk'
 import { Result, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 
@@ -25,13 +25,13 @@ class ListRisksInteractor {
     let category
     switch (criteria.category) {
       case 'health':
-        category = Category.Health
+        category = CategoryTopLevel.Health
         break
       case 'wealth':
-        category = Category.Wealth
+        category = CategoryTopLevel.Wealth
         break
       case 'security':
-        category = Category.Security
+        category = CategoryTopLevel.Security
         break
     }
     const risksResult = await this.#repo.listRisks(category, !!criteria.includeDescendents)

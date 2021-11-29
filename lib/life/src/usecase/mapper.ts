@@ -1,9 +1,10 @@
-import { Category, Impact, Likelihood, Risk as RiskEntity, RiskType } from '@life/risk'
+import { CategoryTopLevel, Impact, Likelihood, Risk as RiskDomain, RiskType } from '@life/risk'
+import { Category as CategoryDomain } from '@life/category'
 
 interface Risk {
   id: string
 
-  category: Category
+  category: CategoryTopLevel
   impact: Impact
   likelihood: Likelihood
 
@@ -14,7 +15,7 @@ interface Risk {
 }
 
 class RiskMapper {
-  public risk({ id, category, impact, likelihood, name, notes, parent, type }: RiskEntity): Risk {
+  public risk({ id, category, impact, likelihood, name, notes, parent, type }: RiskDomain): Risk {
     let usecaseParent
     if (parent) {
       usecaseParent = this.risk(parent)
@@ -31,10 +32,37 @@ class RiskMapper {
     }
   }
 
-  public risks(risks: RiskEntity[]): Risk[] {
+  public risks(risks: RiskDomain[]): Risk[] {
     return risks.map((risk) => this.risk(risk))
   }
 }
 
-export { RiskMapper }
-export type { Risk }
+type Category = Pick<CategoryDomain, 'description' | 'id' | 'name' | 'path'> & {
+  children: Category[]
+  parent?: Category
+}
+
+class CategoryMapper {
+  public category(c: CategoryDomain): Category {
+    let parent
+    if (c.parent) {
+      parent = this.category(c.parent)
+    }
+
+    return {
+      id: c.id,
+      name: c.name,
+      path: c.path,
+      description: c.description,
+      parent: parent,
+      children: c.children.map((c2) => this.category(c2)),
+    }
+  }
+
+  public categories(categories: CategoryDomain[]): Category[] {
+    return categories.map((c) => this.category(c))
+  }
+}
+
+export { RiskMapper, CategoryMapper }
+export type { Risk, Category }

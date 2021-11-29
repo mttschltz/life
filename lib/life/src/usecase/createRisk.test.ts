@@ -1,4 +1,4 @@
-import { Category, Impact, Likelihood, newRisk, Risk, RiskType } from '@life/risk'
+import { CategoryTopLevel, Impact, Likelihood, newRisk, Risk, RiskType } from '@life/risk'
 import { assertResultError, assertResultOk } from '@util/testing'
 import { Result, ResultError } from '@util/result'
 import { CreateRiskInteractor, CreateRiskRepo, CreateRiskRequest } from '@life/usecase/createRisk'
@@ -20,7 +20,7 @@ describe('createRisk', () => {
       // Risks
       risk = {
         id: 'uri-part',
-        category: Category.Health,
+        category: CategoryTopLevel.Health,
         impact: Impact.High,
         likelihood: Likelihood.High,
         name: 'name',
@@ -30,7 +30,7 @@ describe('createRisk', () => {
       }
       parentRisk = {
         id: 'parent id',
-        category: Category.Health,
+        category: CategoryTopLevel.Health,
         impact: Impact.High,
         likelihood: Likelihood.High,
         name: 'parent name',
@@ -63,7 +63,7 @@ describe('createRisk', () => {
       )
       // Mapper
       mappedRisk = {
-        category: Category.Health,
+        category: CategoryTopLevel.Health,
         id: 'uri-part',
         impact: Impact.High,
         likelihood: Likelihood.High,
@@ -91,7 +91,7 @@ describe('createRisk', () => {
 
       beforeEach(() => {
         createDetails = {
-          category: Category.Health,
+          category: CategoryTopLevel.Health,
           impact: Impact.High,
           likelihood: Likelihood.High,
           name: 'name',
@@ -196,7 +196,7 @@ describe('createRisk', () => {
 
       beforeEach(() => {
         createDetails = {
-          category: Category.Health,
+          category: CategoryTopLevel.Health,
           impact: Impact.High,
           likelihood: Likelihood.High,
           name: 'name',

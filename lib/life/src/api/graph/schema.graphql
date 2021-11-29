@@ -84,7 +84,7 @@ type Query {
   """
   Get all categories.
   """
-  categories(parentID: ID): [Category]!
+  categories: [Category]!
 }
 
 """
