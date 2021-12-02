@@ -1,4 +1,14 @@
-import { Result, ResultError, resultError, ResultOk, resultOk, Results, results } from '@util/result'
+import {
+  isResultError,
+  isResultOk,
+  Result,
+  ResultError,
+  resultError,
+  ResultOk,
+  resultOk,
+  Results,
+  results,
+} from '@util/result'
 import { assertResultError, assertResultOk } from './testing'
 
 interface OkType {
@@ -95,6 +105,34 @@ describe('Result', () => {
       test('Then okValues returns the 2 ok values', () => {
         expect(rs.okValues).toEqual([result1.value, result3.value])
       })
+    })
+  })
+})
+describe('isResultOk', () => {
+  describe('Given an ok result', () => {
+    test('Then it returns true', () => {
+      const ok = resultOk('result')
+      expect(isResultOk(ok)).toEqual(true)
+    })
+  })
+  describe('Given an error result', () => {
+    test('Then it returns false', () => {
+      const err = resultError<string>('error')
+      expect(isResultOk(err)).toEqual(false)
+    })
+  })
+})
+describe('isResultError', () => {
+  describe('Given an error result', () => {
+    test('Then it returns true', () => {
+      const err = resultError<string>('error')
+      expect(isResultError(err)).toEqual(true)
+    })
+  })
+  describe('Given an ok result', () => {
+    test('Then it returns false', () => {
+      const ok = resultOk('result')
+      expect(isResultError(ok)).toEqual(false)
     })
   })
 })

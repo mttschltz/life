@@ -1,7 +1,9 @@
+import { Category, CreateDetails as CategoryCreateDetails, newCategory } from '@life/category'
 import { Risk, newRisk } from '@life/risk'
 import { Result } from '@util/result'
 
 type RiskJson = Omit<Risk, 'mitigations' | 'parent'> & { parentId?: string }
+type CategoryJson = Omit<Category, 'children' | 'parent'> & { parentId?: string; children: string[] }
 
 class RiskMapper {
   public toJson({ category, id, impact, likelihood, name, notes, parent, type }: Risk): RiskJson {
@@ -34,5 +36,42 @@ class RiskMapper {
   }
 }
 
-export type { RiskJson }
-export { RiskMapper }
+interface CategoryMapper {
+  toJson: (category: Category) => CategoryJson
+  fromJson: (categoryJson: CategoryJson, parent: Category | undefined, children: Category[]) => Result<Category>
+}
+
+function newCategoryMapper(): CategoryMapper {
+  return new CategoryMapperImpl()
+}
+
+class CategoryMapperImpl implements CategoryMapper {
+  public toJson({ id, name, parent, path, description, children }: Category): CategoryJson {
+    return {
+      id,
+      name,
+      parentId: parent?.id,
+      path,
+      description,
+      children: children.map((c) => c.id),
+    }
+  }
+
+  public fromJson(
+    { id, name, description, path }: CategoryJson,
+    parent: Category | undefined,
+    children: Category[],
+  ): Result<Category> {
+    const createDetails: CategoryCreateDetails = {
+      name,
+      parent,
+      children,
+      path,
+      description,
+    }
+    return newCategory(id, createDetails)
+  }
+}
+
+export type { RiskJson, CategoryJson, CategoryMapper }
+export { RiskMapper, newCategoryMapper }

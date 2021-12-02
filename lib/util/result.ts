@@ -61,6 +61,14 @@ function resultError<T>(message: string, error?: Error): Result<T> {
   return new ResultErrorImpl(message, error)
 }
 
+function isResultOk<T>(result: Result<T>): result is ResultOk<T> {
+  return result.ok
+}
+
+function isResultError<T>(result: Result<T>): result is ResultError {
+  return !result.ok
+}
+
 interface Results<T> {
   readonly values: (T | undefined)[]
   readonly okValues: T[]
@@ -94,4 +102,4 @@ function results<T>(rs: Result<T>[]): Results<T> {
 }
 
 export type { Result, ResultError, ResultOk, Results }
-export { resultOk, resultError, results }
+export { resultOk, resultError, results, isResultOk, isResultError }

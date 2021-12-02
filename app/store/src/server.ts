@@ -3,15 +3,33 @@ import { DateTimeMock } from 'graphql-scalars'
 
 import { environment } from '@store/environment'
 import { GraphService } from '@life/api/graph/service'
-import { InteractorFactory } from '@life/api/interactorFactory'
+import { CategoryInteractorFactory, RiskInteractorFactory } from '@life/api/interactorFactory'
 import { newGraphMapper } from '@life/api/graph/mapper'
 import { newLogger } from '@util/logger'
 import { transpile } from '@util/mdx'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
+import { CategoryRepoJson, JsonStore, RiskRepoJson } from '@life/repo/json/service'
+import { RiskMapper as RiskJsonMapper, newCategoryMapper } from '@life/repo/json/mapper'
 
-const interactorFactory = new InteractorFactory({})
-const graphService = new GraphService(interactorFactory, newGraphMapper(transpile), newLogger())
+// Store/repo
+const jsonStore: JsonStore = {
+  category: {},
+  risk: {},
+}
+const riskRepo = new RiskRepoJson(jsonStore, new RiskJsonMapper())
+const categoryRepo = new CategoryRepoJson(jsonStore, newCategoryMapper())
 
+// Interactors
+const graphService = new GraphService(
+  {
+    category: new CategoryInteractorFactory(categoryRepo),
+    risk: new RiskInteractorFactory(riskRepo),
+  },
+  newGraphMapper(transpile),
+  newLogger(),
+)
+
+// Server
 const server = new ApolloServer({
   resolvers: graphService.resolvers(),
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

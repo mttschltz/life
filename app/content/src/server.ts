@@ -39,7 +39,7 @@ const createRiskMutation = gql`
       variables: {
         input: {
           category: CategoryTopLevel.SECURITY,
-          name: 'risk child',
+          name: 'risk child x',
           uriPart: 'uri-part-risk-child',
           parentId: parent.data?.createRisk.id,
           notes: `

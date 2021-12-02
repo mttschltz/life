@@ -462,11 +462,6 @@ type Store_risksArgs = {
   category: Maybe<Store_CategoryTopLevel>;
 };
 
-
-type Store_categoriesArgs = {
-  parentID: Maybe<Scalars['ID']>;
-};
-
 type Query = {
   readonly file: Maybe<File>;
   readonly allFile: FileConnection;

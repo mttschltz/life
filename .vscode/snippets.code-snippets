@@ -43,6 +43,16 @@
 		],
 		"description": "Jest beforeEach block with variable in external scope"
 	},
+	"test": {
+		"scope": "javascript,typescript",
+		"prefix": "test",
+		"body": [
+			"test('$1', () => {",
+			"\t$2",
+			"})",
+		],
+		"description": "Jest test block"
+	},
 	"Wrap describe": {
 		"scope": "javascript,typescript",
 		"prefix": "test-wrap-desc",
