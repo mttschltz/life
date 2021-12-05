@@ -1,15 +1,17 @@
-import type { Risk as UsecaseRisk } from '@life/usecase/mapper'
-import { CategoryTopLevel as GraphCategoryTopLevel, Risk as GraphRisk } from '@life/__generated__/graphql'
+import type { Risk as RiskUsecase, Category as CategoryUsecase } from '@life/usecase/mapper'
+import { Category, CategoryTopLevel as GraphCategoryTopLevel, Risk as GraphRisk } from '@life/__generated__/graphql'
 import { CategoryTopLevel } from '@life/risk'
 import { Result, resultError, resultOk, results, Results } from '@util/result'
 
 type MdxTranspiler = (mdx?: string) => string | undefined
 
 interface GraphMapper {
-  toCategory: (graphCategory: GraphCategoryTopLevel) => Result<CategoryTopLevel>
-  fromCategory: (category: CategoryTopLevel) => Result<GraphCategoryTopLevel>
-  fromRisk: ({ id, category, name, notes }: UsecaseRisk) => Result<GraphRisk>
-  risks: (risks: UsecaseRisk[]) => Results<GraphRisk>
+  toCategoryTopLevel: (graphCategory: GraphCategoryTopLevel) => Result<CategoryTopLevel>
+  fromCategoryTopLevel: (category: CategoryTopLevel) => Result<GraphCategoryTopLevel>
+  fromRisk: ({ id, category, name, notes }: RiskUsecase) => Result<GraphRisk>
+  risks: (risks: RiskUsecase[]) => Results<GraphRisk>
+  categoryFromUsecase: (category: CategoryUsecase) => Result<Category>
+  categoriesFromUsecase: (categories: CategoryUsecase[]) => Results<Category>
 }
 
 function newGraphMapper(mdxTranspiler: MdxTranspiler): GraphMapper {
@@ -24,7 +26,30 @@ class GraphMapperImpl implements GraphMapper {
     this.#mdxTranspiler = mdxTranspiler
   }
 
-  public toCategory(graphCategory: GraphCategoryTopLevel): Result<CategoryTopLevel> {
+  public categoryFromUsecase(category: CategoryUsecase): Result<Category> {
+    const parentResult = category.parent ? this.categoryFromUsecase(category.parent) : undefined
+    if (parentResult && !parentResult.ok) {
+      return parentResult
+    }
+    const childrenResults = results(category.children.map((c) => this.categoryFromUsecase(c)))
+    if (childrenResults.firstErrorResult) {
+      return childrenResults.firstErrorResult
+    }
+    return resultOk({
+      id: category.id,
+      name: category.name,
+      path: category.path,
+      description: category.description ?? undefined,
+      parent: parentResult?.value,
+      children: childrenResults.okValues,
+    })
+  }
+
+  public categoriesFromUsecase(categories: CategoryUsecase[]): Results<Category> {
+    return results(categories.map((c) => this.categoryFromUsecase(c)))
+  }
+
+  public toCategoryTopLevel(graphCategory: GraphCategoryTopLevel): Result<CategoryTopLevel> {
     switch (graphCategory) {
       case GraphCategoryTopLevel.Health:
         return resultOk(CategoryTopLevel.Health)
@@ -37,7 +62,7 @@ class GraphMapperImpl implements GraphMapper {
     }
   }
 
-  public fromCategory(category: CategoryTopLevel): Result<GraphCategoryTopLevel> {
+  public fromCategoryTopLevel(category: CategoryTopLevel): Result<GraphCategoryTopLevel> {
     switch (category) {
       case CategoryTopLevel.Health:
         return resultOk(GraphCategoryTopLevel.Health)
@@ -50,8 +75,8 @@ class GraphMapperImpl implements GraphMapper {
     }
   }
 
-  public fromRisk({ id, category, name, notes }: UsecaseRisk): Result<GraphRisk> {
-    const graphCategoryResult = this.fromCategory(category)
+  public fromRisk({ id, category, name, notes }: RiskUsecase): Result<GraphRisk> {
+    const graphCategoryResult = this.fromCategoryTopLevel(category)
     if (!graphCategoryResult.ok) {
       return graphCategoryResult
     }
@@ -64,7 +89,7 @@ class GraphMapperImpl implements GraphMapper {
     })
   }
 
-  public risks(risks: UsecaseRisk[]): Results<GraphRisk> {
+  public risks(risks: RiskUsecase[]): Results<GraphRisk> {
     return results(risks.map((risk) => this.fromRisk(risk)))
   }
 }

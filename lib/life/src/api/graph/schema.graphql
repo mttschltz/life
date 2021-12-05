@@ -33,8 +33,9 @@ type Category {
   description: String
   """
   An ordered list of Risks or Categories.
+  TODO: Make this of type [Concern]!
   """
-  children: [Concern]!
+  children: [Category]!
   """
   The parent.
   """
