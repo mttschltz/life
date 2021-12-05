@@ -101,5 +101,9 @@ function results<T>(rs: Result<T>[]): Results<T> {
   return new ResultsImpl(rs)
 }
 
+function resultsError<T>(message: string, error?: Error): Results<T> {
+  return new ResultsImpl([resultError(message, error)])
+}
+
 export type { Result, ResultError, ResultOk, Results }
-export { resultOk, resultError, results, isResultOk, isResultError }
+export { resultOk, resultError, resultsError, results, isResultOk, isResultError }

@@ -8,6 +8,7 @@ import {
   resultOk,
   Results,
   results,
+  resultsError,
 } from '@util/result'
 import { assertResultError, assertResultOk } from './testing'
 
@@ -56,6 +57,36 @@ describe('Result', () => {
           expect(result.ok).toEqual(false)
           assertResultError(result)
           expect(result.error).toBe(error)
+        })
+      })
+    })
+  })
+  describe('resultsError', () => {
+    describe('Given an error message', () => {
+      describe('When no error object is provided', () => {
+        test('Then Results is returned with the expected single error', () => {
+          const r = resultsError('error message')
+          expect(r.firstErrorResult).toMatchObject({
+            message: 'error message',
+            error: new Error('Result error'),
+            ok: false,
+          })
+          expect(r.okValues).toEqual([])
+          expect(r.values).toEqual([undefined])
+        })
+      })
+      describe('When an error object is provided', () => {
+        test('Then Results is returned with the expected single error', () => {
+          const error = new Error('error object')
+          const r = resultsError('error message', error)
+          expect(r.firstErrorResult).toMatchObject({
+            message: 'error message',
+            error: new Error('error object'),
+            ok: false,
+          })
+          expect(r.firstErrorResult?.error).toBe(error)
+          expect(r.okValues).toEqual([])
+          expect(r.values).toEqual([undefined])
         })
       })
     })
