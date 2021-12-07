@@ -94,5 +94,5 @@ class GraphMapperImpl implements GraphMapper {
   }
 }
 
-export type { GraphMapper }
+export type { GraphMapper, MdxTranspiler }
 export { newGraphMapper }

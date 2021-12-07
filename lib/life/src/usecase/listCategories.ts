@@ -1,11 +1,19 @@
 import { Category as UsecaseCategory, CategoryMapper } from '@life/usecase/mapper'
-import { Result, resultOk } from '@util/result'
+import { Results, resultsOk } from '@util/result'
 import { CategoryRepo } from '@life/repo'
 
 type ListCategoriesRepo = Pick<CategoryRepo, 'listCategories'>
 type ListCategoriesMapper = Pick<CategoryMapper, 'categories'>
 
-class ListCategoriesInteractor {
+interface ListCategoriesInteractor {
+  listCategories: () => Promise<Results<UsecaseCategory>>
+}
+
+function newListCategoriesInteractor(repo: ListCategoriesRepo, mapper: ListCategoriesMapper): ListCategoriesInteractor {
+  return new ListCategoriesInteractorImpl(repo, mapper)
+}
+
+class ListCategoriesInteractorImpl implements ListCategoriesInteractor {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #repo: ListCategoriesRepo
   #mapper: ListCategoriesMapper
@@ -16,15 +24,15 @@ class ListCategoriesInteractor {
     this.#mapper = mapper
   }
 
-  public async listCategories(): Promise<Result<UsecaseCategory[]>> {
-    const categoriesResult = await this.#repo.listCategories({ includeChildren: true })
-    if (!categoriesResult.ok) {
-      return categoriesResult
+  public async listCategories(): Promise<Results<UsecaseCategory>> {
+    const fetchedResults = await this.#repo.listCategories({ includeChildren: true })
+    if (fetchedResults.firstErrorResult) {
+      return fetchedResults.withOnlyFirstError<UsecaseCategory>()
     }
 
-    return resultOk(this.#mapper.categories(categoriesResult.value))
+    return resultsOk(this.#mapper.categories(fetchedResults.okValues))
   }
 }
 
-export type { ListCategoriesMapper, ListCategoriesRepo }
-export { ListCategoriesInteractor }
+export type { ListCategoriesMapper, ListCategoriesRepo, ListCategoriesInteractor }
+export { newListCategoriesInteractor }

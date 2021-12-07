@@ -1,7 +1,6 @@
 import { Category } from '@life/category'
-import { assertResultError, assertResultOk } from '@util/testing'
-import { Result, ResultError } from '@util/result'
-import { ListCategoriesInteractor } from '@life/usecase/listCategories'
+import { ResultError, results, Results } from '@util/result'
+import { ListCategoriesInteractor, newListCategoriesInteractor } from '@life/usecase/listCategories'
 import type { ListCategoriesRepo } from '@life/usecase/listCategories'
 import { Category as UsecaseCategory } from '@life/usecase/mapper'
 
@@ -77,7 +76,7 @@ describe('listCategories', () => {
           },
         },
       ]
-      interactor = new ListCategoriesInteractor(
+      interactor = newListCategoriesInteractor(
         {
           listCategories: repoListCategories,
         },
@@ -90,23 +89,24 @@ describe('listCategories', () => {
       beforeEach(() => {
         repoListCategories.mockReturnValueOnce(
           Promise.resolve({
-            value: repoCategories,
-            ok: true,
-          } as Result<Category[]>),
+            values: repoCategories,
+            firstErrorResult: undefined,
+            okValues: repoCategories,
+          } as Results<Category>),
         )
       })
 
       test('Then the mapped result is returned', async () => {
         const categoriesResult = await interactor.listCategories()
-        assertResultOk(categoriesResult)
-        expect(categoriesResult.value).toBe(mappedCategories)
+        expect(categoriesResult.firstErrorResult).toBeUndefined()
+        expect(categoriesResult.okValues).toStrictEqual(mappedCategories)
 
         // And the categories are fetched
         expect(repoListCategories.mock.calls).toHaveLength(1)
         expect(repoListCategories.mock.calls[0][0]).toEqual({ includeChildren: true })
       })
     })
-    describe('When listing from the repo errors', () => {
+    describe('When listing from the repo errors on one category', () => {
       let errorResult: ResultError
       beforeEach(() => {
         errorResult = {
@@ -114,13 +114,29 @@ describe('listCategories', () => {
           error: new Error('repo error'),
           message: 'repo error message',
         }
-        repoListCategories.mockReturnValueOnce(Promise.resolve(errorResult))
+        repoListCategories.mockReturnValueOnce(
+          Promise.resolve(
+            results<Category>([
+              errorResult,
+              {
+                ok: true,
+                value: {
+                  id: 'id',
+                  name: 'name',
+                  path: 'path',
+                  children: [],
+                },
+              },
+            ]),
+          ),
+        )
       })
 
-      test('Then the error result is returned', async () => {
+      test('Then only the error result is returned', async () => {
         const categoriesResult = await interactor.listCategories()
-        assertResultError(categoriesResult)
-        expect(categoriesResult).toEqual(errorResult)
+        expect(categoriesResult.firstErrorResult).toEqual(errorResult)
+        expect(categoriesResult.okValues).toStrictEqual([])
+        expect(categoriesResult.values).toEqual([undefined])
 
         // And the categories are fetched
         expect(repoListCategories.mock.calls).toHaveLength(1)

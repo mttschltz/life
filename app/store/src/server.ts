@@ -3,7 +3,7 @@ import { DateTimeMock } from 'graphql-scalars'
 
 import { environment } from '@store/environment'
 import { GraphService } from '@life/api/graph/service'
-import { CategoryInteractorFactory, RiskInteractorFactory } from '@life/api/interactorFactory'
+import { newCategoryInteractorFactory, newRiskInteractorFactory } from '@life/api/interactorFactory'
 import { newGraphMapper } from '@life/api/graph/mapper'
 import { newLogger } from '@util/logger'
 import { transpile } from '@util/mdx'
@@ -22,8 +22,8 @@ const categoryRepo = new CategoryRepoJson(jsonStore, newCategoryMapper())
 // Interactors
 const graphService = new GraphService(
   {
-    category: new CategoryInteractorFactory(categoryRepo),
-    risk: new RiskInteractorFactory(riskRepo),
+    category: newCategoryInteractorFactory(categoryRepo),
+    risk: newRiskInteractorFactory(riskRepo),
   },
   newGraphMapper(transpile),
   newLogger(),

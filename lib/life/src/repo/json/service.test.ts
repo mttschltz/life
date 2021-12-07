@@ -377,8 +377,8 @@ describe('CategoryRepoJson', () => {
           )
 
           const result = await repo.listCategories()
-          assertResultOk(result)
-          const categories = result.value
+          expect(result.firstErrorResult).toBeUndefined()
+          const categories = result.okValues
           expect(categories).toHaveLength(2)
           expect(categories[0]).toEqual(root1Mapped)
           expect(categories[1]).toEqual(root2Mapped)
@@ -423,8 +423,9 @@ describe('CategoryRepoJson', () => {
           )
 
           const result = await repo.listCategories()
-          assertResultError(result)
-          expect(result).toBe(mapperError)
+          expect(result.firstErrorResult).toBe(mapperError)
+          expect(result.okValues).toEqual([])
+          expect(result.values).toEqual([undefined])
         })
       })
     })

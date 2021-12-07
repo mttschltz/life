@@ -9,6 +9,8 @@ import {
   Results,
   results,
   resultsError,
+  resultsErrorResult,
+  resultsOk,
 } from '@util/result'
 import { assertResultError, assertResultOk } from './testing'
 
@@ -91,6 +93,33 @@ describe('Result', () => {
       })
     })
   })
+  describe('resultsErrorResult', () => {
+    describe('Given an error result', () => {
+      describe('When no error object is provided', () => {
+        test('Then Results is returned with the expected single error', () => {
+          const err = {
+            error: new Error('error object'),
+            message: 'error message',
+            ok: false as const,
+          }
+          const r = resultsErrorResult(err)
+          expect(r.firstErrorResult).toBe(err)
+          expect(r.okValues).toEqual([])
+          expect(r.values).toEqual([undefined])
+        })
+      })
+    })
+  })
+  describe('resultsOk', () => {
+    describe('Given a list of values', () => {
+      test('Then a Results instance is returned with no first error value', () => {
+        const r = resultsOk(['one', 'two', 'three'])
+        expect(r.firstErrorResult).toBeUndefined()
+        expect(r.okValues).toEqual(['one', 'two', 'three'])
+        expect(r.values).toEqual(['one', 'two', 'three'])
+      })
+    })
+  })
   describe('Given a list of results', () => {
     let inputResults: Result<OkType>[]
     let result1: ResultOk<OkType>
@@ -135,6 +164,12 @@ describe('Result', () => {
       })
       test('Then okValues returns the 2 ok values', () => {
         expect(rs.okValues).toEqual([result1.value, result3.value])
+      })
+      test('Then withOnlyFirstError returns a new Results instance with only the first error', () => {
+        const rs2 = rs.withOnlyFirstError()
+        expect(rs2.firstErrorResult).toEqual(result2)
+        expect(rs2.okValues).toEqual([])
+        expect(rs2.values).toEqual([undefined])
       })
     })
   })

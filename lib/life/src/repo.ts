@@ -1,4 +1,4 @@
-import { Result } from 'util/result'
+import { Result, Results } from 'util/result'
 import { CategoryTopLevel, Risk } from '@life/risk'
 import { Category } from '@life/category'
 
@@ -11,7 +11,8 @@ interface RiskRepo {
 }
 
 interface CategoryRepo {
-  listCategories: (criteria: { includeChildren: boolean }) => Promise<Result<Category[]>>
+  fetchCategory: (id: string) => Promise<Result<Category>>
+  listCategories: (criteria: { includeChildren: boolean }) => Promise<Results<Category>>
 }
 
 export type { CategoryRepo, RiskRepo }

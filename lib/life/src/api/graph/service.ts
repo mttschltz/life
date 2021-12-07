@@ -1,18 +1,13 @@
 import { ApolloError, Config } from 'apollo-server'
 import type { ListRisksCriteria } from '@life/usecase/listRisks'
-import { CategoryTopLevel as GraphCategoryTopLevel } from '@life/__generated__/graphql'
+import { CategoryTopLevel as GraphCategoryTopLevel, Category } from '@life/__generated__/graphql'
 import type { QueryRisksArgs, RequireFields, Resolvers, Risk as GraphRisk } from '@life/__generated__/graphql'
 import * as typeDefs from '@life/api/graph/schema.graphql'
-import { CategoryInteractorFactory, RiskInteractorFactory } from '@life/api/interactorFactory'
+import { InteractorFactory } from '@life/api/interactorFactory'
 import { GraphMapper } from '@life/api/graph/mapper'
 import { Logger } from '@util/logger'
 import { ResultError } from '@util/result'
 import { Impact, Likelihood, RiskType } from '@life/risk'
-
-type InteractorFactory = {
-  category: CategoryInteractorFactory
-  risk: RiskInteractorFactory
-}
 
 class GraphService {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
@@ -33,11 +28,49 @@ class GraphService {
   public resolvers(): Resolvers {
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention
+      Category: {
+        parent: async (category): Promise<Category | null> => {
+          const parentResult = await this.#factory.category.fetchParentInteractor().fetchParent(category.id)
+          if (!parentResult.ok) {
+            this.#logger.result(parentResult)
+            throw this.resultError(parentResult)
+          }
+
+          const parent = parentResult.value
+          if (!parent) {
+            return null
+          }
+
+          const mappingResult = this.#mapper.categoryFromUsecase(parent)
+          if (!mappingResult.ok) {
+            this.#logger.result(mappingResult)
+            throw this.resultError(mappingResult)
+          }
+
+          return mappingResult.value
+        },
+        children: async (category): Promise<Category[]> => {
+          const childrenResults = await this.#factory.category.fetchChildrenInteractor().fetchChildren(category.id)
+          if (childrenResults.firstErrorResult) {
+            this.#logger.result(childrenResults.firstErrorResult)
+            throw this.resultError(childrenResults.firstErrorResult)
+          }
+
+          const mappingResults = this.#mapper.categoriesFromUsecase(childrenResults.okValues)
+          if (mappingResults.firstErrorResult) {
+            this.#logger.result(mappingResults.firstErrorResult)
+            throw this.resultError(mappingResults.firstErrorResult)
+          }
+
+          return mappingResults.okValues
+        },
+      },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Mutation: {
         createRisk: async (_, { input }): Promise<GraphRisk> => {
           // TODO: Instead of mapping each enum, etc individually, map CreateRiskInput
           // to CreateRiskRequest. This should make testing easier.
-          const categoryResult = this.#mapper.toCategory(input.category)
+          const categoryResult = this.#mapper.toCategoryTopLevel(input.category)
           if (!categoryResult.ok) {
             this.#logger.result(categoryResult)
             throw this.resultError(categoryResult)
@@ -107,6 +140,21 @@ class GraphService {
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Query: {
+        categories: async (): Promise<Category[]> => {
+          const categoryResults = await this.#factory.category.listCategoriesInteractor().listCategories()
+          if (categoryResults.firstErrorResult) {
+            this.#logger.result(categoryResults.firstErrorResult)
+            throw this.resultError(categoryResults.firstErrorResult)
+          }
+
+          const categories = this.#mapper.categoriesFromUsecase(categoryResults.okValues)
+          if (categories.firstErrorResult) {
+            this.#logger.result(categories.firstErrorResult)
+            throw this.resultError(categories.firstErrorResult)
+          }
+
+          return categories.okValues
+        },
         risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<GraphRisk[]> => {
           const criteria: ListRisksCriteria = {}
           switch (args.category) {
@@ -160,3 +208,4 @@ class GraphService {
 }
 
 export { GraphService }
+export type { InteractorFactory }

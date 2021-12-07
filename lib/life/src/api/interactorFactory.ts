@@ -3,10 +3,24 @@ import { ListRisksInteractor } from '@life/usecase/listRisks'
 import { FetchRiskChildrenInteractor } from '@life/usecase/fetchRiskChildren'
 import { FetchRiskParentInteractor } from '@life/usecase/fetchRiskParent'
 import { CreateRiskInteractor } from '@life/usecase/createRisk'
-import { ListCategoriesInteractor } from '@life/usecase/listCategories'
+import { ListCategoriesInteractor, newListCategoriesInteractor } from '@life/usecase/listCategories'
 import { CategoryRepo, RiskRepo } from '@life/repo'
+import { FetchCategoryInteractor, newFetchCategoryInteractor } from '@life/usecase/fetchCategory'
+import { FetchParentInteractor, newFetchParentInteractor } from '@life/usecase/fetchParent'
+import { FetchChildrenInteractor, newFetchChildrenInteractor } from '@life/usecase/fetchChildren'
 
-class RiskInteractorFactory {
+interface RiskInteractorFactory {
+  listRisksInteractor: () => ListRisksInteractor
+  fetchRiskParentInteractor: () => FetchRiskParentInteractor
+  fetchRiskChildrenInteractor: () => FetchRiskChildrenInteractor
+  createRiskInteractor: () => CreateRiskInteractor
+}
+
+function newRiskInteractorFactory(repo: RiskRepo): RiskInteractorFactory {
+  return new RiskInteractorFactoryImpl(repo)
+}
+
+class RiskInteractorFactoryImpl implements RiskInteractorFactory {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   repo: RiskRepo
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
@@ -32,7 +46,18 @@ class RiskInteractorFactory {
   }
 }
 
-class CategoryInteractorFactory {
+interface CategoryInteractorFactory {
+  listCategoriesInteractor: () => ListCategoriesInteractor
+  fetchCategoryInteractor: () => FetchCategoryInteractor
+  fetchParentInteractor: () => FetchParentInteractor
+  fetchChildrenInteractor: () => FetchChildrenInteractor
+}
+
+function newCategoryInteractorFactory(repo: CategoryRepo): CategoryInteractorFactory {
+  return new CategoryInteractorFactoryImpl(repo)
+}
+
+class CategoryInteractorFactoryImpl implements CategoryInteractorFactory {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #repo: CategoryRepo
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
@@ -42,8 +67,26 @@ class CategoryInteractorFactory {
   }
 
   public listCategoriesInteractor(): ListCategoriesInteractor {
-    return new ListCategoriesInteractor(this.#repo, new UsecaseCategoryMapper())
+    return newListCategoriesInteractor(this.#repo, new UsecaseCategoryMapper())
+  }
+
+  public fetchCategoryInteractor(): FetchCategoryInteractor {
+    return newFetchCategoryInteractor()
+  }
+
+  public fetchParentInteractor(): FetchParentInteractor {
+    return newFetchParentInteractor()
+  }
+
+  public fetchChildrenInteractor(): FetchChildrenInteractor {
+    return newFetchChildrenInteractor()
   }
 }
 
-export { RiskInteractorFactory, CategoryInteractorFactory }
+type InteractorFactory = {
+  category: CategoryInteractorFactory
+  risk: RiskInteractorFactory
+}
+
+export type { InteractorFactory, RiskInteractorFactory, CategoryInteractorFactory }
+export { newRiskInteractorFactory, newCategoryInteractorFactory }

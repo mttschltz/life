@@ -73,6 +73,7 @@ interface Results<T> {
   readonly values: (T | undefined)[]
   readonly okValues: T[]
   readonly firstErrorResult: ResultError | undefined
+  withOnlyFirstError: <U = T>() => Results<U>
 }
 
 class ResultsImpl<T> implements Results<T> {
@@ -95,15 +96,31 @@ class ResultsImpl<T> implements Results<T> {
   public get okValues(): T[] {
     return this.#results.filter((r): r is ResultOk<T> => r.ok).map((r) => r.value)
   }
+
+  public withOnlyFirstError<U = T>(): Results<U> {
+    const firstErrorResult = this.firstErrorResult
+    if (firstErrorResult) {
+      return results([firstErrorResult])
+    }
+    return results([])
+  }
 }
 
 function results<T>(rs: Result<T>[]): Results<T> {
   return new ResultsImpl(rs)
 }
 
+function resultsOk<T>(values: T[]): Results<T> {
+  return new ResultsImpl(values.map((v) => resultOk(v)))
+}
+
 function resultsError<T>(message: string, error?: Error): Results<T> {
   return new ResultsImpl([resultError(message, error)])
 }
 
+function resultsErrorResult<T>(err: ResultError): Results<T> {
+  return new ResultsImpl([err])
+}
+
 export type { Result, ResultError, ResultOk, Results }
-export { resultOk, resultError, resultsError, results, isResultOk, isResultError }
+export { resultOk, resultError, resultsError, resultsErrorResult, results, resultsOk, isResultOk, isResultError }

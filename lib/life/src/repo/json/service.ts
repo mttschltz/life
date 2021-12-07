@@ -1,7 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { CategoryTopLevel, Risk } from '@life/risk'
-import { Result, resultError, resultOk, results } from '@util/result'
+import { Result, resultError, resultOk, Results, results, resultsErrorResult } from '@util/result'
 import { CategoryRepo as CategoryRepoDomain, RiskRepo as RiskRepoDomain } from '@life/repo'
 import { CategoryJson, CategoryMapper, RiskJson, RiskMapper } from '@life/repo/json/mapper'
 import { Category } from '@life/category'
@@ -181,9 +181,9 @@ class CategoryRepoJson implements CategoryRepoDomain {
     return resultOk(categoryResult.value)
   }
 
-  public async listCategories(): Promise<Result<Category[]>> {
+  public async listCategories(): Promise<Results<Category>> {
     const jsonCategories = Object.values(this.#store.category)
-    const categories = []
+    const categoryResults = []
     for (const jsonCategory of jsonCategories) {
       if (jsonCategory.parentId) {
         continue
@@ -191,12 +191,12 @@ class CategoryRepoJson implements CategoryRepoDomain {
 
       const riskResult = await this.fetchCategory(jsonCategory.id)
       if (!riskResult.ok) {
-        return riskResult
+        return resultsErrorResult(riskResult)
       }
 
-      categories.push(riskResult.value)
+      categoryResults.push(riskResult)
     }
-    return resultOk(categories)
+    return results(categoryResults)
   }
 }
 
