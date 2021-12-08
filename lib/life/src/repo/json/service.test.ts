@@ -460,6 +460,163 @@ describe('CategoryRepoJson', () => {
       })
     })
   })
+  describe('fetchChildren', () => {
+    describe('Given a category ID that has children', () => {
+      let mapper: Mocked<CategoryMapper>
+      let repo: CategoryRepo
+      let child1: Category
+      let child2: Category
+      let child3: Category
+
+      let fetchCategory: jest.SpyInstance<Promise<Result<Category>>, [id: string]>
+      beforeEach(() => {
+        mapper = mockDeep<CategoryMapper>()
+        child1 = {
+          id: 'child1 id',
+          name: 'child1 name',
+          path: 'child1 path',
+          children: [],
+        }
+        child2 = {
+          id: 'child2 id',
+          name: 'child2 name',
+          path: 'child2 path',
+          children: [],
+        }
+        child3 = {
+          id: 'child3 id',
+          name: 'child3 name',
+          path: 'child3 path',
+          children: [],
+        }
+        repo = new CategoryRepoJson(
+          {
+            category: {
+              'category id': {
+                id: 'parent id',
+                name: 'parent name',
+                path: 'parent path',
+                children: ['child1 id', 'child2 id', 'child3 id'],
+              },
+            },
+            risk: {},
+          },
+          mapper,
+        )
+        fetchCategory = jest.spyOn(repo, 'fetchCategory').mockImplementation(async (id) => {
+          switch (id) {
+            case 'child1 id':
+              return Promise.resolve(resultOk(child1))
+            case 'child2 id':
+              return Promise.resolve(resultOk(child2))
+            case 'child3 id':
+              return Promise.resolve(resultOk(child3))
+            default:
+              return Promise.reject()
+          }
+        })
+      })
+      describe('When everything succeeds', () => {
+        test('Then the fetchCategory results are returned', async () => {
+          const childrenResults = await repo.fetchChildren('category id')
+          expect(childrenResults.firstErrorResult).toBeUndefined()
+          expect(childrenResults.okValues).toEqual([child1, child2, child3])
+        })
+        test('Then the fetchCategory is called for each child', async () => {
+          await repo.fetchChildren('category id')
+          expect(fetchCategory.mock.calls).toHaveLength(3)
+          expect(fetchCategory.mock.calls[0]).toEqual(['child1 id'])
+          expect(fetchCategory.mock.calls[1]).toEqual(['child2 id'])
+          expect(fetchCategory.mock.calls[2]).toEqual(['child3 id'])
+        })
+      })
+      describe('When the category ID does not exist', () => {
+        test('Then a results error is returned', async () => {
+          const childrenResults = await repo.fetchChildren('non existent category id')
+          expect(childrenResults.firstErrorResult?.message).toEqual(
+            `Could not find category 'non existent category id'`,
+          )
+          expect(childrenResults.okValues).toEqual([])
+        })
+        test('Then the fetchCategory is not called', async () => {
+          await repo.fetchChildren('non existent category id')
+          expect(fetchCategory.mock.calls).toHaveLength(0)
+        })
+      })
+      describe('When fetchCategory errors for a child ID', () => {
+        test('Then the results includes the fetchCategory error', async () => {
+          const err = resultError<Category>('fetchCategory error')
+          fetchCategory.mockReset()
+          fetchCategory.mockImplementation(async (id) => {
+            switch (id) {
+              case 'child1 id':
+                return Promise.resolve(resultOk(child1))
+              case 'child2 id':
+                return Promise.resolve(err)
+              case 'child3 id':
+                return Promise.resolve(resultOk(child3))
+              default:
+                return Promise.reject()
+            }
+          })
+          const childrenResults = await repo.fetchChildren('category id')
+          expect(childrenResults.firstErrorResult).toEqual(err)
+        })
+        test('Then the results includes the fetchCategory successes', async () => {
+          const err = resultError<Category>('fetchCategory error')
+          fetchCategory.mockReset()
+          fetchCategory.mockImplementation(async (id) => {
+            switch (id) {
+              case 'child1 id':
+                return Promise.resolve(resultOk(child1))
+              case 'child2 id':
+                return Promise.resolve(err)
+              case 'child3 id':
+                return Promise.resolve(resultOk(child3))
+              default:
+                return Promise.reject()
+            }
+          })
+          const childrenResults = await repo.fetchChildren('category id')
+          expect(childrenResults.okValues).toEqual([child1, child3])
+        })
+      })
+    })
+    describe('Given a category ID that has no children', () => {
+      let mapper: Mocked<CategoryMapper>
+      let repo: CategoryRepo
+      let fetchCategory: jest.SpyInstance<Promise<Result<Category>>, [id: string]>
+      beforeEach(() => {
+        mapper = mockDeep<CategoryMapper>()
+        repo = new CategoryRepoJson(
+          {
+            category: {
+              'category id': {
+                id: 'parent id',
+                name: 'parent name',
+                path: 'parent path',
+                children: [],
+              },
+            },
+            risk: {},
+          },
+          mapper,
+        )
+        fetchCategory = jest.spyOn(repo, 'fetchCategory')
+      })
+      describe('When everything succeeds', () => {
+        test('Then an empty results is returned', async () => {
+          const childrenResults = await repo.fetchChildren('category id')
+          expect(childrenResults.firstErrorResult).toBeUndefined()
+          expect(childrenResults.okValues).toEqual([])
+        })
+        test('Then fetchCategory is not called', async () => {
+          await repo.fetchChildren('category id')
+          expect(fetchCategory.mock.calls).toHaveLength(0)
+        })
+      })
+    })
+  })
 
   describe('listCategories', () => {
     describe('Given a request', () => {

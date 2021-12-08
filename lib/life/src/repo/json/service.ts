@@ -1,7 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { CategoryTopLevel, Risk } from '@life/risk'
-import { Result, resultError, resultOk, Results, results, resultsErrorResult } from '@util/result'
+import { Result, resultError, resultOk, Results, results, resultsError, resultsErrorResult } from '@util/result'
 import { CategoryRepo as CategoryRepoDomain, RiskRepo as RiskRepoDomain } from '@life/repo'
 import { CategoryJson, CategoryMapper, RiskJson, RiskMapper } from '@life/repo/json/mapper'
 import { Category } from '@life/category'
@@ -190,6 +190,18 @@ class CategoryRepoJson implements CategoryRepoDomain {
     }
 
     return this.fetchCategory(jsonCategory.parentId)
+  }
+
+  public async fetchChildren(id: string): Promise<Results<Category>> {
+    const jsonCategory = this.#store.category[id]
+    if (!jsonCategory) return resultsError(`Could not find category '${id}'`)
+
+    const childrenResults = await Promise.all(
+      jsonCategory.children.map(async (childId) => {
+        return this.fetchCategory(childId)
+      }),
+    )
+    return results(childrenResults)
   }
 
   public async listCategories(): Promise<Results<Category>> {

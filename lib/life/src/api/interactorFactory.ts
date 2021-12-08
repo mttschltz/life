@@ -79,7 +79,7 @@ class CategoryInteractorFactoryImpl implements CategoryInteractorFactory {
   }
 
   public fetchChildrenInteractor(): FetchChildrenInteractor {
-    return newFetchChildrenInteractor()
+    return newFetchChildrenInteractor(this.#repo, new UsecaseCategoryMapper())
   }
 }
 
