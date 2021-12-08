@@ -414,8 +414,11 @@ type Store_Category = {
   readonly name: Scalars['String'];
   /** The description. */
   readonly description: Maybe<Scalars['String']>;
-  /** An ordered list of Risks or Categories. */
-  readonly children: ReadonlyArray<Maybe<Store_Concern>>;
+  /**
+   * An ordered list of Risks or Categories.
+   * TODO: Make this of type [Concern]!
+   */
+  readonly children: ReadonlyArray<Maybe<Store_Category>>;
   /** The parent. */
   readonly parent: Maybe<Store_Category>;
 };

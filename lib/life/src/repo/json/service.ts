@@ -181,6 +181,17 @@ class CategoryRepoJson implements CategoryRepoDomain {
     return resultOk(categoryResult.value)
   }
 
+  public async fetchParent(childId: string): Promise<Result<Category | undefined>> {
+    const jsonCategory = this.#store.category[childId]
+    if (!jsonCategory) return resultError(`Could not find category '${childId}'`)
+
+    if (!jsonCategory.parentId) {
+      return resultOk(undefined)
+    }
+
+    return this.fetchCategory(jsonCategory.parentId)
+  }
+
   public async listCategories(): Promise<Results<Category>> {
     const jsonCategories = Object.values(this.#store.category)
     const categoryResults = []

@@ -3900,7 +3900,7 @@
           },
           {
             "name": "children",
-            "description": "An ordered list of Risks or Categories.",
+            "description": "An ordered list of Risks or Categories.\nTODO: Make this of type [Concern]!",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -3909,8 +3909,8 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "UNION",
-                  "name": "Store_Concern",
+                  "kind": "OBJECT",
+                  "name": "Store_Category",
                   "ofType": null
                 }
               }
