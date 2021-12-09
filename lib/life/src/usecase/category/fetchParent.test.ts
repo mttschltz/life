@@ -3,7 +3,7 @@ import { mockDeep, Mocked } from '@util/mock'
 import { Result, resultError, resultOk } from '@util/result'
 import { assertResultError, assertResultOk } from '@util/testing'
 import { FetchParentMapper, FetchParentRepo, newFetchParentInteractor } from './fetchParent'
-import { Category } from './mapper'
+import { Category } from '@life/usecase/mapper'
 
 describe('fetchParent', () => {
   let repo: Mocked<FetchParentRepo>

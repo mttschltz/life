@@ -7,9 +7,9 @@ import { GraphMapper } from './mapper'
 
 import { GraphService, InteractorFactory } from './service'
 import { mockDeep, MockedDeep } from '@util/mock'
-import { FetchParentInteractor } from '@life/usecase/fetchParent'
-import { FetchChildrenInteractor } from '@life/usecase/fetchChildren'
-import { ListCategoriesInteractor } from '@life/usecase/listCategories'
+import { FetchParentInteractor } from '@life/usecase/category/fetchParent'
+import { FetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
+import { ListCategoriesInteractor } from '@life/usecase/category/listCategories'
 
 function assertResolverFn<Result, Parent, Context, Args>(
   resolver: Resolver<Result, Parent, Context, Args> | undefined,

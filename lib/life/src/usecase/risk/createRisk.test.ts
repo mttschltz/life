@@ -1,7 +1,7 @@
 import { CategoryTopLevel, Impact, Likelihood, newRisk, Risk, RiskType } from '@life/risk'
 import { assertResultError, assertResultOk } from '@util/testing'
 import { Result, ResultError } from '@util/result'
-import { CreateRiskInteractor, CreateRiskRepo, CreateRiskRequest } from '@life/usecase/createRisk'
+import { CreateRiskInteractor, CreateRiskRepo, CreateRiskRequest } from '@life/usecase/risk/createRisk'
 import { Risk as UsecaseRisk } from '@life/usecase/mapper'
 
 jest.mock('@life/risk')

@@ -1,13 +1,13 @@
 import { CategoryMapper as UsecaseCategoryMapper, RiskMapper as UsecaseRiskMapper } from '@life/usecase/mapper'
-import { ListRisksInteractor } from '@life/usecase/listRisks'
-import { FetchRiskChildrenInteractor } from '@life/usecase/fetchRiskChildren'
-import { FetchRiskParentInteractor } from '@life/usecase/fetchRiskParent'
-import { CreateRiskInteractor } from '@life/usecase/createRisk'
-import { ListCategoriesInteractor, newListCategoriesInteractor } from '@life/usecase/listCategories'
+import { ListRisksInteractor } from '@life/usecase/risk/listRisks'
+import { FetchRiskChildrenInteractor } from '@life/usecase/risk/fetchRiskChildren'
+import { FetchRiskParentInteractor } from '@life/usecase/risk/fetchRiskParent'
+import { CreateRiskInteractor } from '@life/usecase/risk/createRisk'
+import { ListCategoriesInteractor, newListCategoriesInteractor } from '@life/usecase/category/listCategories'
 import { CategoryRepo, RiskRepo } from '@life/repo'
-import { FetchCategoryInteractor, newFetchCategoryInteractor } from '@life/usecase/fetchCategory'
-import { FetchParentInteractor, newFetchParentInteractor } from '@life/usecase/fetchParent'
-import { FetchChildrenInteractor, newFetchChildrenInteractor } from '@life/usecase/fetchChildren'
+import { FetchCategoryInteractor, newFetchCategoryInteractor } from '@life/usecase/category/fetchCategory'
+import { FetchParentInteractor, newFetchParentInteractor } from '@life/usecase/category/fetchParent'
+import { FetchChildrenInteractor, newFetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
 
 interface RiskInteractorFactory {
   listRisksInteractor: () => ListRisksInteractor

@@ -1,7 +1,7 @@
 import { Category } from '@life/category'
 import { ResultError, results, Results } from '@util/result'
-import { ListCategoriesInteractor, newListCategoriesInteractor } from '@life/usecase/listCategories'
-import type { ListCategoriesRepo } from '@life/usecase/listCategories'
+import { ListCategoriesInteractor, newListCategoriesInteractor } from '@life/usecase/category/listCategories'
+import type { ListCategoriesRepo } from '@life/usecase/category/listCategories'
 import { Category as UsecaseCategory } from '@life/usecase/mapper'
 
 describe('listCategories', () => {

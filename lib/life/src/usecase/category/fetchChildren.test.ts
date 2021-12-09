@@ -1,6 +1,6 @@
 import { mock, Mocked } from '@util/mock'
 import { FetchChildrenMapper, FetchChildrenRepo, newFetchChildrenInteractor } from './fetchChildren'
-import { Category } from './mapper'
+import { Category } from '@life/usecase/mapper'
 import { Category as CategoryDomain } from '@life/category'
 import { Results, resultsError, resultsOk } from '@util/result'
 
