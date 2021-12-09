@@ -1,4 +1,4 @@
-import { JsonStore, RiskRepoJson } from '@life/repo/json/service'
+import { JsonStore } from '@life/repo/json/service'
 import { RiskMapper as RiskJsonMapper, newCategoryMapper } from '@life/repo/json/mapper'
 import { ApolloServer } from 'apollo-server'
 import { GraphService } from './service'
@@ -9,6 +9,7 @@ import { transpile } from '@util/mdx'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import { gql } from '@apollo/client/core'
 import { CategoryRepoJson, newCategoryRepoJson } from '@life/repo/json/category'
+import { newRiskRepoJson, RiskRepoJson } from '@life/repo/json/risk'
 
 const jsonStore: JsonStore = {
   category: {
@@ -60,7 +61,7 @@ describe('GraphServiceIntegration', () => {
   let graphService: GraphService
   let server: ApolloServer
   beforeAll(async () => {
-    riskRepo = new RiskRepoJson(jsonStore, new RiskJsonMapper())
+    riskRepo = newRiskRepoJson(jsonStore, new RiskJsonMapper())
     categoryRepo = newCategoryRepoJson(jsonStore, newCategoryMapper())
 
     graphService = new GraphService(
