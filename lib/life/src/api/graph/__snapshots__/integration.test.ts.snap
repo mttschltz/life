@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphServiceIntegration listCategories Given a query for children and their parent Then 2 root categories and 1 child with parent are returned 1`] = `
+Object {
+  "data": Object {
+    "categories": Array [
+      Object {
+        "children": Array [
+          Object {
+            "description": "child category 3 with child",
+            "id": "3",
+            "name": "child category 3",
+            "parent": Object {
+              "description": "root category 1 with child",
+              "id": "1",
+              "name": "root category 1",
+              "path": "/root-category-1",
+            },
+            "path": "/child-category-3",
+          },
+        ],
+        "description": "root category 1 with child",
+        "id": "1",
+        "name": "root category 1",
+        "path": "/root-category-1",
+      },
+      Object {
+        "children": Array [],
+        "description": "root category 2 no children",
+        "id": "2",
+        "name": "root category 2",
+        "path": "/root-category-2",
+      },
+    ],
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
