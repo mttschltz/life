@@ -8,8 +8,9 @@ import { newGraphMapper } from '@life/api/graph/mapper'
 import { newLogger } from '@util/logger'
 import { transpile } from '@util/mdx'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
-import { CategoryRepoJson, JsonStore, RiskRepoJson } from '@life/repo/json/service'
+import { JsonStore, RiskRepoJson } from '@life/repo/json/service'
 import { RiskMapper as RiskJsonMapper, newCategoryMapper } from '@life/repo/json/mapper'
+import { newCategoryRepoJson } from '@life/repo/json/category'
 
 // Store/repo
 const jsonStore: JsonStore = {
@@ -17,7 +18,7 @@ const jsonStore: JsonStore = {
   risk: {},
 }
 const riskRepo = new RiskRepoJson(jsonStore, new RiskJsonMapper())
-const categoryRepo = new CategoryRepoJson(jsonStore, newCategoryMapper())
+const categoryRepo = newCategoryRepoJson(jsonStore, newCategoryMapper())
 
 // Interactors
 const graphService = new GraphService(

@@ -1,10 +1,10 @@
 import { Result, resultError, resultOk } from '@util/result'
 import { CategoryMapper } from '@life/repo/json/mapper'
 import { Category } from '@life/category'
-import { CategoryRepoJson } from './service'
 import { assertResultError, assertResultOk } from '@util/testing'
 import { mockDeep, Mocked } from '@util/mock'
 import { CategoryRepo } from '@life/repo'
+import { newCategoryRepoJson } from './category'
 
 describe('CategoryRepoJson', () => {
   describe('repo>category>fetch', () => {
@@ -25,7 +25,7 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
-          const repo = new CategoryRepoJson(
+          const repo = newCategoryRepoJson(
             {
               category: {
                 id: {
@@ -63,7 +63,7 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
-          const repo = new CategoryRepoJson(
+          const repo = newCategoryRepoJson(
             {
               category: {
                 id: {
@@ -94,7 +94,7 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
-          const repo = new CategoryRepoJson(
+          const repo = newCategoryRepoJson(
             {
               category: {
                 id: {
@@ -188,7 +188,7 @@ describe('CategoryRepoJson', () => {
             parentId: 'id',
             children: [],
           }
-          const repo = new CategoryRepoJson(
+          const repo = newCategoryRepoJson(
             {
               category: {
                 id: categoryRepo,
@@ -219,7 +219,7 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
-          const repo = new CategoryRepoJson(
+          const repo = newCategoryRepoJson(
             {
               category: {
                 id: {
@@ -256,7 +256,7 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
-          const repo = new CategoryRepoJson(
+          const repo = newCategoryRepoJson(
             {
               category: {
                 id: {
@@ -301,7 +301,7 @@ describe('CategoryRepoJson', () => {
         let fetchedCategoryResult: Result<Category>
         beforeEach(() => {
           mapper = mockDeep<CategoryMapper>()
-          repo = new CategoryRepoJson(
+          repo = newCategoryRepoJson(
             {
               category: {
                 'parent id': {
@@ -347,7 +347,7 @@ describe('CategoryRepoJson', () => {
         let fetchedCategoryResult: Result<Category>
         beforeEach(() => {
           mapper = mockDeep<CategoryMapper>()
-          repo = new CategoryRepoJson(
+          repo = newCategoryRepoJson(
             {
               category: {
                 'parent id': {
@@ -388,7 +388,7 @@ describe('CategoryRepoJson', () => {
         let fetchedCategoryResult: Result<Category>
         beforeEach(() => {
           mapper = mockDeep<CategoryMapper>()
-          repo = new CategoryRepoJson(
+          repo = newCategoryRepoJson(
             {
               category: {
                 'child id': {
@@ -429,7 +429,7 @@ describe('CategoryRepoJson', () => {
         let fetchedCategoryResult: Result<Category>
         beforeEach(() => {
           mapper = mockDeep<CategoryMapper>()
-          repo = new CategoryRepoJson(
+          repo = newCategoryRepoJson(
             {
               category: {
                 id: {
@@ -489,7 +489,7 @@ describe('CategoryRepoJson', () => {
           path: 'child3 path',
           children: [],
         }
-        repo = new CategoryRepoJson(
+        repo = newCategoryRepoJson(
           {
             category: {
               'category id': {
@@ -588,7 +588,7 @@ describe('CategoryRepoJson', () => {
       let fetchCategory: jest.SpyInstance<Promise<Result<Category>>, [id: string]>
       beforeEach(() => {
         mapper = mockDeep<CategoryMapper>()
-        repo = new CategoryRepoJson(
+        repo = newCategoryRepoJson(
           {
             category: {
               'category id': {
@@ -691,7 +691,7 @@ describe('CategoryRepoJson', () => {
             parentId: 'child1 id',
             children: [],
           }
-          const repo = new CategoryRepoJson(
+          const repo = newCategoryRepoJson(
             {
               category: {
                 'root1 id': root1Repo,
@@ -704,7 +704,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.list()
+          const result = await repo.list({ includeChildren: true })
           expect(result.firstErrorResult).toBeUndefined()
           const categories = result.okValues
           expect(categories).toHaveLength(2)
@@ -739,7 +739,7 @@ describe('CategoryRepoJson', () => {
             parentId: 'root1 id',
             children: [],
           }
-          const repo = new CategoryRepoJson(
+          const repo = newCategoryRepoJson(
             {
               category: {
                 'root1 id': root1Repo,
@@ -750,7 +750,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.list()
+          const result = await repo.list({ includeChildren: true })
           expect(result.firstErrorResult).toBe(mapperError)
           expect(result.okValues).toEqual([])
           expect(result.values).toEqual([undefined])
