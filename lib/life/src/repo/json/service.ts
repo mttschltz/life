@@ -132,7 +132,7 @@ class CategoryRepoJson implements CategoryRepoDomain {
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  public async fetchCategory(id: string): Promise<Result<Category>> {
+  public async fetch(id: string): Promise<Result<Category>> {
     const jsonCategory = this.#store.category[id]
     if (!jsonCategory) return resultError(`Could not find category '${id}'`)
 
@@ -189,7 +189,7 @@ class CategoryRepoJson implements CategoryRepoDomain {
       return resultOk(undefined)
     }
 
-    return this.fetchCategory(jsonCategory.parentId)
+    return this.fetch(jsonCategory.parentId)
   }
 
   public async fetchChildren(id: string): Promise<Results<Category>> {
@@ -198,7 +198,7 @@ class CategoryRepoJson implements CategoryRepoDomain {
 
     const childrenResults = await Promise.all(
       jsonCategory.children.map(async (childId) => {
-        return this.fetchCategory(childId)
+        return this.fetch(childId)
       }),
     )
     return results(childrenResults)
@@ -212,7 +212,7 @@ class CategoryRepoJson implements CategoryRepoDomain {
         continue
       }
 
-      const riskResult = await this.fetchCategory(jsonCategory.id)
+      const riskResult = await this.fetch(jsonCategory.id)
       if (!riskResult.ok) {
         return resultsErrorResult(riskResult)
       }

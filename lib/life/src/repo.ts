@@ -11,7 +11,7 @@ interface RiskRepo {
 }
 
 interface CategoryRepo {
-  fetchCategory: (id: string) => Promise<Result<Category>>
+  fetch: (id: string) => Promise<Result<Category>>
   fetchChildren: (id: string) => Promise<Results<Category>>
   fetchParent: (childId: string) => Promise<Result<Category | undefined>>
   list: (criteria: { includeChildren: boolean }) => Promise<Results<Category>>

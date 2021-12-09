@@ -7,7 +7,7 @@ import { mockDeep, Mocked } from '@util/mock'
 import { CategoryRepo } from '@life/repo'
 
 describe('CategoryRepoJson', () => {
-  describe('repo>category>fetchCategory', () => {
+  describe('repo>category>fetch', () => {
     describe('Given a fetched category with no parent or children', () => {
       describe('When everything succeeds', () => {
         test('Then the mapped result is returned', async () => {
@@ -40,7 +40,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.fetchCategory('id')
+          const result = await repo.fetch('id')
           assertResultOk(result)
           expect(result.value).toBe(mapped)
           expect(fromJson.mock.calls).toHaveLength(1)
@@ -78,7 +78,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.fetchCategory('missing id')
+          const result = await repo.fetch('missing id')
           assertResultError(result)
           expect(result.message).toBe("Could not find category 'missing id'")
         })
@@ -109,7 +109,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.fetchCategory('id')
+          const result = await repo.fetch('id')
           assertResultError(result)
           expect(result).toBe(mapperErrorResult)
         })
@@ -201,7 +201,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.fetchCategory('id')
+          const result = await repo.fetch('id')
           assertResultOk(result)
           expect(result.value).toBe(categoryMapped)
           expect(fromJson.mock.calls).toHaveLength(4)
@@ -235,7 +235,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.fetchCategory('id')
+          const result = await repo.fetch('id')
           assertResultError(result)
           expect(result.message).toBe("Could not find parent category 'parent id'")
         })
@@ -285,7 +285,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.fetchCategory('id')
+          const result = await repo.fetch('id')
           assertResultError(result)
           expect(result.message).toBe("Could not find child category 'child2 id'")
         })
@@ -329,10 +329,10 @@ describe('CategoryRepoJson', () => {
             children: [],
           })
           fetchCategory = jest
-            .spyOn(repo, 'fetchCategory')
+            .spyOn(repo, 'fetch')
             .mockImplementation(async () => Promise.resolve(fetchedCategoryResult))
         })
-        test('Then fetchCategory is called and its value returned', async () => {
+        test('Then fetch is called and its value returned', async () => {
           const result = await repo.fetchParent('child id')
           assertResultOk(result)
           expect(fetchCategory.mock.calls).toHaveLength(1)
@@ -340,7 +340,7 @@ describe('CategoryRepoJson', () => {
           expect(result).toBe(fetchedCategoryResult)
         })
       })
-      describe('When fetchCategory returns an error result', () => {
+      describe('When fetch returns an error result', () => {
         let mapper: Mocked<CategoryMapper>
         let repo: CategoryRepo
         let fetchCategory: jest.SpyInstance<Promise<Result<Category>>, [id: string]>
@@ -368,9 +368,9 @@ describe('CategoryRepoJson', () => {
             },
             mapper,
           )
-          fetchedCategoryResult = resultError('fetchCategory error')
+          fetchedCategoryResult = resultError('fetch error')
           fetchCategory = jest
-            .spyOn(repo, 'fetchCategory')
+            .spyOn(repo, 'fetch')
             .mockImplementation(async () => Promise.resolve(fetchedCategoryResult))
         })
         test('Then that error result is returned', async () => {
@@ -403,9 +403,9 @@ describe('CategoryRepoJson', () => {
             },
             mapper,
           )
-          fetchedCategoryResult = resultError('fetchCategory error')
+          fetchedCategoryResult = resultError('fetch error')
           fetchCategory = jest
-            .spyOn(repo, 'fetchCategory')
+            .spyOn(repo, 'fetch')
             .mockImplementation(async () => Promise.resolve(fetchedCategoryResult))
         })
         test('Then an error result is returned', async () => {
@@ -413,7 +413,7 @@ describe('CategoryRepoJson', () => {
           assertResultError(result)
           expect(result.message).toEqual(`Could not find category 'non existent child id'`)
         })
-        test('Then fetchCategory is not called', async () => {
+        test('Then fetch is not called', async () => {
           const result = await repo.fetchParent('non existent child id')
           assertResultError(result)
           expect(result.message).toEqual(`Could not find category 'non existent child id'`)
@@ -444,7 +444,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
           fetchCategory = jest
-            .spyOn(repo, 'fetchCategory')
+            .spyOn(repo, 'fetch')
             .mockImplementation(async () => Promise.resolve(fetchedCategoryResult))
         })
         test('Then undefined is returned', async () => {
@@ -452,7 +452,7 @@ describe('CategoryRepoJson', () => {
           assertResultOk(result)
           expect(result.value).toBeUndefined()
         })
-        test('Then fetchCategory is not called', async () => {
+        test('Then fetch is not called', async () => {
           const result = await repo.fetchParent('id')
           assertResultOk(result)
           expect(fetchCategory.mock.calls).toHaveLength(0)
@@ -503,7 +503,7 @@ describe('CategoryRepoJson', () => {
           },
           mapper,
         )
-        fetchCategory = jest.spyOn(repo, 'fetchCategory').mockImplementation(async (id) => {
+        fetchCategory = jest.spyOn(repo, 'fetch').mockImplementation(async (id) => {
           switch (id) {
             case 'child1 id':
               return Promise.resolve(resultOk(child1))
@@ -517,12 +517,12 @@ describe('CategoryRepoJson', () => {
         })
       })
       describe('When everything succeeds', () => {
-        test('Then the fetchCategory results are returned', async () => {
+        test('Then the fetch results are returned', async () => {
           const childrenResults = await repo.fetchChildren('category id')
           expect(childrenResults.firstErrorResult).toBeUndefined()
           expect(childrenResults.okValues).toEqual([child1, child2, child3])
         })
-        test('Then the fetchCategory is called for each child', async () => {
+        test('Then fetch is called for each child', async () => {
           await repo.fetchChildren('category id')
           expect(fetchCategory.mock.calls).toHaveLength(3)
           expect(fetchCategory.mock.calls[0]).toEqual(['child1 id'])
@@ -538,14 +538,14 @@ describe('CategoryRepoJson', () => {
           )
           expect(childrenResults.okValues).toEqual([])
         })
-        test('Then the fetchCategory is not called', async () => {
+        test('Then fetch is not called', async () => {
           await repo.fetchChildren('non existent category id')
           expect(fetchCategory.mock.calls).toHaveLength(0)
         })
       })
-      describe('When fetchCategory errors for a child ID', () => {
-        test('Then the results includes the fetchCategory error', async () => {
-          const err = resultError<Category>('fetchCategory error')
+      describe('When fetch errors for a child ID', () => {
+        test('Then the results includes the fetch error', async () => {
+          const err = resultError<Category>('fetch error')
           fetchCategory.mockReset()
           fetchCategory.mockImplementation(async (id) => {
             switch (id) {
@@ -562,8 +562,8 @@ describe('CategoryRepoJson', () => {
           const childrenResults = await repo.fetchChildren('category id')
           expect(childrenResults.firstErrorResult).toEqual(err)
         })
-        test('Then the results includes the fetchCategory successes', async () => {
-          const err = resultError<Category>('fetchCategory error')
+        test('Then the results includes the fetch successes', async () => {
+          const err = resultError<Category>('fetch error')
           fetchCategory.mockReset()
           fetchCategory.mockImplementation(async (id) => {
             switch (id) {
@@ -602,7 +602,7 @@ describe('CategoryRepoJson', () => {
           },
           mapper,
         )
-        fetchCategory = jest.spyOn(repo, 'fetchCategory')
+        fetchCategory = jest.spyOn(repo, 'fetch')
       })
       describe('When everything succeeds', () => {
         test('Then an empty results is returned', async () => {
@@ -610,7 +610,7 @@ describe('CategoryRepoJson', () => {
           expect(childrenResults.firstErrorResult).toBeUndefined()
           expect(childrenResults.okValues).toEqual([])
         })
-        test('Then fetchCategory is not called', async () => {
+        test('Then fetch is not called', async () => {
           await repo.fetchChildren('category id')
           expect(fetchCategory.mock.calls).toHaveLength(0)
         })
