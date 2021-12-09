@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GraphServiceIntegration listCategories Given a query for children and their parent Then 2 root categories and 1 child with parent are returned 1`] = `
+exports[`GraphServiceIntegration categories Given a query for children and their parent Then 2 root categories and 1 child with parent are returned 1`] = `
 Object {
   "data": Object {
     "categories": Array [

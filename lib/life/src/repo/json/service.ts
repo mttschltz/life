@@ -204,7 +204,7 @@ class CategoryRepoJson implements CategoryRepoDomain {
     return results(childrenResults)
   }
 
-  public async listCategories(): Promise<Results<Category>> {
+  public async list(): Promise<Results<Category>> {
     const jsonCategories = Object.values(this.#store.category)
     const categoryResults = []
     for (const jsonCategory of jsonCategories) {

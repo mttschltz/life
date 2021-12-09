@@ -141,7 +141,7 @@ class GraphService {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Query: {
         categories: async (): Promise<Category[]> => {
-          const categoryResults = await this.#factory.category.listCategoriesInteractor().listCategories()
+          const categoryResults = await this.#factory.category.listInteractor().list()
           if (categoryResults.firstErrorResult) {
             this.#logger.result(categoryResults.firstErrorResult)
             throw this.resultError(categoryResults.firstErrorResult)

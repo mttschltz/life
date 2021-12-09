@@ -81,10 +81,10 @@ describe('GraphServiceIntegration', () => {
 
     await server.listen(4001)
   })
-  describe('listCategories', () => {
+  describe('categories', () => {
     describe('Given a query for children and their parent', () => {
-      const listCategoriesQuery = gql`
-        query listCategories {
+      const categoriesQuery = gql`
+        query getCategories {
           categories {
             id
             path
@@ -107,7 +107,7 @@ describe('GraphServiceIntegration', () => {
       `
       test('Then 2 root categories and 1 child with parent are returned', async () => {
         const response = await server.executeOperation({
-          query: listCategoriesQuery,
+          query: categoriesQuery,
         })
         expect(response).toMatchSnapshot()
       })

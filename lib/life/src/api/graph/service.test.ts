@@ -9,7 +9,7 @@ import { GraphService, InteractorFactory } from './service'
 import { mockDeep, MockedDeep } from '@util/mock'
 import { FetchParentInteractor } from '@life/usecase/category/fetchParent'
 import { FetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
-import { ListCategoriesInteractor } from '@life/usecase/category/listCategories'
+import { ListInteractor } from '@life/usecase/category/list'
 
 function assertResolverFn<Result, Parent, Context, Args>(
   resolver: Resolver<Result, Parent, Context, Args> | undefined,
@@ -26,7 +26,7 @@ describe('GraphService', () => {
     let mapper: MockedDeep<GraphMapper>
     let fetchParent: jest.MockedFunction<FetchParentInteractor['fetchParent']>
     let fetchChildren: jest.MockedFunction<FetchChildrenInteractor['fetchChildren']>
-    let listCategories: jest.MockedFunction<ListCategoriesInteractor['listCategories']>
+    let list: jest.MockedFunction<ListInteractor['list']>
     beforeEach(() => {
       factory = mockDeep<InteractorFactory>()
       fetchParent = jest.fn()
@@ -37,9 +37,9 @@ describe('GraphService', () => {
       factory.category.fetchChildrenInteractor.mockReturnValue({
         fetchChildren,
       })
-      listCategories = jest.fn()
-      factory.category.listCategoriesInteractor.mockReturnValue({
-        listCategories,
+      list = jest.fn()
+      factory.category.listInteractor.mockReturnValue({
+        list,
       })
       logger = mockDeep<Logger>()
       mapper = mockDeep<GraphMapper>()
@@ -349,7 +349,7 @@ describe('GraphService', () => {
                 children: [],
               },
             ]
-            listCategories.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>(fetchedCategories)))
+            list.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>(fetchedCategories)))
             mappedCategories = [
               {
                 id: 'mapped id 1',
@@ -374,13 +374,13 @@ describe('GraphService', () => {
               const result = await categories({}, {}, {}, {} as GraphQLResolveInfo)
               expect(result).toEqual(mappedCategories)
             })
-            test('Then the listCategories interactor is called', async () => {
+            test('Then the list interactor is called', async () => {
               const service = new GraphService(factory, mapper, logger)
               const categories = service.resolvers().Query?.categories
               assertResolverFn(categories)
               await categories({}, {}, {}, {} as GraphQLResolveInfo)
-              expect(listCategories.mock.calls).toHaveLength(1)
-              expect(listCategories.mock.calls[0]).toEqual([])
+              expect(list.mock.calls).toHaveLength(1)
+              expect(list.mock.calls[0]).toEqual([])
             })
             test('Then the mapper is called', async () => {
               const service = new GraphService(factory, mapper, logger)
@@ -402,8 +402,8 @@ describe('GraphService', () => {
             let errorResult: Results<CategoryUsecase>
             beforeEach(() => {
               errorResult = resultsError<CategoryUsecase>('listing error')
-              listCategories.mockReset()
-              listCategories.mockReturnValueOnce(Promise.resolve(errorResult))
+              list.mockReset()
+              list.mockReturnValueOnce(Promise.resolve(errorResult))
             })
             test('Then the error logged and thrown', async () => {
               const service = new GraphService(factory, mapper, logger)
@@ -433,7 +433,7 @@ describe('GraphService', () => {
         })
         describe('Given there are no categories to list', () => {
           beforeEach(() => {
-            listCategories.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
+            list.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
             mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>([]))
           })
           describe('When everything succeeds', () => {
@@ -444,13 +444,13 @@ describe('GraphService', () => {
               const result = await categories({}, {}, {}, {} as GraphQLResolveInfo)
               expect(result).toEqual([])
             })
-            test('Then the listCategories interactor is called', async () => {
+            test('Then the list interactor is called', async () => {
               const service = new GraphService(factory, mapper, logger)
               const categories = service.resolvers().Query?.categories
               assertResolverFn(categories)
               await categories({}, {}, {}, {} as GraphQLResolveInfo)
-              expect(listCategories.mock.calls).toHaveLength(1)
-              expect(listCategories.mock.calls[0]).toEqual([])
+              expect(list.mock.calls).toHaveLength(1)
+              expect(list.mock.calls[0]).toEqual([])
             })
             test('Then the mapper is called', async () => {
               const service = new GraphService(factory, mapper, logger)

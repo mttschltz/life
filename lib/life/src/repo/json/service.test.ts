@@ -7,7 +7,7 @@ import { mockDeep, Mocked } from '@util/mock'
 import { CategoryRepo } from '@life/repo'
 
 describe('CategoryRepoJson', () => {
-  describe('fetchCategory', () => {
+  describe('repo>category>fetchCategory', () => {
     describe('Given a fetched category with no parent or children', () => {
       describe('When everything succeeds', () => {
         test('Then the mapped result is returned', async () => {
@@ -292,7 +292,7 @@ describe('CategoryRepoJson', () => {
       })
     })
   })
-  describe('fetchParent', () => {
+  describe('repo>category>fetchParent', () => {
     describe('Given a child ID that has a parent', () => {
       describe('When everything succeeds', () => {
         let mapper: Mocked<CategoryMapper>
@@ -460,7 +460,7 @@ describe('CategoryRepoJson', () => {
       })
     })
   })
-  describe('fetchChildren', () => {
+  describe('repo>category>fetchChildren', () => {
     describe('Given a category ID that has children', () => {
       let mapper: Mocked<CategoryMapper>
       let repo: CategoryRepo
@@ -618,7 +618,7 @@ describe('CategoryRepoJson', () => {
     })
   })
 
-  describe('listCategories', () => {
+  describe('repo>category>list', () => {
     describe('Given a request', () => {
       describe('When everything succeeds', () => {
         test('Then the root mapped categories are returned', async () => {
@@ -704,7 +704,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.listCategories()
+          const result = await repo.list()
           expect(result.firstErrorResult).toBeUndefined()
           const categories = result.okValues
           expect(categories).toHaveLength(2)
@@ -750,7 +750,7 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.listCategories()
+          const result = await repo.list()
           expect(result.firstErrorResult).toBe(mapperError)
           expect(result.okValues).toEqual([])
           expect(result.values).toEqual([undefined])
