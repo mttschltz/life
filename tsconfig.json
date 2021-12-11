@@ -17,6 +17,7 @@
       "experimentalDecorators": true,
       "baseUrl": ".",
       "paths": {
+        "@component/*": ["./lib/component/*"],
         "@life/*": ["./lib/life/src/*"],
         "@store/*": ["./app/store/src/*"],
         "@util/*": ["./lib/util/*"],
