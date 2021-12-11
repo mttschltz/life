@@ -2559,4 +2559,12 @@ type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
+type CategoryQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type CategoryQueryQuery = { readonly store: { readonly categories: ReadonlyArray<Maybe<(
+      Pick<Store_Category, 'name'>
+      & { readonly children: ReadonlyArray<Maybe<Pick<Store_Category, 'name'>>> }
+    )>> } };
+
 }
