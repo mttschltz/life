@@ -21,6 +21,7 @@
     "babel-preset-gatsby": "1.8.0",
     "eslint-plugin-graphql": "4.0.0",
     "gatsby": "3.13.1",
+    "gatsby-plugin-layout": "3.3.0",
     "gatsby-plugin-typegen": "2.2.4",
     "life": "0.0.1",
     "react": "17.0.1",

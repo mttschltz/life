@@ -2237,30 +2237,6 @@
             "deprecationReason": null
           },
           {
-            "name": "port",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "host",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "polyfill",
             "description": null,
             "args": [],
@@ -2967,6 +2943,38 @@
             "deprecationReason": null
           },
           {
+            "name": "browserAPIs",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ssrAPIs",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pluginFilepath",
             "description": null,
             "args": [],
@@ -3063,6 +3071,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "SitePluginPluginOptionsEmitSchema",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "component",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5216,30 +5236,6 @@
                 "deprecationReason": null
               },
               {
-                "name": "port",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "IntQueryOperatorInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "host",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "StringQueryOperatorInput",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
                 "name": "polyfill",
                 "description": null,
                 "type": {
@@ -5931,6 +5927,30 @@
               },
               {
                 "name": "nodeAPIs",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "StringQueryOperatorInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "browserAPIs",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "StringQueryOperatorInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "ssrAPIs",
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
@@ -11038,18 +11058,6 @@
             "deprecationReason": null
           },
           {
-            "name": "port",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "host",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "polyfill",
             "description": null,
             "isDeprecated": false,
@@ -11725,30 +11733,6 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "SiteSiteMetadataFilterInput",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "port",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "IntQueryOperatorInput",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "host",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "StringQueryOperatorInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -13231,6 +13215,30 @@
             "deprecationReason": null
           },
           {
+            "name": "browserAPIs",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringQueryOperatorInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ssrAPIs",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringQueryOperatorInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pluginFilepath",
             "description": null,
             "type": {
@@ -13320,6 +13328,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "SitePluginPluginOptionsEmitSchemaFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "component",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringQueryOperatorInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -14896,6 +14916,12 @@
             "deprecationReason": null
           },
           {
+            "name": "pluginCreator___pluginOptions___component",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pluginCreator___pluginOptions___path",
             "description": null,
             "isDeprecated": false,
@@ -14927,6 +14953,18 @@
           },
           {
             "name": "pluginCreator___nodeAPIs",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pluginCreator___browserAPIs",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pluginCreator___ssrAPIs",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -16279,6 +16317,12 @@
             "deprecationReason": null
           },
           {
+            "name": "pluginOptions___component",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pluginOptions___path",
             "description": null,
             "isDeprecated": false,
@@ -16310,6 +16354,18 @@
           },
           {
             "name": "nodeAPIs",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "browserAPIs",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ssrAPIs",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

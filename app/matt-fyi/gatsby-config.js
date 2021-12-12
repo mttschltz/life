@@ -24,5 +24,11 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: `gatsby-plugin-layout`,
+      options: {
+        component: `${__dirname}/src/component/layout/Layout.tsx`,
+      },
+    },
   ],
 }

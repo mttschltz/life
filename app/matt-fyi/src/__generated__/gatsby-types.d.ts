@@ -246,8 +246,6 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
-  readonly port: Maybe<Scalars['Int']>;
-  readonly host: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
@@ -313,6 +311,8 @@ type SitePlugin = Node & {
   readonly version: Maybe<Scalars['String']>;
   readonly pluginOptions: Maybe<SitePluginPluginOptions>;
   readonly nodeAPIs: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
+  readonly browserAPIs: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
+  readonly ssrAPIs: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
   readonly pluginFilepath: Maybe<Scalars['String']>;
   readonly packageJson: Maybe<SitePluginPackageJson>;
 };
@@ -323,6 +323,7 @@ type SitePluginPluginOptions = {
   readonly url: Maybe<Scalars['String']>;
   readonly outputPath: Maybe<Scalars['String']>;
   readonly emitSchema: Maybe<SitePluginPluginOptionsEmitSchema>;
+  readonly component: Maybe<Scalars['String']>;
   readonly path: Maybe<Scalars['String']>;
   readonly pathCheck: Maybe<Scalars['Boolean']>;
   readonly allExtensions: Maybe<Scalars['Boolean']>;
@@ -585,8 +586,6 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  port: Maybe<IntQueryOperatorInput>;
-  host: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
@@ -662,6 +661,8 @@ type Query_sitePluginArgs = {
   version: Maybe<StringQueryOperatorInput>;
   pluginOptions: Maybe<SitePluginPluginOptionsFilterInput>;
   nodeAPIs: Maybe<StringQueryOperatorInput>;
+  browserAPIs: Maybe<StringQueryOperatorInput>;
+  ssrAPIs: Maybe<StringQueryOperatorInput>;
   pluginFilepath: Maybe<StringQueryOperatorInput>;
   packageJson: Maybe<SitePluginPackageJsonFilterInput>;
 };
@@ -1298,8 +1299,6 @@ type SiteFieldsEnum =
   | 'buildTime'
   | 'siteMetadata.title'
   | 'siteMetadata.description'
-  | 'port'
-  | 'host'
   | 'polyfill'
   | 'pathPrefix'
   | 'id'
@@ -1401,8 +1400,6 @@ type SiteGroupConnection = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  readonly port: Maybe<IntQueryOperatorInput>;
-  readonly host: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
@@ -1598,6 +1595,8 @@ type SitePluginFilterInput = {
   readonly version: Maybe<StringQueryOperatorInput>;
   readonly pluginOptions: Maybe<SitePluginPluginOptionsFilterInput>;
   readonly nodeAPIs: Maybe<StringQueryOperatorInput>;
+  readonly browserAPIs: Maybe<StringQueryOperatorInput>;
+  readonly ssrAPIs: Maybe<StringQueryOperatorInput>;
   readonly pluginFilepath: Maybe<StringQueryOperatorInput>;
   readonly packageJson: Maybe<SitePluginPackageJsonFilterInput>;
 };
@@ -1608,6 +1607,7 @@ type SitePluginPluginOptionsFilterInput = {
   readonly url: Maybe<StringQueryOperatorInput>;
   readonly outputPath: Maybe<StringQueryOperatorInput>;
   readonly emitSchema: Maybe<SitePluginPluginOptionsEmitSchemaFilterInput>;
+  readonly component: Maybe<StringQueryOperatorInput>;
   readonly path: Maybe<StringQueryOperatorInput>;
   readonly pathCheck: Maybe<BooleanQueryOperatorInput>;
   readonly allExtensions: Maybe<BooleanQueryOperatorInput>;
@@ -1843,12 +1843,15 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.url'
   | 'pluginCreator.pluginOptions.outputPath'
   | 'pluginCreator.pluginOptions.emitSchema.src___generated___gatsby_introspection_json'
+  | 'pluginCreator.pluginOptions.component'
   | 'pluginCreator.pluginOptions.path'
   | 'pluginCreator.pluginOptions.pathCheck'
   | 'pluginCreator.pluginOptions.allExtensions'
   | 'pluginCreator.pluginOptions.isTSX'
   | 'pluginCreator.pluginOptions.jsxPragma'
   | 'pluginCreator.nodeAPIs'
+  | 'pluginCreator.browserAPIs'
+  | 'pluginCreator.ssrAPIs'
   | 'pluginCreator.pluginFilepath'
   | 'pluginCreator.packageJson.name'
   | 'pluginCreator.packageJson.description'
@@ -2037,12 +2040,15 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.url'
   | 'pluginOptions.outputPath'
   | 'pluginOptions.emitSchema.src___generated___gatsby_introspection_json'
+  | 'pluginOptions.component'
   | 'pluginOptions.path'
   | 'pluginOptions.pathCheck'
   | 'pluginOptions.allExtensions'
   | 'pluginOptions.isTSX'
   | 'pluginOptions.jsxPragma'
   | 'nodeAPIs'
+  | 'browserAPIs'
+  | 'ssrAPIs'
   | 'pluginFilepath'
   | 'packageJson.name'
   | 'packageJson.description'
@@ -2546,25 +2552,20 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type RisksQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type RisksQueryQuery = { readonly store: { readonly risks: ReadonlyArray<Maybe<(
-      Pick<Store_Risk, 'id' | 'name' | 'notes'>
-      & { readonly children: Maybe<ReadonlyArray<Maybe<Pick<Store_Risk, 'id' | 'name' | 'category' | 'notes'>>>> }
-    )>> } };
-
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
-
 type CategoryQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type CategoryQueryQuery = { readonly store: { readonly categories: ReadonlyArray<Maybe<(
       Pick<Store_Category, 'name'>
       & { readonly children: ReadonlyArray<Maybe<Pick<Store_Category, 'name'>>> }
+    )>> } };
+
+type RisksQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type RisksQueryQuery = { readonly store: { readonly risks: ReadonlyArray<Maybe<(
+      Pick<Store_Risk, 'id' | 'name' | 'notes'>
+      & { readonly children: Maybe<ReadonlyArray<Maybe<Pick<Store_Risk, 'id' | 'name' | 'category' | 'notes'>>>> }
     )>> } };
 
 }

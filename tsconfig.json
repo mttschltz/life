@@ -19,6 +19,7 @@
       "paths": {
         "@component/*": ["./lib/component/*"],
         "@life/*": ["./lib/life/src/*"],
+        "@matt-fyi/*": ["./app/matt-fyi/src/*"],
         "@store/*": ["./app/store/src/*"],
         "@util/*": ["./lib/util/*"],
       }
