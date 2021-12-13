@@ -4,9 +4,6 @@ import component from '@matt-fyi/component/component_en.json'
 import page from '@matt-fyi/pages/page_en.json'
 import common from '@matt-fyi/component/common_en.json'
 
-// TODO: Can i remove this default ns?
-const defaultNamespace = 'common'
-
 const resources = {
   en: {
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -20,7 +17,6 @@ const resources = {
 void i18n.use(initReactI18next).init({
   fallbackLng: 'en',
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  defaultNS: defaultNamespace,
   resources,
   returnObjects: true,
   debug: process.env.NODE_ENV === 'development',
@@ -36,4 +32,4 @@ void i18n.use(initReactI18next).init({
 i18n.languages = ['en']
 
 export default i18n
-export { resources, defaultNamespace }
+export { resources }
