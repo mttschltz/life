@@ -10420,10 +10420,10 @@ gatsby-page-utils@^1.14.0:
     lodash "^4.17.21"
     micromatch "^4.0.4"
 
-gatsby-plugin-layout@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-layout/-/gatsby-plugin-layout-3.3.0.tgz#8ef5e4d12de7e097c13d62c6acd7bce89119b498"
-  integrity sha512-3eGlMufFwKAAFgtOScT0TWStsbcmrGzgCqYhloUOr/9LMESu+I3WRhkW2NLOeVZjkiwGgXvF+z2/M3OCkqMyJw==
+gatsby-plugin-layout@2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-layout/-/gatsby-plugin-layout-2.14.0.tgz#09bdc6a3dc309cd7de06b50ce05ae519ca50ec44"
+  integrity sha512-/jQzYXqPO1YzVk0/Y0iAFNDY85ciclHWfS6QtiyxUiRYp2nX/u0dfQzNTVBGLdS3E2KJBDnBWsnEM72Gg9ZvXQ==
   dependencies:
     "@babel/runtime" "^7.15.4"
 

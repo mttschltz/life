@@ -5,13 +5,14 @@ void i18n.use(initReactI18next).init({
   fallbackLng: 'en',
   resources: {
     en: {
+      // import() isn't working here, even with resolveJsonModule enabled in tsconfig.json
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
-      translation: require('../../pages/index_en.json'),
+      component: require('@matt-fyi/component/component_en.json'),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
+      page: require('@matt-fyi/pages/page_en.json'),
+      common: {},
     },
   },
-  //   ns: ['common', 'home'],
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  //   defaultNS: 'common',
   returnObjects: true,
   debug: process.env.NODE_ENV === 'development',
   interpolation: {

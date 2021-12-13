@@ -7,7 +7,7 @@ const Layout: React.FC = (props) => {
 
   return (
     <I18nextProvider i18n={i18n}>
-      <header>{t('index.title')}</header>
+      <header>{t('page:home.title')}</header>
       <div>{props.children}</div>
     </I18nextProvider>
   )
