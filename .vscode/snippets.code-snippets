@@ -7,7 +7,7 @@
 	// Placeholders with the same ids are connected.
 	// Example:
 	"Given-When-Then": {
-		"scope": "javascript,typescript",
+		"scope": "javascript,typescript,typescriptreact",
 		"prefix": "test-gwt",
 		"body": [
 			"describe('Given $1', () => {",
@@ -21,7 +21,7 @@
 		"description": "Nested Jest describe/test blocks with Given/When/Then descriptions"
 	},
 	"Given-Then": {
-		"scope": "javascript,typescript",
+		"scope": "javascript,typescript,typescriptreact",
 		"prefix": "test-gt",
 		"body": [
 			"describe('Given $1', () => {",
@@ -33,7 +33,7 @@
 		"description": "Nested Jest describe/test blocks with Given/Then descriptions"
 	},
 	"beforeEach": {
-		"scope": "javascript,typescript",
+		"scope": "javascript,typescript,typescriptreact",
 		"prefix": "test-be",
 		"body": [
 			"let $1",
@@ -44,7 +44,7 @@
 		"description": "Jest beforeEach block with variable in external scope"
 	},
 	"test": {
-		"scope": "javascript,typescript",
+		"scope": "javascript,typescript,typescriptreact",
 		"prefix": "test",
 		"body": [
 			"test('$1', () => {",
@@ -54,7 +54,7 @@
 		"description": "Jest test block"
 	},
 	"Wrap describe": {
-		"scope": "javascript,typescript",
+		"scope": "javascript,typescript,typescriptreact",
 		"prefix": "test-wrap-desc",
 		"body": [
 			"describe('$1', () => {",

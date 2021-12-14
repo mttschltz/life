@@ -11,7 +11,8 @@ module.exports = {
     '@babel/preset-typescript',
   ],
   plugins: [
-    // Disable loose mode for these 3 plugins to prevent warnings during build
+    // Disable loose mode for these 3 plugins to prevent warnings during build that
+    // say they must all have the same value for `loose`.
     ['@babel/plugin-proposal-class-properties', { loose: false }],
     ['@babel/plugin-proposal-private-methods', { loose: false }],
     ['@babel/plugin-proposal-private-property-in-object', { loose: false }],
