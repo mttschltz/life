@@ -1,15 +1,14 @@
 import React from 'react'
-import { useTranslation, I18nextProvider } from 'react-i18next'
-import i18n from '@matt-fyi/util/i18n/config'
+import { TranslationProvider, useTranslate } from '@matt-fyi/util/i18n/translate'
 
 const Layout: React.FC = (props) => {
-  const [t] = useTranslation(['common', 'page'])
+  const t = useTranslate('page')
 
   return (
-    <I18nextProvider i18n={i18n}>
+    <TranslationProvider>
       <header>{t('page:home.title')}</header>
       <div>{props.children}</div>
-    </I18nextProvider>
+    </TranslationProvider>
   )
 }
 

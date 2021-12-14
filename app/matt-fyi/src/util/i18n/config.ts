@@ -29,7 +29,4 @@ void i18n.use(initReactI18next).init({
   },
 })
 
-i18n.languages = ['en']
-
-export default i18n
-export { resources }
+export { resources, i18n }

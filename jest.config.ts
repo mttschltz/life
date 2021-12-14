@@ -87,6 +87,7 @@ export default {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '@life/(.*)': ['<rootDir>/lib/life/src/$1'],
+    '@matt-fyi/(.*)': ['<rootDir>/app/matt-fyi/src/$1'],
     '@util/(.*)': ['<rootDir>/lib/util/$1'],
   },
 
@@ -181,7 +182,7 @@ export default {
   // A map from regular expressions to paths to transformers
   transform: {
     '\\.(gql|graphql)$': 'jest-transform-graphql',
-    '.*': 'babel-jest',
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
