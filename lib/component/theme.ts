@@ -3,7 +3,7 @@ import { ThemeType } from 'grommet'
 const ROUNDING = 0
 const SPACING = 24
 
-const THEME: ThemeType = {
+const THEME_UNTYPED = {
   // Props used in Theme Designer but not ThemeType https://theme-designer.grommet.io/Form
   //   name: 'matt.fyi',
   //   rounding: 0,
@@ -521,4 +521,9 @@ const THEME: ThemeType = {
   },
 }
 
+const THEME = THEME_UNTYPED as ThemeType
+
+type Color = keyof typeof THEME_UNTYPED['global']['colors']
+
+export type { Color }
 export { THEME }
