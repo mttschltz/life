@@ -4,69 +4,87 @@ import type { BoxProps as BoxPropsGrommet } from 'grommet'
 import type { EdgeSizeType } from 'grommet/utils'
 import { Color } from '@component/theme'
 
-type BackgroundObjectGrommet = Exclude<BoxPropsGrommet['background'], string | undefined>
-
-type BackgroundObject = {
+type BackgroundGrommet = Exclude<BoxPropsGrommet['background'], string | undefined>
+type Background = {
   dark?: Color | boolean
   light?: Color
   color?: Color
-  opacity?: BackgroundObjectGrommet['opacity']
+  opacity?: BackgroundGrommet['opacity']
 }
 
 /* eslint-disable @typescript-eslint/sort-type-union-intersection-members */
-type TshirtSizeType = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge'
+type TshirtSize = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge'
 
-type HeightType =
+type Height =
   | 'xxsmall'
   | 'xxlarge'
-  | TshirtSizeType
+  | TshirtSize
   | '100%'
   | {
       // height omitted from here though it's in the Grommet type. It doesn't appear to have an effect, even when
       // used in the absense of max or min.
-      max?: 'xxsmall' | 'xxlarge' | TshirtSizeType | '100%'
-      min?: 'xxsmall' | 'xxlarge' | TshirtSizeType | '100%'
+      max?: 'xxsmall' | 'xxlarge' | TshirtSize | '100%'
+      min?: 'xxsmall' | 'xxlarge' | TshirtSize | '100%'
     }
 
-type WidthType =
+type Width =
   | 'xxsmall'
   | 'xxlarge'
-  | TshirtSizeType
+  | TshirtSize
   | '100%'
   | {
-      width?: 'xxsmall' | 'xxlarge' | TshirtSizeType | '100%'
-      max?: 'xxsmall' | 'xxlarge' | TshirtSizeType | '100%'
-      min?: 'xxsmall' | 'xxlarge' | TshirtSizeType | '100%'
+      width?: 'xxsmall' | 'xxlarge' | TshirtSize | '100%'
+      max?: 'xxsmall' | 'xxlarge' | TshirtSize | '100%'
+      min?: 'xxsmall' | 'xxlarge' | TshirtSize | '100%'
     }
 /* eslint-enable @typescript-eslint/sort-type-union-intersection-members */
 
+type EdgeSize = EdgeSizeType
+
+type Edge =
+  | EdgeSize
+  | 'none'
+  | {
+      bottom?: EdgeSize
+      end?: EdgeSize
+      horizontal?: EdgeSize
+      left?: EdgeSize
+      right?: EdgeSize
+      start?: EdgeSize
+      top?: EdgeSize
+      vertical?: EdgeSize
+    }
+
 interface BoxProps {
-  // `align` does not have a type safe mapping to Grommet types.
-  // This is due to Grommet's align type being a union with `string`.
+  // Reference Grommet Box property types directly where possible. In cases where this results in
+  // no useful intellisense suggestions, instead reconstruct the property types in the simplest
+  // way possible to allow those suggestions. This problem occurs when Grommet types are unioned
+  // with `string`. Typescript then considers any string valid, it simplifies the type to just be
+  // string, and then editors will offer no intellisense suggestions.
+  //
+  // When we want both intellisense suggestions and to allow any string, we can use techniques
+  // described here to reconstruct Grommet types:
+  // https://github.com/microsoft/TypeScript/issues/29729
   align?: 'baseline' | 'center' | 'end' | 'start' | 'stretch'
   as?: BoxPropsGrommet['as']
   direction?: BoxPropsGrommet['direction']
   flex?: BoxPropsGrommet['flex']
-  // `gap` does not have a type safe mapping to Grommet types.
-  // This is due to Grommet's GapType being a union with `string`.
-  gap?: EdgeSizeType | 'none'
+  gap?: EdgeSize | 'none'
   justify?: BoxPropsGrommet['justify']
-  background?: BackgroundObject | Color
+  background?: Background | Color
+  height?: Height
+  width?: Width
+  fill?: Exclude<BoxPropsGrommet['fill'], boolean> | 'both'
   // TODO: tests/storybook for below
-  // `weight` does not have a type safe mapping to Grommet types.
-  // This is due to Grommet's TShirtSizeType being a union with `string`.
-  width?: WidthType
-  // `height` does not have a type safe mapping to Grommet types.
-  // This is due to Grommet's TShirtSizeType being a union with `string`.
-  height?: HeightType
-  fill?: BoxPropsGrommet['fill']
-  pad?: BoxPropsGrommet['pad'] // TODO: This will be similar to gap... the same thoug?
+  pad?: Edge
+  margin?: Edge
 }
 
 const Box: React.FC<BoxProps> = (props) => {
-  const { children, direction = 'row', ...forwardedProps } = props
+  const { children, fill, direction = 'row', ...forwardedProps } = props
+
   return (
-    <BoxGrommet direction={direction} {...forwardedProps}>
+    <BoxGrommet fill={fill === 'both' ? true : fill} direction={direction} {...forwardedProps}>
       {children}
     </BoxGrommet>
   )

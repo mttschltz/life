@@ -11,104 +11,116 @@ const Divider = styled.div`
   padding-bottom: 3rem;
 `
 
+const DividerNoWidth = styled.div`
+  padding-bottom: 3rem;
+`
+
 const Simple: ComponentStory<typeof Box> = () => {
   return (
     <>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand">Default</Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" as="ul">
-            <Box background="border" as="li">
-              As li
-            </Box>
-            <Box background="border" as="li">
-              As li
-            </Box>
+      <Divider>
+        <Box background="brand">Default</Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" as="ul">
+          <Box background="border" as="li">
+            As li
           </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" direction="column">
-            <Box>Direction</Box>
-            <Box>is</Box>
-            <Box>Column</Box>
+          <Box background="border" as="li">
+            As li
           </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" direction="column-reverse">
-            <Box>Direction</Box>
-            <Box>is</Box>
-            <Box>Column Reverse</Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" direction="column">
+          <Box>Direction</Box>
+          <Box>is</Box>
+          <Box>Column</Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" direction="column-reverse">
+          <Box>Direction</Box>
+          <Box>is</Box>
+          <Box>Column Reverse</Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" height="xsmall">
+          <Box background="border" flex="grow">
+            flex grow
           </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" height="xsmall">
-            <Box background="border" flex="grow">
-              flex grow
-            </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" height="xsmall">
+          <Box background="border" flex={{ grow: 1 }}>
+            flex grow 1
           </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" height="xsmall">
-            <Box background="border" flex={{ grow: 1 }}>
-              flex grow 1
-            </Box>
-            <Box background="focus" flex={{ grow: 3 }}>
-              flex grow 3
-            </Box>
+          <Box background="focus" flex={{ grow: 3 }}>
+            flex grow 3
           </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" height="xsmall">
-            <Box flex={{ shrink: 0 }} background="border">
-              shrink 0 - “He who is brave is free”
-            </Box>
-            <Box flex={{ shrink: 1 }} background="focus">
-              shrink 1 - “He who is brave is free”
-            </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" height="xsmall">
+          <Box flex={{ shrink: 0 }} background="border">
+            shrink 0 - “He who is brave is free”
           </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" gap="medium">
-            <Box background="border">With</Box>
-            <Box background="border">medium</Box>
-            <Box background="border">gap</Box>
+          <Box flex={{ shrink: 1 }} background="focus">
+            shrink 1 - “He who is brave is free”
           </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" justify="between">
-            <Box background="border">justify</Box>
-            <Box background="border">as</Box>
-            <Box background="border">between</Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" height="small" width="small" align="start">
+          <Box background="border" fill="horizontal">
+            fill horizontal
           </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" justify="center">
-            <Box background="border">justify</Box>
-            <Box background="focus">as</Box>
-            <Box background="border">center</Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" height="small" width="small" align="start">
+          <Box background="border" fill="vertical">
+            fill vertical
           </Box>
-        </Divider>
-      </ThemeProvider>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" height="small" width="small" align="start">
+          <Box background="border" fill="both">
+            fill both
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" gap="medium">
+          <Box background="border">With</Box>
+          <Box background="border">medium</Box>
+          <Box background="border">gap</Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" justify="between">
+          <Box background="border">justify</Box>
+          <Box background="border">as</Box>
+          <Box background="border">between</Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" justify="center">
+          <Box background="border">justify</Box>
+          <Box background="focus">as</Box>
+          <Box background="border">center</Box>
+        </Box>
+      </Divider>
+    </>
+  )
+}
+
+const Background: ComponentStory<typeof Box> = () => {
+  return (
+    <>
       <ThemeProvider>
         <Divider>
           <Box background="brand" justify="center" height="small">
@@ -188,11 +200,12 @@ const Simple: ComponentStory<typeof Box> = () => {
     </>
   )
 }
-Simple.parameters = {
+Background.parameters = {
   [PARAM_NO_PROVIDER]: true,
 }
 
-// Test all variants as `align` does not have a type safe mapping to Grommet types.
+// Test all possible `align` values as it does not directly point to the Grommet type and, thus, is
+// more fragile to bugs when updating Grommet.
 const Align: ComponentStory<typeof Box> = () => {
   return (
     <>
@@ -236,7 +249,8 @@ const Align: ComponentStory<typeof Box> = () => {
   )
 }
 
-// Test all variants as `height` does not have a type safe mapping to Grommet types.
+// Test all possible `height` values as it does not directly point to the Grommet type and, thus, is
+// more fragile to bugs when updating Grommet.
 const Height: ComponentStory<typeof Box> = () => {
   return (
     <>
@@ -314,7 +328,95 @@ const Height: ComponentStory<typeof Box> = () => {
   )
 }
 
-export { Simple, Align, Height }
+// Test all possible `width` values as it does not directly point to the Grommet type and, thus, is
+// more fragile to bugs when updating Grommet.
+const Width: ComponentStory<typeof Box> = () => {
+  return (
+    <>
+      <DividerNoWidth>
+        <Box background="brand" width="xxsmall">
+          xxsmall
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand" width="xsmall">
+          xsmall
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand" width="small">
+          small
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand" width="medium">
+          medium
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand" width="large">
+          large
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand" width="xlarge">
+          xlarge
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand" width="xxlarge">
+          xxlarge
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand" width="medium" height="xsmall">
+          <Box background="border" width="100%">
+            100%
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand" width={{ width: 'small' }}>
+          small - using object
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box background="border" width={{ min: 'small' }}>
+            min small
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box background="border" width={{ min: 'small' }}>
+            min small - “Live a good life. If there are gods and they are just, then they will not care how devout you
+            have been, but will welcome you based on the virtues you have lived by. If there are gods, but unjust, then
+            you should not want to worship them. If there are no gods, then you will be gone, but will have lived a
+            noble life that will live on in the memories of your loved ones.”
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box background="border" width={{ max: 'small' }}>
+            max small
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box background="border" width={{ max: 'small' }}>
+            max small - “Whenever you are about to find fault with someone, ask yourself the following question: What
+            fault of mine most nearly resembles the one I am about to criticize?”
+          </Box>
+        </Box>
+      </DividerNoWidth>
+    </>
+  )
+}
+
+export { Simple, Align, Background, Height, Width }
 
 // eslint-disable-next-line import/no-default-export
 export default {
