@@ -118,6 +118,179 @@ const Simple: ComponentStory<typeof Box> = () => {
   )
 }
 
+// Test all possible `pad` values as it does not directly point to the Grommet type and, thus, is
+// more fragile to bugs when updating Grommet.
+const Padding: ComponentStory<typeof Box> = () => {
+  return (
+    <>
+      <Divider>
+        <Box background="brand" pad="xxsmall">
+          <Box fill="both" background="border">
+            pad xxsmall
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad="small">
+          <Box fill="both" background="border">
+            pad small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad="none">
+          <Box fill="both" background="border">
+            pad none
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad={{ bottom: 'small' }}>
+          <Box fill="both" background="border">
+            bottom: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad={{ end: 'small' }}>
+          <Box fill="both" background="border">
+            end: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad={{ horizontal: 'small' }}>
+          <Box fill="both" background="border">
+            horizontal: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad={{ left: 'small' }}>
+          <Box fill="both" background="border">
+            left: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad={{ right: 'small' }}>
+          <Box fill="both" background="border">
+            right: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad={{ start: 'small' }}>
+          <Box fill="both" background="border">
+            start: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad={{ top: 'small' }}>
+          <Box fill="both" background="border">
+            top: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand" pad={{ vertical: 'small' }}>
+          <Box fill="both" background="border">
+            vertical: small
+          </Box>
+        </Box>
+      </Divider>
+    </>
+  )
+}
+// Test all possible `margin` values as it does not directly point to the Grommet type and, thus, is
+// more fragile to bugs when updating Grommet.
+const Margin: ComponentStory<typeof Box> = () => {
+  return (
+    <>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin="xxsmall" background="border">
+            margin xxsmall
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin="small" background="border">
+            margin small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin="none" background="border">
+            margin none
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ bottom: 'small' }} background="border">
+            bottom: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ end: 'small' }} background="border">
+            end: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ horizontal: 'small' }} background="border">
+            horizontal: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ left: 'small' }} background="border">
+            left: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ right: 'small' }} background="border">
+            right: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ start: 'small' }} background="border">
+            start: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ top: 'small' }} background="border">
+            top: small
+          </Box>
+        </Box>
+      </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ vertical: 'small' }} background="border">
+            vertical: small
+          </Box>
+        </Box>
+      </Divider>
+    </>
+  )
+}
+
+// Test all possible `background` values as it does not directly point to the Grommet type and, thus, is
+// more fragile to bugs when updating Grommet.
 const Background: ComponentStory<typeof Box> = () => {
   return (
     <>
@@ -416,7 +589,7 @@ const Width: ComponentStory<typeof Box> = () => {
   )
 }
 
-export { Simple, Align, Background, Height, Width }
+export { Simple, Align, Background, Height, Margin, Padding, Width }
 
 // eslint-disable-next-line import/no-default-export
 export default {

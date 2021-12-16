@@ -75,7 +75,6 @@ interface BoxProps {
   height?: Height
   width?: Width
   fill?: Exclude<BoxPropsGrommet['fill'], boolean> | 'both'
-  // TODO: tests/storybook for below
   pad?: Edge
   margin?: Edge
 }
