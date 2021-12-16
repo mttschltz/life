@@ -77,6 +77,7 @@
     "jest-transform-graphql": "^2.1.0",
     "jest": "27.0.5",
     "lint-staged": "11.0.0",
+    "loki": "0.28.1",
     "prettier": "2.3.1",
     "react-dom": "17.0.1",
     "react-i18next": "11.15.0",
@@ -91,5 +92,20 @@
     "webpack-node-externals": "3.0.0",
     "webpack": "5.42.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "loki": {
+    "configurations": {
+      "chrome.laptop": {
+        "target": "chrome.docker",
+        "width": 1366,
+        "height": 768,
+        "deviceScaleFactor": 1,
+        "mobile": false
+      },
+      "chrome.iphone7": {
+        "target": "chrome.docker",
+        "preset": "iPhone 7"
+      }
+    }
+  }
 }
