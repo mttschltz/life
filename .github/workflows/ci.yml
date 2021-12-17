@@ -37,4 +37,4 @@ jobs:
         run: yarn lint
 
       - name: Unit tests
-        run: test:unit
+        run: yarn test:unit
