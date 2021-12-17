@@ -83,6 +83,9 @@ describe('GraphServiceIntegration', () => {
 
     await server.listen(4001)
   })
+  afterAll(async () => {
+    await server.stop()
+  })
   describe('categories', () => {
     describe('Given a query for children and their parent', () => {
       const categoriesQuery = gql`
