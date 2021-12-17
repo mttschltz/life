@@ -15,9 +15,10 @@
     "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0 --fix",
     "lint:types": "tsc",
     "prepare": "husky install",
-    "test": "jest && yarn test:visreg",
-    "test:watch": "jest --watch",
+    "test": "yarn test:unit && yarn test:visreg",
+    "test:unit": "jest",
     "test:visreg": "build-storybook --quiet && loki --requireReference --reactUri file:./storybook-static",
+    "test:watch": "jest --watch",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
