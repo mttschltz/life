@@ -15,7 +15,7 @@ module.exports = {
       // get picked up by CI later and, if we have well written code, shouldn't
       // happen much.
       // Or, use this jest argument: jest --findRelatedTests path/to/fileA.js path/to/fileB.js
-      return 'yarn test'
+      return 'yarn test:unit'
     },
   ],
 }
