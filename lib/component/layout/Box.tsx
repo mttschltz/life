@@ -83,7 +83,7 @@ const Box: React.FC<BoxProps> = (props) => {
   const { children, fill, direction = 'row', ...forwardedProps } = props
 
   return (
-    <BoxGrommet fill={fill === 'both' ? true : fill} direction={direction} {...forwardedProps}>
+    <BoxGrommet fill={fill === 'both' ? false : fill} direction={direction} {...forwardedProps}>
       {children}
     </BoxGrommet>
   )
