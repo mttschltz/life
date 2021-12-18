@@ -1,10 +1,4 @@
 module.exports = {
-  'app/matt-fyi/**/*.{ts,tsx}': [
-    () => {
-      // Don't forward the staged file(s) or tsc will ignore tsconfig.json
-      return 'yarn lint'
-    },
-  ],
   '**/*.{ts,tsx}': [
     () => {
       // Don't forward the staged file(s) because we want to run the related
@@ -16,6 +10,10 @@ module.exports = {
       // happen much.
       // Or, use this jest argument: jest --findRelatedTests path/to/fileA.js path/to/fileB.js
       return 'yarn test:unit'
+    },
+    () => {
+      // Don't forward the staged file(s) or tsc will ignore tsconfig.json
+      return 'yarn lint'
     },
   ],
 }
