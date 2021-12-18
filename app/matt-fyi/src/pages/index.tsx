@@ -4,7 +4,7 @@ import * as React from 'react'
 const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuery>> = (props) => {
   return (
     <main>
-      Root categories
+      Root categories:
       <ul>
         {props.data.store.categories.map((c, i) => (
           <li key={i}>{c?.name}</li>
