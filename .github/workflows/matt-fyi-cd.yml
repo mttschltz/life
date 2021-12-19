@@ -93,14 +93,10 @@ jobs:
           name: build-files
           path: build-files
 
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: build-files
-
-      # - name: Deploy
-      #   uses: netlify/actions/cli@master # TODO: tie to specific commit
-      #   with:
-      #     args: deploy --dir=build-files --prod
-      #   env:
-      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      - name: Deploy
+        uses: netlify/actions/cli@master # TODO: tie to specific commit
+        with:
+          args: deploy --dir=build-files --prod
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
