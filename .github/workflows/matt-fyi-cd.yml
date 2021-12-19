@@ -56,10 +56,10 @@ jobs:
           path: .loki
           retention-days: 90 # 90 is default
 
-  deploy:
-    name: 'Deploy to Netlify'
+  build:
+    name: 'Build'
     runs-on: ubuntu-latest
-    needs: [static-unit, visual-reg]
+
     steps:
       - uses: actions/checkout@v2
 
@@ -75,10 +75,32 @@ jobs:
       - name: Build
         run: yarn build:matt-fyi
 
-      - name: Deploy
-        uses: netlify/actions/cli@master # TODO: tie to specific commit
+      - name: Save build files
+        uses: actions/upload-artifact@v2
         with:
-          args: deploy --dir=app/matt-fyi/public --prod
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          name: build-files
+          path: app/matt-fyi/public
+          retention-days: 5
+
+  deploy:
+    name: 'Deploy to Netlify'
+    runs-on: ubuntu-latest
+    needs: [static-unit, visual-reg, build]
+    steps:
+      - name: Download build files
+        uses: actions/download-artifact@v2
+        with:
+          name: build-files
+          path: build-files
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: build-files
+
+      # - name: Deploy
+      #   uses: netlify/actions/cli@master # TODO: tie to specific commit
+      #   with:
+      #     args: deploy --dir=build-files --prod
+      #   env:
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
