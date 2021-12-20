@@ -14,6 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post starting to Slack
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          slack-message: 'Starting tests and buil'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
       - name: Use Node.js version
         uses: actions/setup-node@v2
         with:
@@ -28,6 +36,15 @@ jobs:
 
       - name: Unit tests
         run: yarn test:unit
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post failure to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          slack-message: 'Failed: Static analysis and unit tests'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
   visual-reg:
     name: 'Visual regression tests'
@@ -56,6 +73,15 @@ jobs:
           path: .loki
           retention-days: 90 # 90 is default
 
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post failure to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          slack-message: 'Failed: Visual regression tests'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
   build:
     name: 'Build'
     runs-on: ubuntu-latest
@@ -82,11 +108,28 @@ jobs:
           path: app/matt-fyi/public
           retention-days: 5
 
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post failure to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          slack-message: 'Failed: Build'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
   deploy:
     name: 'Deploy to Netlify'
     runs-on: ubuntu-latest
     needs: [static-unit, visual-reg, build]
     steps:
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post deploy starting to Slack
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          slack-message: 'Tests passed and build complete. Deploying...'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
       - name: Download build files
         uses: actions/download-artifact@v2
         with:
@@ -100,3 +143,12 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post failure to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          slack-message: 'Failed: Deploy to Netlify'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
