@@ -1,8 +1,40 @@
-# Development Environment
+# Installation
 
-## VSCode
+1. Install dependencies
 
-- Install https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql
+```
+yarn
+```
+
+2. Run development server
+
+```
+develop:matt-fyi
+```
+
+3. Or create production build
+
+```
+build:matt-fyi
+```
+
+## Development Environment
+
+### Editor
+
+Install VSCode with the following extensions:
+
+- [GraphQL](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql)
+
+### Environment
+
+Configure Docker to [run as non-root user](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user). Required for visual regression tests.
+
+# Development
+
+## Debugging
+
+- Pre-commit: `npx lint-staged -d`
 
 # Decisions
 
