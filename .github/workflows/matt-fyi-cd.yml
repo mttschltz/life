@@ -18,7 +18,37 @@ jobs:
         name: Post starting to Slack
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          slack-message: 'Starting tests and buil'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Delivery started",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Tests and build started."
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "⏱ Github Action",
+                      "emoji": true
+                    },
+                    "value": "click_me_123",
+                    "url": "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID",
+                    "action_id": "button-action"
+                  }
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
@@ -42,7 +72,18 @@ jobs:
         if: failure()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          slack-message: 'Failed: Static analysis and unit tests'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 Failed: Static analysis and unit tests. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                  }
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
@@ -78,7 +119,18 @@ jobs:
         if: failure()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          slack-message: 'Failed: Visual regression tests'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 Failed: Visual regression tests. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                  }
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
@@ -113,7 +165,18 @@ jobs:
         if: failure()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          slack-message: 'Failed: Build'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 Failed: Build. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                  }
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
@@ -126,7 +189,18 @@ jobs:
         name: Post deploy starting to Slack
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          slack-message: 'Tests passed and build complete. Deploying...'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Tests passed and build complete. Deploying..."
+                  }
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
@@ -149,6 +223,17 @@ jobs:
         if: failure()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          slack-message: 'Failed: Deploy to Netlify'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 Failed: Deploy to Netlify. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                  }
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
