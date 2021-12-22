@@ -33,17 +33,17 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Tests and build started."
+                    "text": "Tests and build started for commits:\n\n• ${{ join(github.event.commits.*.message, '\\n•') }}"
                   },
                   "accessory": {
                     "type": "button",
                     "text": {
                       "type": "plain_text",
-                      "text": "⏱ Github Action",
+                      "text": "👉 Github Action",
                       "emoji": true
                     },
                     "value": "click_me_123",
-                    "url": "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID",
+                    "url": "${{ env.RUN_URL }}",
                     "action_id": "button-action"
                   }
                 }
@@ -51,6 +51,7 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Use Node.js version
         uses: actions/setup-node@v2
@@ -79,7 +80,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 Failed: Static analysis and unit tests. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                    "text": "💥 Failed <@here>: Static analysis and unit tests. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
                   }
                 }
               ]
@@ -126,7 +127,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 Failed: Visual regression tests. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                    "text": "💥 Failed <@here>: Visual regression tests. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
                   }
                 }
               ]
@@ -172,7 +173,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 Failed: Build. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                    "text": "💥 Failed <@here>: Build. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
                   }
                 }
               ]
@@ -230,7 +231,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 Failed: Deploy to Netlify. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                    "text": "💥 Failed <@here>: Deploy to Netlify. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
                   }
                 }
               ]
