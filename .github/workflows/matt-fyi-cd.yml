@@ -30,6 +30,31 @@ jobs:
             return ["One", "Two", "Three"]
           # result-encoding: string
 
+      - uses: actions/github-script@v5.0.0
+        name: Get commit messages strings actual
+        id: get-commit-messages-strings-actual
+        with:
+          script: |
+            const commits = ${{ toJSON(github.event.commits.*.message) }}
+            console.log('commits: ' + JSON.stringify(commits))
+            return commits.map(c => /^[^\n].*/g.exec(c)[0])
+          # return ["One", "Two", "Three"]
+          # result-encoding: string
+          # https://github.community/t/substring-function/18401/2
+          # /^[^\n].*/g.exec('asdf\nsaf')
+
+      - name: Print commits
+        if: always()
+        run: echo "${{ steps.get-commit-messages-strings-actual.outputs.result }}"
+
+      - name: Print commits
+        if: always()
+        run: echo "${{ fromJSON(steps.get-commit-messages-strings-actual.outputs.result) }}"
+
+      - name: Print commits
+        if: always()
+        run: echo "${{ join(fromJSON(steps.get-commit-messages-strings-actual.outputs.result), ', ') }}"
+
       - name: Print commits
         if: always()
         run: echo "${{ steps.get-commit-messages.outputs.result }}"
