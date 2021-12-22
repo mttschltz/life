@@ -33,7 +33,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Tests and build started for commits:\n\n• ${{ join(github.event.commits.*.message, '\\n•') }}"
+                    "text": "Tests and build started for commits:\n\n• ${{ join(github.event.commits.*.message, '\n•') }}"
                   },
                   "accessory": {
                     "type": "button",
