@@ -270,7 +270,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Tests passed and build complete. Deploying..."
+                    "text": "✔ Tests passed and build complete. Deploying..."
                   }
                 }
               ]
