@@ -34,7 +34,7 @@ jobs:
         run: echo "${{ steps.get-commit-messages.outputs.result }}"
 
       - name: Print commits
-        run: echo "${{ join(steps.get-commit-messages.outputs.result.\*.message, ',') }}"
+        run: echo "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}"
 
       - name: Print commits
         run: echo "${{ steps.get-commit-messages-strings.outputs.result }}"
