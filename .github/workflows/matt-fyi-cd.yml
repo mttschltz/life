@@ -22,11 +22,25 @@ jobs:
             return [{ "message": "One"} ,{"message":  "Two" },{"message":  "Three"}]
           # result-encoding: string
 
+      - uses: actions/github-script@v5.0.0
+        name: Get commit messages strings
+        id: get-commit-messages-strings
+        with:
+          script: |
+            return ["One", "Two", "Three"]
+          # result-encoding: string
+
       - name: Print commits
         run: echo "${{ steps.get-commit-messages.outputs.result }}"
 
       - name: Print commits
-        run: echo "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}"
+        run: echo "${{ join(steps.get-commit-messages.outputs.result.\*.message, ',') }}"
+
+      - name: Print commits
+        run: echo "${{ steps.get-commit-messages-strings.outputs.result }}"
+
+      - name: Print commits
+        run: echo "${{ join(steps.get-commit-messages-strings.outputs.result, ',') }}"
 
       - uses: slackapi/slack-github-action@v1.16.0
         name: Post starting to Slack
@@ -39,7 +53,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}",
+                    "text": "${{ join(steps.get-commit-messages-strings.outputs.result, ',') }}",
                     "emoji": true
                   }
                 },
