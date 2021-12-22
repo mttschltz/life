@@ -18,14 +18,15 @@ jobs:
         name: Get commit messages
         id: get-commit-messages
         with:
-          script: return ["One", "Two", "Three"]
+          script: |
+            return [{ "message": "One"} ,{"message":  "Two" },{"message":  "Three"}]
           # result-encoding: string
 
       - name: Print commits
-        run: echo "${{ join(steps.get-commit-messages.outputs.result, ',') }}"
+        run: echo "${{ steps.get-commit-messages.outputs.result }}"
 
       - name: Print commits
-        run: echo "${{ steps.get-commit-messages.outputs.result }}"
+        run: echo "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}"
 
       - uses: slackapi/slack-github-action@v1.16.0
         name: Post starting to Slack
