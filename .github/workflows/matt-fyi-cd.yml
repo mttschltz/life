@@ -31,16 +31,36 @@ jobs:
           # result-encoding: string
 
       - name: Print commits
+        if: always()
         run: echo "${{ steps.get-commit-messages.outputs.result }}"
 
       - name: Print commits
+        if: always()
+        run: echo "${{ fromJSON(steps.get-commit-messages.outputs.result) }}"
+
+      - name: Print commits
+        if: always()
         run: echo "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}"
 
       - name: Print commits
+        if: always()
+        run: echo "${{ join(fromJSON(steps.get-commit-messages.outputs.result.*.message), ',') }}"
+
+      - name: Print commits
+        if: always()
         run: echo "${{ steps.get-commit-messages-strings.outputs.result }}"
 
       - name: Print commits
+        if: always()
+        run: echo "${{ fromJSON(steps.get-commit-messages-strings.outputs.result) }}"
+
+      - name: Print commits
+        if: always()
         run: echo "${{ join(steps.get-commit-messages-strings.outputs.result, ',') }}"
+
+      - name: Print commits
+        if: always()
+        run: echo "${{ join(fromJSON(steps.get-commit-messages-strings.outputs.result), ',') }}"
 
       - uses: slackapi/slack-github-action@v1.16.0
         name: Post starting to Slack
