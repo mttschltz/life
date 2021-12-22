@@ -55,37 +55,37 @@ jobs:
         if: always()
         run: echo "${{ join(fromJSON(steps.get-commit-messages-strings-actual.outputs.result), ', ') }}"
 
-      - name: Print commits
-        if: always()
-        run: echo "${{ steps.get-commit-messages.outputs.result }}"
+      # - name: Print commits
+      #   if: always()
+      #   run: echo "${{ steps.get-commit-messages.outputs.result }}"
 
-      - name: Print commits
-        if: always()
-        run: echo "${{ fromJSON(steps.get-commit-messages.outputs.result) }}"
+      # - name: Print commits
+      #   if: always()
+      #   run: echo "${{ fromJSON(steps.get-commit-messages.outputs.result) }}"
 
-      - name: Print commits
-        if: always()
-        run: echo "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}"
+      # - name: Print commits
+      #   if: always()
+      #   run: echo "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}"
 
-      - name: Print commits
-        if: always()
-        run: echo "${{ join(fromJSON(steps.get-commit-messages.outputs.result.*.message), ',') }}"
+      # - name: Print commits
+      #   if: always()
+      #   run: echo "${{ join(fromJSON(steps.get-commit-messages.outputs.result.*.message), ',') }}"
 
-      - name: Print commits
-        if: always()
-        run: echo "${{ steps.get-commit-messages-strings.outputs.result }}"
+      # - name: Print commits
+      #   if: always()
+      #   run: echo "${{ steps.get-commit-messages-strings.outputs.result }}"
 
-      - name: Print commits
-        if: always()
-        run: echo "${{ fromJSON(steps.get-commit-messages-strings.outputs.result) }}"
+      # - name: Print commits
+      #   if: always()
+      #   run: echo "${{ fromJSON(steps.get-commit-messages-strings.outputs.result) }}"
 
-      - name: Print commits
-        if: always()
-        run: echo "${{ join(steps.get-commit-messages-strings.outputs.result, ',') }}"
+      # - name: Print commits
+      #   if: always()
+      #   run: echo "${{ join(steps.get-commit-messages-strings.outputs.result, ',') }}"
 
-      - name: Print commits
-        if: always()
-        run: echo "${{ join(fromJSON(steps.get-commit-messages-strings.outputs.result), ',') }}"
+      # - name: Print commits
+      #   if: always()
+      #   run: echo "${{ join(fromJSON(steps.get-commit-messages-strings.outputs.result), ',') }}"
 
       - uses: slackapi/slack-github-action@v1.16.0
         name: Post starting to Slack
@@ -98,7 +98,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "${{ join(steps.get-commit-messages-strings.outputs.result, ',') }}",
+                    "text": "Delivery started",
                     "emoji": true
                   }
                 },
@@ -106,7 +106,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Tests and build started for commits:\n\n• ${{ join(github.event.commits.*.message, '\n•') }}"
+                    "text": "Tests and build started for commits:\n\n• ${{ join(fromJSON(steps.get-commit-messages-strings-actual.outputs.result), '\n•') }} }}"
                   },
                   "accessory": {
                     "type": "button",
