@@ -39,7 +39,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Delivery started",
+                    "text": "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}",
                     "emoji": true
                   }
                 },
