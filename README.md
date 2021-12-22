@@ -35,6 +35,8 @@ Configure Docker to [run as non-root user](https://docs.docker.com/engine/instal
 ## Debugging
 
 - Pre-commit: `npx lint-staged -d`
+- Github Workflows: Install [act](https://github.com/nektos/act) and execute commands like
+  - `act -s SLACK_BOT_TOKEN=<token> -W "./.github/workflows/slack-tests.yml"`
 
 # Decisions
 

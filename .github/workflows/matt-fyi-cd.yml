@@ -80,7 +80,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 Failed <@here>: Static analysis and unit tests. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                    "text": "💥 Failed <@here>: Static analysis and unit tests."
                   }
                 }
               ]
@@ -127,7 +127,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 Failed <@here>: Visual regression tests. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                    "text": "💥 Failed <@here>: Visual regression tests."
                   }
                 }
               ]
@@ -173,7 +173,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 Failed <@here>: Build. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                    "text": "💥 Failed <@here>: Build."
                   }
                 }
               ]
@@ -231,7 +231,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 Failed <@here>: Deploy to Netlify. <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Github Action>"
+                    "text": "💥 Failed <@here>: Deploy to Netlify."
                   }
                 }
               ]
