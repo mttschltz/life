@@ -16,76 +16,12 @@ jobs:
 
       - uses: actions/github-script@v5.0.0
         name: Get commit messages
-        id: get-commit-messages
-        with:
-          script: |
-            return [{ "message": "One"} ,{"message":  "Two" },{"message":  "Three"}]
-          # result-encoding: string
-
-      - uses: actions/github-script@v5.0.0
-        name: Get commit messages strings
-        id: get-commit-messages-strings
-        with:
-          script: |
-            return ["One", "Two", "Three"]
-          # result-encoding: string
-
-      - uses: actions/github-script@v5.0.0
-        name: Get commit messages strings actual
-        id: get-commit-messages-strings-actual
+        id: commit-messages
         with:
           script: |
             const commits = ${{ toJSON(github.event.commits.*.message) }}
             console.log('commits: ' + JSON.stringify(commits))
             return commits.map(c => /^[^\n].*/g.exec(c)[0])
-          # return ["One", "Two", "Three"]
-          # result-encoding: string
-          # https://github.community/t/substring-function/18401/2
-          # /^[^\n].*/g.exec('asdf\nsaf')
-
-      - name: Print commits
-        if: always()
-        run: echo "${{ steps.get-commit-messages-strings-actual.outputs.result }}"
-
-      - name: Print commits
-        if: always()
-        run: echo "${{ fromJSON(steps.get-commit-messages-strings-actual.outputs.result) }}"
-
-      - name: Print commits
-        if: always()
-        run: echo "${{ join(fromJSON(steps.get-commit-messages-strings-actual.outputs.result), ', ') }}"
-
-      # - name: Print commits
-      #   if: always()
-      #   run: echo "${{ steps.get-commit-messages.outputs.result }}"
-
-      # - name: Print commits
-      #   if: always()
-      #   run: echo "${{ fromJSON(steps.get-commit-messages.outputs.result) }}"
-
-      # - name: Print commits
-      #   if: always()
-      #   run: echo "${{ join(steps.get-commit-messages.outputs.result.*.message, ',') }}"
-
-      # - name: Print commits
-      #   if: always()
-      #   run: echo "${{ join(fromJSON(steps.get-commit-messages.outputs.result.*.message), ',') }}"
-
-      # - name: Print commits
-      #   if: always()
-      #   run: echo "${{ steps.get-commit-messages-strings.outputs.result }}"
-
-      # - name: Print commits
-      #   if: always()
-      #   run: echo "${{ fromJSON(steps.get-commit-messages-strings.outputs.result) }}"
-
-      # - name: Print commits
-      #   if: always()
-      #   run: echo "${{ join(steps.get-commit-messages-strings.outputs.result, ',') }}"
-
-      # - name: Print commits
-      #   if: always()
-      #   run: echo "${{ join(fromJSON(steps.get-commit-messages-strings.outputs.result), ',') }}"
 
       - uses: slackapi/slack-github-action@v1.16.0
         name: Post starting to Slack
@@ -98,27 +34,42 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Delivery started",
+                    "text": "🎁 Delivery started",
                     "emoji": true
                   }
+                },
+                {
+                  "type": "divider"
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Tests and build started for commits:\n\n• ${{ join(fromJSON(steps.get-commit-messages-strings-actual.outputs.result), '\n•') }}"
+                    "text": "Starting tests and build"
                   },
                   "accessory": {
                     "type": "button",
                     "text": {
                       "type": "plain_text",
-                      "text": "👉 Github Action",
+                      "text": "👉 On Github",
                       "emoji": true
                     },
                     "value": "click_me_123",
                     "url": "${{ env.RUN_URL }}",
                     "action_id": "button-action"
                   }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "👨‍💻 Commits:\n• ${{ join(fromJSON(steps.commit-messages.outputs.result), '\n •') }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
                 }
               ]
             }
@@ -148,13 +99,65 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "blocks": [
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "💥 *Failed:* Static analysis and unit tests. <!here>"
+              },
+              "accessory": {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Job",
+                  "emoji": true
+                },
+                "value": "click_me_123",
+                "url": "${{ env.JOB_URL }}",
+                "action_id": "button-action"
+              }
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          JOB_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.job }}?check_suite_focus=true
+
+      - uses: actions/github-script@v5.0.0
+        name: Get job duration
+        id: get-job-duration
+        with:
+          script: |
+            const started = new Date('2020-01-20T17:42:40Z')
+            const completed = new Date('2020-01-20T17:44:39Z')
+            const durationSeconds = (completed - started)/1000
+            if (durationSeconds > 60) {
+              const m = Math.floor(durationSeconds/60)
+              const s = durationSeconds % 60
+              return `${m}m${s}s`
+            } else if (durationSeconds === 60) {
+              return '1m'
+            } else {
+              return `${durationSeconds % 60}s`
+            }
+          result-encoding: string
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post success to Slack
+        if: success()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "✅ Static analysis and unit tests..."
+              }
+            },
+            {
+              "type": "context",
+              "elements": [
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "💥 Failed <@here>: Static analysis and unit tests."
-                  }
+                  "type": "mrkdwn",
+                  "text": "Completed in ${{ steps.get-job-duration.outputs.result }}"
                 }
               ]
             }
@@ -195,13 +198,65 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "blocks": [
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "💥 *Failed:* Visual regression tests. <!here>"
+              },
+              "accessory": {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Job",
+                  "emoji": true
+                },
+                "value": "click_me_123",
+                "url": "${{ env.JOB_URL }}",
+                "action_id": "button-action"
+              }
+            },
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          JOB_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.job }}?check_suite_focus=true
+
+      - uses: actions/github-script@v5.0.0
+        name: Get job duration
+        id: get-job-duration
+        with:
+          script: |
+            const started = new Date('2020-01-20T17:42:40Z')
+            const completed = new Date('2020-01-20T17:44:39Z')
+            const durationSeconds = (completed - started)/1000
+            if (durationSeconds > 60) {
+              const m = Math.floor(durationSeconds/60)
+              const s = durationSeconds % 60
+              return `${m}m${s}s`
+            } else if (durationSeconds === 60) {
+              return '1m'
+            } else {
+              return `${durationSeconds % 60}s`
+            }
+          result-encoding: string
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post success to Slack
+        if: success()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "✅ Visual regression tests..."
+              }
+            },
+            {
+              "type": "context",
+              "elements": [
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "💥 Failed <@here>: Visual regression tests."
-                  }
+                  "type": "mrkdwn",
+                  "text": "Completed in ${{ steps.get-job-duration.outputs.result }}"
                 }
               ]
             }
@@ -241,13 +296,65 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "blocks": [
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "💥 *Failed:* Build. <!here>"
+              },
+              "accessory": {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Job",
+                  "emoji": true
+                },
+                "value": "click_me_123",
+                "url": "${{ env.JOB_URL }}",
+                "action_id": "button-action"
+              }
+            },
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          JOB_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.job }}?check_suite_focus=true
+
+      - uses: actions/github-script@v5.0.0
+        name: Get job duration
+        id: get-job-duration
+        with:
+          script: |
+            const started = new Date('2020-01-20T17:42:40Z')
+            const completed = new Date('2020-01-20T17:44:39Z')
+            const durationSeconds = (completed - started)/1000
+            if (durationSeconds > 60) {
+              const m = Math.floor(durationSeconds/60)
+              const s = durationSeconds % 60
+              return `${m}m${s}s`
+            } else if (durationSeconds === 60) {
+              return '1m'
+            } else {
+              return `${durationSeconds % 60}s`
+            }
+          result-encoding: string
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post success to Slack
+        if: success()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "✅ Build..."
+              }
+            },
+            {
+              "type": "context",
+              "elements": [
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "💥 Failed <@here>: Build."
-                  }
+                  "type": "mrkdwn",
+                  "text": "Completed in ${{ steps.get-job-duration.outputs.result }}"
                 }
               ]
             }
@@ -259,25 +366,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [static-unit, visual-reg, build]
     steps:
-      - uses: slackapi/slack-github-action@v1.16.0
-        name: Post deploy starting to Slack
-        with:
-          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "✔ Tests passed and build complete. Deploying..."
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
       - name: Download build files
         uses: actions/download-artifact@v2
         with:
@@ -299,13 +387,74 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "blocks": [
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "💥 *Failed:* Deploy to Netlify. <!here>"
+              },
+              "accessory": {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Job",
+                  "emoji": true
+                },
+                "value": "click_me_123",
+                "url": "${{ env.JOB_URL }}",
+                "action_id": "button-action"
+              }
+            },
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          JOB_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.job }}?check_suite_focus=true
+
+      - uses: actions/github-script@v5.0.0
+        name: Get job duration
+        id: get-job-duration
+        with:
+          script: |
+            const started = new Date('2020-01-20T17:42:40Z')
+            const completed = new Date('2020-01-20T17:44:39Z')
+            const durationSeconds = (completed - started)/1000
+            if (durationSeconds > 60) {
+              const m = Math.floor(durationSeconds/60)
+              const s = durationSeconds % 60
+              return `${m}m${s}s`
+            } else if (durationSeconds === 60) {
+              return '1m'
+            } else {
+              return `${durationSeconds % 60}s`
+            }
+          result-encoding: string
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post success to Slack
+        if: success()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "🚀 *Deployed to Netlify!*"
+              }
+            },
+            {
+              "type": "context",
+              "elements": [
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "💥 Failed <@here>: Deploy to Netlify."
-                  }
+                  "type": "mrkdwn",
+                  "text": "Completed in ${{ steps.get-job-duration.outputs.result }}"
+                }
+              ]
+            },
+            {
+              "type": "context",
+              "elements": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*Total deployment in ${{ steps.get-job-duration.outputs.result }}*"
                 }
               ]
             }
