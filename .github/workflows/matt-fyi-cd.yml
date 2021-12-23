@@ -169,7 +169,7 @@ jobs:
                     "type": "button",
                     "text": {
                       "type": "plain_text",
-                      "text": "Job",
+                      "text": "View",
                       "emoji": true
                     },
                     "value": "click_me_123",
@@ -284,7 +284,7 @@ jobs:
                     "type": "button",
                     "text": {
                       "type": "plain_text",
-                      "text": "Job",
+                      "text": "View",
                       "emoji": true
                     },
                     "value": "click_me_123",
@@ -398,7 +398,7 @@ jobs:
                     "type": "button",
                     "text": {
                       "type": "plain_text",
-                      "text": "Job",
+                      "text": "View",
                       "emoji": true
                     },
                     "value": "click_me_123",
@@ -412,10 +412,48 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
+  deploy-prepare:
+    name: 'Prepare deploying to Netlify'
+    runs-on: ubuntu-latest
+    needs: [static-unit, visual-reg, build]
+    outputs:
+      start-time: ${{ steps.start-time.outputs.result }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/github-script@v5.0.0
+        name: Get start time
+        id: start-time
+        with:
+          script: |
+            return new Date().getTime()
+          result-encoding: string
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post starting to Slack
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "Starting: Deploy to Netlify..."
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
   deploy:
     name: 'Deploy to Netlify'
     runs-on: ubuntu-latest
-    needs: [static-unit, visual-reg, build]
+    needs: [deploy-prepare]
     steps:
       # Calculating start time here doesn't help as almost all the job duration comes from building
       # netlify/actions/cli@master and this is hoisted to the start of the job.
@@ -435,28 +473,28 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
-      # - uses: actions/github-script@v5.0.0
-      #   name: Get job duration
-      #   id: get-job-duration
-      #   with:
-      #     script: |
-      #       const started = new Date(${{ steps.start-time.outputs.result }})
-      #       const completed = new Date()
-      #       const durationSeconds = Math.floor((completed - started)/1000)
-      #       if (durationSeconds > 60) {
-      #         const m = Math.floor(durationSeconds/60)
-      #         const s = durationSeconds % 60
-      #         return `${m}m${s}s`
-      #       } else if (durationSeconds === 60) {
-      #         return '1m'
-      #       } else {
-      #         return `${durationSeconds % 60}s`
-      #       }
-      #     result-encoding: string
-
       - uses: actions/github-script@v5.0.0
         name: Get deploy duration
         id: get-deploy-duration
+        with:
+          script: |
+            const started = new Date(${{ needs.static-unit.outputs.deploy-prepare }})
+            const completed = new Date()
+            const durationSeconds = Math.floor((completed - started)/1000)
+            if (durationSeconds > 60) {
+              const m = Math.floor(durationSeconds/60)
+              const s = durationSeconds % 60
+              return `${m}m${s}s`
+            } else if (durationSeconds === 60) {
+              return '1m'
+            } else {
+              return `${durationSeconds % 60}s`
+            }
+          result-encoding: string
+
+      - uses: actions/github-script@v5.0.0
+        name: Get workflow duration
+        id: get-workflow-duration
         with:
           script: |
             const started = new Date(${{ needs.static-unit.outputs.start-time }})
@@ -502,7 +540,7 @@ jobs:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Total deployment in ${{ steps.get-deploy-duration.outputs.result }}*"
+                      "text": "*Total delivery in ${{ steps.get-deploy-duration.outputs.result }}*"
                     }
                   ]
                 }
@@ -529,7 +567,7 @@ jobs:
                     "type": "button",
                     "text": {
                       "type": "plain_text",
-                      "text": "Job",
+                      "text": "View",
                       "emoji": true
                     },
                     "value": "click_me_123",
