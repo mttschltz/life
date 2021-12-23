@@ -108,7 +108,7 @@ jobs:
           script: |
             const started = new Date(${{ steps.start-time.outputs.result }})
             const completed = new Date()
-            const durationSeconds = (completed - started)/1000
+            const durationSeconds = Math.floor((completed - started)/1000)
             if (durationSeconds > 60) {
               const m = Math.floor(durationSeconds/60)
               const s = durationSeconds % 60
@@ -188,6 +188,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/github-script@v5.0.0
+        name: Get start time
+        id: start-time
+        with:
+          script: |
+            return new Date().getTime()
+          result-encoding: string
+
       - name: Use Node.js version
         uses: actions/setup-node@v2
         with:
@@ -213,9 +221,9 @@ jobs:
         id: get-job-duration
         with:
           script: |
-            const started = new Date('2020-01-20T17:42:40Z')
-            const completed = new Date('2020-01-20T17:44:39Z')
-            const durationSeconds = (completed - started)/1000
+            const started = new Date(${{ steps.start-time.outputs.result }})
+            const completed = new Date()
+            const durationSeconds = Math.floor((completed - started)/1000)
             if (durationSeconds > 60) {
               const m = Math.floor(durationSeconds/60)
               const s = durationSeconds % 60
@@ -295,6 +303,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/github-script@v5.0.0
+        name: Get start time
+        id: start-time
+        with:
+          script: |
+            return new Date().getTime()
+          result-encoding: string
+
       - name: Use Node.js version
         uses: actions/setup-node@v2
         with:
@@ -319,9 +335,9 @@ jobs:
         id: get-job-duration
         with:
           script: |
-            const started = new Date('2020-01-20T17:42:40Z')
-            const completed = new Date('2020-01-20T17:44:39Z')
-            const durationSeconds = (completed - started)/1000
+            const started = new Date(${{ steps.start-time.outputs.result }})
+            const completed = new Date()
+            const durationSeconds = Math.floor((completed - started)/1000)
             if (durationSeconds > 60) {
               const m = Math.floor(durationSeconds/60)
               const s = durationSeconds % 60
@@ -399,6 +415,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [static-unit, visual-reg, build]
     steps:
+      - uses: actions/github-script@v5.0.0
+        name: Get start time
+        id: start-time
+        with:
+          script: |
+            return new Date().getTime()
+          result-encoding: string
+
       - uses: slackapi/slack-github-action@v1.16.0
         name: Post starting to Slack
         with:
@@ -412,7 +436,7 @@ jobs:
                     "type": "mrkdwn",
                     "text": "⏳ Starting deploy to Netlify..."
                   }
-                },
+                }
               ]
             }
         env:
@@ -437,9 +461,9 @@ jobs:
         id: get-job-duration
         with:
           script: |
-            const started = new Date('2020-01-20T17:42:40Z')
-            const completed = new Date('2020-01-20T17:44:39Z')
-            const durationSeconds = (completed - started)/1000
+            const started = new Date(${{ steps.start-time.outputs.result }})
+            const completed = new Date()
+            const durationSeconds = Math.floor((completed - started)/1000)
             if (durationSeconds > 60) {
               const m = Math.floor(durationSeconds/60)
               const s = durationSeconds % 60
