@@ -12,6 +12,8 @@ jobs:
   static-unit:
     name: 'Static analysis and unit tests'
     runs-on: ubuntu-latest
+    outputs:
+      start-time: ${{ steps.start-time.outputs.result }}
     steps:
       - uses: actions/checkout@v2
 
@@ -415,32 +417,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [static-unit, visual-reg, build]
     steps:
-      - uses: actions/github-script@v5.0.0
-        name: Get start time
-        id: start-time
-        with:
-          script: |
-            return new Date().getTime()
-          result-encoding: string
-
-      - uses: slackapi/slack-github-action@v1.16.0
-        name: Post starting to Slack
-        with:
-          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "⏳ Starting deploy to Netlify..."
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      # Calculating start time here doesn't help as almost all the job duration comes from building
+      # netlify/actions/cli@master and this is hoisted to the start of the job.
+      # It could be done with a dependent job that runs first.
 
       - name: Download build files
         uses: actions/download-artifact@v2
@@ -456,12 +435,31 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
+      # - uses: actions/github-script@v5.0.0
+      #   name: Get job duration
+      #   id: get-job-duration
+      #   with:
+      #     script: |
+      #       const started = new Date(${{ steps.start-time.outputs.result }})
+      #       const completed = new Date()
+      #       const durationSeconds = Math.floor((completed - started)/1000)
+      #       if (durationSeconds > 60) {
+      #         const m = Math.floor(durationSeconds/60)
+      #         const s = durationSeconds % 60
+      #         return `${m}m${s}s`
+      #       } else if (durationSeconds === 60) {
+      #         return '1m'
+      #       } else {
+      #         return `${durationSeconds % 60}s`
+      #       }
+      #     result-encoding: string
+
       - uses: actions/github-script@v5.0.0
-        name: Get job duration
-        id: get-job-duration
+        name: Get deploy duration
+        id: get-deploy-duration
         with:
           script: |
-            const started = new Date(${{ steps.start-time.outputs.result }})
+            const started = new Date(${{ needs.static-unit.outputs.start-time }})
             const completed = new Date()
             const durationSeconds = Math.floor((completed - started)/1000)
             if (durationSeconds > 60) {
@@ -504,7 +502,7 @@ jobs:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Total deployment in ${{ steps.get-job-duration.outputs.result }}*"
+                      "text": "*Total deployment in ${{ steps.get-deploy-duration.outputs.result }}*"
                     }
                   ]
                 }
