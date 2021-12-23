@@ -474,11 +474,11 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
       - uses: actions/github-script@v5.0.0
-        name: Get deploy duration
-        id: get-deploy-duration
+        name: Get job duration
+        id: get-job-duration
         with:
           script: |
-            const started = new Date(${{ needs.static-unit.outputs.deploy-prepare }})
+            const started = new Date(${{ needs.deploy-prepare.outputs.start-time }})
             const completed = new Date()
             const durationSeconds = Math.floor((completed - started)/1000)
             if (durationSeconds > 60) {
@@ -540,7 +540,7 @@ jobs:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Total delivery in ${{ steps.get-deploy-duration.outputs.result }}*"
+                      "text": "*Total delivery in ${{ steps.get-workflow-duration.outputs.result }}*"
                     }
                   ]
                 }
