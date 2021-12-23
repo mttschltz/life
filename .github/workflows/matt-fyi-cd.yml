@@ -1,3 +1,4 @@
+# Job duration - Currently not possible to get easily due to this limitation: https://github.community/t/job-id-is-string-in-github-job-but-integer-in-actions-api/139060
 name: matt.fyi CD
 
 on:
@@ -13,6 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - uses: actions/github-script@v5.0.0
+        name: Get start time
+        id: start-time
+        with:
+          script: |
+            return new Date().getTime()
+          result-encoding: string
 
       - uses: actions/github-script@v5.0.0
         name: Get commit messages
@@ -92,56 +101,13 @@ jobs:
       - name: Unit tests
         run: yarn test:unit
 
-      - uses: slackapi/slack-github-action@v1.16.0
-        name: Post failure to Slack
-        if: failure()
-        with:
-          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "💥 *Failed:* Static analysis and unit tests. <!here>"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Job",
-                      "emoji": true
-                    },
-                    "value": "click_me_123",
-                    "url": "${{ env.JOB_URL }}",
-                    "action_id": "button-action"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          JOB_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.job }}?check_suite_focus=true
-
-      - uses: octokit/request-action@v2.x
-        id: get-job-info
-        with:
-          route: GET /repos/{owner}/{repo}/actions/jobs/{job_id}
-          owner: mttschltz
-          repo: life
-          job_id: ${{ github.job }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: 'echo latest release: ${{ steps.get-job-info.outputs.data }}'
-
       - uses: actions/github-script@v5.0.0
         name: Get job duration
         id: get-job-duration
         with:
           script: |
-            const started = new Date('2020-01-20T17:42:40Z')
-            const completed = new Date('2020-01-20T17:44:39Z')
+            const started = new Date(${{ steps.start-time.outputs.result }})
+            const completed = new Date()
             const durationSeconds = (completed - started)/1000
             if (durationSeconds > 60) {
               const m = Math.floor(durationSeconds/60)
@@ -183,6 +149,38 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post failure to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 *Failed:* Static analysis and unit tests. <!here>"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Job",
+                      "emoji": true
+                    },
+                    "value": "click_me_123",
+                    "url": "${{ env.RUN_URL }}",
+                    "action_id": "button-action"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
   visual-reg:
     name: 'Visual regression tests'
     runs-on: ubuntu-latest
@@ -209,38 +207,6 @@ jobs:
           name: screenshots
           path: .loki
           retention-days: 90 # 90 is default
-
-      - uses: slackapi/slack-github-action@v1.16.0
-        name: Post failure to Slack
-        if: failure()
-        with:
-          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "💥 *Failed:* Visual regression tests. <!here>"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Job",
-                      "emoji": true
-                    },
-                    "value": "click_me_123",
-                    "url": "${{ env.JOB_URL }}",
-                    "action_id": "button-action"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          JOB_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.job }}?check_suite_focus=true
 
       - uses: actions/github-script@v5.0.0
         name: Get job duration
@@ -290,6 +256,38 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post failure to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 *Failed:* Visual regression tests. <!here>"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Job",
+                      "emoji": true
+                    },
+                    "value": "click_me_123",
+                    "url": "${{ env.RUN_URL }}",
+                    "action_id": "button-action"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
   build:
     name: 'Build'
     runs-on: ubuntu-latest
@@ -315,38 +313,6 @@ jobs:
           name: build-files
           path: app/matt-fyi/public
           retention-days: 5
-
-      - uses: slackapi/slack-github-action@v1.16.0
-        name: Post failure to Slack
-        if: failure()
-        with:
-          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "💥 *Failed:* Build. <!here>"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Job",
-                      "emoji": true
-                    },
-                    "value": "click_me_123",
-                    "url": "${{ env.JOB_URL }}",
-                    "action_id": "button-action"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          JOB_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.job }}?check_suite_focus=true
 
       - uses: actions/github-script@v5.0.0
         name: Get job duration
@@ -396,6 +362,38 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post failure to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 *Failed:* Build. <!here>"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Job",
+                      "emoji": true
+                    },
+                    "value": "click_me_123",
+                    "url": "${{ env.RUN_URL }}",
+                    "action_id": "button-action"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
   deploy:
     name: 'Deploy to Netlify'
     runs-on: ubuntu-latest
@@ -433,38 +431,6 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-
-      - uses: slackapi/slack-github-action@v1.16.0
-        name: Post failure to Slack
-        if: failure()
-        with:
-          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "💥 *Failed:* Deploy to Netlify. <!here>"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Job",
-                      "emoji": true
-                    },
-                    "value": "click_me_123",
-                    "url": "${{ env.JOB_URL }}",
-                    "action_id": "button-action"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          JOB_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.job }}?check_suite_focus=true
 
       - uses: actions/github-script@v5.0.0
         name: Get job duration
@@ -522,3 +488,35 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Post failure to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 *Failed:* Deploy to Netlify. <!here>"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Job",
+                      "emoji": true
+                    },
+                    "value": "click_me_123",
+                    "url": "${{ env.RUN_URL }}",
+                    "action_id": "button-action"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
