@@ -57,7 +57,7 @@ jobs:
                   "type": "section",
                   "text":  {
                     "type": "mrkdwn",
-                    "text": "• ${{ join(fromJSON(steps.commit-messages.outputs.result), '\n •') }}"
+                    "text": "• ${{ join(fromJSON(steps.commit-messages.outputs.result), '\n• ') }}"
                   }
                 },
                 {
