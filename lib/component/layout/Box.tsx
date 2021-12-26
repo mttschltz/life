@@ -2,7 +2,7 @@ import React from 'react'
 import { Box as BoxGrommet } from 'grommet'
 import type { BoxProps as BoxPropsGrommet } from 'grommet'
 import type { EdgeSizeType } from 'grommet/utils'
-import { Color } from '@component/theme'
+import { Color } from '@component'
 
 type BackgroundGrommet = Exclude<BoxPropsGrommet['background'], string | undefined>
 type Background = {

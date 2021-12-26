@@ -19,6 +19,7 @@
       "baseUrl": ".",
       "paths": {
         "@component/*": ["./lib/component/*"],
+        "@component": ["./lib/component/index.ts"],
         "@life/*": ["./lib/life/src/*"],
         "@matt-fyi/*": ["./app/matt-fyi/src/*"],
         "@store/*": ["./app/store/src/*"],

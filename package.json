@@ -17,7 +17,8 @@
     "storybook:build": "build-storybook",
     "storybook:start": "start-storybook -p 6006",
     "test:unit": "jest",
-    "test:visreg": "build-storybook --quiet && loki --requireReference --reactUri file:./storybook-static"
+    "test:visreg": "build-storybook --quiet && loki --requireReference --reactUri file:./storybook-static",
+    "test:visreg-update": "build-storybook --quiet && loki update --requireReference --reactUri file:./storybook-static"
   },
   "resolutions": {
     "graphql": "15.5.1"
@@ -70,6 +71,7 @@
     "graphql-scalars": "1.10.0",
     "graphql": "15.5.1",
     "grommet": "2.19.1",
+    "grommet-icons": "4.7.0",
     "husky": "6.0.0",
     "i18next": "21.6.0",
     "jest-mock-extended": "2.0.4",
