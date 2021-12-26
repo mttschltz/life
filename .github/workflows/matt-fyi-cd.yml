@@ -55,9 +55,19 @@ jobs:
                 },
                 {
                   "type": "section",
+                  "text":  {
+                    "type": "mrkdwn",
+                    "text": "• ${{ join(fromJSON(steps.commit-messages.outputs.result), '\n •') }}"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Starting tests and build"
+                    "text": "Tests and build started"
                   },
                   "accessory": {
                     "type": "button",
@@ -70,18 +80,6 @@ jobs:
                     "url": "${{ env.RUN_URL }}",
                     "action_id": "button-action"
                   }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "👨‍💻 Commits:\n• ${{ join(fromJSON(steps.commit-messages.outputs.result), '\n •') }}"
-                    }
-                  ]
-                },
-                {
-                  "type": "divider"
                 }
               ]
             }
@@ -130,21 +128,14 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "✅ Static analysis and unit tests...",
+              "text": "✔ Static analysis and unit tests completed",
               "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "✅ Static analysis and unit tests..."
-                  }
-                },
                 {
                   "type": "context",
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "Completed in ${{ steps.get-job-duration.outputs.result }}"
+                      "text": "✔ Static analysis and unit tests completed in ${{ steps.get-job-duration.outputs.result }}"
                     }
                   ]
                 }
@@ -160,13 +151,13 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "💥 Failed: Static analysis and unit tests",
+              "text": "💥 Static analysis and unit tests failed",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 *Failed:* Static analysis and unit tests. <!here>"
+                    "text": "💥 Static analysis and unit tests *failed*. <!here>"
                   },
                   "accessory": {
                     "type": "button",
@@ -247,21 +238,14 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "✅ Visual regression tests...",
+              "text": "✔ Visual regression tests completed",
               "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "✅ Visual regression tests..."
-                  }
-                },
                 {
                   "type": "context",
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "Completed in ${{ steps.get-job-duration.outputs.result }}"
+                      "text": "✔ Visual regression tests completed in ${{ steps.get-job-duration.outputs.result }}"
                     }
                   ]
                 }
@@ -277,13 +261,13 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "💥 Failed: Visual regression tests",
+              "text": "💥 Visual regression tests failed",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 *Failed:* Visual regression tests. <!here>"
+                    "text": "💥 Visual regression tests *failed*. <!here>"
                   },
                   "accessory": {
                     "type": "button",
@@ -363,21 +347,14 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "✅ Build...",
+              "text": "✔ Build completed",
               "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "✅ Build..."
-                  }
-                },
                 {
                   "type": "context",
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "Completed in ${{ steps.get-job-duration.outputs.result }}"
+                      "text": "✔ Build completed in ${{ steps.get-job-duration.outputs.result }}"
                     }
                   ]
                 }
@@ -393,13 +370,13 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "💥 Failed: Build",
+              "text": "💥 Build failed",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 *Failed:* Build. <!here>"
+                    "text": "💥 Build *failed*. <!here>"
                   },
                   "accessory": {
                     "type": "button",
@@ -443,14 +420,14 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "Starting: Deploy to Netlify...",
+              "text": "⏳ Deploy to Netlify starting",
               "blocks": [
                 {
                   "type": "context",
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "Starting: Deploy to Netlify..."
+                      "text": "⏳ Deploy to Netlify starting"
                     }
                   ]
                 }
@@ -527,32 +504,23 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "🚀 Deployed to Netlify!",
+              "text": "🚀 Delivered to Netlify!",
               "blocks": [
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "✔ Deploy to Netlify completed in ${{ steps.get-job-duration.outputs.result }}"
+                    }
+                  ]
+                },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "🚀 *Deployed to Netlify!*"
+                    "text": "🚀 *Delivered to Netlify* in ${{ steps.get-workflow-duration.outputs.result }}!"
                   }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "Completed in ${{ steps.get-job-duration.outputs.result }}"
-                    }
-                  ]
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Total delivery in ${{ steps.get-workflow-duration.outputs.result }}*"
-                    }
-                  ]
                 }
               ]
             }
@@ -566,13 +534,13 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
-              "text": "💥 Failed: Deploy to Netlify.",
+              "text": "💥 Deploy to Netlify failed",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "💥 *Failed:* Deploy to Netlify. <!here>"
+                    "text": "💥 Deploy to Netlify *failed*. <!here>"
                   },
                   "accessory": {
                     "type": "button",
