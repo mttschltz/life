@@ -1,7 +1,7 @@
 import { Grommet } from 'grommet'
 import type { GrommetExtendedProps } from 'grommet'
 import React from 'react'
-import { THEME } from '@component/theme'
+import { THEME } from './theme'
 
 interface ThemeProviderProps {
   mode?: GrommetExtendedProps['themeMode']
