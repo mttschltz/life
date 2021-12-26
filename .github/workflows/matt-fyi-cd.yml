@@ -40,6 +40,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "🎁 Delivery started",
               "blocks": [
                 {
                   "type": "header",
@@ -129,6 +130,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "✅ Static analysis and unit tests...",
               "blocks": [
                 {
                   "type": "section",
@@ -158,6 +160,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "💥 Failed: Static analysis and unit tests",
               "blocks": [
                 {
                   "type": "section",
@@ -244,6 +247,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "✅ Visual regression tests...",
               "blocks": [
                 {
                   "type": "section",
@@ -273,6 +277,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "💥 Failed: Visual regression tests",
               "blocks": [
                 {
                   "type": "section",
@@ -358,6 +363,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "✅ Build...",
               "blocks": [
                 {
                   "type": "section",
@@ -387,6 +393,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "💥 Failed: Build",
               "blocks": [
                 {
                   "type": "section",
@@ -436,6 +443,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "Starting: Deploy to Netlify...",
               "blocks": [
                 {
                   "type": "context",
@@ -519,6 +527,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "🚀 Deployed to Netlify!",
               "blocks": [
                 {
                   "type": "section",
@@ -557,6 +566,7 @@ jobs:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
             {
+              "text": "💥 Failed: Deploy to Netlify.",
               "blocks": [
                 {
                   "type": "section",
