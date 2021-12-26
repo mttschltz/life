@@ -35,7 +35,7 @@ jobs:
             return commits.map(c => /^[^\n].*/g.exec(c)[0])
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post starting to Slack
+        name: Send starting message to Slack
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
@@ -122,7 +122,7 @@ jobs:
           result-encoding: string
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post success to Slack
+        name: Send success message to Slack
         if: success()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
@@ -145,7 +145,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post failure to Slack
+        name: Send failure message to Slack
         if: failure()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
@@ -232,7 +232,7 @@ jobs:
           result-encoding: string
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post success to Slack
+        name: Send success message to Slack
         if: success()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
@@ -255,7 +255,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post failure to Slack
+        name: Send failure message to Slack
         if: failure()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
@@ -341,7 +341,7 @@ jobs:
           result-encoding: string
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post success to Slack
+        name: Send success message to Slack
         if: success()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
@@ -364,7 +364,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post failure to Slack
+        name: Send failure message to Slack
         if: failure()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
@@ -415,7 +415,7 @@ jobs:
           result-encoding: string
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post starting to Slack
+        name: Send starting message to Slack
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
           payload: |
@@ -498,7 +498,7 @@ jobs:
           result-encoding: string
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post success to Slack
+        name: Send success message to Slack
         if: success()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
@@ -528,7 +528,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - uses: slackapi/slack-github-action@v1.16.0
-        name: Post failure to Slack
+        name: Send failure message to Slack
         if: failure()
         with:
           channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
