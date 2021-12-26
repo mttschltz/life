@@ -33,3 +33,4 @@ const Icon: React.FC<IconProps> = (props) => {
 }
 
 export { Icon, ICON_NAMES }
+export type { IconName }

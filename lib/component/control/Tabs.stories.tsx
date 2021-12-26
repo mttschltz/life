@@ -4,7 +4,6 @@ import { Tabs, Tab } from './Tabs'
 import { ThemeProvider } from '@component/util/theme-provider'
 import styled from 'styled-components'
 import { Box } from '@component'
-import { Icon } from '@component/visualizations/Icon'
 
 const Divider = styled.div`
   max-width: 30rem;
@@ -28,10 +27,10 @@ const Simple: ComponentStory<typeof Tabs> = () => {
       <Divider>
         With Icons:
         <Tabs>
-          <Tab title="Tab title 1" icon={<Icon name="checkbox-selected"></Icon>}>
+          <Tab title="Tab title 1" icon="checkbox-selected">
             <Box background="brand">Tab 1 content</Box>
           </Tab>
-          <Tab title="Tab title 2" icon={<Icon name="plan"></Icon>}>
+          <Tab title="Tab title 2" icon="plan">
             <Box background="brand">Tab 2 content</Box>
           </Tab>
         </Tabs>
