@@ -1,7 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Icon, ICON_NAMES } from './Icon'
-import { ThemeProvider } from '@component/util/theme-provider'
 import styled from 'styled-components'
 import { Box } from '@component/layout/Box'
 
@@ -72,14 +71,4 @@ export { Simple }
 // eslint-disable-next-line import/no-default-export
 export default {
   title: 'Visualizations/Icon',
-  decorators: [
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/naming-convention
-    (Story) => (
-      <>
-        <ThemeProvider>
-          <Story />
-        </ThemeProvider>
-      </>
-    ),
-  ],
 } as ComponentMeta<typeof Icon>

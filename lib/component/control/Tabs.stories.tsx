@@ -1,7 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Tabs, Tab } from './Tabs'
-import { ThemeProvider } from '@component/util/theme-provider'
 import styled from 'styled-components'
 import { Box } from '@component'
 
@@ -44,14 +43,4 @@ export { Simple }
 // eslint-disable-next-line import/no-default-export
 export default {
   title: 'Control/Tabs',
-  decorators: [
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/naming-convention
-    (Story) => (
-      <>
-        <ThemeProvider>
-          <Story />
-        </ThemeProvider>
-      </>
-    ),
-  ],
 } as ComponentMeta<typeof Tabs>

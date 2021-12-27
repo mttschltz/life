@@ -1,7 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Box } from './Box'
-import { ThemeProvider } from '@component/util/theme-provider'
 import styled from 'styled-components'
 
 const PARAM_NO_PROVIDER = 'PARAM_NO_PROVIDER'
@@ -294,81 +293,53 @@ const Margin: ComponentStory<typeof Box> = () => {
 const Background: ComponentStory<typeof Box> = () => {
   return (
     <>
-      <ThemeProvider>
-        <Divider>
-          <Box background="brand" justify="center" height="small">
-            <Box
-              background={{
-                color: 'focus',
-                opacity: 'weak',
-              }}
-            >
-              weak opacity
-            </Box>
-            <Box
-              background={{
-                color: 'focus',
-                opacity: 'medium',
-              }}
-            >
-              medium opacity
-            </Box>
-            <Box
-              background={{
-                color: 'focus',
-                opacity: 'strong',
-              }}
-            >
-              strong opacity
-            </Box>
-          </Box>
-        </Divider>
-      </ThemeProvider>
-      <ThemeProvider>
-        <Divider>
-          <Box background="background-back" pad="medium">
-            background in light mode context
-          </Box>
-        </Divider>
-      </ThemeProvider>
       <Divider>
-        <ThemeProvider>
-          <Box background={{ color: 'background', dark: true }} pad="medium">
-            force dark background in light mode context
+        <Box background="brand" justify="center" height="small">
+          <Box
+            background={{
+              color: 'focus',
+              opacity: 'weak',
+            }}
+          >
+            weak opacity
           </Box>
-        </ThemeProvider>
+          <Box
+            background={{
+              color: 'focus',
+              opacity: 'medium',
+            }}
+          >
+            medium opacity
+          </Box>
+          <Box
+            background={{
+              color: 'focus',
+              opacity: 'strong',
+            }}
+          >
+            strong opacity
+          </Box>
+        </Box>
       </Divider>
       <Divider>
-        <ThemeProvider mode="dark">
-          <Box height="xsmall">
-            <Box background="border">border background in dark mode context</Box>
-          </Box>
-        </ThemeProvider>
+        <Box background="background-back" pad="medium">
+          background
+        </Box>
       </Divider>
       <Divider>
-        <ThemeProvider>
-          <Box height="xsmall">
-            <Box background="border">border background in light mode context</Box>
-          </Box>
-        </ThemeProvider>
+        <Box background={{ color: 'background', dark: true }} pad="medium">
+          force dark background
+        </Box>
       </Divider>
       <Divider>
-        <ThemeProvider>
-          <Box height="xsmall">
-            <Box background={{ light: 'brand', dark: 'border' }}>
-              light mode context, with light as brand, dark as border
-            </Box>
-          </Box>
-        </ThemeProvider>
+        <Box background={{ color: 'background', dark: false }} pad="medium">
+          force light background
+        </Box>
       </Divider>
       <Divider>
-        <ThemeProvider mode="dark">
-          <Box height="xsmall">
-            <Box background={{ light: 'brand', dark: 'border' }}>
-              dark mode context, with light as brand, dark as border
-            </Box>
-          </Box>
-        </ThemeProvider>
+        <Box height="xsmall">
+          <Box background={{ light: 'brand', dark: 'border' }}>brand for light mode, border for dark mode</Box>
+        </Box>
       </Divider>
     </>
   )
@@ -595,18 +566,4 @@ export { Simple, Align, Background, Height, Margin, Padding, Width }
 export default {
   title: 'Layout/Box',
   component: Box,
-  decorators: [
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/naming-convention
-    (Story, context) => (
-      <>
-        {context.parameters[PARAM_NO_PROVIDER] ? (
-          <Story />
-        ) : (
-          <ThemeProvider>
-            <Story />
-          </ThemeProvider>
-        )}
-      </>
-    ),
-  ],
 } as ComponentMeta<typeof Box>

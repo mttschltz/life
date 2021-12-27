@@ -1,7 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Button } from './Button'
-import { ThemeProvider } from '@component/util/theme-provider'
 
 const Kind: ComponentStory<typeof Button> = () => {
   return (
@@ -21,12 +20,4 @@ export default {
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-  decorators: [
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/naming-convention
-    (Story) => (
-      <ThemeProvider>
-        <Story />
-      </ThemeProvider>
-    ),
-  ],
 } as ComponentMeta<typeof Button>
