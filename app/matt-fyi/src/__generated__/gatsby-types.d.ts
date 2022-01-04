@@ -399,6 +399,18 @@ type GraphQLSource = Node & {
 };
 
 
+/** An Update is a significant change to an entity that may be of interest to users. */
+type Store_Update = {
+  /** The id. */
+  readonly id: Scalars['ID'];
+  /** The name of the entity. */
+  readonly name: Scalars['String'];
+  /** Time of last significant update to the entity. */
+  readonly updated: Scalars['Store_DateTime'];
+  /** Short description of the updated entity - not a description of what was updated. */
+  readonly shortDescription: Scalars['String'];
+};
+
 type Store_CategoryTopLevel =
   | 'HEALTH'
   | 'WEALTH'
@@ -408,7 +420,7 @@ type Store_CategoryTopLevel =
 type Store_Concern = Store_Category | Store_Risk;
 
 /** A Category is an ordered collection of Risks or other Categories. */
-type Store_Category = {
+type Store_Category = Store_Update & {
   /** The id. */
   readonly id: Scalars['ID'];
   /** The path used in the first URL segment. */
@@ -424,6 +436,10 @@ type Store_Category = {
   readonly children: ReadonlyArray<Maybe<Store_Category>>;
   /** The parent. */
   readonly parent: Maybe<Store_Category>;
+  /** Time of last significant update to the entity. */
+  readonly updated: Scalars['Store_DateTime'];
+  /** Short description of the updated entity - not a description of what was updated. */
+  readonly shortDescription: Scalars['String'];
 };
 
 /** A Risk is something that may cause harm to yourself, your family, or your goals. */

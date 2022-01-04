@@ -40,8 +40,10 @@ class GraphMapperImpl implements GraphMapper {
       name: category.name,
       path: category.path,
       description: category.description ?? undefined,
+      shortDescription: category.shortDescription,
       parent: parentResult?.value,
       children: childrenResults.okValues,
+      updated: category.updated,
     })
   }
 

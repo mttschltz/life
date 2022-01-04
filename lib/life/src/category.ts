@@ -1,9 +1,10 @@
-import { IsArray, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
+import { IsArray, IsDate, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
 import { Result, resultError, resultOk } from '@util/result'
+import { Update } from './update'
 
 // TODO: children can also be risks (Concerns)
 
-interface Category {
+interface Category extends Update {
   id: string
   path: string
   name: string
@@ -12,7 +13,10 @@ interface Category {
   parent?: Category
 }
 
-type CreateDetails = Pick<Category, 'children' | 'description' | 'name' | 'parent' | 'path'>
+type CreateDetails = Pick<
+  Category,
+  'children' | 'description' | 'name' | 'parent' | 'path' | 'shortDescription' | 'updated'
+>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isCategory(category: any): category is Category {
@@ -60,18 +64,22 @@ class CategoryImpl implements Category {
   #path: string
   #name: string
   #description?: string
+  #shortDescription: string
   #parent?: Category
   #children: Category[]
+  #updated: Date
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  public constructor({ path, name, description, parent, children }: CreateDetails, id: string) {
+  public constructor(details: CreateDetails, id: string) {
     this.#id = id
 
-    this.#path = path
-    this.#name = name
-    this.#description = description
-    this.#parent = parent
-    this.#children = children
+    this.#path = details.path
+    this.#name = details.name
+    this.#description = details.description
+    this.#shortDescription = details.shortDescription
+    this.#parent = details.parent
+    this.#children = details.children
+    this.#updated = details.updated
   }
 
   @MinLength(1)
@@ -101,6 +109,12 @@ class CategoryImpl implements Category {
     return this.#description
   }
 
+  @MinLength(1)
+  @IsString()
+  public get shortDescription(): string {
+    return this.#shortDescription
+  }
+
   @IsOptional()
   public get parent(): Category | undefined {
     return this.#parent
@@ -110,6 +124,11 @@ class CategoryImpl implements Category {
   @IsArray()
   public get children(): Category[] {
     return this.#children
+  }
+
+  @IsDate()
+  public get updated(): Date {
+    return this.#updated
   }
 }
 

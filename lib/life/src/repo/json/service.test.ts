@@ -1,5 +1,5 @@
 import { Result, resultError, resultOk } from '@util/result'
-import { CategoryMapper } from '@life/repo/json/mapper'
+import { CategoryJson, CategoryMapper } from '@life/repo/json/mapper'
 import { Category } from '@life/category'
 import { assertResultError, assertResultOk } from '@util/testing'
 import { mockDeep, Mocked } from '@util/mock'
@@ -15,7 +15,9 @@ describe('CategoryRepoJson', () => {
             id: 'mapped id',
             name: 'mapped name',
             path: 'mapped path',
+            shortDescription: 'mapped short description',
             children: [],
+            updated: new Date(),
           }
           const fromJson: jest.MockedFunction<CategoryMapper['fromJson']> = jest
             .fn()
@@ -25,6 +27,7 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
+          const repoUpdated = new Date('2022-01-01')
           const repo = newCategoryRepoJson(
             {
               category: {
@@ -32,7 +35,9 @@ describe('CategoryRepoJson', () => {
                   id: 'id',
                   name: 'name',
                   path: 'path',
+                  shortDescription: 'short description',
                   children: [],
+                  updated: repoUpdated,
                 },
               },
               risk: {},
@@ -49,11 +54,13 @@ describe('CategoryRepoJson', () => {
               id: 'id',
               name: 'name',
               path: 'path',
+              shortDescription: 'short description',
               children: [],
+              updated: repoUpdated,
             },
             undefined,
             [],
-          ])
+          ] as Parameters<typeof fromJson>)
         })
       })
       describe('When the cateegory is not found', () => {
@@ -70,7 +77,9 @@ describe('CategoryRepoJson', () => {
                   id: 'id',
                   name: 'name',
                   path: 'path',
+                  shortDescription: 'short description',
                   children: [],
+                  updated: new Date(),
                 },
               },
               risk: {},
@@ -101,7 +110,9 @@ describe('CategoryRepoJson', () => {
                   id: 'id',
                   name: 'name',
                   path: 'path',
+                  shortDescription: 'short description',
                   children: [],
+                  updated: new Date(),
                 },
               },
               risk: {},
@@ -122,25 +133,33 @@ describe('CategoryRepoJson', () => {
             id: 'mapped id',
             name: 'mapped name',
             path: 'mapped path',
+            shortDescription: 'mapped short description',
             children: [],
+            updated: new Date(),
           }
           const parentMapped: Category = {
             id: 'parent mapped id',
             name: 'parent mapped name',
             path: 'parent mapped path',
+            shortDescription: 'parent mapped short description',
             children: [],
+            updated: new Date(),
           }
           const child1Mapped: Category = {
             id: 'child1 mapped id',
             name: 'child1 mapped name',
             path: 'child1 mapped path',
+            shortDescription: 'child1 mapped short description',
             children: [],
+            updated: new Date(),
           }
           const child2Mapped: Category = {
             id: 'child2 mapped id',
             name: 'child2 mapped name',
             path: 'child2 mapped path',
+            shortDescription: 'child2 mapped short description',
             children: [],
+            updated: new Date(),
           }
           const fromJson: jest.MockedFunction<CategoryMapper['fromJson']> = jest.fn().mockImplementation(({ id }) => {
             switch (id) {
@@ -161,32 +180,40 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
-          const categoryRepo = {
+          const categoryRepo: CategoryJson = {
             id: 'id',
             name: 'name',
             path: 'path',
             parentId: 'parent id',
+            shortDescription: 'short description',
             children: ['child1 id', 'child2 id'],
+            updated: new Date(),
           }
-          const parentRepo = {
+          const parentRepo: CategoryJson = {
             id: 'parent id',
             name: 'parent name',
             path: 'parent path',
+            shortDescription: 'parent short description',
             children: ['id'],
+            updated: new Date(),
           }
-          const child1Repo = {
+          const child1Repo: CategoryJson = {
             id: 'child1 id',
             name: 'child1 name',
             path: 'child1 path',
+            shortDescription: 'child1 short description',
             parentId: 'id',
             children: [],
+            updated: new Date(),
           }
-          const child2Repo = {
+          const child2Repo: CategoryJson = {
             id: 'child2 id',
             name: 'child2 name',
             path: 'child2 path',
+            shortDescription: 'child2 short description',
             parentId: 'id',
             children: [],
+            updated: new Date(),
           }
           const repo = newCategoryRepoJson(
             {
@@ -226,8 +253,10 @@ describe('CategoryRepoJson', () => {
                   id: 'id',
                   name: 'name',
                   path: 'path',
+                  shortDescription: 'short description',
                   parentId: 'parent id',
                   children: ['child1 id', 'child2 id'],
+                  updated: new Date(),
                 },
               },
               risk: {},
@@ -246,7 +275,9 @@ describe('CategoryRepoJson', () => {
             id: 'parent mapped id',
             name: 'parent mapped name',
             path: 'parent mapped path',
+            shortDescription: 'parent mapped short description',
             children: [],
+            updated: new Date(),
           }
           const fromJson: jest.MockedFunction<CategoryMapper['fromJson']> = jest
             .fn()
@@ -263,21 +294,27 @@ describe('CategoryRepoJson', () => {
                   id: 'id',
                   name: 'name',
                   path: 'path',
+                  shortDescription: 'short description',
                   parentId: 'parent id',
                   children: ['child1 id', 'child2 id'],
+                  updated: new Date(),
                 },
                 'parent id': {
                   id: 'parent id',
                   name: 'parent name',
                   path: 'parent path',
+                  shortDescription: 'parent short description',
                   children: ['id'],
+                  updated: new Date(),
                 },
                 'child1 id': {
                   id: 'child1 id',
                   name: 'child1 name',
                   path: 'child1 path',
+                  shortDescription: 'child1 short description',
                   parentId: 'id',
                   children: [],
+                  updated: new Date(),
                 },
               },
               risk: {},
@@ -308,14 +345,18 @@ describe('CategoryRepoJson', () => {
                   id: 'parent id',
                   name: 'parent name',
                   path: 'parent path',
+                  shortDescription: 'parent short description',
                   children: ['child id'],
+                  updated: new Date(),
                 },
                 'child id': {
                   id: 'child id',
                   name: 'child name',
                   path: 'child path',
+                  shortDescription: 'child1 short description',
                   parentId: 'parent id',
                   children: [],
+                  updated: new Date(),
                 },
               },
               risk: {},
@@ -326,7 +367,9 @@ describe('CategoryRepoJson', () => {
             id: 'fetched id',
             name: 'fetched name',
             path: 'fetched path',
+            shortDescription: 'fetched short description',
             children: [],
+            updated: new Date(),
           })
           fetchCategory = jest
             .spyOn(repo, 'fetch')
@@ -354,14 +397,18 @@ describe('CategoryRepoJson', () => {
                   id: 'parent id',
                   name: 'parent name',
                   path: 'parent path',
+                  shortDescription: 'parent short description',
                   children: ['child id'],
+                  updated: new Date(),
                 },
                 'child id': {
                   id: 'child id',
                   name: 'child name',
                   path: 'child path',
+                  shortDescription: 'child short description',
                   parentId: 'parent id',
                   children: [],
+                  updated: new Date(),
                 },
               },
               risk: {},
@@ -396,7 +443,9 @@ describe('CategoryRepoJson', () => {
                   name: 'child name',
                   path: 'child path',
                   parentId: 'parent id',
+                  shortDescription: 'child short description',
                   children: [],
+                  updated: new Date(),
                 },
               },
               risk: {},
@@ -436,7 +485,9 @@ describe('CategoryRepoJson', () => {
                   id: 'id',
                   name: 'name',
                   path: 'path',
+                  shortDescription: 'short description',
                   children: [],
+                  updated: new Date(),
                 },
               },
               risk: {},
@@ -475,19 +526,25 @@ describe('CategoryRepoJson', () => {
           id: 'child1 id',
           name: 'child1 name',
           path: 'child1 path',
+          shortDescription: 'child1 short description',
           children: [],
+          updated: new Date(),
         }
         child2 = {
           id: 'child2 id',
           name: 'child2 name',
           path: 'child2 path',
+          shortDescription: 'child2 short description',
           children: [],
+          updated: new Date(),
         }
         child3 = {
           id: 'child3 id',
           name: 'child3 name',
           path: 'child3 path',
+          shortDescription: 'child3 short description',
           children: [],
+          updated: new Date(),
         }
         repo = newCategoryRepoJson(
           {
@@ -496,7 +553,9 @@ describe('CategoryRepoJson', () => {
                 id: 'parent id',
                 name: 'parent name',
                 path: 'parent path',
+                shortDescription: 'parent short description',
                 children: ['child1 id', 'child2 id', 'child3 id'],
+                updated: new Date(),
               },
             },
             risk: {},
@@ -595,7 +654,9 @@ describe('CategoryRepoJson', () => {
                 id: 'parent id',
                 name: 'parent name',
                 path: 'parent path',
+                shortDescription: 'parent short description',
                 children: [],
+                updated: new Date(),
               },
             },
             risk: {},
@@ -626,25 +687,33 @@ describe('CategoryRepoJson', () => {
             id: 'root1 mapped id',
             name: 'root1 mapped name',
             path: 'root1 mapped path',
+            shortDescription: 'root1 short description',
             children: [],
+            updated: new Date(),
           }
           const child1Mapped: Category = {
             id: 'child1 mapped id',
             name: 'child1 mapped name',
             path: 'child1 mapped path',
+            shortDescription: 'child1 short description',
             children: [],
+            updated: new Date(),
           }
           const root2Mapped: Category = {
             id: 'root2 mapped id',
             name: 'root2 mapped name',
             path: 'root2 mapped path',
+            shortDescription: 'root2 short description',
             children: [],
+            updated: new Date(),
           }
           const child2Mapped: Category = {
             id: 'child2 mapped id',
             name: 'child2 mapped name',
             path: 'child2 mapped path',
+            shortDescription: 'child2 short description',
             children: [],
+            updated: new Date(),
           }
           const fromJson: jest.MockedFunction<CategoryMapper['fromJson']> = jest.fn().mockImplementation(({ id }) => {
             switch (id) {
@@ -665,31 +734,39 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
-          const root1Repo = {
+          const root1Repo: CategoryJson = {
             id: 'root1 id',
             name: 'root1 name',
             path: 'root1 path',
+            shortDescription: 'root1 short description',
             children: ['child1 id'],
+            updated: new Date(),
           }
-          const category1Repo = {
+          const category1Repo: CategoryJson = {
             id: 'child1 id',
             name: 'child1 name',
             path: 'child1 path',
+            shortDescription: 'child1 short description',
             parentId: 'root1 id',
             children: [],
+            updated: new Date(),
           }
-          const root2Repo = {
+          const root2Repo: CategoryJson = {
             id: 'root2 id',
             name: 'root2 name',
             path: 'root2 path',
+            shortDescription: 'root2 short description',
             children: ['child2 id'],
+            updated: new Date(),
           }
-          const child2Repo = {
+          const child2Repo: CategoryJson = {
             id: 'child2 id',
             name: 'child2 name',
             path: 'child2 path',
+            shortDescription: 'child2 short description',
             parentId: 'child1 id',
             children: [],
+            updated: new Date(),
           }
           const repo = newCategoryRepoJson(
             {
@@ -726,18 +803,22 @@ describe('CategoryRepoJson', () => {
             toJson: jest.fn(),
           }
 
-          const root1Repo = {
+          const root1Repo: CategoryJson = {
             id: 'root1 id',
             name: 'root1 name',
             path: 'root1 path',
+            shortDescription: 'root1 short description',
             children: ['child1 id'],
+            updated: new Date(),
           }
-          const category1Repo = {
+          const category1Repo: CategoryJson = {
             id: 'child1 id',
             name: 'child1 name',
             path: 'child1 path',
+            shortDescription: 'child1 short description',
             parentId: 'root1 id',
             children: [],
+            updated: new Date(),
           }
           const repo = newCategoryRepoJson(
             {

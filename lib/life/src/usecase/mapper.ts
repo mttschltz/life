@@ -37,7 +37,7 @@ class RiskMapper {
   }
 }
 
-type Category = Pick<CategoryDomain, 'description' | 'id' | 'name' | 'path'> & {
+type Category = Pick<CategoryDomain, 'description' | 'id' | 'name' | 'path' | 'shortDescription' | 'updated'> & {
   children: Category[]
   parent?: Category
 }
@@ -54,8 +54,10 @@ class CategoryMapper {
       name: c.name,
       path: c.path,
       description: c.description,
+      shortDescription: c.shortDescription,
       parent: parent,
       children: c.children.map((c2) => this.category(c2)),
+      updated: c.updated,
     }
   }
 

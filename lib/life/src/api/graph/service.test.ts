@@ -56,21 +56,27 @@ describe('GraphService', () => {
               name: 'the name',
               path: 'the path',
               description: 'the description',
+              shortDescription: 'the short description',
               parent: undefined, // Hasn't been loaded yet
               children: [],
+              updated: new Date(),
             }
             fetchedParent = {
               id: 'fetch id',
               name: 'fetch name',
               path: 'fetch path',
+              shortDescription: 'fetch short description',
               children: [],
+              updated: new Date(),
             }
             fetchParent.mockReturnValueOnce(Promise.resolve(resultOk<CategoryUsecase>(fetchedParent)))
             mappedParent = {
               id: 'mapped id',
               name: 'mapped name',
               path: 'mapped path',
+              shortDescription: 'mapped short description',
               children: [],
+              updated: new Date(),
             }
             mapper.categoryFromUsecase.mockReturnValueOnce(resultOk<Category>(mappedParent))
           })
@@ -149,8 +155,10 @@ describe('GraphService', () => {
               name: 'the name',
               path: 'the path',
               description: 'the description',
+              shortDescription: 'the short description',
               parent: undefined, // Hasn't been loaded yet
               children: [],
+              updated: new Date(),
             }
             fetchParent.mockReturnValueOnce(Promise.resolve(resultOk<CategoryUsecase | undefined>(undefined)))
           })
@@ -177,21 +185,27 @@ describe('GraphService', () => {
               name: 'the name',
               path: 'the path',
               description: 'the description',
+              shortDescription: 'the short description',
               parent: undefined,
               children: [],
+              updated: new Date(),
             }
             fetchedChildren = [
               {
                 id: 'fetch id',
                 name: 'fetch name',
                 path: 'fetch path',
+                shortDescription: 'fetch short description',
                 children: [],
+                updated: new Date(),
               },
               {
                 id: 'fetch id 2',
                 name: 'fetch name 2',
                 path: 'fetch path 2',
+                shortDescription: 'fetch short description 2',
                 children: [],
+                updated: new Date(),
               },
             ]
             fetchChildren.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>(fetchedChildren)))
@@ -200,13 +214,17 @@ describe('GraphService', () => {
                 id: 'mapped id',
                 name: 'mapped name',
                 path: 'mapped path',
+                shortDescription: 'mapped short description',
                 children: [],
+                updated: new Date(),
               },
               {
                 id: 'mapped id 2',
                 name: 'mapped name 2',
                 path: 'mapped path 2',
+                shortDescription: 'mapped short description 2',
                 children: [],
+                updated: new Date(),
               },
             ]
             mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>(mappedChildren))
@@ -288,8 +306,10 @@ describe('GraphService', () => {
               name: 'the name',
               path: 'the path',
               description: 'the description',
+              shortDescription: 'the short description',
               parent: undefined,
               children: [],
+              updated: new Date(),
             }
             fetchChildren.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
             mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>([]))
@@ -340,13 +360,17 @@ describe('GraphService', () => {
                 id: 'fetch id 1',
                 name: 'fetch name 1',
                 path: 'fetch path 1',
+                shortDescription: 'fetch short description 1',
                 children: [],
+                updated: new Date(),
               },
               {
                 id: 'fetch id 2',
                 name: 'fetch name 2',
                 path: 'fetch path 2',
+                shortDescription: 'fetch short description 2',
                 children: [],
+                updated: new Date(),
               },
             ]
             list.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>(fetchedCategories)))
@@ -355,13 +379,17 @@ describe('GraphService', () => {
                 id: 'mapped id 1',
                 name: 'mapped name 1',
                 path: 'mapped path 1',
+                shortDescription: 'mapped short description 1',
                 children: [],
+                updated: new Date(),
               },
               {
                 id: 'mapped id 2',
                 name: 'mapped name 2',
                 path: 'mapped path 2',
+                shortDescription: 'mapped short description 2',
                 children: [],
+                updated: new Date(),
               },
             ]
             mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>(mappedCategories))

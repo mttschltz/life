@@ -6,19 +6,22 @@ import { assertResultError, assertResultOk } from '@util/testing'
 describe('Category', () => {
   describe('Create', () => {
     let createDetails: CreateDetails
+    let updated: Date
     beforeEach(() => {
+      updated = new Date()
       createDetails = {
         path: 'path',
         name: 'name',
         description: undefined,
+        shortDescription: 'short description',
         parent: undefined,
         children: [],
+        updated,
       }
     })
 
     describe('Given a valid CreateDetails without optional fields', () => {
       describe('When there are no optional fields', () => {
-        // TODO:
         test('Then it successfully creates a Category', () => {
           const categoryResult = newCategory('id', {
             ...createDetails,
@@ -30,8 +33,10 @@ describe('Category', () => {
           expect(category.path).toEqual('path')
           expect(category.name).toEqual('name')
           expect(category.description).toBeUndefined()
+          expect(category.shortDescription).toEqual('short description')
           expect(category.parent).toBeUndefined()
           expect(category.children).toHaveLength(0)
+          expect(category.updated).toEqual(updated)
         })
       })
     })
@@ -42,6 +47,8 @@ describe('Category', () => {
           children: [],
           name: 'parent name',
           path: 'parent path',
+          shortDescription: 'parent short description',
+          updated: new Date(),
         }
         const children: Category[] = [
           {
@@ -49,6 +56,8 @@ describe('Category', () => {
             children: [],
             name: 'child name',
             path: 'child path',
+            shortDescription: 'child short description',
+            updated: new Date(),
           },
         ]
         const categoryResult = newCategory('id', {
@@ -64,8 +73,10 @@ describe('Category', () => {
         expect(category.path).toEqual('path')
         expect(category.name).toEqual('name')
         expect(category.description).toEqual('description')
+        expect(category.shortDescription).toEqual('short description')
         expect(category.parent).toBe(parent)
         expect(category.children).toBe(children)
+        expect(category.updated).toBe(updated)
       })
     })
     describe('Given an invalid CreateDetails', () => {
@@ -159,6 +170,29 @@ describe('Category', () => {
         expect(categoryResult.message).toEqual('description must be a string')
       })
     })
+    describe('Given an invalid short description', () => {
+      describe('and the short description is not provided', () => {
+        test('Then an error result is returned', () => {
+          const categoryResult = newCategory('id', {
+            ...createDetails,
+            // @ts-expect-error: In the domain we want to protect against runtime type errors
+            shortDescription: undefined,
+          })
+          assertResultError(categoryResult)
+          expect(categoryResult.message).toEqual('shortDescription must be a string')
+        })
+      })
+      describe('and the short description has no length', () => {
+        test('Then an error result is returned', () => {
+          const categoryResult = newCategory('id', {
+            ...createDetails,
+            shortDescription: '',
+          })
+          assertResultError(categoryResult)
+          expect(categoryResult.message).toEqual('shortDescription must be longer than or equal to 1 characters')
+        })
+      })
+    })
     describe('Given an invalid children', () => {
       test('Then an error result is returned', () => {
         let categoryResult = newCategory('id', {
@@ -187,6 +221,30 @@ describe('Category', () => {
         })
         assertResultError(categoryResult)
         expect(categoryResult.message).toEqual('parent must be a Category')
+      })
+    })
+    describe('Given an invalid updated', () => {
+      describe('and updated is not provided', () => {
+        test('Then an error result is returned', () => {
+          const categoryResult = newCategory('id', {
+            ...createDetails,
+            // @ts-expect-error: In the domain we want to protect against runtime type errors
+            updated: undefined,
+          })
+          assertResultError(categoryResult)
+          expect(categoryResult.message).toEqual('updated must be a Date instance')
+        })
+      })
+      describe('and updated is not a Date', () => {
+        test('Then an error result is returned', () => {
+          const categoryResult = newCategory('id', {
+            ...createDetails,
+            // @ts-expect-error: In the domain we want to protect against runtime type errors
+            updated: '',
+          })
+          assertResultError(categoryResult)
+          expect(categoryResult.message).toEqual('updated must be a Date instance')
+        })
       })
     })
   })

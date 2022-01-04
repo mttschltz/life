@@ -18,38 +18,48 @@ const jsonStore: JsonStore = {
       name: 'root category 1',
       path: '/root-category-1',
       description: 'root category 1 with child',
+      shortDescription: 'rc1 with child',
       children: ['3'],
+      updated: new Date('2021-12-01'),
     },
     2: {
       id: '2',
       name: 'root category 2',
       path: '/root-category-2',
       description: 'root category 2 no children',
+      shortDescription: 'rc2 with child',
       children: [],
+      updated: new Date('2021-12-02'),
     },
     3: {
       id: '3',
       name: 'child category 3',
       path: '/child-category-3',
       description: 'child category 3 with child',
+      shortDescription: 'cc3 with child',
       children: ['4'],
       parentId: '1',
+      updated: new Date('2021-12-03'),
     },
     4: {
       id: '4',
       name: 'grandchild category 4',
       path: '/grandchild-category-4',
       description: 'grandchild category 4 with child',
+      shortDescription: 'gc4 with child',
       children: ['5'],
       parentId: '3',
+      updated: new Date('2021-12-04'),
     },
     5: {
       id: '5',
       name: 'greatgrandchild category 5',
       path: '/greatgrandchild-category-5',
       description: 'greatgrandchild category 5 no children',
+      shortDescription: 'ggc4 with child',
       children: [],
       parentId: '4',
+      updated: new Date('2021-12-05'),
     },
   },
   risk: {},
@@ -95,18 +105,24 @@ describe('GraphServiceIntegration', () => {
             path
             name
             description
+            shortDescription
             children {
               id
               path
               name
               description
+              shortDescription
               parent {
                 id
                 path
                 name
                 description
+                shortDescription
+                updated
               }
+              updated
             }
+            updated
           }
         }
       `

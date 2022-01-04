@@ -19,15 +19,19 @@ describe('fetchParent', () => {
       fetchedParent = {
         id: 'fetched id',
         name: 'fetched name',
-        path: 'fetched name',
+        path: 'fetched path',
+        shortDescription: 'fetched short description',
         children: [],
+        updated: new Date(),
       }
       repo.fetchParent.mockReturnValueOnce(Promise.resolve(resultOk<CategoryDomain | undefined>(fetchedParent)))
       mappedParent = {
         id: 'mapped id',
         name: 'mapped name',
-        path: 'mapped name',
+        path: 'mapped path',
+        shortDescription: 'mapped short description',
         children: [],
+        updated: new Date(),
       }
       mapper.category.mockReturnValueOnce(mappedParent)
     })

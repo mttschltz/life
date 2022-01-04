@@ -16,13 +16,17 @@ describe('fetchChildren', () => {
           id: 'fetched child1 id',
           name: 'fetched child1 id',
           path: 'fetched child1 path',
+          shortDescription: 'fetched child1 short description',
           children: [],
+          updated: new Date(),
         },
         {
           id: 'fetched child2 id',
           name: 'fetched child2 id',
           path: 'fetched child2 path',
+          shortDescription: 'fetched child2 short description',
           children: [],
+          updated: new Date(),
         },
       ]
       repo = mock<FetchChildrenRepo>()
@@ -32,13 +36,17 @@ describe('fetchChildren', () => {
           id: 'mapped child1 id',
           name: 'mapped child1 id',
           path: 'mapped child1 path',
+          shortDescription: 'mapped child1 short description',
           children: [],
+          updated: new Date(),
         },
         {
           id: 'mapped child2 id',
           name: 'mapped child2 id',
           path: 'mapped child2 path',
+          shortDescription: 'mapped child2 short description',
           children: [],
+          updated: new Date(),
         },
       ]
       mapper = mock<FetchChildrenMapper>()

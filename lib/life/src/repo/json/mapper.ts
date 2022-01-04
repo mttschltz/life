@@ -46,19 +46,21 @@ function newCategoryMapper(): CategoryMapper {
 }
 
 class CategoryMapperImpl implements CategoryMapper {
-  public toJson({ id, name, parent, path, description, children }: Category): CategoryJson {
+  public toJson({ id, name, parent, path, description, shortDescription, children, updated }: Category): CategoryJson {
     return {
       id,
       name,
       parentId: parent?.id,
       path,
       description,
+      shortDescription,
       children: children.map((c) => c.id),
+      updated,
     }
   }
 
   public fromJson(
-    { id, name, description, path }: CategoryJson,
+    { id, name, description, path, shortDescription, updated }: CategoryJson,
     parent: Category | undefined,
     children: Category[],
   ): Result<Category> {
@@ -68,6 +70,8 @@ class CategoryMapperImpl implements CategoryMapper {
       children,
       path,
       description,
+      shortDescription,
+      updated,
     }
     return newCategory(id, createDetails)
   }

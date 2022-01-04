@@ -1,5 +1,27 @@
 scalar DateTime
 
+"""
+An Update is a significant change to an entity that may be of interest to users.
+"""
+interface Update {
+  """
+  The id.
+  """
+  id: ID!
+  """
+  The name of the entity.
+  """
+  name: String!
+  """
+  Time of last significant update to the entity.
+  """
+  updated: DateTime!
+  """
+  Short description of the updated entity - not a description of what was updated.
+  """
+  shortDescription: String!
+}
+
 enum CategoryTopLevel {
   HEALTH
   WEALTH
@@ -14,7 +36,7 @@ union Concern = Category | Risk
 """
 A Category is an ordered collection of Risks or other Categories.
 """
-type Category {
+type Category implements Update {
   """
   The id.
   """
@@ -40,6 +62,14 @@ type Category {
   The parent.
   """
   parent: Category
+  """
+  Time of last significant update to the category.
+  """
+  updated: DateTime!
+  """
+  Short description of the category.
+  """
+  shortDescription: String!
 }
 
 """
