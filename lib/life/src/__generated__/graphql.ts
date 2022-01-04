@@ -15,7 +15,7 @@ export type Scalars = {
 };
 
 /** A Category is an ordered collection of Risks or other Categories. */
-export type Category = Update & {
+export type Category = Updated & {
   __typename?: 'Category';
   /** The id. */
   id: Scalars['ID'];
@@ -32,9 +32,9 @@ export type Category = Update & {
   children: Array<Maybe<Category>>;
   /** The parent. */
   parent?: Maybe<Category>;
-  /** Time of last significant update to the entity. */
+  /** Time of last significant update to the category. */
   updated: Scalars['DateTime'];
-  /** Short description of the updated entity - not a description of what was updated. */
+  /** Short description of the category. */
   shortDescription: Scalars['String'];
 };
 
@@ -103,8 +103,11 @@ export type Risk = {
   notes?: Maybe<Scalars['String']>;
 };
 
-/** An Update is a significant change to an entity that may be of interest to users. */
-export type Update = {
+/**
+ * An Updated entity logs its most recent, user-relevant changes so they can be viewed in order of
+ * when they were last updated.
+ */
+export type Updated = {
   /** The id. */
   id: Scalars['ID'];
   /** The name of the entity. */
@@ -194,7 +197,7 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Risk: ResolverTypeWrapper<Risk>;
-  Update: ResolversTypes['Category'];
+  Updated: ResolversTypes['Category'];
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
@@ -209,7 +212,7 @@ export type ResolversParentTypes = {
   Mutation: {};
   Query: {};
   Risk: Risk;
-  Update: ResolversParentTypes['Category'];
+  Updated: ResolversParentTypes['Category'];
   Boolean: Scalars['Boolean'];
 };
 
@@ -252,7 +255,7 @@ export type RiskResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UpdateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Update'] = ResolversParentTypes['Update']> = {
+export type UpdatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['Updated'] = ResolversParentTypes['Updated']> = {
   __resolveType: TypeResolveFn<'Category', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -267,7 +270,7 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Risk?: RiskResolvers<ContextType>;
-  Update?: UpdateResolvers<ContextType>;
+  Updated?: UpdatedResolvers<ContextType>;
 };
 
 

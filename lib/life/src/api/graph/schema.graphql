@@ -1,9 +1,10 @@
 scalar DateTime
 
 """
-An Update is a significant change to an entity that may be of interest to users.
+An Updated entity logs its most recent, user-relevant changes so they can be viewed in order of
+when they were last updated.
 """
-interface Update {
+interface Updated {
   """
   The id.
   """
@@ -36,7 +37,7 @@ union Concern = Category | Risk
 """
 A Category is an ordered collection of Risks or other Categories.
 """
-type Category implements Update {
+type Category implements Updated {
   """
   The id.
   """

@@ -1,10 +1,10 @@
 import { IsArray, IsDate, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
 import { Result, resultError, resultOk } from '@util/result'
-import { Update } from './update'
+import { Updated } from './updated'
 
 // TODO: children can also be risks (Concerns)
 
-interface Category extends Update {
+interface Category extends Updated {
   id: string
   path: string
   name: string

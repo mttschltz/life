@@ -3826,8 +3826,8 @@
       },
       {
         "kind": "INTERFACE",
-        "name": "Store_Update",
-        "description": "An Update is a significant change to an entity that may be of interest to users.",
+        "name": "Store_Updated",
+        "description": "An Updated entity logs its most recent, user-relevant changes so they can be viewed in order of\nwhen they were last updated.",
         "specifiedByUrl": null,
         "fields": [
           {
@@ -4058,7 +4058,7 @@
           },
           {
             "name": "updated",
-            "description": "Time of last significant update to the entity.",
+            "description": "Time of last significant update to the category.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -4074,7 +4074,7 @@
           },
           {
             "name": "shortDescription",
-            "description": "Short description of the updated entity - not a description of what was updated.",
+            "description": "Short description of the category.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -4093,7 +4093,7 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "Store_Update",
+            "name": "Store_Updated",
             "ofType": null
           }
         ],

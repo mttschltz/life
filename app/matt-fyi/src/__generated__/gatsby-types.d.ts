@@ -399,8 +399,11 @@ type GraphQLSource = Node & {
 };
 
 
-/** An Update is a significant change to an entity that may be of interest to users. */
-type Store_Update = {
+/**
+ * An Updated entity logs its most recent, user-relevant changes so they can be viewed in order of
+ * when they were last updated.
+ */
+type Store_Updated = {
   /** The id. */
   readonly id: Scalars['ID'];
   /** The name of the entity. */
@@ -420,7 +423,7 @@ type Store_CategoryTopLevel =
 type Store_Concern = Store_Category | Store_Risk;
 
 /** A Category is an ordered collection of Risks or other Categories. */
-type Store_Category = Store_Update & {
+type Store_Category = Store_Updated & {
   /** The id. */
   readonly id: Scalars['ID'];
   /** The path used in the first URL segment. */
@@ -436,9 +439,9 @@ type Store_Category = Store_Update & {
   readonly children: ReadonlyArray<Maybe<Store_Category>>;
   /** The parent. */
   readonly parent: Maybe<Store_Category>;
-  /** Time of last significant update to the entity. */
+  /** Time of last significant update to the category. */
   readonly updated: Scalars['Store_DateTime'];
-  /** Short description of the updated entity - not a description of what was updated. */
+  /** Short description of the category. */
   readonly shortDescription: Scalars['String'];
 };
 
