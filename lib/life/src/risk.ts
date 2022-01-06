@@ -1,5 +1,6 @@
-import { IsEnum, isInstance, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
+import { IsDate, IsEnum, isInstance, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
 import { Result, resultError, resultOk } from '@util/result'
+import { Updatable } from './updated'
 
 enum RiskType {
   Risk = 'Risk',
@@ -23,9 +24,12 @@ enum CategoryTopLevel {
   Security = 'Security',
 }
 
-type CreateDetails = Pick<Risk, 'category' | 'impact' | 'likelihood' | 'name' | 'notes' | 'parent' | 'type'>
+type CreateDetails = Pick<
+  Risk,
+  'category' | 'impact' | 'likelihood' | 'name' | 'notes' | 'parent' | 'shortDescription' | 'type' | 'updated'
+>
 
-interface Risk {
+interface Risk extends Updatable {
   id: string
   category: CategoryTopLevel
   impact: Impact
@@ -66,12 +70,18 @@ class RiskImpl implements Risk {
   #likelihood: Likelihood
 
   #name: string
+  #shortDescription: string
   #notes?: string
   #parent?: Risk
   #type: RiskType
+
+  #updated: Date
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  public constructor({ category, impact, likelihood, name, notes, parent, type }: CreateDetails, id: string) {
+  public constructor(
+    { category, impact, likelihood, name, notes, parent, shortDescription, type, updated }: CreateDetails,
+    id: string,
+  ) {
     this.#id = id
 
     this.#category = category
@@ -80,7 +90,9 @@ class RiskImpl implements Risk {
     this.#name = name
     this.#notes = notes
     this.#parent = parent
+    this.#shortDescription = shortDescription
     this.#type = type
+    this.#updated = updated
   }
 
   @MinLength(1)
@@ -112,6 +124,12 @@ class RiskImpl implements Risk {
     return this.#name
   }
 
+  @MinLength(2)
+  @IsString()
+  public get shortDescription(): string {
+    return this.#shortDescription
+  }
+
   @IsOptional()
   @IsString()
   public get notes(): string | undefined {
@@ -126,6 +144,11 @@ class RiskImpl implements Risk {
   @IsEnum(RiskType)
   public get type(): RiskType {
     return this.#type
+  }
+
+  @IsDate()
+  public get updated(): Date {
+    return this.#updated
   }
 }
 

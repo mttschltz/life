@@ -1,21 +1,43 @@
-import { CategoryTopLevel, Impact, Likelihood, Risk as RiskDomain, RiskType } from '@life/risk'
+import {
+  CategoryTopLevel as CategoryTopLevelDomain,
+  Impact as ImpactDomain,
+  Likelihood as LikelihoodDomain,
+  Risk as RiskDomain,
+  RiskType as RiskTypeDomain,
+} from '@life/risk'
 import { Category as CategoryDomain } from '@life/category'
+import {
+  isUpdatedCategory as isUpdatedCategoryDomain,
+  isUpdatedRisk as isUpdatedRiskDomain,
+  Updated as UpdatedDomain,
+} from '@life/updated'
+import { Result, resultError, resultOk, results, Results } from '@util/result'
 
-interface Risk {
-  id: string
-
+type CategoryTopLevel = CategoryTopLevelDomain
+type Impact = ImpactDomain
+type Likelihood = LikelihoodDomain
+type RiskType = RiskTypeDomain
+type Risk = Pick<RiskDomain, 'id' | 'name' | 'notes' | 'shortDescription' | 'updated'> & {
   category: CategoryTopLevel
   impact: Impact
   likelihood: Likelihood
-
-  name: string
-  notes?: string
   parent?: Risk
   type: RiskType
 }
 
 class RiskMapper {
-  public risk({ id, category, impact, likelihood, name, notes, parent, type }: RiskDomain): Risk {
+  public risk({
+    id,
+    category,
+    impact,
+    likelihood,
+    name,
+    notes,
+    parent,
+    shortDescription,
+    type,
+    updated,
+  }: RiskDomain): Risk {
     let usecaseParent
     if (parent) {
       usecaseParent = this.risk(parent)
@@ -27,8 +49,10 @@ class RiskMapper {
       likelihood,
       name,
       notes,
+      shortDescription,
       parent: usecaseParent,
       type,
+      updated,
     }
   }
 
@@ -66,5 +90,49 @@ class CategoryMapper {
   }
 }
 
-export { RiskMapper, CategoryMapper }
-export type { Risk, Category }
+type Updated = Category | Risk
+
+interface UpdatedMapper {
+  updated: (updated: UpdatedDomain[]) => Results<Updated>
+}
+
+class UpdatedMapperImpl implements UpdatedMapper {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
+  #categoryMapper: CategoryMapper
+  #riskMapper: RiskMapper
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
+
+  public constructor(categoryMapper: CategoryMapper, riskMapper: RiskMapper) {
+    this.#categoryMapper = categoryMapper
+    this.#riskMapper = riskMapper
+  }
+
+  public updated(updated: UpdatedDomain[]): Results<Updated> {
+    const updatedResults: Result<Updated>[] = updated.map((u) => {
+      if (isUpdatedCategoryDomain(u)) {
+        return resultOk(this.#categoryMapper.category(u))
+      } else if (isUpdatedRiskDomain(u)) {
+        return resultOk<Risk>(this.#riskMapper.risk(u))
+      }
+      return resultError('Unhandled Updated type')
+    })
+    return results(updatedResults)
+  }
+}
+
+function newUpdatedMapper(categoryMapper: CategoryMapper, riskMapper: RiskMapper): UpdatedMapper {
+  return new UpdatedMapperImpl(categoryMapper, riskMapper)
+}
+
+function isUpdatedCategory(u: Updated): u is Category {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  return 'children' in u && 'parent' in u && 'path' in u
+}
+
+function isUpdatedRisk(u: Updated): u is Risk {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  return 'category' in u && 'impact' in u && 'likelihood' in u && 'type' in u
+}
+
+export { RiskMapper, CategoryMapper, newUpdatedMapper, isUpdatedCategory, isUpdatedRisk }
+export type { Risk, Category, UpdatedMapper, Updated }

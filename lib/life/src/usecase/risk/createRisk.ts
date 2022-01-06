@@ -12,6 +12,8 @@ interface CreateRiskRequest {
   notes?: string
   type: RiskType
   parentId?: string
+  shortDescription: string
+  updated: Date
 }
 
 type CreateRiskRepo = Pick<RiskRepo, 'createRisk' | 'fetchRisk'>
@@ -36,6 +38,8 @@ class CreateRiskInteractor {
     impact,
     category,
     notes,
+    shortDescription,
+    updated,
   }: CreateRiskRequest): Promise<Result<UsecaseRisk>> {
     if (!uriPart || !/^[a-z\d]+[a-z-\d]+[a-z\d]+$/.test(uriPart)) {
       return resultError(`Invalid URI part: '${uriPart}'`)
@@ -58,6 +62,8 @@ class CreateRiskInteractor {
       notes,
       type,
       parent,
+      shortDescription,
+      updated,
     })
     if (!riskResult.ok) {
       return riskResult

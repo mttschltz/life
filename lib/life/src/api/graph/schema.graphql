@@ -76,7 +76,7 @@ type Category implements Updated {
 """
 A Risk is something that may cause harm to yourself, your family, or your goals.
 """
-type Risk {
+type Risk implements Updated {
   """
   The id.
   """
@@ -86,6 +86,11 @@ type Risk {
   The name.
   """
   name: String!
+
+  """
+  Short description of the risk.
+  """
+  shortDescription: String!
 
   """
   Risk category.
@@ -106,6 +111,11 @@ type Risk {
   Risk notes.
   """
   notes: String
+
+  """
+  Time of last significant update to the risk.
+  """
+  updated: DateTime!
 }
 
 type Query {

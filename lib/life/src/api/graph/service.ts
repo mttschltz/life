@@ -1,13 +1,14 @@
 import { ApolloError, Config } from 'apollo-server'
 import type { ListRisksCriteria } from '@life/usecase/risk/listRisks'
-import { CategoryTopLevel as GraphCategoryTopLevel, Category } from '@life/__generated__/graphql'
-import type { QueryRisksArgs, RequireFields, Resolvers, Risk as GraphRisk } from '@life/__generated__/graphql'
+import { CategoryTopLevel } from '@life/__generated__/graphql'
+import type { Category, Risk, QueryRisksArgs, RequireFields, Resolvers } from '@life/__generated__/graphql'
 import * as typeDefs from '@life/api/graph/schema.graphql'
 import { InteractorFactory } from '@life/api/interactorFactory'
 import { GraphMapper } from '@life/api/graph/mapper'
 import { Logger } from '@util/logger'
 import { ResultError } from '@util/result'
 import { Impact, Likelihood, RiskType } from '@life/risk'
+import { isUpdatedCategory, isUpdatedRisk } from '@life/usecase/mapper'
 
 class GraphService {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
@@ -66,8 +67,18 @@ class GraphService {
         },
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
+      Updated: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/explicit-function-return-type
+        __resolveType: (obj) => {
+          if ('parent' in obj && 'children' in obj && 'category' in obj) {
+            return 'Risk'
+          }
+          return 'Category'
+        },
+      },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Mutation: {
-        createRisk: async (_, { input }): Promise<GraphRisk> => {
+        createRisk: async (_, { input }): Promise<Risk> => {
           // TODO: Instead of mapping each enum, etc individually, map CreateRiskInput
           // to CreateRiskRequest. This should make testing easier.
           const categoryResult = this.#mapper.toCategoryTopLevel(input.category)
@@ -85,6 +96,9 @@ class GraphService {
             type: RiskType.Condition,
             uriPart: input.uriPart,
             notes: input.notes ?? undefined,
+            // TODO: Remove hardcoding
+            shortDescription: 'short description',
+            updated: new Date(),
           })
           if (!riskResult.ok) {
             this.#logger.result(riskResult)
@@ -101,7 +115,7 @@ class GraphService {
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Risk: {
-        parent: async (risk): Promise<GraphRisk | null> => {
+        parent: async (risk): Promise<Risk | null> => {
           const parentResult = await this.#factory.risk.fetchRiskParentInteractor().fetchRiskParent(risk.id)
           if (!parentResult.ok) {
             this.#logger.result(parentResult)
@@ -121,7 +135,7 @@ class GraphService {
 
           return mappingResult.value
         },
-        children: async (risk): Promise<GraphRisk[]> => {
+        children: async (risk): Promise<Risk[]> => {
           const childrenResult = await this.#factory.risk.fetchRiskChildrenInteractor().fetchRiskChildren(risk.id)
           if (!childrenResult.ok) {
             this.#logger.result(childrenResult)
@@ -155,16 +169,16 @@ class GraphService {
 
           return categories.okValues
         },
-        risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<GraphRisk[]> => {
+        risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<Risk[]> => {
           const criteria: ListRisksCriteria = {}
           switch (args.category) {
-            case GraphCategoryTopLevel.Health:
+            case CategoryTopLevel.Health:
               criteria.category = 'health'
               break
-            case GraphCategoryTopLevel.Wealth:
+            case CategoryTopLevel.Wealth:
               criteria.category = 'wealth'
               break
-            case GraphCategoryTopLevel.Security:
+            case CategoryTopLevel.Security:
               criteria.category = 'security'
               break
           }
@@ -183,6 +197,33 @@ class GraphService {
           }
 
           return mappingResults.okValues
+        },
+        updated: async (): Promise<(Category | Risk)[]> => {
+          const updatedResults = await this.#factory.updated.listInteractor().list({ count: 10 })
+          if (updatedResults.firstErrorResult) {
+            this.#logger.result(updatedResults.firstErrorResult)
+            throw this.resultError(updatedResults.firstErrorResult)
+          }
+
+          // TODO: Put in mapper
+          const updated: (Category | Risk)[] = updatedResults.okValues.map((uc) => {
+            if (isUpdatedCategory(uc)) {
+              return {
+                ...uc,
+                children: [],
+                parent: undefined,
+              } as Category
+            } else if (isUpdatedRisk(uc)) {
+              return {
+                ...uc,
+                children: [],
+                parent: undefined,
+              }
+            }
+            throw new Error('asdf')
+          })
+
+          return updated
         },
       },
     }

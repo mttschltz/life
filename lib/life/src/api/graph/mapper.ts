@@ -77,7 +77,7 @@ class GraphMapperImpl implements GraphMapper {
     }
   }
 
-  public fromRisk({ id, category, name, notes }: RiskUsecase): Result<GraphRisk> {
+  public fromRisk({ id, category, name, notes, shortDescription, updated }: RiskUsecase): Result<GraphRisk> {
     const graphCategoryResult = this.fromCategoryTopLevel(category)
     if (!graphCategoryResult.ok) {
       return graphCategoryResult
@@ -88,6 +88,8 @@ class GraphMapperImpl implements GraphMapper {
       id,
       name,
       notes: this.#mdxTranspiler(notes),
+      shortDescription,
+      updated,
     })
   }
 

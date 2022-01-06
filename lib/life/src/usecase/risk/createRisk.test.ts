@@ -27,6 +27,8 @@ describe('createRisk', () => {
         type: RiskType.Condition,
         notes: undefined,
         parent: undefined,
+        shortDescription: 'short description',
+        updated: new Date(),
       }
       parentRisk = {
         id: 'parent id',
@@ -37,6 +39,8 @@ describe('createRisk', () => {
         type: RiskType.Condition,
         notes: undefined,
         parent: undefined,
+        shortDescription: 'parent short description',
+        updated: new Date(),
       }
       newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
       newRiskMock.mockImplementation(
@@ -69,6 +73,8 @@ describe('createRisk', () => {
         likelihood: Likelihood.High,
         name: 'name',
         type: RiskType.Condition,
+        shortDescription: 'parent short description',
+        updated: new Date(),
       }
       // Interactor
       interactor = new CreateRiskInteractor(
@@ -99,6 +105,8 @@ describe('createRisk', () => {
           uriPart: 'uri-part',
           parentId: 'parent id',
           notes: 'notes',
+          shortDescription: 'short description',
+          updated: new Date(),
         }
       })
 
@@ -202,6 +210,8 @@ describe('createRisk', () => {
           name: 'name',
           type: RiskType.Condition,
           uriPart: 'uri-part-1',
+          shortDescription: 'parent short description',
+          updated: new Date(),
         }
       })
       describe('When everything suceeds', () => {

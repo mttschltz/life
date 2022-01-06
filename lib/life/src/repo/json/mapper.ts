@@ -6,7 +6,18 @@ type RiskJson = Omit<Risk, 'mitigations' | 'parent'> & { parentId?: string }
 type CategoryJson = Omit<Category, 'children' | 'parent'> & { parentId?: string; children: string[] }
 
 class RiskMapper {
-  public toJson({ category, id, impact, likelihood, name, notes, parent, type }: Risk): RiskJson {
+  public toJson({
+    category,
+    id,
+    impact,
+    likelihood,
+    name,
+    notes,
+    parent,
+    type,
+    shortDescription,
+    updated,
+  }: Risk): RiskJson {
     return {
       category,
       id,
@@ -16,11 +27,13 @@ class RiskMapper {
       notes,
       type,
       parentId: parent?.id,
+      shortDescription,
+      updated,
     }
   }
 
   public fromJson(
-    { id, category, impact, likelihood, name, notes, type }: RiskJson,
+    { id, category, impact, likelihood, name, notes, type, shortDescription, updated }: RiskJson,
     parent: Risk | undefined,
   ): Result<Risk> {
     const createDetails = {
@@ -31,6 +44,8 @@ class RiskMapper {
       notes,
       type,
       parent,
+      shortDescription,
+      updated,
     }
     return newRisk(id, createDetails)
   }

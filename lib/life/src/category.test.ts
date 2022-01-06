@@ -160,14 +160,26 @@ describe('Category', () => {
       })
     })
     describe('Given an invalid description', () => {
-      test('Then an error result is returned', () => {
-        const categoryResult = newCategory('id', {
-          ...createDetails,
-          // @ts-expect-error: In the domain we want to protect against runtime type errors
-          description: 5,
+      describe('and the description is too short', () => {
+        test('Then an error result is returned', () => {
+          const categoryResult = newCategory('id', {
+            ...createDetails,
+            description: 'x',
+          })
+          assertResultError(categoryResult)
+          expect(categoryResult.message).toEqual('description must be longer than or equal to 2 characters')
         })
-        assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('description must be a string')
+      })
+      describe('and the description is not a string', () => {
+        test('Then an error result is returned', () => {
+          const categoryResult = newCategory('id', {
+            ...createDetails,
+            // @ts-expect-error: In the domain we want to protect against runtime type errors
+            description: 5,
+          })
+          assertResultError(categoryResult)
+          expect(categoryResult.message).toEqual('description must be a string')
+        })
       })
     })
     describe('Given an invalid short description', () => {
@@ -182,14 +194,14 @@ describe('Category', () => {
           expect(categoryResult.message).toEqual('shortDescription must be a string')
         })
       })
-      describe('and the short description has no length', () => {
+      describe('and the short description is too short', () => {
         test('Then an error result is returned', () => {
           const categoryResult = newCategory('id', {
             ...createDetails,
-            shortDescription: '',
+            shortDescription: 'x',
           })
           assertResultError(categoryResult)
-          expect(categoryResult.message).toEqual('shortDescription must be longer than or equal to 1 characters')
+          expect(categoryResult.message).toEqual('shortDescription must be longer than or equal to 2 characters')
         })
       })
     })

@@ -6,15 +6,19 @@ import { assertResultError, assertResultOk } from '@util/testing'
 describe('Risk', () => {
   describe('Create', () => {
     let createDetails: CreateDetails
+    let updated: Date
     beforeEach(() => {
+      updated = new Date()
       createDetails = {
         category: CategoryTopLevel.Health,
         impact: Impact.High,
         likelihood: Likelihood.High,
         name: 'name',
+        shortDescription: 'short description',
         notes: 'notes',
         parent: undefined,
         type: RiskType.Condition,
+        updated,
       }
     })
 
@@ -31,9 +35,11 @@ describe('Risk', () => {
         expect(risk.impact).toEqual(Impact.High)
         expect(risk.likelihood).toEqual(Likelihood.High)
         expect(risk.name).toEqual('name')
+        expect(risk.shortDescription).toEqual('short description')
         expect(risk.notes).toBeUndefined()
         expect(risk.parent).toBeUndefined()
         expect(risk.type).toEqual(RiskType.Condition)
+        expect(risk.updated).toEqual(updated)
       })
     })
     describe('Given a valid CreateDetails with optional fields but no parent', () => {
@@ -46,22 +52,27 @@ describe('Risk', () => {
         expect(risk.impact).toEqual(Impact.High)
         expect(risk.likelihood).toEqual(Likelihood.High)
         expect(risk.name).toEqual('name')
+        expect(risk.shortDescription).toEqual('short description')
         expect(risk.notes).toEqual('notes')
         expect(risk.parent).toBeUndefined()
         expect(risk.type).toEqual(RiskType.Condition)
+        expect(risk.updated).toEqual(updated)
       })
     })
     describe('Given a valid CreateDetails with a parent', () => {
       test('Then it successfully creates a Risk with that parent', () => {
         // Create parent risk
+        const parentUpdated = new Date()
         const parentCreateDetails: CreateDetails = {
           category: CategoryTopLevel.Security,
           impact: Impact.Normal,
           likelihood: Likelihood.Normal,
           name: 'parent name',
+          shortDescription: 'parent short description',
           notes: 'parent notes',
           parent: undefined,
           type: RiskType.Goal,
+          updated: parentUpdated,
         }
         const parentRiskResult = newRisk('parentId', parentCreateDetails)
         assertResultOk(parentRiskResult)
@@ -80,9 +91,11 @@ describe('Risk', () => {
         expect(risk.parent?.impact).toEqual(Impact.Normal)
         expect(risk.parent?.likelihood).toEqual(Likelihood.Normal)
         expect(risk.parent?.name).toEqual('parent name')
+        expect(risk.parent?.shortDescription).toEqual('parent short description')
         expect(risk.parent?.notes).toEqual('parent notes')
         expect(risk.parent?.parent).toBeUndefined()
         expect(risk.parent?.type).toEqual(RiskType.Goal)
+        expect(risk.parent?.updated).toEqual(parentUpdated)
       })
     })
     describe('Given an invalid CreateDetails', () => {
@@ -199,6 +212,29 @@ describe('Risk', () => {
         expect(riskResult.message).toEqual('notes must be a string')
       })
     })
+    describe('Given a short description', () => {
+      describe('When its empty', () => {
+        test('Then an error result is returned', () => {
+          const riskResult = newRisk('id', {
+            ...createDetails,
+            // @ts-expect-error: In the domain we want to protect against runtime type errors
+            shortDescription: undefined,
+          })
+          assertResultError(riskResult)
+          expect(riskResult.message).toEqual('shortDescription must be a string')
+        })
+      })
+      describe('When its not long enough', () => {
+        test('Then an error result is returned', () => {
+          const riskResult = newRisk('id', {
+            ...createDetails,
+            shortDescription: 'x',
+          })
+          assertResultError(riskResult)
+          expect(riskResult.message).toEqual('shortDescription must be longer than or equal to 2 characters')
+        })
+      })
+    })
     describe('Given an invalid parent', () => {
       test('Then an error result is returned', () => {
         const riskResult = newRisk('id', {
@@ -227,6 +263,30 @@ describe('Risk', () => {
         })
         assertResultError(riskResult)
         expect(riskResult.message).toEqual('type must be a valid enum value')
+      })
+    })
+    describe('Given an invalid updated', () => {
+      describe('and updated is not provided', () => {
+        test('Then an error result is returned', () => {
+          const riskResult = newRisk('id', {
+            ...createDetails,
+            // @ts-expect-error: In the domain we want to protect against runtime type errors
+            updated: undefined,
+          })
+          assertResultError(riskResult)
+          expect(riskResult.message).toEqual('updated must be a Date instance')
+        })
+      })
+      describe('and updated is not a Date', () => {
+        test('Then an error result is returned', () => {
+          const riskResult = newRisk('id', {
+            ...createDetails,
+            // @ts-expect-error: In the domain we want to protect against runtime type errors
+            updated: '',
+          })
+          assertResultError(riskResult)
+          expect(riskResult.message).toEqual('updated must be a Date instance')
+        })
       })
     })
     describe('Given a CreateDetails with multiple missing fields', () => {

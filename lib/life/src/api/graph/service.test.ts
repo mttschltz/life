@@ -350,6 +350,10 @@ describe('GraphService', () => {
       })
     })
     describe('Query', () => {
+      describe('updated', () => {
+        // TODO:
+      })
+
       describe('categories', () => {
         describe('Given there are categories to list', () => {
           let fetchedCategories: CategoryUsecase[]

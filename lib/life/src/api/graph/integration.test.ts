@@ -2,7 +2,11 @@ import { JsonStore } from '@life/repo/json/service'
 import { RiskMapper as RiskJsonMapper, newCategoryMapper } from '@life/repo/json/mapper'
 import { ApolloServer } from 'apollo-server'
 import { GraphService } from './service'
-import { newCategoryInteractorFactory, newRiskInteractorFactory } from '@life/api/interactorFactory'
+import {
+  newCategoryInteractorFactory,
+  newRiskInteractorFactory,
+  newUpdatedInteractorFactory,
+} from '@life/api/interactorFactory'
 import { newGraphMapper } from './mapper'
 import { newLogger } from '@util/logger'
 import { transpile } from '@util/mdx'
@@ -78,6 +82,7 @@ describe('GraphServiceIntegration', () => {
       {
         category: newCategoryInteractorFactory(categoryRepo),
         risk: newRiskInteractorFactory(riskRepo),
+        updated: newUpdatedInteractorFactory(),
       },
       newGraphMapper(transpile),
       newLogger(),
@@ -96,6 +101,10 @@ describe('GraphServiceIntegration', () => {
   afterAll(async () => {
     await server.stop()
   })
+  describe('updated', () => {
+    // TODO:
+  })
+
   describe('categories', () => {
     describe('Given a query for children and their parent', () => {
       const categoriesQuery = gql`
