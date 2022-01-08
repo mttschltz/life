@@ -4,7 +4,7 @@ import { DateTimeMock } from 'graphql-scalars'
 import { environment } from '@store/environment'
 import { GraphService } from '@life/api/graph/service'
 import { newCategoryInteractorFactory, newRiskInteractorFactory } from '@life/api/interactorFactory'
-import { newGraphMapper } from '@life/api/graph/mapper'
+import { newMapper } from '@life/api/graph/mapper'
 import { newLogger } from '@util/logger'
 import { transpile } from '@util/mdx'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
@@ -27,7 +27,7 @@ const graphService = new GraphService(
     category: newCategoryInteractorFactory(categoryRepo),
     risk: newRiskInteractorFactory(riskRepo),
   },
-  newGraphMapper(transpile),
+  newMapper(transpile),
   newLogger(),
 )
 
