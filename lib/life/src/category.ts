@@ -1,10 +1,10 @@
 import { IsArray, IsDate, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
 import { Result, resultError, resultOk } from '@util/result'
-import { Updated } from './updated'
+import { Updatable } from './updated'
 
 // TODO: children can also be risks (Concerns)
 
-interface Category extends Updated {
+interface Category extends Updatable {
   id: string
   path: string
   name: string
@@ -102,14 +102,14 @@ class CategoryImpl implements Category {
     return this.#name
   }
 
-  @MinLength(1)
+  @MinLength(2)
   @IsString()
   @IsOptional()
   public get description(): string | undefined {
     return this.#description
   }
 
-  @MinLength(1)
+  @MinLength(2)
   @IsString()
   public get shortDescription(): string {
     return this.#shortDescription

@@ -1,4 +1,7 @@
-import { CategoryMapper as UsecaseCategoryMapper, RiskMapper as UsecaseRiskMapper } from '@life/usecase/mapper'
+import {
+  newCategoryMapper as newCategoryMapperUsecase,
+  newRiskMapper as newRiskMapperUsecase,
+} from '@life/usecase/mapper'
 import { ListRisksInteractor } from '@life/usecase/risk/listRisks'
 import { FetchRiskChildrenInteractor } from '@life/usecase/risk/fetchRiskChildren'
 import { FetchRiskParentInteractor } from '@life/usecase/risk/fetchRiskParent'
@@ -30,19 +33,19 @@ class RiskInteractorFactoryImpl implements RiskInteractorFactory {
   }
 
   public listRisksInteractor(): ListRisksInteractor {
-    return new ListRisksInteractor(this.repo, new UsecaseRiskMapper())
+    return new ListRisksInteractor(this.repo, newRiskMapperUsecase())
   }
 
   public fetchRiskParentInteractor(): FetchRiskParentInteractor {
-    return new FetchRiskParentInteractor(this.repo, new UsecaseRiskMapper())
+    return new FetchRiskParentInteractor(this.repo, newRiskMapperUsecase())
   }
 
   public fetchRiskChildrenInteractor(): FetchRiskChildrenInteractor {
-    return new FetchRiskChildrenInteractor(this.repo, new UsecaseRiskMapper())
+    return new FetchRiskChildrenInteractor(this.repo, newRiskMapperUsecase())
   }
 
   public createRiskInteractor(): CreateRiskInteractor {
-    return new CreateRiskInteractor(this.repo, new UsecaseRiskMapper())
+    return new CreateRiskInteractor(this.repo, newRiskMapperUsecase())
   }
 }
 
@@ -67,7 +70,7 @@ class CategoryInteractorFactoryImpl implements CategoryInteractorFactory {
   }
 
   public listInteractor(): ListInteractor {
-    return newListInteractor(this.#repo, new UsecaseCategoryMapper())
+    return newListInteractor(this.#repo, newCategoryMapperUsecase())
   }
 
   public fetchInteractor(): FetchInteractor {
@@ -75,11 +78,11 @@ class CategoryInteractorFactoryImpl implements CategoryInteractorFactory {
   }
 
   public fetchParentInteractor(): FetchParentInteractor {
-    return newFetchParentInteractor(this.#repo, new UsecaseCategoryMapper())
+    return newFetchParentInteractor(this.#repo, newCategoryMapperUsecase())
   }
 
   public fetchChildrenInteractor(): FetchChildrenInteractor {
-    return newFetchChildrenInteractor(this.#repo, new UsecaseCategoryMapper())
+    return newFetchChildrenInteractor(this.#repo, newCategoryMapperUsecase())
   }
 }
 

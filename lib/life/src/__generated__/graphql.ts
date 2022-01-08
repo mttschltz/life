@@ -79,6 +79,8 @@ export type Query = {
   risks: Array<Maybe<Risk>>;
   /** Get all categories. */
   categories: Array<Maybe<Category>>;
+  /** Get all updated entities that may be of interest to users. */
+  updated: Array<Maybe<Updated>>;
 };
 
 
@@ -243,6 +245,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   risks?: Resolver<Array<Maybe<ResolversTypes['Risk']>>, ParentType, ContextType, RequireFields<QueryRisksArgs, never>>;
   categories?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType>;
+  updated?: Resolver<Array<Maybe<ResolversTypes['Updated']>>, ParentType, ContextType>;
 };
 
 export type RiskResolvers<ContextType = any, ParentType extends ResolversParentTypes['Risk'] = ResolversParentTypes['Risk']> = {

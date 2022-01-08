@@ -1,4 +1,4 @@
-import { RiskMapper, Risk as UsecaseRisk } from '@life/usecase/mapper'
+import { RiskMapper, Risk } from '@life/usecase/mapper'
 import { Result, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 
@@ -15,7 +15,7 @@ class FetchRiskChildrenInteractor {
     this.#mapper = mapper
   }
 
-  public async fetchRiskChildren(id: string): Promise<Result<UsecaseRisk[]>> {
+  public async fetchRiskChildren(id: string): Promise<Result<Risk[]>> {
     const riskChildrenResult = await this.#repo.fetchRiskChildren(id)
     if (!riskChildrenResult.ok) {
       return riskChildrenResult

@@ -3,7 +3,7 @@ import { RiskMapper as RiskJsonMapper, newCategoryMapper } from '@life/repo/json
 import { ApolloServer } from 'apollo-server'
 import { GraphService } from './service'
 import { newCategoryInteractorFactory, newRiskInteractorFactory } from '@life/api/interactorFactory'
-import { newGraphMapper } from './mapper'
+import { newMapper } from './mapper'
 import { newLogger } from '@util/logger'
 import { transpile } from '@util/mdx'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
@@ -79,7 +79,7 @@ describe('GraphServiceIntegration', () => {
         category: newCategoryInteractorFactory(categoryRepo),
         risk: newRiskInteractorFactory(riskRepo),
       },
-      newGraphMapper(transpile),
+      newMapper(transpile),
       newLogger(),
     )
 

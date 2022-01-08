@@ -1,4 +1,4 @@
-import { Category as UsecaseCategory, CategoryMapper } from '@life/usecase/mapper'
+import { Category, CategoryMapper } from '@life/usecase/mapper'
 import { Results, resultsOk } from '@util/result'
 import { CategoryRepo } from '@life/repo'
 
@@ -6,7 +6,7 @@ type ListRepo = Pick<CategoryRepo, 'list'>
 type ListMapper = Pick<CategoryMapper, 'categories'>
 
 interface ListInteractor {
-  list: () => Promise<Results<UsecaseCategory>>
+  list: () => Promise<Results<Category>>
 }
 
 function newListInteractor(repo: ListRepo, mapper: ListMapper): ListInteractor {
@@ -24,10 +24,10 @@ class ListInteractorImpl implements ListInteractor {
     this.#mapper = mapper
   }
 
-  public async list(): Promise<Results<UsecaseCategory>> {
+  public async list(): Promise<Results<Category>> {
     const fetchedResults = await this.#repo.list({ includeChildren: true })
     if (fetchedResults.firstErrorResult) {
-      return fetchedResults.withOnlyFirstError<UsecaseCategory>()
+      return fetchedResults.withOnlyFirstError<Category>()
     }
 
     return resultsOk(this.#mapper.categories(fetchedResults.okValues))

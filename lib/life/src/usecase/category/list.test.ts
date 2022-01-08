@@ -1,14 +1,14 @@
-import { Category } from '@life/category'
+import { Category as CategoryDomain } from '@life/category'
 import { ResultError, results, Results } from '@util/result'
 import { ListInteractor, newListInteractor } from '@life/usecase/category/list'
 import type { ListRepo } from '@life/usecase/category/list'
-import { Category as UsecaseCategory } from '@life/usecase/mapper'
+import { Category } from '@life/usecase/mapper'
 
 describe('usecase>category>list', () => {
   describe('Given a ListInteractor', () => {
     let repoList: jest.MockedFunction<ListRepo['list']>
-    let repoCategories: Category[]
-    let mappedCategories: UsecaseCategory[]
+    let repoCategories: CategoryDomain[]
+    let mappedCategories: Category[]
     let interactor: ListInteractor
     beforeEach(() => {
       repoList = jest.fn()
@@ -108,7 +108,7 @@ describe('usecase>category>list', () => {
             values: repoCategories,
             firstErrorResult: undefined,
             okValues: repoCategories,
-          } as Results<Category>),
+          } as Results<CategoryDomain>),
         )
       })
 
@@ -132,7 +132,7 @@ describe('usecase>category>list', () => {
         }
         repoList.mockReturnValueOnce(
           Promise.resolve(
-            results<Category>([
+            results<CategoryDomain>([
               errorResult,
               {
                 ok: true,

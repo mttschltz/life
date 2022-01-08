@@ -1,4 +1,4 @@
-import { assertResultError, assertResultOk } from '@util/testing'
+import { assertResultError, assertResultOk, mockThrows } from '@util/testing'
 import { ResultError, ResultOk } from './result'
 
 interface OkType {
@@ -37,6 +37,15 @@ describe('testing', () => {
     })
     test('Then calling assertResultError errors', () => {
       expect(() => assertResultError(okResult)).toThrow('Not a ResultError')
+    })
+  })
+})
+describe('jestFnThrows', () => {
+  describe('Given an error message', () => {
+    test('Then it returns a mocked implementation that throws the messsage', () => {
+      const mock = mockThrows('error msg')
+      expect(mock).toThrow('error msg')
+      expect(mock).toThrow('error msg')
     })
   })
 })

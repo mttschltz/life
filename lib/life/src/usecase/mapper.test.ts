@@ -1,5 +1,15 @@
 import { Category as CategoryDomain } from '@life/category'
-import { CategoryMapper } from './mapper'
+import {
+  CategoryTopLevel as CategoryTopLevelDomain,
+  Impact as ImpactDomain,
+  Likelihood as LikelihoodDomain,
+  Risk as RiskDomain,
+  RiskType as RiskTypeDomain,
+} from '@life/risk'
+import { Updated as UpdatedDomain } from '@life/updated'
+import { newCategoryMapper, newUpdatedMapper, Category, isUpdatedCategory, isUpdatedRisk } from './mapper'
+import type { CategoryMapper, Risk, RiskMapper } from './mapper'
+import { mockThrows } from '@util/testing'
 
 describe('CategoryMapper', () => {
   describe('category', () => {
@@ -16,7 +26,7 @@ describe('CategoryMapper', () => {
             children: [],
             updated: categoryUpdated,
           }
-          const mapper = new CategoryMapper()
+          const mapper = newCategoryMapper()
           expect(mapper.category(categoryDomain)).toEqual({
             id: 'id',
             name: 'name',
@@ -111,7 +121,7 @@ describe('CategoryMapper', () => {
             ],
             updated: categoryUpdated,
           }
-          const mapper = new CategoryMapper()
+          const mapper = newCategoryMapper()
           expect(mapper.category(categoryDomain)).toEqual({
             id: 'id',
             name: 'name',
@@ -195,7 +205,7 @@ describe('CategoryMapper', () => {
   describe('categories', () => {
     describe('Given no categories', () => {
       test('Then it is mapped correctly', () => {
-        const mapper = new CategoryMapper()
+        const mapper = newCategoryMapper()
         expect(mapper.categories([])).toEqual([])
       })
     })
@@ -223,7 +233,7 @@ describe('CategoryMapper', () => {
             updated: updated2,
           },
         ]
-        const mapper = new CategoryMapper()
+        const mapper = newCategoryMapper()
         expect(mapper.categories(categoryDomains)).toEqual([
           {
             id: 'id 1',
@@ -244,6 +254,290 @@ describe('CategoryMapper', () => {
             updated: updated2,
           },
         ])
+      })
+    })
+  })
+})
+
+describe('UpdatedMapper', () => {
+  describe('updated', () => {
+    let riskMapper: RiskMapper
+    let categoryMapper: CategoryMapper
+    let riskMapperRisk: jest.MockedFunction<RiskMapper['risk']>
+    let categoryMapperCategory: jest.MockedFunction<CategoryMapper['category']>
+    beforeEach(() => {
+      riskMapperRisk = jest.fn()
+      riskMapper = {
+        risk: riskMapperRisk,
+        risks: mockThrows('unexpected risks call'),
+        createDetails: mockThrows('unexpected createDetails call'),
+      }
+      categoryMapperCategory = jest.fn()
+      categoryMapper = {
+        category: categoryMapperCategory,
+        categories: mockThrows('unexpected categories call'),
+      }
+    })
+    describe('Given an array of updated entities', () => {
+      describe('When it contains all possible types of Updated entities', () => {
+        let updated: UpdatedDomain[]
+        beforeEach(() => {
+          updated = [
+            {
+              id: 'id',
+              name: 'name',
+              path: 'path',
+              shortDescription: 'short description',
+              children: [],
+              updated: new Date(),
+            } as CategoryDomain,
+            {
+              id: 'id',
+              category: CategoryTopLevelDomain.Health,
+              impact: ImpactDomain.High,
+              likelihood: LikelihoodDomain.High,
+              shortDescription: 'short description',
+              name: 'name',
+              type: RiskTypeDomain.Condition,
+              updated: new Date(),
+            } as RiskDomain,
+          ]
+          riskMapperRisk.mockReset()
+          categoryMapperCategory.mockReset()
+        })
+        test('Then the Category entities are mapped correctly', () => {
+          const mappedCategory: Category = {
+            id: 'id',
+            name: 'name',
+            children: [],
+            path: 'path',
+            shortDescription: 'short description',
+            updated: new Date(),
+          }
+          categoryMapperCategory.mockReturnValueOnce(mappedCategory)
+
+          const mapper = newUpdatedMapper(categoryMapper, riskMapper)
+          const results = mapper.updated(updated)
+          expect(results.firstErrorResult).toBeUndefined()
+          expect(results.okValues).toHaveLength(2)
+          expect(results.okValues[0]).toEqual(mappedCategory)
+
+          expect(categoryMapperCategory.mock.calls).toHaveLength(1)
+          expect(categoryMapperCategory.mock.calls[0]).toEqual([updated[0]])
+        })
+        test('Then the Risk entities are mapped using the risk mapper', () => {
+          const mappedRisk: Risk = {
+            id: 'id',
+            category: 'Health',
+            impact: 'High',
+            likelihood: 'Normal',
+            name: 'name',
+            shortDescription: 'short description',
+            type: 'Condition',
+            updated: new Date(),
+          }
+          riskMapperRisk.mockReturnValueOnce(mappedRisk)
+
+          const mapper = newUpdatedMapper(categoryMapper, riskMapper)
+          const results = mapper.updated(updated)
+          expect(results.firstErrorResult).toBeUndefined()
+          expect(results.okValues).toHaveLength(2)
+          expect(results.okValues[1]).toEqual(mappedRisk)
+
+          expect(riskMapperRisk.mock.calls).toHaveLength(1)
+          expect(riskMapperRisk.mock.calls[0]).toEqual([updated[1]])
+        })
+      })
+      describe('When it contains an unhandled Updated type', () => {
+        test('Then it returns an error', () => {
+          const updated: UpdatedDomain[] = [
+            {
+              id: 'id',
+              name: 'name',
+              path: 'path',
+              shortDescription: 'short description',
+              children: [],
+              updated: new Date(),
+            } as CategoryDomain,
+            {
+              other: 'object',
+            } as unknown as UpdatedDomain,
+          ]
+
+          const mapper = newUpdatedMapper(categoryMapper, riskMapper)
+          const results = mapper.updated(updated)
+          expect(results.firstErrorResult).not.toBeUndefined()
+          expect(results.firstErrorResult?.message).toEqual('Unhandled Updated type')
+        })
+      })
+    })
+    describe('Given an empty array', () => {
+      test('Then it returns an empty results', () => {
+        const mapper = newUpdatedMapper(categoryMapper, riskMapper)
+        const results = mapper.updated([])
+        expect(results.firstErrorResult).toBeUndefined()
+        expect(results.okValues).toHaveLength(0)
+
+        expect(categoryMapperCategory.mock.calls).toHaveLength(0)
+        expect(riskMapperRisk.mock.calls).toHaveLength(0)
+      })
+    })
+  })
+})
+
+describe('isUpdatedCategory', () => {
+  describe('Given a Category', () => {
+    describe('When it contains no optional properties', () => {
+      test('Then it returns true', () => {
+        const category: Category = {
+          id: 'id',
+          name: 'name',
+          path: 'path',
+          children: [],
+          shortDescription: 'short description',
+          updated: new Date(),
+        }
+        expect(isUpdatedCategory(category)).toEqual(true)
+      })
+    })
+    describe('When it contains all optional properties', () => {
+      test('Then it returns true', () => {
+        const category: Category = {
+          id: 'id',
+          name: 'name',
+          path: 'path',
+          children: [
+            {
+              id: 'id',
+              name: 'name',
+              path: 'path',
+              children: [],
+              shortDescription: 'short description',
+              updated: new Date(),
+            },
+          ],
+          shortDescription: 'short description',
+          updated: new Date(),
+          description: 'description',
+          parent: {
+            id: 'id',
+            name: 'name',
+            path: 'path',
+            children: [],
+            shortDescription: 'short description',
+            updated: new Date(),
+          },
+        }
+        expect(isUpdatedCategory(category)).toEqual(true)
+      })
+    })
+  })
+  describe('Given a Risk', () => {
+    describe('When it has all optional properties', () => {
+      test('Then it returns false', () => {
+        const risk: Risk = {
+          id: 'id',
+          category: 'Health',
+          impact: 'High',
+          likelihood: 'Normal',
+          name: 'name',
+          shortDescription: 'short description',
+          type: 'Condition',
+          updated: new Date(),
+          notes: 'notes',
+          parent: {
+            id: 'id',
+            category: 'Health',
+            impact: 'High',
+            likelihood: 'Normal',
+            name: 'name',
+            shortDescription: 'short description',
+            type: 'Condition',
+            updated: new Date(),
+            notes: 'notes',
+          },
+        }
+        expect(isUpdatedCategory(risk)).toEqual(false)
+      })
+    })
+  })
+})
+
+describe('isUpdatedRisk', () => {
+  describe('Given a Risk', () => {
+    describe('When it contains no optional properties', () => {
+      test('Then it returns true', () => {
+        const risk: Risk = {
+          id: 'id',
+          category: 'Health',
+          impact: 'High',
+          likelihood: 'Normal',
+          name: 'name',
+          shortDescription: 'short description',
+          type: 'Condition',
+          updated: new Date(),
+        }
+        expect(isUpdatedRisk(risk)).toEqual(true)
+      })
+    })
+    describe('When it contains all optional properties', () => {
+      test('Then it returns true', () => {
+        const risk: Risk = {
+          id: 'id',
+          category: 'Health',
+          impact: 'High',
+          likelihood: 'Normal',
+          name: 'name',
+          shortDescription: 'short description',
+          type: 'Condition',
+          updated: new Date(),
+          notes: 'notes',
+          parent: {
+            id: 'id',
+            category: 'Health',
+            impact: 'High',
+            likelihood: 'Normal',
+            name: 'name',
+            shortDescription: 'short description',
+            type: 'Condition',
+            updated: new Date(),
+            notes: 'notes',
+          },
+        }
+        expect(isUpdatedRisk(risk)).toEqual(true)
+      })
+    })
+  })
+  describe('Given a Category', () => {
+    describe('When it has all optional properties', () => {
+      test('Then it returns false', () => {
+        const category: Category = {
+          id: 'id',
+          name: 'name',
+          path: 'path',
+          children: [
+            {
+              id: 'id',
+              name: 'name',
+              path: 'path',
+              children: [],
+              shortDescription: 'short description',
+              updated: new Date(),
+            },
+          ],
+          shortDescription: 'short description',
+          updated: new Date(),
+          description: 'description',
+          parent: {
+            id: 'id',
+            name: 'name',
+            path: 'path',
+            children: [],
+            shortDescription: 'short description',
+            updated: new Date(),
+          },
+        }
+        expect(isUpdatedRisk(category)).toEqual(false)
       })
     })
   })

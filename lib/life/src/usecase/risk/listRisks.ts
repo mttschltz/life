@@ -1,5 +1,5 @@
-import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase/mapper'
-import { CategoryTopLevel } from '@life/risk'
+import { Risk, RiskMapper } from '@life/usecase/mapper'
+import { CategoryTopLevel as CategoryTopLevelDomain } from '@life/risk'
 import { Result, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 
@@ -21,17 +21,17 @@ class ListRisksInteractor {
     this.#mapper = mapper
   }
 
-  public async listRisks(criteria: ListRisksCriteria): Promise<Result<UsecaseRisk[]>> {
+  public async listRisks(criteria: ListRisksCriteria): Promise<Result<Risk[]>> {
     let category
     switch (criteria.category) {
       case 'health':
-        category = CategoryTopLevel.Health
+        category = CategoryTopLevelDomain.Health
         break
       case 'wealth':
-        category = CategoryTopLevel.Wealth
+        category = CategoryTopLevelDomain.Wealth
         break
       case 'security':
-        category = CategoryTopLevel.Security
+        category = CategoryTopLevelDomain.Security
         break
     }
     const risksResult = await this.#repo.listRisks(category, !!criteria.includeDescendents)

@@ -1,5 +1,5 @@
-import { newRisk, CategoryTopLevel, Impact, Likelihood, RiskType } from '@life/risk'
-import { Risk as UsecaseRisk, RiskMapper } from '@life/usecase/mapper'
+import { newRisk } from '@life/risk'
+import { Risk, RiskMapper, CategoryTopLevel, Impact, Likelihood, RiskType } from '@life/usecase/mapper'
 import { Result, resultError, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 
@@ -12,6 +12,8 @@ interface CreateRiskRequest {
   notes?: string
   type: RiskType
   parentId?: string
+  shortDescription: string
+  updated: Date
 }
 
 type CreateRiskRepo = Pick<RiskRepo, 'createRisk' | 'fetchRisk'>
@@ -27,38 +29,22 @@ class CreateRiskInteractor {
     this.#mapper = mapper
   }
 
-  public async createRisk({
-    uriPart,
-    type,
-    parentId,
-    name,
-    likelihood,
-    impact,
-    category,
-    notes,
-  }: CreateRiskRequest): Promise<Result<UsecaseRisk>> {
-    if (!uriPart || !/^[a-z\d]+[a-z-\d]+[a-z\d]+$/.test(uriPart)) {
-      return resultError(`Invalid URI part: '${uriPart}'`)
+  public async createRisk(request: CreateRiskRequest): Promise<Result<Risk>> {
+    if (!request.uriPart || !/^[a-z\d]+[a-z-\d]+[a-z\d]+$/.test(request.uriPart)) {
+      return resultError(`Invalid URI part: '${request.uriPart}'`)
     }
 
     let parent
-    if (parentId) {
-      const parentResult = await this.#repo.fetchRisk(parentId)
+    if (request.parentId) {
+      const parentResult = await this.#repo.fetchRisk(request.parentId)
       if (!parentResult.ok) {
         return parentResult
       }
       parent = parentResult.value
     }
 
-    const riskResult = newRisk(uriPart, {
-      category,
-      impact,
-      likelihood,
-      name,
-      notes,
-      type,
-      parent,
-    })
+    const createDetails = this.#mapper.createDetails({ ...request, parent })
+    const riskResult = newRisk(request.uriPart, createDetails)
     if (!riskResult.ok) {
       return riskResult
     }

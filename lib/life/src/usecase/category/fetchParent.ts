@@ -1,12 +1,12 @@
 import { CategoryRepo } from '@life/repo'
-import { Category as UsecaseCategory, CategoryMapper } from '@life/usecase/mapper'
+import { Category, CategoryMapper } from '@life/usecase/mapper'
 import { Result, resultOk } from '@util/result'
 
 type FetchParentRepo = Pick<CategoryRepo, 'fetchParent'>
 type FetchParentMapper = Pick<CategoryMapper, 'category'>
 
 interface FetchParentInteractor {
-  fetchParent: (childId: string) => Promise<Result<UsecaseCategory | undefined>>
+  fetchParent: (childId: string) => Promise<Result<Category | undefined>>
 }
 
 function newFetchParentInteractor(repo: FetchParentRepo, mapper: FetchParentMapper): FetchParentInteractor {
@@ -24,7 +24,7 @@ class FetchParentInteractorImpl implements FetchParentInteractor {
     this.#mapper = mapper
   }
 
-  public async fetchParent(childId: string): Promise<Result<UsecaseCategory | undefined>> {
+  public async fetchParent(childId: string): Promise<Result<Category | undefined>> {
     const parentResult = await this.#repo.fetchParent(childId)
     if (!parentResult.ok) {
       return parentResult

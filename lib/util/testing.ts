@@ -12,4 +12,10 @@ function assertResultOk<T>(result: Result<T>): asserts result is ResultOk<T> {
   }
 }
 
-export { assertResultError, assertResultOk }
+function mockThrows(msg: string): jest.Mock {
+  return jest.fn().mockImplementation(() => {
+    throw new Error(msg)
+  })
+}
+
+export { assertResultError, assertResultOk, mockThrows }

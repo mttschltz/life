@@ -1,6 +1,7 @@
 import { Result, Results } from 'util/result'
 import { CategoryTopLevel, Risk } from '@life/risk'
 import { Category } from '@life/category'
+import { Updated } from './updated'
 
 interface RiskRepo {
   createRisk: (risk: Risk) => Promise<Result<void>>
@@ -17,4 +18,8 @@ interface CategoryRepo {
   list: (criteria: { includeChildren: boolean }) => Promise<Results<Category>>
 }
 
-export type { CategoryRepo, RiskRepo }
+interface UpdatedRepo {
+  list: (criteria: { count: number }) => Promise<Results<Updated>>
+}
+
+export type { CategoryRepo, RiskRepo, UpdatedRepo }

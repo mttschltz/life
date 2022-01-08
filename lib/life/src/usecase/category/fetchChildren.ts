@@ -1,12 +1,12 @@
 import { CategoryRepo } from '@life/repo'
-import { Category as UsecaseCategory, CategoryMapper } from '@life/usecase/mapper'
+import { Category, CategoryMapper } from '@life/usecase/mapper'
 import { Results, resultsOk } from '@util/result'
 
 type FetchChildrenRepo = Pick<CategoryRepo, 'fetchChildren'>
 type FetchChildrenMapper = Pick<CategoryMapper, 'categories'>
 
 interface FetchChildrenInteractor {
-  fetchChildren: (id: string) => Promise<Results<UsecaseCategory>>
+  fetchChildren: (id: string) => Promise<Results<Category>>
 }
 
 function newFetchChildrenInteractor(repo: FetchChildrenRepo, mapper: FetchChildrenMapper): FetchChildrenInteractor {
@@ -25,7 +25,7 @@ class FetchChildrenInteractorImpl implements FetchChildrenInteractor {
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  public async fetchChildren(id: string): Promise<Results<UsecaseCategory>> {
+  public async fetchChildren(id: string): Promise<Results<Category>> {
     const childrenResults = await this.#repo.fetchChildren(id)
     if (childrenResults.firstErrorResult) {
       return childrenResults

@@ -1,4 +1,4 @@
-import { newGraphMapper } from './mapper'
+import { newMapper } from './mapper'
 import type { Category as CategoryUsecase } from '@life/usecase/mapper'
 import { Category } from '@life/__generated__/graphql'
 import { assertResultOk } from '@util/testing'
@@ -8,7 +8,7 @@ describe('GraphMapper', () => {
     describe('Given a usecase category without optional fields', () => {
       describe('When it successfully maps', () => {
         test('Then the graph category result is returned', () => {
-          const mapper = newGraphMapper(jest.fn())
+          const mapper = newMapper(jest.fn())
           const updated = new Date()
           const usecaseCategory: CategoryUsecase = {
             id: 'the id',
@@ -34,7 +34,7 @@ describe('GraphMapper', () => {
     describe('Given a usecase category with all fields', () => {
       describe('When it successfully maps', () => {
         test('Then the graph category result is returned', () => {
-          const mapper = newGraphMapper(jest.fn())
+          const mapper = newMapper(jest.fn())
           const categoryUpdated = new Date('1995-12-17')
           const parentUpdated = new Date('1995-12-18')
           const child1Updated = new Date('1995-12-19')
@@ -119,7 +119,7 @@ describe('GraphMapper', () => {
     describe('Given multiple usecase categories', () => {
       describe('When they successfully map', () => {
         test('Then the graph category results are returned', () => {
-          const mapper = newGraphMapper(jest.fn())
+          const mapper = newMapper(jest.fn())
           const category1Updated = new Date('1995-12-16')
           const category2Updated = new Date('1995-12-17')
           const parentUpdated = new Date('1995-12-18')

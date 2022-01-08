@@ -10,6 +10,7 @@
   "scripts": {
     "build:matt-fyi": "start-server-and-test 'yarn workspace store build && yarn workspace store start' http-get://localhost:4000 'yarn workspace content build && yarn workspace content start && yarn workspace matt-fyi build'",
     "develop:matt-fyi": "start-server-and-test 'yarn workspace store develop' http-get://localhost:4000 'yarn workspace content build && yarn workspace content start && yarn workspace matt-fyi develop'",
+    "develop:store": "yarn workspace store develop",
     "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0 --fix",
     "lint:types": "tsc",
     "lint": "yarn lint:types && yarn lint:eslint",

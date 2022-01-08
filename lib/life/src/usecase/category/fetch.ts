@@ -1,8 +1,8 @@
-import { Category as UsecaseCategory } from '@life/usecase/mapper'
+import { Category } from '@life/usecase/mapper'
 import { Result, resultError } from '@util/result'
 
 interface FetchInteractor {
-  fetch: (id: string) => Promise<Result<UsecaseCategory>>
+  fetch: (id: string) => Promise<Result<Category>>
 }
 
 function newFetchInteractor(): FetchInteractor {
@@ -11,7 +11,7 @@ function newFetchInteractor(): FetchInteractor {
 
 class FetchInteractorImpl implements FetchInteractor {
   // eslint-disable-next-line @typescript-eslint/require-await
-  public async fetch(): Promise<Result<UsecaseCategory>> {
+  public async fetch(): Promise<Result<Category>> {
     return resultError('not implemented')
   }
 }
