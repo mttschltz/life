@@ -20,6 +20,44 @@
 		],
 		"description": "Nested Jest describe/test blocks with Given/When/Then descriptions"
 	},
+	"Given-When-Then Async": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "test-gwt-a",
+		"body": [
+			"describe('Given $1', () => {",
+			"\tdescribe('When $2', () => {",
+			"\t\ttest('Then $3', async () => {",
+			"\t\t\t$4",
+			"\t\t})",
+			"\t})",
+			"})",
+		],
+		"description": "As test-gwt with an async test block"
+	},
+	"When-Then": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "test-wt",
+		"body": [
+			"describe('When $1', () => {",
+			"\ttest('Then $2', () => {",
+			"\t\t$3",
+			"\t})",
+			"})",
+		],
+		"description": "Nested Jest describe/test blocks with When/Then descriptions"
+	},
+	"When-Then Async": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "test-wt-a",
+		"body": [
+			"describe('When $1', () => {",
+			"\ttest('Then $2', async () => {",
+			"\t\t$3",
+			"\t})",
+			"})",
+		],
+		"description": "As test-wt with an async test block"
+	},
 	"Given-Then": {
 		"scope": "javascript,typescript,typescriptreact",
 		"prefix": "test-gt",
@@ -31,6 +69,18 @@
 			"})",
 		],
 		"description": "Nested Jest describe/test blocks with Given/Then descriptions"
+	},
+	"Given-Then Async": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "test-gt-a",
+		"body": [
+			"describe('Given $1', () => {",
+			"\ttest('Then $2', async () => {",
+			"\t\t$3",
+			"\t})",
+			"})",
+		],
+		"description": "As test-gw with an async test block"
 	},
 	"beforeEach": {
 		"scope": "javascript,typescript,typescriptreact",
@@ -52,6 +102,25 @@
 			"})",
 		],
 		"description": "Jest test block"
+	},
+	"test async": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "test-a",
+		"body": [
+			"test('$1', async () => {",
+			"\t$2",
+			"})",
+		],
+		"description": "Async Jest test block"
+	},
+	"Expect Mock Calls": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "exp-call",
+		"body": [
+			"expect($TM_SELECTED_TEXT.mock.calls).toHaveLength($1)",
+			"expect($TM_SELECTED_TEXT.mock.calls[0]).toEqual([$2])",
+		],
+		"description": "Jest expect calls for the selected mock name"
 	},
 	"Wrap describe": {
 		"scope": "javascript,typescript,typescriptreact",
