@@ -1,5 +1,5 @@
 import { ApolloError, Config } from 'apollo-server'
-import type { ListRisksCriteria } from '@life/usecase/risk/listRisks'
+import type { ListCriteria } from '@life/usecase/risk/list'
 import { CategoryTopLevel, Category } from '@life/__generated__/graphql'
 import type { QueryRisksArgs, RequireFields, Resolvers, Risk } from '@life/__generated__/graphql'
 import * as typeDefs from '@life/api/graph/schema.graphql'
@@ -158,7 +158,7 @@ class GraphService {
           return categories.okValues
         },
         risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<Risk[]> => {
-          const criteria: ListRisksCriteria = {}
+          const criteria: ListCriteria = {}
           switch (args.category) {
             case CategoryTopLevel.Health:
               criteria.category = 'health'
@@ -171,13 +171,13 @@ class GraphService {
               break
           }
 
-          const result = await this.#factory.risk.listRisksInteractor().listRisks(criteria)
-          if (!result.ok) {
-            this.#logger.result(result)
-            throw this.resultError(result)
+          const riskResults = await this.#factory.risk.listInteractor().list(criteria)
+          if (riskResults.firstErrorResult) {
+            this.#logger.result(riskResults.firstErrorResult)
+            throw this.resultError(riskResults.firstErrorResult)
           }
 
-          const mappingResults = this.#mapper.risks(result.value)
+          const mappingResults = this.#mapper.risks(riskResults.okValues)
           const errorResult = mappingResults.firstErrorResult
           if (errorResult) {
             this.#logger.result(errorResult)

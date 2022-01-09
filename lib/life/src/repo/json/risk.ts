@@ -1,7 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { CategoryTopLevel, Risk } from '@life/risk'
-import { Result, resultError, resultOk } from '@util/result'
+import { Result, resultError, resultOk, results, Results, resultsOk } from '@util/result'
 import { RiskRepo as RiskRepoDomain } from '@life/repo'
 import { RiskMapper } from '@life/repo/json/mapper'
 import { JsonStore } from './service'
@@ -94,7 +94,7 @@ class RiskRepoJsonImpl implements RiskRepoJson {
     return resultOk(riskChildren)
   }
 
-  public async listRisks(category: CategoryTopLevel | undefined, includeDescendents: boolean): Promise<Result<Risk[]>> {
+  public async list(category: CategoryTopLevel | undefined, includeDescendents: boolean): Promise<Results<Risk>> {
     const jsonRisks = Object.values(this.#store.risk)
     const risks = []
     for (const jsonRisk of jsonRisks) {
@@ -108,12 +108,12 @@ class RiskRepoJsonImpl implements RiskRepoJson {
 
       const riskResult = await this.fetchRisk(jsonRisk.id)
       if (!riskResult.ok) {
-        return riskResult
+        return results([riskResult])
       }
 
       risks.push(riskResult.value)
     }
-    return resultOk(risks)
+    return resultsOk(risks)
   }
 }
 

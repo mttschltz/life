@@ -1,27 +1,27 @@
 import { Risk, RiskMapper } from '@life/usecase/mapper'
 import { CategoryTopLevel as CategoryTopLevelDomain } from '@life/risk'
-import { Result, resultOk } from '@util/result'
+import { Results, resultsOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 
-type ListRisksRepo = Pick<RiskRepo, 'listRisks'>
+type ListRepo = Pick<RiskRepo, 'list'>
 
-interface ListRisksCriteria {
+interface ListCriteria {
   category?: 'health' | 'security' | 'wealth'
   includeDescendents?: boolean
 }
 
-class ListRisksInteractor {
+class ListInteractor {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-  #repo: ListRisksRepo
+  #repo: ListRepo
   #mapper: RiskMapper
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  public constructor(repo: ListRisksRepo, mapper: RiskMapper) {
+  public constructor(repo: ListRepo, mapper: RiskMapper) {
     this.#repo = repo
     this.#mapper = mapper
   }
 
-  public async listRisks(criteria: ListRisksCriteria): Promise<Result<Risk[]>> {
+  public async list(criteria: ListCriteria): Promise<Results<Risk>> {
     let category
     switch (criteria.category) {
       case 'health':
@@ -34,14 +34,14 @@ class ListRisksInteractor {
         category = CategoryTopLevelDomain.Security
         break
     }
-    const risksResult = await this.#repo.listRisks(category, !!criteria.includeDescendents)
-    if (!risksResult.ok) {
-      return risksResult
+    const risksResults = await this.#repo.list(category, !!criteria.includeDescendents)
+    if (risksResults.firstErrorResult) {
+      return risksResults
     }
 
-    return resultOk(risksResult.value.map((risk) => this.#mapper.risk(risk)))
+    return resultsOk(risksResults.okValues.map((risk) => this.#mapper.risk(risk)))
   }
 }
 
-export { ListRisksInteractor }
-export type { ListRisksCriteria }
+export { ListInteractor }
+export type { ListCriteria }

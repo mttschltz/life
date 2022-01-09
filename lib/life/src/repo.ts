@@ -8,7 +8,7 @@ interface RiskRepo {
   fetchRisk: (id: string) => Promise<Result<Risk>>
   fetchRiskChildren: (id: string) => Promise<Result<Risk[]>>
   fetchRiskParent: (id: string) => Promise<Result<Risk | undefined>>
-  listRisks: (category: CategoryTopLevel | undefined, includeDescendents: boolean) => Promise<Result<Risk[]>>
+  list: (category: CategoryTopLevel | undefined, includeDescendents: boolean) => Promise<Results<Risk>>
 }
 
 interface CategoryRepo {

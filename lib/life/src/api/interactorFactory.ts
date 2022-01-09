@@ -2,18 +2,18 @@ import {
   newCategoryMapper as newCategoryMapperUsecase,
   newRiskMapper as newRiskMapperUsecase,
 } from '@life/usecase/mapper'
-import { ListRisksInteractor } from '@life/usecase/risk/listRisks'
+import { ListInteractor as ListRiskInteractor } from '@life/usecase/risk/list'
 import { FetchRiskChildrenInteractor } from '@life/usecase/risk/fetchRiskChildren'
 import { FetchRiskParentInteractor } from '@life/usecase/risk/fetchRiskParent'
 import { CreateRiskInteractor } from '@life/usecase/risk/createRisk'
-import { ListInteractor, newListInteractor } from '@life/usecase/category/list'
+import { ListInteractor as ListCategoryInteractor, newListInteractor } from '@life/usecase/category/list'
 import { CategoryRepo, RiskRepo } from '@life/repo'
 import { FetchInteractor, newFetchInteractor } from '@life/usecase/category/fetch'
 import { FetchParentInteractor, newFetchParentInteractor } from '@life/usecase/category/fetchParent'
 import { FetchChildrenInteractor, newFetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
 
 interface RiskInteractorFactory {
-  listRisksInteractor: () => ListRisksInteractor
+  listInteractor: () => ListRiskInteractor
   fetchRiskParentInteractor: () => FetchRiskParentInteractor
   fetchRiskChildrenInteractor: () => FetchRiskChildrenInteractor
   createRiskInteractor: () => CreateRiskInteractor
@@ -32,8 +32,8 @@ class RiskInteractorFactoryImpl implements RiskInteractorFactory {
     this.repo = repo
   }
 
-  public listRisksInteractor(): ListRisksInteractor {
-    return new ListRisksInteractor(this.repo, newRiskMapperUsecase())
+  public listInteractor(): ListRiskInteractor {
+    return new ListRiskInteractor(this.repo, newRiskMapperUsecase())
   }
 
   public fetchRiskParentInteractor(): FetchRiskParentInteractor {
@@ -50,7 +50,7 @@ class RiskInteractorFactoryImpl implements RiskInteractorFactory {
 }
 
 interface CategoryInteractorFactory {
-  listInteractor: () => ListInteractor
+  listInteractor: () => ListCategoryInteractor
   fetchInteractor: () => FetchInteractor
   fetchParentInteractor: () => FetchParentInteractor
   fetchChildrenInteractor: () => FetchChildrenInteractor
@@ -69,7 +69,7 @@ class CategoryInteractorFactoryImpl implements CategoryInteractorFactory {
     this.#repo = repo
   }
 
-  public listInteractor(): ListInteractor {
+  public listInteractor(): ListCategoryInteractor {
     return newListInteractor(this.#repo, newCategoryMapperUsecase())
   }
 

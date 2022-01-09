@@ -8,7 +8,7 @@ import { JsonStore } from './service'
 
 type CategoryRepoJson = CategoryRepoDomain
 
-function newCategoryRepoJson(store: JsonStore, mapper: CategoryMapper): CategoryRepoDomain {
+function newCategoryRepoJson(store: JsonStore, mapper: CategoryMapper): CategoryRepoJson {
   return new CategoryRepoJsonImpl(store, mapper)
 }
 
