@@ -176,5 +176,11 @@ module.exports = {
         ],
       },
     },
+    {
+      files: ['*.test.ts', '*.test.tsx'],
+      rules: {
+        '@typescript-eslint/explicit-member-accessibility': 'off',
+      },
+    },
   ],
 }
