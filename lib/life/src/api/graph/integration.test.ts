@@ -226,7 +226,7 @@ describe('GraphServiceIntegration', () => {
           }
         }
       `
-      test('Then 2 root categories and 2 risks are returned with most recent updated first', async () => {
+      test('Then all categories and risks are returned with most recent updated first', async () => {
         const response = await server.executeOperation({
           query: categoriesQuery,
         })

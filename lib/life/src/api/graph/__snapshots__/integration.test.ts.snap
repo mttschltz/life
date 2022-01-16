@@ -51,10 +51,61 @@ Object {
 }
 `;
 
-exports[`GraphServiceIntegration updated Given a query with type-specific data Then 2 root categories and 2 risks are returned with most recent updated first 1`] = `
+exports[`GraphServiceIntegration updated Given a query with type-specific data Then all categories and risks are returned with most recent updated first 1`] = `
 Object {
   "data": Object {
     "updated": Array [
+      Object {
+        "children": Array [],
+        "description": "greatgrandchild category 5 no children",
+        "id": "5",
+        "name": "greatgrandchild category 5",
+        "parent": Object {
+          "description": "grandchild category 4 with child",
+          "id": "4",
+          "name": "grandchild category 4",
+          "path": "/grandchild-category-4",
+          "shortDescription": "gc4 with child",
+          "updated": 2021-12-04T00:00:00.000Z,
+        },
+        "path": "/greatgrandchild-category-5",
+        "shortDescription": "ggc4 with child",
+        "updated": 2021-12-05T00:00:00.000Z,
+      },
+      Object {
+        "children": Array [
+          Object {
+            "description": "greatgrandchild category 5 no children",
+            "id": "5",
+            "name": "greatgrandchild category 5",
+            "parent": Object {
+              "description": "grandchild category 4 with child",
+              "id": "4",
+              "name": "grandchild category 4",
+              "path": "/grandchild-category-4",
+              "shortDescription": "gc4 with child",
+              "updated": 2021-12-04T00:00:00.000Z,
+            },
+            "path": "/greatgrandchild-category-5",
+            "shortDescription": "ggc4 with child",
+            "updated": 2021-12-05T00:00:00.000Z,
+          },
+        ],
+        "description": "grandchild category 4 with child",
+        "id": "4",
+        "name": "grandchild category 4",
+        "parent": Object {
+          "description": "child category 3 with child",
+          "id": "3",
+          "name": "child category 3",
+          "path": "/child-category-3",
+          "shortDescription": "cc3 with child",
+          "updated": 2021-12-03T00:00:00.000Z,
+        },
+        "path": "/grandchild-category-4",
+        "shortDescription": "gc4 with child",
+        "updated": 2021-12-04T00:00:00.000Z,
+      },
       Object {
         "category": "HEALTH",
         "id": "2",
@@ -99,6 +150,40 @@ MDXContent.isMDXComponent = true;",
         "shortDescription": "risk short description 2",
         "type": "CONDITION",
         "updated": 2021-12-04T00:00:00.000Z,
+      },
+      Object {
+        "children": Array [
+          Object {
+            "description": "grandchild category 4 with child",
+            "id": "4",
+            "name": "grandchild category 4",
+            "parent": Object {
+              "description": "child category 3 with child",
+              "id": "3",
+              "name": "child category 3",
+              "path": "/child-category-3",
+              "shortDescription": "cc3 with child",
+              "updated": 2021-12-03T00:00:00.000Z,
+            },
+            "path": "/grandchild-category-4",
+            "shortDescription": "gc4 with child",
+            "updated": 2021-12-04T00:00:00.000Z,
+          },
+        ],
+        "description": "child category 3 with child",
+        "id": "3",
+        "name": "child category 3",
+        "parent": Object {
+          "description": "root category 1 with child",
+          "id": "1",
+          "name": "root category 1",
+          "path": "/root-category-1",
+          "shortDescription": "rc1 with child",
+          "updated": 2021-12-01T00:00:00.000Z,
+        },
+        "path": "/child-category-3",
+        "shortDescription": "cc3 with child",
+        "updated": 2021-12-03T00:00:00.000Z,
       },
       Object {
         "category": "HEALTH",
