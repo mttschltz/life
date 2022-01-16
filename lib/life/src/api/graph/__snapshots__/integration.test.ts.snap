@@ -50,3 +50,113 @@ Object {
   },
 }
 `;
+
+exports[`GraphServiceIntegration updated Given a query with type-specific data Then 2 root categories and 2 risks are returned with most recent updated first 1`] = `
+Object {
+  "data": Object {
+    "updated": Array [
+      Object {
+        "category": "HEALTH",
+        "id": "2",
+        "impact": "HIGH",
+        "likelihood": "HIGH",
+        "name": "risk name 2",
+        "notes": "var _excluded = [\\"components\\"];
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+/* @jsxRuntime classic */
+
+/* @jsx mdx */
+var layoutProps = {};
+var MDXLayout = \\"wrapper\\";
+return function MDXContent(_ref) {
+  var components = _ref.components,
+      props = _objectWithoutProperties(_ref, _excluded);
+
+  return mdx(MDXLayout, _extends({}, layoutProps, props, {
+    components: components,
+    mdxType: \\"MDXLayout\\"
+  }), mdx(\\"p\\", null, \\"risk notes 2\\"));
+}
+;
+MDXContent.isMDXComponent = true;",
+        "parent": Object {
+          "category": "HEALTH",
+          "id": "1",
+          "impact": "HIGH",
+          "likelihood": "HIGH",
+          "name": "risk name 1",
+          "notes": "Hello World",
+          "shortDescription": "risk short description 1",
+          "type": "CONDITION",
+          "updated": 2021-12-03T00:00:00.000Z,
+        },
+        "shortDescription": "risk short description 2",
+        "type": "CONDITION",
+        "updated": 2021-12-04T00:00:00.000Z,
+      },
+      Object {
+        "category": "HEALTH",
+        "id": "1",
+        "impact": "HIGH",
+        "likelihood": "HIGH",
+        "name": "risk name 1",
+        "notes": "Hello World",
+        "parent": null,
+        "shortDescription": "risk short description 1",
+        "type": "CONDITION",
+        "updated": 2021-12-03T00:00:00.000Z,
+      },
+      Object {
+        "children": Array [],
+        "description": "root category 2 no children",
+        "id": "2",
+        "name": "root category 2",
+        "parent": null,
+        "path": "/root-category-2",
+        "shortDescription": "rc2 with child",
+        "updated": 2021-12-02T00:00:00.000Z,
+      },
+      Object {
+        "children": Array [
+          Object {
+            "description": "child category 3 with child",
+            "id": "3",
+            "name": "child category 3",
+            "parent": Object {
+              "description": "root category 1 with child",
+              "id": "1",
+              "name": "root category 1",
+              "path": "/root-category-1",
+              "shortDescription": "rc1 with child",
+              "updated": 2021-12-01T00:00:00.000Z,
+            },
+            "path": "/child-category-3",
+            "shortDescription": "cc3 with child",
+            "updated": 2021-12-03T00:00:00.000Z,
+          },
+        ],
+        "description": "root category 1 with child",
+        "id": "1",
+        "name": "root category 1",
+        "parent": null,
+        "path": "/root-category-1",
+        "shortDescription": "rc1 with child",
+        "updated": 2021-12-01T00:00:00.000Z,
+      },
+    ],
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;

@@ -1,5 +1,14 @@
-import { Category as CategoryUsecase } from '@life/usecase/mapper'
-import { Resolver, ResolverFn, Category } from '@life/__generated__/graphql'
+import { Category as CategoryUsecase, Risk as RiskUsecase, Updated as UpdatedUsecase } from '@life/usecase/mapper'
+import {
+  Resolver,
+  ResolverFn,
+  Category,
+  Risk,
+  CategoryTopLevel,
+  Impact,
+  Likelihood,
+  RiskType,
+} from '@life/__generated__/graphql'
 import { Logger } from '@util/logger'
 import { Result, resultError, resultOk, Results, resultsError, resultsOk } from '@util/result'
 import { GraphQLResolveInfo } from 'graphql'
@@ -9,7 +18,8 @@ import { GraphService, InteractorFactory } from './service'
 import { mockDeep, MockedDeep } from '@util/mock'
 import { FetchParentInteractor } from '@life/usecase/category/fetchParent'
 import { FetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
-import { ListInteractor } from '@life/usecase/category/list'
+import { ListInteractor as ListCategoriesInteractor } from '@life/usecase/category/list'
+import { ListInteractor as ListUpdatedInteractor } from '@life/usecase/updated/list'
 
 function assertResolverFn<Result, Parent, Context, Args>(
   resolver: Resolver<Result, Parent, Context, Args> | undefined,
@@ -26,7 +36,8 @@ describe('GraphService', () => {
     let mapper: MockedDeep<GraphMapper>
     let fetchParent: jest.MockedFunction<FetchParentInteractor['fetchParent']>
     let fetchChildren: jest.MockedFunction<FetchChildrenInteractor['fetchChildren']>
-    let list: jest.MockedFunction<ListInteractor['list']>
+    let listCategories: jest.MockedFunction<ListCategoriesInteractor['list']>
+    let listUpdated: jest.MockedFunction<ListUpdatedInteractor['list']>
     beforeEach(() => {
       factory = mockDeep<InteractorFactory>()
       fetchParent = jest.fn()
@@ -37,9 +48,13 @@ describe('GraphService', () => {
       factory.category.fetchChildrenInteractor.mockReturnValue({
         fetchChildren,
       })
-      list = jest.fn()
+      listCategories = jest.fn()
       factory.category.listInteractor.mockReturnValue({
-        list,
+        list: listCategories,
+      })
+      listUpdated = jest.fn()
+      factory.updated.listInteractor.mockReturnValue({
+        list: listUpdated,
       })
       logger = mockDeep<Logger>()
       mapper = mockDeep<GraphMapper>()
@@ -373,7 +388,7 @@ describe('GraphService', () => {
                 updated: new Date(),
               },
             ]
-            list.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>(fetchedCategories)))
+            listCategories.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>(fetchedCategories)))
             mappedCategories = [
               {
                 id: 'mapped id 1',
@@ -407,8 +422,8 @@ describe('GraphService', () => {
               const categories = service.resolvers().Query?.categories
               assertResolverFn(categories)
               await categories({}, {}, {}, {} as GraphQLResolveInfo)
-              expect(list.mock.calls).toHaveLength(1)
-              expect(list.mock.calls[0]).toEqual([])
+              expect(listCategories.mock.calls).toHaveLength(1)
+              expect(listCategories.mock.calls[0]).toEqual([])
             })
             test('Then the mapper is called', async () => {
               const service = new GraphService(factory, mapper, logger)
@@ -430,8 +445,8 @@ describe('GraphService', () => {
             let errorResult: Results<CategoryUsecase>
             beforeEach(() => {
               errorResult = resultsError<CategoryUsecase>('listing error')
-              list.mockReset()
-              list.mockReturnValueOnce(Promise.resolve(errorResult))
+              listCategories.mockReset()
+              listCategories.mockReturnValueOnce(Promise.resolve(errorResult))
             })
             test('Then the error logged and thrown', async () => {
               const service = new GraphService(factory, mapper, logger)
@@ -461,7 +476,7 @@ describe('GraphService', () => {
         })
         describe('Given there are no categories to list', () => {
           beforeEach(() => {
-            list.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
+            listCategories.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
             mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>([]))
           })
           describe('When everything succeeds', () => {
@@ -477,8 +492,8 @@ describe('GraphService', () => {
               const categories = service.resolvers().Query?.categories
               assertResolverFn(categories)
               await categories({}, {}, {}, {} as GraphQLResolveInfo)
-              expect(list.mock.calls).toHaveLength(1)
-              expect(list.mock.calls[0]).toEqual([])
+              expect(listCategories.mock.calls).toHaveLength(1)
+              expect(listCategories.mock.calls[0]).toEqual([])
             })
             test('Then the mapper is called', async () => {
               const service = new GraphService(factory, mapper, logger)
@@ -495,6 +510,147 @@ describe('GraphService', () => {
               await categories({}, {}, {}, {} as GraphQLResolveInfo)
               expect(logger.result.mock.calls).toHaveLength(0)
             })
+          })
+        })
+      })
+      describe('updated', () => {
+        describe('Given an updated request', () => {
+          describe('When updated results are fetched that include categories and risks', () => {
+            let fetchedUpdated: UpdatedUsecase[]
+            let fetchedCategory: CategoryUsecase
+            let fetchedRisk: RiskUsecase
+            let mappedUpdated: (Category | Risk)[]
+            let mappedCategory: Category
+            let mappedRisk: Risk
+            beforeEach(() => {
+              fetchedCategory = {
+                id: 'category id',
+                name: 'category name',
+                path: 'category path',
+                shortDescription: 'category short description',
+                children: [],
+                updated: new Date(),
+              }
+              fetchedRisk = {
+                id: 'risk id',
+                name: 'risk name',
+                shortDescription: 'risk short description',
+                updated: new Date(),
+                category: 'Health',
+                impact: 'High',
+                likelihood: 'High',
+                type: 'Condition',
+              }
+              fetchedUpdated = [fetchedCategory, fetchedRisk]
+              listUpdated.mockReturnValueOnce(Promise.resolve(resultsOk<UpdatedUsecase>(fetchedUpdated)))
+              mappedCategory = {
+                id: 'mapped category id',
+                name: 'mapped category name',
+                path: 'mapped category path',
+                shortDescription: 'mapped category short description',
+                children: [],
+                updated: new Date(),
+              }
+              mappedRisk = {
+                id: 'mapped risk id',
+                name: 'mapped risk name',
+                shortDescription: 'mapped risk short description',
+                updated: new Date(),
+                category: CategoryTopLevel.Health,
+                impact: Impact.High,
+                likelihood: Likelihood.High,
+                type: RiskType.Condition,
+              }
+              mappedUpdated = [mappedCategory, mappedRisk]
+              mapper.updatedFromUsecase.mockReturnValueOnce(resultsOk<Category | Risk>(mappedUpdated))
+            })
+            test('Then the mapped results are returned', async () => {
+              const service = new GraphService(factory, mapper, logger)
+              const updated = service.resolvers().Query?.updated
+              assertResolverFn(updated)
+              const result = await updated({}, {}, {}, {} as GraphQLResolveInfo)
+
+              expect(result).toEqual(mappedUpdated)
+              expect(listUpdated.mock.calls).toHaveLength(1)
+              expect(listUpdated.mock.calls[0]).toEqual([{ count: 10 }])
+              expect(mapper.updatedFromUsecase.mock.calls).toHaveLength(1)
+              expect(mapper.updatedFromUsecase.mock.calls[0]).toEqual([fetchedUpdated])
+            })
+          })
+          describe('When listing updated entities errors', () => {
+            let errorResult: Results<UpdatedUsecase>
+            beforeEach(() => {
+              errorResult = resultsError<UpdatedUsecase>('listing error')
+              listUpdated.mockReset()
+              listUpdated.mockReturnValueOnce(Promise.resolve(errorResult))
+            })
+            test('Then the error logged and thrown', async () => {
+              const service = new GraphService(factory, mapper, logger)
+              const updated = service.resolvers().Query?.updated
+              assertResolverFn(updated)
+              await expect(updated({}, {}, {}, {} as GraphQLResolveInfo)).rejects.toThrow('listing error')
+              expect(logger.result.mock.calls).toHaveLength(1)
+              expect(logger.result.mock.calls[0]).toEqual([errorResult.firstErrorResult])
+            })
+          })
+          describe('When mapping error', () => {
+            let errorResult: Results<Category | Risk>
+            beforeEach(() => {
+              errorResult = resultsError<Category | Risk>('mapping error')
+              mapper.updatedFromUsecase.mockReset()
+              mapper.updatedFromUsecase.mockReturnValueOnce(errorResult)
+              listUpdated.mockReturnValueOnce(Promise.resolve(resultsOk<UpdatedUsecase>([])))
+            })
+            test('Then the error logged and thrown', async () => {
+              const service = new GraphService(factory, mapper, logger)
+              const updated = service.resolvers().Query?.updated
+              assertResolverFn(updated)
+              await expect(updated({}, {}, {}, {} as GraphQLResolveInfo)).rejects.toThrow('mapping error')
+              expect(logger.result.mock.calls).toHaveLength(1)
+              expect(logger.result.mock.calls[0]).toEqual([errorResult.firstErrorResult])
+            })
+          })
+        })
+      })
+    })
+    describe('Updated', () => {
+      describe('__resolveType', () => {
+        describe('Given an object that is identified as a category', () => {
+          beforeEach(() => {
+            mapper.isUpdatedCategory.mockReturnValueOnce(true)
+            mapper.isUpdatedRisk.mockReturnValueOnce(false)
+          })
+          afterEach(() => {
+            mapper.isUpdatedCategory.mockReset()
+            mapper.isUpdatedRisk.mockReset()
+          })
+          test("Then it returns 'Risk'", () => {
+            const service = new GraphService(factory, mapper, logger)
+            const obj = {} as Category
+            expect(service.resolvers().Updated?.__resolveType(obj, undefined, {} as GraphQLResolveInfo)).toEqual(
+              'Category',
+            )
+            expect(mapper.isUpdatedCategory.mock.calls).toHaveLength(1)
+            expect(mapper.isUpdatedCategory.mock.calls[0]).toEqual([obj])
+            expect(mapper.isUpdatedCategory.mock.calls[0][0]).toBe(obj)
+          })
+        })
+        describe('Given an object that is identified as a risk', () => {
+          beforeEach(() => {
+            mapper.isUpdatedCategory.mockReturnValueOnce(false)
+            mapper.isUpdatedRisk.mockReturnValueOnce(true)
+          })
+          afterEach(() => {
+            mapper.isUpdatedCategory.mockReset()
+            mapper.isUpdatedRisk.mockReset()
+          })
+          test("Then it returns 'Risk'", () => {
+            const service = new GraphService(factory, mapper, logger)
+            const obj = {} as Risk
+            expect(service.resolvers().Updated?.__resolveType(obj, undefined, {} as GraphQLResolveInfo)).toEqual('Risk')
+            expect(mapper.isUpdatedRisk.mock.calls).toHaveLength(1)
+            expect(mapper.isUpdatedRisk.mock.calls[0]).toEqual([obj])
+            expect(mapper.isUpdatedRisk.mock.calls[0][0]).toBe(obj)
           })
         })
       })

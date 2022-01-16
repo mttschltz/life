@@ -13,6 +13,7 @@ enum Impact {
   Normal = 'Normal',
 }
 
+// Maybe this should be called 'Expected', since probabilities are hard
 enum Likelihood {
   High = 'High',
   Normal = 'Normal',

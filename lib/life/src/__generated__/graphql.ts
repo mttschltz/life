@@ -62,6 +62,16 @@ export type CreateRiskInput = {
 };
 
 
+export enum Impact {
+  High = 'HIGH',
+  Normal = 'NORMAL'
+}
+
+export enum Likelihood {
+  High = 'HIGH',
+  Normal = 'NORMAL'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   /** Create a risk. */
@@ -89,21 +99,35 @@ export type QueryRisksArgs = {
 };
 
 /** A Risk is something that may cause harm to yourself, your family, or your goals. */
-export type Risk = {
+export type Risk = Updated & {
   __typename?: 'Risk';
   /** The id. */
   id: Scalars['ID'];
-  /** The name. */
-  name: Scalars['String'];
   /** Risk category. */
   category: CategoryTopLevel;
-  /** Parent risk. */
-  parent?: Maybe<Risk>;
-  /** Child risks. */
-  children?: Maybe<Array<Maybe<Risk>>>;
+  /** The impact. */
+  impact: Impact;
+  /** The likelihood. */
+  likelihood: Likelihood;
+  /** The name. */
+  name: Scalars['String'];
   /** Risk notes. */
   notes?: Maybe<Scalars['String']>;
+  /** Parent risk. */
+  parent?: Maybe<Risk>;
+  /** The type of risk. */
+  type: RiskType;
+  /** Short description of the risk. */
+  shortDescription: Scalars['String'];
+  /** Time of last significant update to the risk. */
+  updated: Scalars['DateTime'];
 };
+
+export enum RiskType {
+  Risk = 'RISK',
+  Goal = 'GOAL',
+  Condition = 'CONDITION'
+}
 
 /**
  * An Updated entity logs its most recent, user-relevant changes so they can be viewed in order of
@@ -196,10 +220,13 @@ export type ResolversTypes = {
   Concern: ResolversTypes['Category'] | ResolversTypes['Risk'];
   CreateRiskInput: CreateRiskInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  Impact: Impact;
+  Likelihood: Likelihood;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Risk: ResolverTypeWrapper<Risk>;
-  Updated: ResolversTypes['Category'];
+  RiskType: RiskType;
+  Updated: ResolversTypes['Category'] | ResolversTypes['Risk'];
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
@@ -214,7 +241,7 @@ export type ResolversParentTypes = {
   Mutation: {};
   Query: {};
   Risk: Risk;
-  Updated: ResolversParentTypes['Category'];
+  Updated: ResolversParentTypes['Category'] | ResolversParentTypes['Risk'];
   Boolean: Scalars['Boolean'];
 };
 
@@ -250,16 +277,20 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type RiskResolvers<ContextType = any, ParentType extends ResolversParentTypes['Risk'] = ResolversParentTypes['Risk']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   category?: Resolver<ResolversTypes['CategoryTopLevel'], ParentType, ContextType>;
-  parent?: Resolver<Maybe<ResolversTypes['Risk']>, ParentType, ContextType>;
-  children?: Resolver<Maybe<Array<Maybe<ResolversTypes['Risk']>>>, ParentType, ContextType>;
+  impact?: Resolver<ResolversTypes['Impact'], ParentType, ContextType>;
+  likelihood?: Resolver<ResolversTypes['Likelihood'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   notes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  parent?: Resolver<Maybe<ResolversTypes['Risk']>, ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['RiskType'], ParentType, ContextType>;
+  shortDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updated?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UpdatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['Updated'] = ResolversParentTypes['Updated']> = {
-  __resolveType: TypeResolveFn<'Category', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Category' | 'Risk', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updated?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;

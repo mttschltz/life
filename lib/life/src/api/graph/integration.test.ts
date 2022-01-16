@@ -2,14 +2,21 @@ import { JsonStore } from '@life/repo/json/service'
 import { RiskMapper as RiskJsonMapper, newCategoryMapper } from '@life/repo/json/mapper'
 import { ApolloServer } from 'apollo-server'
 import { GraphService } from './service'
-import { newCategoryInteractorFactory, newRiskInteractorFactory } from '@life/api/interactorFactory'
 import { newMapper } from './mapper'
+import {
+  newCategoryInteractorFactory,
+  newRiskInteractorFactory,
+  newUpdatedInteractorFactory,
+} from '@life/api/interactorFactory'
 import { newLogger } from '@util/logger'
 import { transpile } from '@util/mdx'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import { gql } from '@apollo/client/core'
 import { CategoryRepoJson, newCategoryRepoJson } from '@life/repo/json/category'
 import { newRiskRepoJson, RiskRepoJson } from '@life/repo/json/risk'
+import { UpdatedRepo as UpdatedRepoJson } from '@life/repo'
+import { newUpdatedRepoJson } from '@life/repo/json/updated'
+import { Impact, CategoryTopLevel, Likelihood, RiskType } from '@life/risk'
 
 const jsonStore: JsonStore = {
   category: {
@@ -62,22 +69,48 @@ const jsonStore: JsonStore = {
       updated: new Date('2021-12-05'),
     },
   },
-  risk: {},
+  risk: {
+    1: {
+      id: '1',
+      category: CategoryTopLevel.Health,
+      impact: Impact.High,
+      likelihood: Likelihood.High,
+      name: 'risk name 1',
+      shortDescription: 'risk short description 1',
+      type: RiskType.Condition,
+      updated: new Date('2021-12-03'),
+    },
+    2: {
+      id: '2',
+      category: CategoryTopLevel.Health,
+      impact: Impact.High,
+      likelihood: Likelihood.High,
+      name: 'risk name 2',
+      shortDescription: 'risk short description 2',
+      type: RiskType.Condition,
+      updated: new Date('2021-12-04'),
+      notes: 'risk notes 2',
+      parentId: '1',
+    },
+  },
 }
 
 describe('GraphServiceIntegration', () => {
-  let riskRepo: RiskRepoJson
   let categoryRepo: CategoryRepoJson
+  let riskRepo: RiskRepoJson
+  let updatedRepo: UpdatedRepoJson
   let graphService: GraphService
   let server: ApolloServer
   beforeAll(async () => {
-    riskRepo = newRiskRepoJson(jsonStore, new RiskJsonMapper())
     categoryRepo = newCategoryRepoJson(jsonStore, newCategoryMapper())
+    riskRepo = newRiskRepoJson(jsonStore, new RiskJsonMapper())
+    updatedRepo = newUpdatedRepoJson(categoryRepo, riskRepo)
 
     graphService = new GraphService(
       {
         category: newCategoryInteractorFactory(categoryRepo),
         risk: newRiskInteractorFactory(riskRepo),
+        updated: newUpdatedInteractorFactory(updatedRepo),
       },
       newMapper(transpile),
       newLogger(),
@@ -96,6 +129,7 @@ describe('GraphServiceIntegration', () => {
   afterAll(async () => {
     await server.stop()
   })
+
   describe('categories', () => {
     describe('Given a query for children and their parent', () => {
       const categoriesQuery = gql`
@@ -127,6 +161,72 @@ describe('GraphServiceIntegration', () => {
         }
       `
       test('Then 2 root categories and 1 child with parent are returned', async () => {
+        const response = await server.executeOperation({
+          query: categoriesQuery,
+        })
+        expect(response).toMatchSnapshot()
+      })
+    })
+  })
+  describe('updated', () => {
+    describe('Given a query with type-specific data', () => {
+      const categoriesQuery = gql`
+        query getUpdated {
+          updated {
+            id
+            name
+            shortDescription
+            updated
+            ... on Category {
+              path
+              description
+              parent {
+                id
+                path
+                name
+                description
+                shortDescription
+                updated
+              }
+              children {
+                id
+                path
+                name
+                description
+                shortDescription
+                updated
+                parent {
+                  id
+                  path
+                  name
+                  description
+                  shortDescription
+                  updated
+                }
+              }
+            }
+            ... on Risk {
+              category
+              impact
+              likelihood
+              notes
+              type
+              parent {
+                id
+                category
+                impact
+                likelihood
+                name
+                notes
+                type
+                shortDescription
+                updated
+              }
+            }
+          }
+        }
+      `
+      test('Then 2 root categories and 2 risks are returned with most recent updated first', async () => {
         const response = await server.executeOperation({
           query: categoriesQuery,
         })

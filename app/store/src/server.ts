@@ -1,16 +1,19 @@
 import { ApolloServer } from 'apollo-server'
-import { DateTimeMock } from 'graphql-scalars'
-
 import { environment } from '@store/environment'
 import { GraphService } from '@life/api/graph/service'
-import { newCategoryInteractorFactory, newRiskInteractorFactory } from '@life/api/interactorFactory'
 import { newMapper } from '@life/api/graph/mapper'
+import {
+  newCategoryInteractorFactory,
+  newRiskInteractorFactory,
+  newUpdatedInteractorFactory,
+} from '@life/api/interactorFactory'
 import { newLogger } from '@util/logger'
 import { transpile } from '@util/mdx'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import { JsonStore } from '@life/repo/json/service'
 import { RiskMapper as RiskJsonMapper, newCategoryMapper } from '@life/repo/json/mapper'
 import { newCategoryRepoJson } from '@life/repo/json/category'
+import { newUpdatedRepoJson } from '@life/repo/json/updated'
 import { newRiskRepoJson } from '@life/repo/json/risk'
 
 // Store/repo
@@ -18,14 +21,16 @@ const jsonStore: JsonStore = {
   category: {},
   risk: {},
 }
-const riskRepo = newRiskRepoJson(jsonStore, new RiskJsonMapper())
 const categoryRepo = newCategoryRepoJson(jsonStore, newCategoryMapper())
+const riskRepo = newRiskRepoJson(jsonStore, new RiskJsonMapper())
+const updatedRepo = newUpdatedRepoJson(categoryRepo, riskRepo)
 
 // Interactors
 const graphService = new GraphService(
   {
     category: newCategoryInteractorFactory(categoryRepo),
     risk: newRiskInteractorFactory(riskRepo),
+    updated: newUpdatedInteractorFactory(updatedRepo),
   },
   newMapper(transpile),
   newLogger(),
@@ -38,13 +43,6 @@ const server = new ApolloServer({
   typeDefs: graphService.typeDefs(),
   introspection: environment.apollo.introspection,
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
-  mocks: {
-    /* eslint-disable @typescript-eslint/naming-convention */
-    DateTime: DateTimeMock,
-    CategoryTopLevel: (): string => 'HEALTH',
-    /* eslint-enable @typescript-eslint/naming-convention */
-  }, // TODO: Remove in PROD.
-  mockEntireSchema: false, // TODO: Remove in PROD.
 })
 
 void server.listen(environment.port).then(({ url }) => {

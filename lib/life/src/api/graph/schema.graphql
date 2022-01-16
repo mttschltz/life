@@ -23,12 +23,6 @@ interface Updated {
   shortDescription: String!
 }
 
-enum CategoryTopLevel {
-  HEALTH
-  WEALTH
-  SECURITY
-}
-
 """
 A Concern needs addressing. It can be a single Risk or group (Category) of Risks.
 """
@@ -73,19 +67,36 @@ type Category implements Updated {
   shortDescription: String!
 }
 
+enum RiskType {
+  RISK
+  GOAL
+  CONDITION
+}
+
+enum Impact {
+  HIGH
+  NORMAL
+}
+
+enum Likelihood {
+  HIGH
+  NORMAL
+}
+
+enum CategoryTopLevel {
+  HEALTH
+  WEALTH
+  SECURITY
+}
+
 """
 A Risk is something that may cause harm to yourself, your family, or your goals.
 """
-type Risk {
+type Risk implements Updated {
   """
   The id.
   """
   id: ID!
-
-  """
-  The name.
-  """
-  name: String!
 
   """
   Risk category.
@@ -93,19 +104,44 @@ type Risk {
   category: CategoryTopLevel!
 
   """
-  Parent risk.
+  The impact.
   """
-  parent: Risk
+  impact: Impact!
 
   """
-  Child risks.
+  The likelihood.
   """
-  children: [Risk]
+  likelihood: Likelihood!
+
+  """
+  The name.
+  """
+  name: String!
 
   """
   Risk notes.
   """
   notes: String
+
+  """
+  Parent risk.
+  """
+  parent: Risk
+
+  """
+  The type of risk.
+  """
+  type: RiskType!
+
+  """
+  Short description of the risk.
+  """
+  shortDescription: String!
+
+  """
+  Time of last significant update to the risk.
+  """
+  updated: DateTime!
 }
 
 type Query {

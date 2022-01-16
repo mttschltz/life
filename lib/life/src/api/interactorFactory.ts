@@ -1,16 +1,21 @@
 import {
   newCategoryMapper as newCategoryMapperUsecase,
   newRiskMapper as newRiskMapperUsecase,
+  newUpdatedMapper,
 } from '@life/usecase/mapper'
 import { ListInteractor as ListRiskInteractor } from '@life/usecase/risk/list'
 import { FetchRiskChildrenInteractor } from '@life/usecase/risk/fetchRiskChildren'
 import { FetchRiskParentInteractor } from '@life/usecase/risk/fetchRiskParent'
 import { CreateRiskInteractor } from '@life/usecase/risk/createRisk'
-import { ListInteractor as ListCategoryInteractor, newListInteractor } from '@life/usecase/category/list'
-import { CategoryRepo, RiskRepo } from '@life/repo'
+import {
+  ListInteractor as ListCategoryInteractor,
+  newListInteractor as newListCategoriesInteractor,
+} from '@life/usecase/category/list'
+import { CategoryRepo, RiskRepo, UpdatedRepo } from '@life/repo'
 import { FetchInteractor, newFetchInteractor } from '@life/usecase/category/fetch'
 import { FetchParentInteractor, newFetchParentInteractor } from '@life/usecase/category/fetchParent'
 import { FetchChildrenInteractor, newFetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
+import { ListInteractor, newListInteractor as newListUpdatedInteractor } from '@life/usecase/updated/list'
 
 interface RiskInteractorFactory {
   listInteractor: () => ListRiskInteractor
@@ -70,7 +75,7 @@ class CategoryInteractorFactoryImpl implements CategoryInteractorFactory {
   }
 
   public listInteractor(): ListCategoryInteractor {
-    return newListInteractor(this.#repo, newCategoryMapperUsecase())
+    return newListCategoriesInteractor(this.#repo, newCategoryMapperUsecase())
   }
 
   public fetchInteractor(): FetchInteractor {
@@ -86,10 +91,33 @@ class CategoryInteractorFactoryImpl implements CategoryInteractorFactory {
   }
 }
 
+interface UpdatedInteractorFactory {
+  listInteractor: () => ListInteractor
+}
+
+function newUpdatedInteractorFactory(repo: UpdatedRepo): UpdatedInteractorFactory {
+  return new UpdatedInteractorFactoryImpl(repo)
+}
+
+class UpdatedInteractorFactoryImpl implements UpdatedInteractorFactory {
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
+  #repo: UpdatedRepo
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
+
+  public constructor(repo: UpdatedRepo) {
+    this.#repo = repo
+  }
+
+  public listInteractor(): ListInteractor {
+    return newListUpdatedInteractor(this.#repo, newUpdatedMapper(newCategoryMapperUsecase(), newRiskMapperUsecase()))
+  }
+}
+
 type InteractorFactory = {
   category: CategoryInteractorFactory
   risk: RiskInteractorFactory
+  updated: UpdatedInteractorFactory
 }
 
-export type { InteractorFactory, RiskInteractorFactory, CategoryInteractorFactory }
-export { newRiskInteractorFactory, newCategoryInteractorFactory }
+export type { InteractorFactory, RiskInteractorFactory, CategoryInteractorFactory, UpdatedInteractorFactory }
+export { newRiskInteractorFactory, newCategoryInteractorFactory, newUpdatedInteractorFactory }

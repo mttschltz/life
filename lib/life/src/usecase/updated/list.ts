@@ -2,24 +2,24 @@ import { Updated, UpdatedMapper } from '@life/usecase/mapper'
 import { Results } from '@util/result'
 import { UpdatedRepo } from '@life/repo'
 
-type ListUpdatedRepo = Pick<UpdatedRepo, 'list'>
-type ListUpdatedMapper = Pick<UpdatedMapper, 'updated'>
+type ListRepo = Pick<UpdatedRepo, 'list'>
+type ListMapper = Pick<UpdatedMapper, 'updated'>
 
-interface ListUpdatedInteractor {
+interface ListInteractor {
   list: (criteria: { count: number }) => Promise<Results<Updated>>
 }
 
-function newListUpdatedInteractor(repo: ListUpdatedRepo, mapper: ListUpdatedMapper): ListUpdatedInteractor {
-  return new ListUpdatedInteractorImpl(repo, mapper)
+function newListInteractor(repo: ListRepo, mapper: ListMapper): ListInteractor {
+  return new ListInteractorImpl(repo, mapper)
 }
 
-class ListUpdatedInteractorImpl implements ListUpdatedInteractor {
+class ListInteractorImpl implements ListInteractor {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-  #repo: ListUpdatedRepo
-  #mapper: ListUpdatedMapper
+  #repo: ListRepo
+  #mapper: ListMapper
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  public constructor(repo: ListUpdatedRepo, mapper: ListUpdatedMapper) {
+  public constructor(repo: ListRepo, mapper: ListMapper) {
     this.#repo = repo
     this.#mapper = mapper
   }
@@ -38,5 +38,5 @@ class ListUpdatedInteractorImpl implements ListUpdatedInteractor {
   }
 }
 
-export type { ListUpdatedMapper, ListUpdatedRepo, ListUpdatedInteractor }
-export { newListUpdatedInteractor }
+export type { ListMapper, ListRepo, ListInteractor }
+export { newListInteractor }

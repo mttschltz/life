@@ -248,12 +248,10 @@ function newUpdatedMapper(categoryMapper: CategoryMapper, riskMapper: RiskMapper
 }
 
 function isUpdatedCategory(u: Updated): u is Category {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return 'children' in u && 'path' in u
 }
 
 function isUpdatedRisk(u: Updated): u is Risk {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return 'category' in u && 'impact' in u && 'likelihood' in u && 'type' in u
 }
 

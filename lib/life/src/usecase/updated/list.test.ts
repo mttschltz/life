@@ -1,7 +1,7 @@
 import { Updated as UpdatedDomain } from '@life/updated'
 import { ResultError, Results, results, resultsOk } from '@util/result'
-import { ListUpdatedInteractor, ListUpdatedMapper, newListUpdatedInteractor } from '@life/usecase/updated/list'
-import type { ListUpdatedRepo } from '@life/usecase/updated/list'
+import { ListInteractor, ListMapper, newListInteractor } from '@life/usecase/updated/list'
+import type { ListRepo } from '@life/usecase/updated/list'
 import { Updated, Category, Risk } from '@life/usecase/mapper'
 import { Category as CategoryDomain } from '@life/category'
 import {
@@ -14,11 +14,11 @@ import {
 
 describe('usecase>updated>list', () => {
   describe('Given a ListInteractor', () => {
-    let repoList: jest.MockedFunction<ListUpdatedRepo['list']>
-    let mapperUpdated: jest.MockedFunction<ListUpdatedMapper['updated']>
+    let repoList: jest.MockedFunction<ListRepo['list']>
+    let mapperUpdated: jest.MockedFunction<ListMapper['updated']>
     let repoUpdated: UpdatedDomain[]
     let mappedUpdated: Updated[]
-    let interactor: ListUpdatedInteractor
+    let interactor: ListInteractor
     let categoryMapped: Category
     let riskMapped: Risk
     beforeEach(() => {
@@ -59,7 +59,7 @@ describe('usecase>updated>list', () => {
       mappedUpdated = [categoryMapped, riskMapped]
       repoList = jest.fn()
       mapperUpdated = jest.fn().mockReturnValueOnce(resultsOk(mappedUpdated))
-      interactor = newListUpdatedInteractor(
+      interactor = newListInteractor(
         {
           list: repoList,
         },

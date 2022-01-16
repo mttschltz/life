@@ -65,11 +65,24 @@ class GraphService {
         },
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
+      Updated: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/explicit-function-return-type
+        __resolveType: (obj) => {
+          if (this.#mapper.isUpdatedCategory(obj)) {
+            return 'Category'
+          }
+          if (this.#mapper.isUpdatedRisk(obj)) {
+            return 'Risk'
+          }
+          return null
+        },
+      },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       Mutation: {
         createRisk: async (_, { input }): Promise<Risk> => {
           // TODO: Instead of mapping each enum, etc individually, map CreateRiskInput
           // to CreateRiskRequest. This should make testing easier.
-          const categoryResult = this.#mapper.toCategoryTopLevel(input.category)
+          const categoryResult = this.#mapper.categoryTopLevelToUsecase(input.category)
           if (!categoryResult.ok) {
             this.#logger.result(categoryResult)
             throw this.resultError(categoryResult)
@@ -85,6 +98,7 @@ class GraphService {
             type: 'Condition',
             uriPart: input.uriPart,
             notes: input.notes ?? undefined,
+            // TODO: Remove hardcoding
             shortDescription: 'short description',
             updated: new Date(),
           })
@@ -93,7 +107,7 @@ class GraphService {
             throw this.resultError(riskResult)
           }
 
-          const mappingResult = this.#mapper.fromRisk(riskResult.value)
+          const mappingResult = this.#mapper.riskFromUsecase(riskResult.value)
           if (!mappingResult.ok) {
             this.#logger.result(mappingResult)
             throw this.resultError(mappingResult)
@@ -115,29 +129,13 @@ class GraphService {
             return null
           }
 
-          const mappingResult = this.#mapper.fromRisk(parent)
+          const mappingResult = this.#mapper.riskFromUsecase(parent)
           if (!mappingResult.ok) {
             this.#logger.result(mappingResult)
             throw this.resultError(mappingResult)
           }
 
           return mappingResult.value
-        },
-        children: async (risk): Promise<Risk[]> => {
-          const childrenResult = await this.#factory.risk.fetchRiskChildrenInteractor().fetchRiskChildren(risk.id)
-          if (!childrenResult.ok) {
-            this.#logger.result(childrenResult)
-            throw this.resultError(childrenResult)
-          }
-
-          const mappingResults = this.#mapper.risks(childrenResult.value)
-          const errorResult = mappingResults.firstErrorResult
-          if (errorResult) {
-            this.#logger.result(errorResult)
-            throw this.resultError(errorResult)
-          }
-
-          return mappingResults.okValues
         },
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -177,7 +175,7 @@ class GraphService {
             throw this.resultError(riskResults.firstErrorResult)
           }
 
-          const mappingResults = this.#mapper.risks(riskResults.okValues)
+          const mappingResults = this.#mapper.risksFromUsecase(riskResults.okValues)
           const errorResult = mappingResults.firstErrorResult
           if (errorResult) {
             this.#logger.result(errorResult)
@@ -185,6 +183,22 @@ class GraphService {
           }
 
           return mappingResults.okValues
+        },
+        updated: async (): Promise<(Category | Risk)[]> => {
+          const updatedResults = await this.#factory.updated.listInteractor().list({ count: 10 })
+          if (updatedResults.firstErrorResult) {
+            this.#logger.result(updatedResults.firstErrorResult)
+            throw this.resultError(updatedResults.firstErrorResult)
+          }
+
+          const mappedResults = this.#mapper.updatedFromUsecase(updatedResults.okValues)
+          const errorResult = mappedResults.firstErrorResult
+          if (errorResult) {
+            this.#logger.result(errorResult)
+            throw this.resultError(errorResult)
+          }
+
+          return mappedResults.okValues
         },
       },
     }
