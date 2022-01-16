@@ -25,7 +25,7 @@ class ListInteractorImpl implements ListInteractor {
   }
 
   public async list(): Promise<Results<Category>> {
-    const fetchedResults = await this.#repo.list({ includeChildren: true })
+    const fetchedResults = await this.#repo.list({ onlyRoot: true })
     if (fetchedResults.firstErrorResult) {
       return fetchedResults.withOnlyFirstError<Category>()
     }

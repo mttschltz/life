@@ -25,7 +25,7 @@ class UpdatedRepoJsonImpl implements UpdatedRepoJson {
 
   public async list(criteria: { count: number }): Promise<Results<Updated>> {
     // Get all categories by date
-    const categoriesResults = await this.#categoryRepo.list({ includeChildren: true })
+    const categoriesResults = await this.#categoryRepo.list({ onlyRoot: true })
     if (categoriesResults.firstErrorResult) {
       return categoriesResults.withOnlyFirstError()
     }

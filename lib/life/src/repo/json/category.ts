@@ -1,7 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Result, resultError, resultOk, Results, results, resultsError, resultsErrorResult } from '@util/result'
-import { CategoryRepo as CategoryRepoDomain } from '@life/repo'
+import { CategoryRepo, CategoryRepo as CategoryRepoDomain } from '@life/repo'
 import { CategoryJson, CategoryMapper } from '@life/repo/json/mapper'
 import { Category } from '@life/category'
 import { JsonStore } from './service'
@@ -96,11 +96,12 @@ class CategoryRepoJsonImpl implements CategoryRepoJson {
     return results(childrenResults)
   }
 
-  public async list(): Promise<Results<Category>> {
+  public async list(criteria: Parameters<CategoryRepo['list']>[0]): Promise<Results<Category>> {
+    const onlyRoot = criteria.onlyRoot ?? false
     const jsonCategories = Object.values(this.#store.category)
     const categoryResults = []
     for (const jsonCategory of jsonCategories) {
-      if (jsonCategory.parentId) {
+      if (onlyRoot && jsonCategory.parentId) {
         continue
       }
 

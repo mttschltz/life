@@ -681,8 +681,168 @@ describe('CategoryRepoJson', () => {
 
   describe('repo>category>list', () => {
     describe('Given a request', () => {
-      describe('When everything succeeds', () => {
-        test('Then the root mapped categories are returned', async () => {
+      describe('When onlyRoot is true', () => {
+        describe('and everything succeeds', () => {
+          test('Then the root mapped categories are returned', async () => {
+            const root1Mapped: Category = {
+              id: 'root1 mapped id',
+              name: 'root1 mapped name',
+              path: 'root1 mapped path',
+              shortDescription: 'root1 short description',
+              children: [],
+              updated: new Date(),
+            }
+            const child1Mapped: Category = {
+              id: 'child1 mapped id',
+              name: 'child1 mapped name',
+              path: 'child1 mapped path',
+              shortDescription: 'child1 short description',
+              children: [],
+              updated: new Date(),
+            }
+            const root2Mapped: Category = {
+              id: 'root2 mapped id',
+              name: 'root2 mapped name',
+              path: 'root2 mapped path',
+              shortDescription: 'root2 short description',
+              children: [],
+              updated: new Date(),
+            }
+            const child2Mapped: Category = {
+              id: 'child2 mapped id',
+              name: 'child2 mapped name',
+              path: 'child2 mapped path',
+              shortDescription: 'child2 short description',
+              children: [],
+              updated: new Date(),
+            }
+            const fromJson: jest.MockedFunction<CategoryMapper['fromJson']> = jest.fn().mockImplementation(({ id }) => {
+              switch (id) {
+                case 'root1 id':
+                  return resultOk(root1Mapped)
+                case 'child1 id':
+                  return resultOk(child1Mapped)
+                case 'root2 id':
+                  return resultOk(root2Mapped)
+                case 'child2 id':
+                  return resultOk(child2Mapped)
+                default:
+                  resultError('error')
+              }
+            })
+            const mapper: CategoryMapper = {
+              fromJson,
+              toJson: jest.fn(),
+            }
+
+            const root1Repo: CategoryJson = {
+              id: 'root1 id',
+              name: 'root1 name',
+              path: 'root1 path',
+              shortDescription: 'root1 short description',
+              children: ['child1 id'],
+              updated: new Date(),
+            }
+            const child1Repo: CategoryJson = {
+              id: 'child1 id',
+              name: 'child1 name',
+              path: 'child1 path',
+              shortDescription: 'child1 short description',
+              parentId: 'root1 id',
+              children: [],
+              updated: new Date(),
+            }
+            const root2Repo: CategoryJson = {
+              id: 'root2 id',
+              name: 'root2 name',
+              path: 'root2 path',
+              shortDescription: 'root2 short description',
+              children: ['child2 id'],
+              updated: new Date(),
+            }
+            const child2Repo: CategoryJson = {
+              id: 'child2 id',
+              name: 'child2 name',
+              path: 'child2 path',
+              shortDescription: 'child2 short description',
+              parentId: 'child1 id',
+              children: [],
+              updated: new Date(),
+            }
+            const repo = newCategoryRepoJson(
+              {
+                category: {
+                  'root1 id': root1Repo,
+                  'child1 id': child1Repo,
+                  'root2 id': root2Repo,
+                  'child2 id': child2Repo,
+                },
+                risk: {},
+              },
+              mapper,
+            )
+
+            const result = await repo.list({ onlyRoot: true })
+            expect(result.firstErrorResult).toBeUndefined()
+            const categories = result.okValues
+            expect(categories).toHaveLength(2)
+            expect(categories[0]).toEqual(root1Mapped)
+            expect(categories[1]).toEqual(root2Mapped)
+            expect(fromJson.mock.calls).toHaveLength(4)
+            // root1Repo is fetched first, which calls fromJson for child1Repo first then root1Repo
+            expect(fromJson.mock.calls[0]).toEqual([child1Repo, undefined, []])
+            expect(fromJson.mock.calls[1]).toEqual([root1Repo, undefined, [child1Mapped]])
+            // root2Repo is fetched next, which calls fromJson for child2Repo first then root2Repo
+            expect(fromJson.mock.calls[2]).toEqual([child2Repo, undefined, []])
+            expect(fromJson.mock.calls[3]).toEqual([root2Repo, undefined, [child2Mapped]])
+          })
+        })
+        describe('and fetching a category errors', () => {
+          test('Then the same error result is returned', async () => {
+            const mapperError = resultError('error')
+            const fromJson: jest.MockedFunction<CategoryMapper['fromJson']> = jest.fn().mockReturnValueOnce(mapperError)
+            const mapper: CategoryMapper = {
+              fromJson,
+              toJson: jest.fn(),
+            }
+
+            const root1Repo: CategoryJson = {
+              id: 'root1 id',
+              name: 'root1 name',
+              path: 'root1 path',
+              shortDescription: 'root1 short description',
+              children: ['child1 id'],
+              updated: new Date(),
+            }
+            const category1Repo: CategoryJson = {
+              id: 'child1 id',
+              name: 'child1 name',
+              path: 'child1 path',
+              shortDescription: 'child1 short description',
+              parentId: 'root1 id',
+              children: [],
+              updated: new Date(),
+            }
+            const repo = newCategoryRepoJson(
+              {
+                category: {
+                  'root1 id': root1Repo,
+                  'child1 id': category1Repo,
+                },
+                risk: {},
+              },
+              mapper,
+            )
+
+            const result = await repo.list({ onlyRoot: true })
+            expect(result.firstErrorResult).toBe(mapperError)
+            expect(result.okValues).toEqual([])
+            expect(result.values).toEqual([undefined])
+          })
+        })
+      })
+      describe('When onlyRoot is false', () => {
+        test('Then all mapped categories are returned', async () => {
           const root1Mapped: Category = {
             id: 'root1 mapped id',
             name: 'root1 mapped name',
@@ -742,7 +902,7 @@ describe('CategoryRepoJson', () => {
             children: ['child1 id'],
             updated: new Date(),
           }
-          const category1Repo: CategoryJson = {
+          const child1Repo: CategoryJson = {
             id: 'child1 id',
             name: 'child1 name',
             path: 'child1 path',
@@ -772,7 +932,7 @@ describe('CategoryRepoJson', () => {
             {
               category: {
                 'root1 id': root1Repo,
-                'child1 id': category1Repo,
+                'child1 id': child1Repo,
                 'root2 id': root2Repo,
                 'child2 id': child2Repo,
               },
@@ -781,60 +941,27 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
 
-          const result = await repo.list({ includeChildren: true })
+          const result = await repo.list({ onlyRoot: false })
           expect(result.firstErrorResult).toBeUndefined()
           const categories = result.okValues
-          expect(categories).toHaveLength(2)
+          expect(categories).toHaveLength(4)
           expect(categories[0]).toEqual(root1Mapped)
-          expect(categories[1]).toEqual(root2Mapped)
-          expect(fromJson.mock.calls).toHaveLength(4)
-          expect(fromJson.mock.calls[0]).toEqual([category1Repo, undefined, []])
+          expect(categories[1]).toEqual(child1Mapped)
+          expect(categories[2]).toEqual(root2Mapped)
+          expect(categories[3]).toEqual(child2Mapped)
+          expect(fromJson.mock.calls).toHaveLength(8)
+          // root1Repo is fetched, which calls fromJson for child1Repo then itself
+          expect(fromJson.mock.calls[0]).toEqual([child1Repo, undefined, []])
           expect(fromJson.mock.calls[1]).toEqual([root1Repo, undefined, [child1Mapped]])
-          expect(fromJson.mock.calls[2]).toEqual([child2Repo, undefined, []])
-          expect(fromJson.mock.calls[3]).toEqual([root2Repo, undefined, [child2Mapped]])
-        })
-      })
-      describe('When fetching a category errors', () => {
-        test('Then the same error result is returned', async () => {
-          const mapperError = resultError('error')
-          const fromJson: jest.MockedFunction<CategoryMapper['fromJson']> = jest.fn().mockReturnValueOnce(mapperError)
-          const mapper: CategoryMapper = {
-            fromJson,
-            toJson: jest.fn(),
-          }
-
-          const root1Repo: CategoryJson = {
-            id: 'root1 id',
-            name: 'root1 name',
-            path: 'root1 path',
-            shortDescription: 'root1 short description',
-            children: ['child1 id'],
-            updated: new Date(),
-          }
-          const category1Repo: CategoryJson = {
-            id: 'child1 id',
-            name: 'child1 name',
-            path: 'child1 path',
-            shortDescription: 'child1 short description',
-            parentId: 'root1 id',
-            children: [],
-            updated: new Date(),
-          }
-          const repo = newCategoryRepoJson(
-            {
-              category: {
-                'root1 id': root1Repo,
-                'child1 id': category1Repo,
-              },
-              risk: {},
-            },
-            mapper,
-          )
-
-          const result = await repo.list({ includeChildren: true })
-          expect(result.firstErrorResult).toBe(mapperError)
-          expect(result.okValues).toEqual([])
-          expect(result.values).toEqual([undefined])
+          // child1Repo is fetched, which calls fromJson for root1Repo then itself
+          expect(fromJson.mock.calls[2]).toEqual([root1Repo, undefined, []])
+          expect(fromJson.mock.calls[3]).toEqual([child1Repo, root1Mapped, []])
+          // root2Repo is fetched, which calls fromJson for child2Repo then itself
+          expect(fromJson.mock.calls[4]).toEqual([child2Repo, undefined, []])
+          expect(fromJson.mock.calls[5]).toEqual([root2Repo, undefined, [child2Mapped]])
+          // child2Repo is fetched, which calls fromJson for child1Repo then itself
+          expect(fromJson.mock.calls[6]).toEqual([child1Repo, undefined, []])
+          expect(fromJson.mock.calls[7]).toEqual([child2Repo, child1Mapped, []])
         })
       })
     })

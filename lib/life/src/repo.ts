@@ -15,7 +15,7 @@ interface CategoryRepo {
   fetch: (id: string) => Promise<Result<Category>>
   fetchChildren: (id: string) => Promise<Results<Category>>
   fetchParent: (childId: string) => Promise<Result<Category | undefined>>
-  list: (criteria: { includeChildren: boolean }) => Promise<Results<Category>>
+  list: (criteria: { onlyRoot: boolean }) => Promise<Results<Category>>
 }
 
 interface UpdatedRepo {

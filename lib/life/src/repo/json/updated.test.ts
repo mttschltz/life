@@ -41,7 +41,7 @@ describe('UpdatedRepoJson', () => {
           expect(updatedResults.okValues).toHaveLength(0)
 
           expect(listCategories.mock.calls).toHaveLength(1)
-          expect(listCategories.mock.calls[0]).toEqual([{ includeChildren: true }])
+          expect(listCategories.mock.calls[0]).toEqual([{ onlyRoot: true }])
           expect(listRisks.mock.calls).toHaveLength(1)
           expect(listRisks.mock.calls[0]).toEqual([undefined, true])
         })
@@ -119,7 +119,7 @@ describe('UpdatedRepoJson', () => {
           expect(updatedResults.okValues).toEqual([category3, category4])
 
           expect(listCategories.mock.calls).toHaveLength(1)
-          expect(listCategories.mock.calls[0]).toEqual([{ includeChildren: true }])
+          expect(listCategories.mock.calls[0]).toEqual([{ onlyRoot: true }])
           expect(listRisks.mock.calls).toHaveLength(1)
           expect(listRisks.mock.calls[0]).toEqual([undefined, true])
         })
@@ -133,7 +133,7 @@ describe('UpdatedRepoJson', () => {
           expect(updatedResults.okValues).toEqual([category3, category4, category2, category1])
 
           expect(listCategories.mock.calls).toHaveLength(1)
-          expect(listCategories.mock.calls[0]).toEqual([{ includeChildren: true }])
+          expect(listCategories.mock.calls[0]).toEqual([{ onlyRoot: true }])
           expect(listRisks.mock.calls).toHaveLength(1)
           expect(listRisks.mock.calls[0]).toEqual([undefined, true])
         })
@@ -197,7 +197,7 @@ describe('UpdatedRepoJson', () => {
           expect(updatedResults.okValues).toEqual([risk3, risk4])
 
           expect(listCategories.mock.calls).toHaveLength(1)
-          expect(listCategories.mock.calls[0]).toEqual([{ includeChildren: true }])
+          expect(listCategories.mock.calls[0]).toEqual([{ onlyRoot: true }])
           expect(listRisks.mock.calls).toHaveLength(1)
           expect(listRisks.mock.calls[0]).toEqual([undefined, true])
         })
@@ -211,7 +211,7 @@ describe('UpdatedRepoJson', () => {
           expect(updatedResults.okValues).toEqual([risk3, risk4, risk2, risk1])
 
           expect(listCategories.mock.calls).toHaveLength(1)
-          expect(listCategories.mock.calls[0]).toEqual([{ includeChildren: true }])
+          expect(listCategories.mock.calls[0]).toEqual([{ onlyRoot: true }])
           expect(listRisks.mock.calls).toHaveLength(1)
           expect(listRisks.mock.calls[0]).toEqual([undefined, true])
         })
@@ -271,7 +271,7 @@ describe('UpdatedRepoJson', () => {
           expect(updatedResults.okValues).toEqual([risk3, category4])
 
           expect(listCategories.mock.calls).toHaveLength(1)
-          expect(listCategories.mock.calls[0]).toEqual([{ includeChildren: true }])
+          expect(listCategories.mock.calls[0]).toEqual([{ onlyRoot: true }])
           expect(listRisks.mock.calls).toHaveLength(1)
           expect(listRisks.mock.calls[0]).toEqual([undefined, true])
         })
@@ -285,7 +285,7 @@ describe('UpdatedRepoJson', () => {
           expect(updatedResults.okValues).toEqual([risk3, category4, category2, risk1])
 
           expect(listCategories.mock.calls).toHaveLength(1)
-          expect(listCategories.mock.calls[0]).toEqual([{ includeChildren: true }])
+          expect(listCategories.mock.calls[0]).toEqual([{ onlyRoot: true }])
           expect(listRisks.mock.calls).toHaveLength(1)
           expect(listRisks.mock.calls[0]).toEqual([undefined, true])
         })

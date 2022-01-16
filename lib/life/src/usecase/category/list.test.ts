@@ -119,7 +119,7 @@ describe('usecase>category>list', () => {
 
         // And the categories are fetched
         expect(repoList.mock.calls).toHaveLength(1)
-        expect(repoList.mock.calls[0][0]).toEqual({ includeChildren: true })
+        expect(repoList.mock.calls[0][0]).toEqual({ onlyRoot: true })
       })
     })
     describe('When listing from the repo errors on one category', () => {
@@ -158,7 +158,7 @@ describe('usecase>category>list', () => {
 
         // And the categories are fetched
         expect(repoList.mock.calls).toHaveLength(1)
-        expect(repoList.mock.calls[0][0]).toEqual({ includeChildren: true })
+        expect(repoList.mock.calls[0][0]).toEqual({ onlyRoot: true })
       })
     })
   })
