@@ -5,6 +5,8 @@ import { RiskRepo } from '@life/repo'
 
 type ListRepo = Pick<RiskRepo, 'list'>
 
+// ignore code coverage for risks until they are refactored
+/* c8 ignore start */
 interface ListCriteria {
   category?: 'health' | 'security' | 'wealth'
   includeDescendents?: boolean
@@ -42,6 +44,7 @@ class ListInteractor {
     return resultsOk(risksResults.okValues.map((risk) => this.#mapper.risk(risk)))
   }
 }
+/* c8 ignore stop */
 
 export { ListInteractor }
 export type { ListCriteria }

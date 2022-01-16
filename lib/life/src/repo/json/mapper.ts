@@ -5,6 +5,8 @@ import { Result } from '@util/result'
 type RiskJson = Omit<Risk, 'mitigations' | 'parent'> & { parentId?: string }
 type CategoryJson = Omit<Category, 'children' | 'parent'> & { parentId?: string; children: string[] }
 
+// ignore code coverage for risks until they are refactored
+/* c8 ignore start */
 class RiskMapper {
   public toJson({
     category,
@@ -50,6 +52,7 @@ class RiskMapper {
     return newRisk(id, createDetails)
   }
 }
+/* c8 ignore stop */
 
 interface CategoryMapper {
   toJson: (category: Category) => CategoryJson

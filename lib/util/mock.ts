@@ -1,3 +1,5 @@
+/* c8 ignore start */
+
 import { MockProxy, DeepMockProxy, mock as mockLib, mockDeep as mockDeepLib } from 'jest-mock-extended'
 
 type Mocked<T> = MockProxy<T>
@@ -24,3 +26,5 @@ function mockDeep<T>(): MockDeepReturn<T> {
 
 export type { Mocked, MockedDeep }
 export { mock, mockDeep }
+
+/* c8 ignore stop */

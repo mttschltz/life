@@ -1,3 +1,5 @@
+/* c8 ignore start */
+
 import {
   newCategoryMapper as newCategoryMapperUsecase,
   newRiskMapper as newRiskMapperUsecase,
@@ -121,3 +123,5 @@ type InteractorFactory = {
 
 export type { InteractorFactory, RiskInteractorFactory, CategoryInteractorFactory, UpdatedInteractorFactory }
 export { newRiskInteractorFactory, newCategoryInteractorFactory, newUpdatedInteractorFactory }
+
+/* c8 ignore stop */

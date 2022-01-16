@@ -48,6 +48,7 @@ function newCategory(id: string, details: CreateDetails): Result<Category> {
   const errors = validateSync(category)
   if (errors.length > 0) {
     const constraints = errors[0].constraints
+    /* c8 ignore next 3 */
     if (!constraints) {
       return resultError('Validation failed')
     }

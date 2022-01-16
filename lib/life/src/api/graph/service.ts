@@ -77,6 +77,8 @@ class GraphService {
           return null
         },
       },
+      // ignore code coverage for risks until they are refactored
+      /* c8 ignore start */
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Mutation: {
         createRisk: async (_, { input }): Promise<Risk> => {
@@ -138,6 +140,7 @@ class GraphService {
           return mappingResult.value
         },
       },
+      /* c8 ignore stop */
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Query: {
         categories: async (): Promise<Category[]> => {
@@ -155,6 +158,8 @@ class GraphService {
 
           return categories.okValues
         },
+        // ignore code coverage for risks until they are refactored
+        /* c8 ignore start */
         risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<Risk[]> => {
           const criteria: ListCriteria = {}
           switch (args.category) {
@@ -184,6 +189,7 @@ class GraphService {
 
           return mappingResults.okValues
         },
+        /* c8 ignore stop */
         updated: async (): Promise<(Category | Risk)[]> => {
           const updatedResults = await this.#factory.updated.listInteractor().list({ count: 10 })
           if (updatedResults.firstErrorResult) {

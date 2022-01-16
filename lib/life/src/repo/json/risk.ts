@@ -1,5 +1,8 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
+// ignore code coverage for risks until they are refactored
+/* c8 ignore start */
 import { CategoryTopLevel, Risk } from '@life/risk'
 import { Result, resultError, resultOk, results, Results, resultsOk } from '@util/result'
 import { RiskRepo as RiskRepoDomain } from '@life/repo'
@@ -119,3 +122,5 @@ class RiskRepoJsonImpl implements RiskRepoJson {
 
 export type { RiskRepoJson }
 export { newRiskRepoJson }
+
+/* c8 ignore stop */

@@ -62,6 +62,8 @@ class GraphMapperImpl implements GraphMapper {
     return results(categories.map((c) => this.categoryFromUsecase(c)))
   }
 
+  // ignore code coverage for risks until they are refactored
+  /* c8 ignore start */
   public categoryTopLevelToUsecase(graphCategory: CategoryTopLevel): Result<CategoryTopLevelUsecase> {
     switch (graphCategory) {
       case CategoryTopLevel.Health:
@@ -142,6 +144,7 @@ class GraphMapperImpl implements GraphMapper {
   public risksFromUsecase(risks: RiskUsecase[]): Results<Risk> {
     return results(risks.map((risk) => this.riskFromUsecase(risk)))
   }
+  /* c8 ignore stop */
 
   public updatedFromUsecase(updated: UpdatedUsecase[]): Results<Category | Risk> {
     const mapped: Result<Category | Risk>[] = updated.map((u) => {
