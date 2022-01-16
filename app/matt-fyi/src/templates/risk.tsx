@@ -15,25 +15,7 @@ const IndexPage: FunctionComponent<PageProps<GatsbyTypes.RisksQueryQuery>> = ({ 
             <ul>
               <li>Name: {r?.name}</li>
               <li>Notes: {r?.notes && <MDXRenderer>{r.notes}</MDXRenderer>}</li>
-              <li>
-                Children ({r?.children?.length}):{' '}
-                {r?.children?.length && (
-                  <ul>
-                    {r.children.map((c) => (
-                      <>
-                        <p key={c?.id}>Risk: {c?.id}</p>
-                        <ul key={c?.id}>
-                          <li>name: {c?.name}</li>
-                          <li>
-                            notes:
-                            {c?.notes && <MDXRenderer>{c.notes}</MDXRenderer>}
-                          </li>
-                        </ul>
-                      </>
-                    ))}
-                  </ul>
-                )}
-              </li>
+              <li></li>
             </ul>
           </>
         ))}
@@ -49,12 +31,6 @@ export const query = graphql`
         id
         name
         notes
-        children {
-          id
-          name
-          category
-          notes
-        }
       }
     }
   }

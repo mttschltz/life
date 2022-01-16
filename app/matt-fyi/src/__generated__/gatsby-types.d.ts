@@ -246,8 +246,6 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
-  readonly port: Maybe<Scalars['Int']>;
-  readonly host: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
@@ -414,11 +412,6 @@ type Store_Updated = {
   readonly shortDescription: Scalars['String'];
 };
 
-type Store_CategoryTopLevel =
-  | 'HEALTH'
-  | 'WEALTH'
-  | 'SECURITY';
-
 /** A Concern needs addressing. It can be a single Risk or group (Category) of Risks. */
 type Store_Concern = Store_Category | Store_Risk;
 
@@ -445,20 +438,46 @@ type Store_Category = Store_Updated & {
   readonly shortDescription: Scalars['String'];
 };
 
+type Store_RiskType =
+  | 'RISK'
+  | 'GOAL'
+  | 'CONDITION';
+
+type Store_Impact =
+  | 'HIGH'
+  | 'NORMAL';
+
+type Store_Likelihood =
+  | 'HIGH'
+  | 'NORMAL';
+
+type Store_CategoryTopLevel =
+  | 'HEALTH'
+  | 'WEALTH'
+  | 'SECURITY';
+
 /** A Risk is something that may cause harm to yourself, your family, or your goals. */
-type Store_Risk = {
+type Store_Risk = Store_Updated & {
   /** The id. */
   readonly id: Scalars['ID'];
-  /** The name. */
-  readonly name: Scalars['String'];
   /** Risk category. */
   readonly category: Store_CategoryTopLevel;
-  /** Parent risk. */
-  readonly parent: Maybe<Store_Risk>;
-  /** Child risks. */
-  readonly children: Maybe<ReadonlyArray<Maybe<Store_Risk>>>;
+  /** The impact. */
+  readonly impact: Store_Impact;
+  /** The likelihood. */
+  readonly likelihood: Store_Likelihood;
+  /** The name. */
+  readonly name: Scalars['String'];
   /** Risk notes. */
   readonly notes: Maybe<Scalars['String']>;
+  /** Parent risk. */
+  readonly parent: Maybe<Store_Risk>;
+  /** The type of risk. */
+  readonly type: Store_RiskType;
+  /** Short description of the risk. */
+  readonly shortDescription: Scalars['String'];
+  /** Time of last significant update to the risk. */
+  readonly updated: Scalars['Store_DateTime'];
 };
 
 /** Create risk input. */
@@ -609,8 +628,6 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  port: Maybe<IntQueryOperatorInput>;
-  host: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
@@ -1324,8 +1341,6 @@ type SiteFieldsEnum =
   | 'buildTime'
   | 'siteMetadata.title'
   | 'siteMetadata.description'
-  | 'port'
-  | 'host'
   | 'polyfill'
   | 'pathPrefix'
   | 'id'
@@ -1427,8 +1442,6 @@ type SiteGroupConnection = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
-  readonly port: Maybe<IntQueryOperatorInput>;
-  readonly host: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
@@ -2581,19 +2594,6 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type RisksQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type RisksQueryQuery = { readonly store: { readonly risks: ReadonlyArray<Maybe<(
-      Pick<Store_Risk, 'id' | 'name' | 'notes'>
-      & { readonly children: Maybe<ReadonlyArray<Maybe<Pick<Store_Risk, 'id' | 'name' | 'category' | 'notes'>>>> }
-    )>> } };
-
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
-
 type CategoryQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2601,5 +2601,10 @@ type CategoryQueryQuery = { readonly store: { readonly categories: ReadonlyArray
       Pick<Store_Category, 'name'>
       & { readonly children: ReadonlyArray<Maybe<Pick<Store_Category, 'name'>>> }
     )>> } };
+
+type RisksQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type RisksQueryQuery = { readonly store: { readonly risks: ReadonlyArray<Maybe<Pick<Store_Risk, 'id' | 'name' | 'notes'>>> } };
 
 }
