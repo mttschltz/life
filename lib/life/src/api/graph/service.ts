@@ -200,14 +200,14 @@ class GraphService {
     const error = result.error
 
     if (error.stack) {
-      return new ApolloError(result.message || 'Unknown error', undefined, {
+      return new ApolloError(result.message, undefined, {
         exception: {
           stacktrace: error.stack,
         },
       })
     }
 
-    return new ApolloError(result.message || 'Unknown error')
+    return new ApolloError(result.message)
   }
 }
 
