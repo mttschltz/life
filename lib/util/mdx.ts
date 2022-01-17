@@ -38,6 +38,8 @@ const transpile = (mdx?: string): string | undefined => {
     ],
   })
 
+  // not sure how to test these branches
+  /* c8 ignore start */
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
   const identifiers = Array.from(instance.state.identifiers)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
@@ -50,6 +52,7 @@ const transpile = (mdx?: string): string | undefined => {
   return result?.code
     ?.replace(/export\s*default\s*function\s*MDXContent\s*/, `return function MDXContent`)
     .replace(/export\s*{\s*MDXContent\s+as\s+default\s*};?/, `return MDXContent;`)
+  /* c8 ignore stop */
 }
 
 export { transpile }
