@@ -63,7 +63,7 @@ describe('CategoryRepoJson', () => {
           ] as Parameters<typeof fromJson>)
         })
       })
-      describe('When the cateegory is not found', () => {
+      describe('When the category is not found', () => {
         test('Then an error result is returned', async () => {
           const mapper: CategoryMapper = {
             fromJson: jest.fn(),
@@ -111,6 +111,64 @@ describe('CategoryRepoJson', () => {
                   name: 'name',
                   path: 'path',
                   shortDescription: 'short description',
+                  children: [],
+                  updated: new Date(),
+                },
+              },
+              risk: {},
+            },
+            mapper,
+          )
+
+          const result = await repo.fetch('id')
+          assertResultError(result)
+          expect(result).toBe(mapperErrorResult)
+        })
+      })
+      describe('When mapping the parent errors', () => {
+        test('Then the mapped error result is returned', async () => {
+          const mapped: Category = {
+            id: 'mapped id',
+            name: 'mapped name',
+            path: 'mapped path',
+            shortDescription: 'mapped short description',
+            children: [],
+            updated: new Date(),
+          }
+          const mapperErrorResult = resultError<Category>('parent mapping error')
+          const fromJson = (jest.fn() as jest.MockedFunction<CategoryMapper['fromJson']>).mockImplementationOnce(
+            (json) => {
+              if (json.id === 'parent id') {
+                return mapperErrorResult
+              }
+              if (json.id === 'id') {
+                return resultOk(mapped)
+              }
+              throw new Error('unexpected call')
+            },
+          )
+          const mapper: CategoryMapper = {
+            fromJson,
+            toJson: jest.fn(),
+          }
+
+          const repo = newCategoryRepoJson(
+            {
+              category: {
+                id: {
+                  id: 'id',
+                  name: 'name',
+                  path: 'path',
+                  shortDescription: 'short description',
+                  children: [],
+                  updated: new Date(),
+                  parentId: 'parent id',
+                },
+                'parent id': {
+                  id: 'parent id',
+                  name: 'parent name',
+                  path: 'parent path',
+                  shortDescription: 'parent short description',
                   children: [],
                   updated: new Date(),
                 },

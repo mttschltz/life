@@ -120,56 +120,99 @@ describe('Result', () => {
       })
     })
   })
-  describe('Given a list of results', () => {
-    let inputResults: Result<OkType>[]
-    let result1: ResultOk<OkType>
-    let result2: ResultError
-    let result3: ResultOk<OkType>
-    let result4: ResultError
-    beforeEach(() => {
-      result1 = {
-        ok: true,
-        value: {
-          cat: 'dog',
-        },
-      }
-      result2 = {
-        ok: false,
-        message: 'an error message',
-        error: new Error('an error'),
-      }
-      result3 = {
-        ok: true,
-        value: {
-          cat: 'donkey',
-        },
-      }
-      result4 = {
-        ok: false,
-        message: 'an error message 2',
-        error: new Error('an error 2'),
-      }
-      inputResults = [result1, result2, result3, result4]
-    })
-    describe('When results is called', () => {
-      let rs: Results<OkType>
+  describe('results', () => {
+    describe('Given a list of results', () => {
+      let inputResults: Result<OkType>[]
+      let result1: ResultOk<OkType>
+      let result2: ResultError
+      let result3: ResultOk<OkType>
+      let result4: ResultError
       beforeEach(() => {
-        rs = results(inputResults)
+        result1 = {
+          ok: true,
+          value: {
+            cat: 'dog',
+          },
+        }
+        result2 = {
+          ok: false,
+          message: 'an error message',
+          error: new Error('an error'),
+        }
+        result3 = {
+          ok: true,
+          value: {
+            cat: 'donkey',
+          },
+        }
+        result4 = {
+          ok: false,
+          message: 'an error message 2',
+          error: new Error('an error 2'),
+        }
+        inputResults = [result1, result2, result3, result4]
       })
-      test('Then firstErrorResult returns the first error', () => {
-        expect(rs.firstErrorResult).toBe(result2)
+      describe('When results is called', () => {
+        let rs: Results<OkType>
+        beforeEach(() => {
+          rs = results(inputResults)
+        })
+        test('Then firstErrorResult returns the first error', () => {
+          expect(rs.firstErrorResult).toBe(result2)
+        })
+        test('Then values returns 4 entries with undefined for ok Results', () => {
+          expect(rs.values).toEqual([result1.value, undefined, result3.value, undefined])
+        })
+        test('Then okValues returns the 2 ok values', () => {
+          expect(rs.okValues).toEqual([result1.value, result3.value])
+        })
+        test('Then withOnlyFirstError returns a new Results instance with only the first error', () => {
+          const rs2 = rs.withOnlyFirstError()
+          expect(rs2.firstErrorResult).toEqual(result2)
+          expect(rs2.okValues).toEqual([])
+          expect(rs2.values).toEqual([undefined])
+        })
       })
-      test('Then values returns 4 entries with undefined for ok Results', () => {
-        expect(rs.values).toEqual([result1.value, undefined, result3.value, undefined])
+    })
+    describe('Given a list of results with no errors', () => {
+      let inputResults: Result<OkType>[]
+      let result1: ResultOk<OkType>
+      let result3: ResultOk<OkType>
+      beforeEach(() => {
+        result1 = {
+          ok: true,
+          value: {
+            cat: 'dog',
+          },
+        }
+        result3 = {
+          ok: true,
+          value: {
+            cat: 'donkey',
+          },
+        }
+        inputResults = [result1, result3]
       })
-      test('Then okValues returns the 2 ok values', () => {
-        expect(rs.okValues).toEqual([result1.value, result3.value])
-      })
-      test('Then withOnlyFirstError returns a new Results instance with only the first error', () => {
-        const rs2 = rs.withOnlyFirstError()
-        expect(rs2.firstErrorResult).toEqual(result2)
-        expect(rs2.okValues).toEqual([])
-        expect(rs2.values).toEqual([undefined])
+      describe('When results is called', () => {
+        let rs: Results<OkType>
+        beforeEach(() => {
+          rs = results(inputResults)
+        })
+        test('Then firstErrorResult returns undefined', () => {
+          expect(rs.firstErrorResult).toBeUndefined()
+        })
+        test('Then values returns both entries', () => {
+          expect(rs.values).toEqual([result1.value, result3.value])
+        })
+        test('Then okValues returns both ok values', () => {
+          expect(rs.okValues).toEqual([result1.value, result3.value])
+        })
+        test('Then withOnlyFirstError returns a new Results instance with no entries', () => {
+          const rs2 = rs.withOnlyFirstError()
+          expect(rs2.firstErrorResult).toBeUndefined()
+          expect(rs2.okValues).toEqual([])
+          expect(rs2.values).toEqual([])
+        })
       })
     })
   })

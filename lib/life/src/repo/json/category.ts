@@ -97,11 +97,10 @@ class CategoryRepoJsonImpl implements CategoryRepoJson {
   }
 
   public async list(criteria: Parameters<CategoryRepo['list']>[0]): Promise<Results<Category>> {
-    const onlyRoot = criteria.onlyRoot ?? false
     const jsonCategories = Object.values(this.#store.category)
     const categoryResults = []
     for (const jsonCategory of jsonCategories) {
-      if (onlyRoot && jsonCategory.parentId) {
+      if (criteria.onlyRoot && jsonCategory.parentId) {
         continue
       }
 
