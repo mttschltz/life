@@ -143,6 +143,27 @@ describe('GraphService', () => {
               expect(logger.result.mock.calls[0]).toEqual([errorResult])
             })
           })
+          describe('When fetching the parent errors with no stacktrace', () => {
+            let errorResult: Result<CategoryUsecase>
+            beforeEach(() => {
+              errorResult = resultError<CategoryUsecase>('fetch error with no stacktrace', {
+                message: 'error message',
+                name: 'error name',
+              })
+              fetchParent.mockReset()
+              fetchParent.mockReturnValueOnce(Promise.resolve(errorResult))
+            })
+            test('Then the error logged and thrown', async () => {
+              const service = new GraphService(factory, mapper, logger)
+              const parent = service.resolvers().Category?.parent
+              assertResolverFn(parent)
+              await expect(parent(categoryWithParent, {}, {}, {} as GraphQLResolveInfo)).rejects.toThrow(
+                'fetch error with no stacktrace',
+              )
+              expect(logger.result.mock.calls).toHaveLength(1)
+              expect(logger.result.mock.calls[0]).toEqual([errorResult])
+            })
+          })
         })
         describe('Given a category without a parent', () => {
           let categoryWithoutParent: Category
@@ -599,6 +620,28 @@ describe('GraphService', () => {
             expect(mapper.isUpdatedRisk.mock.calls).toHaveLength(1)
             expect(mapper.isUpdatedRisk.mock.calls[0]).toEqual([obj])
             expect(mapper.isUpdatedRisk.mock.calls[0][0]).toBe(obj)
+          })
+        })
+        describe('Given an object of unknown type', () => {
+          beforeEach(() => {
+            mapper.isUpdatedCategory.mockReturnValueOnce(false)
+            mapper.isUpdatedRisk.mockReturnValueOnce(false)
+          })
+          afterEach(() => {
+            mapper.isUpdatedCategory.mockReset()
+            mapper.isUpdatedRisk.mockReset()
+          })
+          test('Then it returns null', () => {
+            const service = new GraphService(factory, mapper, logger)
+            const obj = {} as unknown
+            // @ts-expect-error Testing the case of an unexpected type
+            expect(service.resolvers().Updated?.__resolveType(obj, undefined, {} as GraphQLResolveInfo)).toBeNull()
+            expect(mapper.isUpdatedRisk.mock.calls).toHaveLength(1)
+            expect(mapper.isUpdatedRisk.mock.calls[0]).toEqual([obj])
+            expect(mapper.isUpdatedRisk.mock.calls[0][0]).toBe(obj)
+            expect(mapper.isUpdatedCategory.mock.calls).toHaveLength(1)
+            expect(mapper.isUpdatedCategory.mock.calls[0]).toEqual([obj])
+            expect(mapper.isUpdatedCategory.mock.calls[0][0]).toBe(obj)
           })
         })
       })
