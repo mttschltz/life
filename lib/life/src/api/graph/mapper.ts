@@ -19,8 +19,8 @@ interface GraphMapper {
   riskFromUsecase: (risk: RiskUsecase) => Result<Risk>
   risksFromUsecase: (risks: RiskUsecase[]) => Results<Risk>
   updatedFromUsecase: (updated: UpdatedUsecase[]) => Results<Category | Risk>
-  categoryFromUsecase: (category: CategoryUsecase) => Result<Category>
-  categoriesFromUsecase: (categories: CategoryUsecase[]) => Results<Category>
+  categoryFromUsecase: (category: CategoryUsecase) => Category
+  categoriesFromUsecase: (categories: CategoryUsecase[]) => Category[]
   isUpdatedCategory: (u: Category | Risk) => u is Category
   isUpdatedRisk: (u: Category | Risk) => u is Risk
 }
@@ -37,29 +37,23 @@ class GraphMapperImpl implements GraphMapper {
     this.#mdxTranspiler = mdxTranspiler
   }
 
-  public categoryFromUsecase(category: CategoryUsecase): Result<Category> {
-    const parentResult = category.parent ? this.categoryFromUsecase(category.parent) : undefined
-    if (parentResult && !parentResult.ok) {
-      return parentResult
-    }
-    const childrenResults = results(category.children.map((c) => this.categoryFromUsecase(c)))
-    if (childrenResults.firstErrorResult) {
-      return childrenResults.firstErrorResult
-    }
-    return resultOk({
+  public categoryFromUsecase(category: CategoryUsecase): Category {
+    const parent = category.parent ? this.categoryFromUsecase(category.parent) : undefined
+    const children = category.children.map((c) => this.categoryFromUsecase(c))
+    return {
       id: category.id,
       name: category.name,
       path: category.path,
       description: category.description ?? undefined,
       shortDescription: category.shortDescription,
-      parent: parentResult?.value,
-      children: childrenResults.okValues,
+      parent,
+      children,
       updated: category.updated,
-    })
+    }
   }
 
-  public categoriesFromUsecase(categories: CategoryUsecase[]): Results<Category> {
-    return results(categories.map((c) => this.categoryFromUsecase(c)))
+  public categoriesFromUsecase(categories: CategoryUsecase[]): Category[] {
+    return categories.map((c) => this.categoryFromUsecase(c))
   }
 
   // ignore code coverage for risks until they are refactored
@@ -149,7 +143,7 @@ class GraphMapperImpl implements GraphMapper {
   public updatedFromUsecase(updated: UpdatedUsecase[]): Results<Category | Risk> {
     const mapped: Result<Category | Risk>[] = updated.map((u) => {
       if (isUpdatedCategoryUsecase(u)) {
-        return this.categoryFromUsecase(u)
+        return resultOk(this.categoryFromUsecase(u))
       } else if (isUpdatedRiskUsecase(u)) {
         return this.riskFromUsecase(u)
       } else {

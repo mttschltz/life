@@ -93,7 +93,7 @@ describe('GraphService', () => {
               children: [],
               updated: new Date(),
             }
-            mapper.categoryFromUsecase.mockReturnValueOnce(resultOk<Category>(mappedParent))
+            mapper.categoryFromUsecase.mockReturnValueOnce(mappedParent)
           })
           describe('When everything succeeds', () => {
             test('Then the mapped parent is returned', async () => {
@@ -139,24 +139,6 @@ describe('GraphService', () => {
               const parent = service.resolvers().Category?.parent
               assertResolverFn(parent)
               await expect(parent(categoryWithParent, {}, {}, {} as GraphQLResolveInfo)).rejects.toThrow('fetch error')
-              expect(logger.result.mock.calls).toHaveLength(1)
-              expect(logger.result.mock.calls[0]).toEqual([errorResult])
-            })
-          })
-          describe('When mapping the parent errors', () => {
-            let errorResult: Result<Category>
-            beforeEach(() => {
-              errorResult = resultError<Category>('mapping error')
-              mapper.categoryFromUsecase.mockReset()
-              mapper.categoryFromUsecase.mockReturnValueOnce(errorResult)
-            })
-            test('Then the error logged and thrown', async () => {
-              const service = new GraphService(factory, mapper, logger)
-              const parent = service.resolvers().Category?.parent
-              assertResolverFn(parent)
-              await expect(parent(categoryWithParent, {}, {}, {} as GraphQLResolveInfo)).rejects.toThrow(
-                'mapping error',
-              )
               expect(logger.result.mock.calls).toHaveLength(1)
               expect(logger.result.mock.calls[0]).toEqual([errorResult])
             })
@@ -242,7 +224,7 @@ describe('GraphService', () => {
                 updated: new Date(),
               },
             ]
-            mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>(mappedChildren))
+            mapper.categoriesFromUsecase.mockReturnValueOnce(mappedChildren)
           })
           describe('When everything succeeds', () => {
             test('Then the mapped children are returned', async () => {
@@ -294,24 +276,6 @@ describe('GraphService', () => {
               expect(logger.result.mock.calls[0]).toEqual([errorResults.firstErrorResult])
             })
           })
-          describe('When mapping a child errors', () => {
-            let errorResults: Results<Category>
-            beforeEach(() => {
-              errorResults = resultsError('mapping error')
-              mapper.categoriesFromUsecase.mockReset()
-              mapper.categoriesFromUsecase.mockReturnValueOnce(errorResults)
-            })
-            test('Then the error logged and thrown', async () => {
-              const service = new GraphService(factory, mapper, logger)
-              const children = service.resolvers().Category?.children
-              assertResolverFn(children)
-              await expect(children(categoryWithChildren, {}, {}, {} as GraphQLResolveInfo)).rejects.toThrow(
-                'mapping error',
-              )
-              expect(logger.result.mock.calls).toHaveLength(1)
-              expect(logger.result.mock.calls[0]).toEqual([errorResults.firstErrorResult])
-            })
-          })
         })
         describe('Given a category without children', () => {
           let categoryWithoutChildren: Category
@@ -327,7 +291,7 @@ describe('GraphService', () => {
               updated: new Date(),
             }
             fetchChildren.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
-            mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>([]))
+            mapper.categoriesFromUsecase.mockReturnValueOnce([])
           })
           describe('When everything succeeds', () => {
             test('Then an empty array is returned', async () => {
@@ -407,7 +371,7 @@ describe('GraphService', () => {
                 updated: new Date(),
               },
             ]
-            mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>(mappedCategories))
+            mapper.categoriesFromUsecase.mockReturnValueOnce(mappedCategories)
           })
           describe('When everything succeeds', () => {
             test('Then the mapped categories are returned', async () => {
@@ -457,27 +421,11 @@ describe('GraphService', () => {
               expect(logger.result.mock.calls[0]).toEqual([errorResult.firstErrorResult])
             })
           })
-          describe('When mapping a category errors', () => {
-            let errorResult: Results<Category>
-            beforeEach(() => {
-              errorResult = resultsError<Category>('mapping error')
-              mapper.categoriesFromUsecase.mockReset()
-              mapper.categoriesFromUsecase.mockReturnValueOnce(errorResult)
-            })
-            test('Then the error logged and thrown', async () => {
-              const service = new GraphService(factory, mapper, logger)
-              const categories = service.resolvers().Query?.categories
-              assertResolverFn(categories)
-              await expect(categories({}, {}, {}, {} as GraphQLResolveInfo)).rejects.toThrow('mapping error')
-              expect(logger.result.mock.calls).toHaveLength(1)
-              expect(logger.result.mock.calls[0]).toEqual([errorResult.firstErrorResult])
-            })
-          })
         })
         describe('Given there are no categories to list', () => {
           beforeEach(() => {
             listCategories.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
-            mapper.categoriesFromUsecase.mockReturnValueOnce(resultsOk<Category>([]))
+            mapper.categoriesFromUsecase.mockReturnValueOnce([])
           })
           describe('When everything succeeds', () => {
             test('Then an empty array is returned', async () => {

@@ -40,13 +40,7 @@ class GraphService {
             return null
           }
 
-          const mappingResult = this.#mapper.categoryFromUsecase(parent)
-          if (!mappingResult.ok) {
-            this.#logger.result(mappingResult)
-            throw this.resultError(mappingResult)
-          }
-
-          return mappingResult.value
+          return this.#mapper.categoryFromUsecase(parent)
         },
         children: async (category): Promise<Category[]> => {
           const childrenResults = await this.#factory.category.fetchChildrenInteractor().fetchChildren(category.id)
@@ -55,13 +49,7 @@ class GraphService {
             throw this.resultError(childrenResults.firstErrorResult)
           }
 
-          const mappingResults = this.#mapper.categoriesFromUsecase(childrenResults.okValues)
-          if (mappingResults.firstErrorResult) {
-            this.#logger.result(mappingResults.firstErrorResult)
-            throw this.resultError(mappingResults.firstErrorResult)
-          }
-
-          return mappingResults.okValues
+          return this.#mapper.categoriesFromUsecase(childrenResults.okValues)
         },
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -150,13 +138,7 @@ class GraphService {
             throw this.resultError(categoryResults.firstErrorResult)
           }
 
-          const categories = this.#mapper.categoriesFromUsecase(categoryResults.okValues)
-          if (categories.firstErrorResult) {
-            this.#logger.result(categories.firstErrorResult)
-            throw this.resultError(categories.firstErrorResult)
-          }
-
-          return categories.okValues
+          return this.#mapper.categoriesFromUsecase(categoryResults.okValues)
         },
         // ignore code coverage for risks until they are refactored
         /* c8 ignore start */
