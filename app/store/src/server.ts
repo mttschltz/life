@@ -18,7 +18,36 @@ import { newRiskRepoJson } from '@life/repo/json/risk'
 
 // Store/repo
 const jsonStore: JsonStore = {
-  category: {},
+  // TODO: Move to content app when createCategory mutation is available.
+  category: {
+    1: {
+      id: '1',
+      name: 'Health',
+      path: 'health',
+      shortDescription: 'A long, healthy life from now until your later years.',
+      updated: new Date(2022, 0, 19, 6, 46),
+      description: 'A long, healthy life from now until your later years.',
+      children: [],
+    },
+    2: {
+      id: '2',
+      name: 'Wealth',
+      path: 'wealth',
+      shortDescription: 'Building and maintaining a strong and ongoing financial foundation.',
+      updated: new Date(2022, 0, 19, 6, 48),
+      description: 'Building and maintaining a strong and ongoing financial foundation.',
+      children: [],
+    },
+    3: {
+      id: '3',
+      name: 'Security',
+      path: 'security',
+      shortDescription: 'Being prepared for risks to your safety and security.',
+      updated: new Date(2022, 0, 19, 6, 49),
+      description: 'Being prepared for risks to your safety and security.',
+      children: [],
+    },
+  },
   risk: {},
 }
 const categoryRepo = newCategoryRepoJson(jsonStore, newCategoryMapper())
