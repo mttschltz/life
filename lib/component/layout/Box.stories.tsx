@@ -284,6 +284,13 @@ const Margin: ComponentStory<typeof Box> = () => {
           </Box>
         </Box>
       </Divider>
+      <Divider>
+        <Box background="brand">
+          <Box fill="both" margin={{ horizontal: 'none', vertical: 'xsmall' }} background="border">
+            horizontal: none, vertical: xsmall
+          </Box>
+        </Box>
+      </Divider>
     </>
   )
 }

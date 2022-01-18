@@ -45,14 +45,14 @@ type Edge =
   | EdgeSize
   | 'none'
   | {
-      bottom?: EdgeSize
-      end?: EdgeSize
-      horizontal?: EdgeSize
-      left?: EdgeSize
-      right?: EdgeSize
-      start?: EdgeSize
-      top?: EdgeSize
-      vertical?: EdgeSize
+      bottom?: EdgeSize | 'none'
+      end?: EdgeSize | 'none'
+      horizontal?: EdgeSize | 'none'
+      left?: EdgeSize | 'none'
+      right?: EdgeSize | 'none'
+      start?: EdgeSize | 'none'
+      top?: EdgeSize | 'none'
+      vertical?: EdgeSize | 'none'
     }
 
 interface BoxProps {
