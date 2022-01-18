@@ -43,9 +43,9 @@ function newRiskMapper(): RiskMapper {
 
 type RiskCreateDetails = Omit<CreateRiskRequest, 'parentId'> & { parent?: RiskDomain }
 
-// no need for risk tests until they are refactored
-/* c8 ignore start */
 class RiskMapperImpl implements RiskMapper {
+  // no need for risk tests until they are refactored
+  /* istanbul ignore next */
   public createDetails(request: RiskCreateDetails): CreateDetailsDomain {
     let category: CategoryTopLevelDomain
     switch (request.category) {
@@ -106,6 +106,8 @@ class RiskMapperImpl implements RiskMapper {
     }
   }
 
+  // no need for risk tests until they are refactored
+  /* istanbul ignore next */
   public risk(risk: RiskDomain): Risk {
     let usecaseParent
     if (risk.parent) {
@@ -172,11 +174,12 @@ class RiskMapperImpl implements RiskMapper {
     }
   }
 
+  // no need for risk tests until they are refactored
+  /* istanbul ignore next */
   public risks(risks: RiskDomain[]): Risk[] {
     return risks.map((risk) => this.risk(risk))
   }
 }
-/* c8 ignore stop */
 
 type Category = Pick<CategoryDomain, 'description' | 'id' | 'name' | 'path' | 'shortDescription' | 'updated'> & {
   children: Category[]

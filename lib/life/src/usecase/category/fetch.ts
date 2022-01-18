@@ -1,3 +1,5 @@
+// ignore code coverage while not implemented
+/* istanbul ignore file */
 import { Category } from '@life/usecase/mapper'
 import { Result, resultError } from '@util/result'
 
@@ -5,8 +7,6 @@ interface FetchInteractor {
   fetch: (id: string) => Promise<Result<Category>>
 }
 
-// ignore code coverage while not implemented
-/* c8 ignore start */
 function newFetchInteractor(): FetchInteractor {
   return new FetchInteractorImpl()
 }
@@ -17,7 +17,6 @@ class FetchInteractorImpl implements FetchInteractor {
     return resultError('not implemented')
   }
 }
-/* c8 ignore stop */
 
 export type { FetchInteractor }
 export { newFetchInteractor }

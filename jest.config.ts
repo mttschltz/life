@@ -32,6 +32,8 @@ export default {
     // Branches with throw aren't counted despite being entered in tests, and using
     // 'istanbul ignore next' seems to increase test coverage for other files to 100%.
     'lib/util/testing.ts',
+    'lib/life/src/__generated__',
+    '\\.graphql$',
   ],
 
   // Indicates which provider should be used to instrument code for coverage

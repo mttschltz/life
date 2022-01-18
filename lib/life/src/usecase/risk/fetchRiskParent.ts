@@ -1,11 +1,11 @@
+// ignore code coverage for risks until they are refactored
+/* istanbul ignore file */
 import { RiskMapper, Risk } from '@life/usecase/mapper'
 import { Result, resultOk } from '@util/result'
 import { RiskRepo } from '@life/repo'
 
 type FetchRiskParentRepo = Pick<RiskRepo, 'fetchRiskParent'>
 
-// ignore code coverage for risks until they are refactored
-/* c8 ignore start */
 class FetchRiskParentInteractor {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #repo: FetchRiskParentRepo
@@ -31,6 +31,5 @@ class FetchRiskParentInteractor {
     return resultOk(this.#mapper.risk(riskParent))
   }
 }
-/* c8 ignore stop */
 
 export { FetchRiskParentInteractor }

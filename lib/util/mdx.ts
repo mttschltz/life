@@ -38,21 +38,20 @@ const transpile = (mdx?: string): string | undefined => {
     ],
   })
 
-  // not sure how to test these branches
-  /* c8 ignore start */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+  /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access */
   const identifiers = Array.from(instance.state.identifiers)
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
   const imports = Array.from(instance.state.imports)
+  // not sure how to test this branche
+  /* istanbul ignore next */
   if (!identifiers.includes(`React`)) {
     identifiers.push(`React`)
     imports.push(`import * as React from 'react'`)
   }
+  /* eslint-enable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access */
 
   return result?.code
     ?.replace(/export\s*default\s*function\s*MDXContent\s*/, `return function MDXContent`)
     .replace(/export\s*{\s*MDXContent\s+as\s+default\s*};?/, `return MDXContent;`)
-  /* c8 ignore stop */
 }
 
 export { transpile }

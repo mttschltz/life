@@ -1,4 +1,4 @@
-/* c8 ignore start */
+/* istanbul ignore file */
 
 import {
   newCategoryMapper as newCategoryMapperUsecase,
@@ -123,5 +123,3 @@ type InteractorFactory = {
 
 export type { InteractorFactory, RiskInteractorFactory, CategoryInteractorFactory, UpdatedInteractorFactory }
 export { newRiskInteractorFactory, newCategoryInteractorFactory, newUpdatedInteractorFactory }
-
-/* c8 ignore stop */

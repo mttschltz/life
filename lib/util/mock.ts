@@ -1,4 +1,5 @@
-/* c8 ignore start */
+// dont think it's worth testing this
+/* istanbul ignore file */
 
 import { MockProxy, DeepMockProxy, mock as mockLib, mockDeep as mockDeepLib } from 'jest-mock-extended'
 
@@ -26,5 +27,3 @@ function mockDeep<T>(): MockDeepReturn<T> {
 
 export type { Mocked, MockedDeep }
 export { mock, mockDeep }
-
-/* c8 ignore stop */

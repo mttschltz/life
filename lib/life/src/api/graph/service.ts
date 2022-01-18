@@ -65,11 +65,10 @@ class GraphService {
           return null
         },
       },
-      // ignore code coverage for risks until they are refactored
-      /* c8 ignore start */
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Mutation: {
-        createRisk: async (_, { input }): Promise<Risk> => {
+        // ignore code coverage for risks until they are refactored
+        createRisk: /* istanbul ignore next */ async (_, { input }): Promise<Risk> => {
           // TODO: Instead of mapping each enum, etc individually, map CreateRiskInput
           // to CreateRiskRequest. This should make testing easier.
           const categoryResult = this.#mapper.categoryTopLevelToUsecase(input.category)
@@ -107,7 +106,8 @@ class GraphService {
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Risk: {
-        parent: async (risk): Promise<Risk | null> => {
+        // ignore code coverage for risks until they are refactored
+        parent: /* istanbul ignore next */ async (risk): Promise<Risk | null> => {
           const parentResult = await this.#factory.risk.fetchRiskParentInteractor().fetchRiskParent(risk.id)
           if (!parentResult.ok) {
             this.#logger.result(parentResult)
@@ -128,7 +128,6 @@ class GraphService {
           return mappingResult.value
         },
       },
-      /* c8 ignore stop */
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Query: {
         categories: async (): Promise<Category[]> => {
@@ -141,8 +140,7 @@ class GraphService {
           return this.#mapper.categoriesFromUsecase(categoryResults.okValues)
         },
         // ignore code coverage for risks until they are refactored
-        /* c8 ignore start */
-        risks: async (_, args: RequireFields<QueryRisksArgs, never>): Promise<Risk[]> => {
+        risks: /* istanbul ignore next */ async (_, args: RequireFields<QueryRisksArgs, never>): Promise<Risk[]> => {
           const criteria: ListCriteria = {}
           switch (args.category) {
             case CategoryTopLevel.Health:
@@ -171,7 +169,6 @@ class GraphService {
 
           return mappingResults.okValues
         },
-        /* c8 ignore stop */
         updated: async (): Promise<(Category | Risk)[]> => {
           const updatedResults = await this.#factory.updated.listInteractor().list({ count: 10 })
           if (updatedResults.firstErrorResult) {
