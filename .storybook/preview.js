@@ -54,12 +54,16 @@ export const decorators = [
 
     return (
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <ThemeProvider theme={THEMES[theme]} mode="light">
-          <Story theme={THEMES[theme]} />
-        </ThemeProvider>
-        <ThemeProvider theme={THEMES[theme]} mode="dark">
-          <Story theme={THEMES[theme]} />
-        </ThemeProvider>
+        <div style={{ flexBasis: '50%' }}>
+          <ThemeProvider theme={THEMES[theme]} mode="light">
+            <Story theme={THEMES[theme]} />
+          </ThemeProvider>
+        </div>
+        <div style={{ flexBasis: '50%' }}>
+          <ThemeProvider theme={THEMES[theme]} mode="dark">
+            <Story theme={THEMES[theme]} />
+          </ThemeProvider>
+        </div>
       </div>
     )
   },
