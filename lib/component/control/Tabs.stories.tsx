@@ -42,5 +42,5 @@ export { Simple }
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  title: 'Control/Tabs',
+  title: 'Controls/Tabs',
 } as ComponentMeta<typeof Tabs>

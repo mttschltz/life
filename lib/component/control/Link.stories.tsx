@@ -25,5 +25,5 @@ export { Simple }
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  title: 'Control/Link',
+  title: 'Controls/Link',
 } as ComponentMeta<typeof Link>
