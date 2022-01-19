@@ -2,6 +2,7 @@ export { GatsbyLink, Link } from './control/Link'
 export { Tab, Tabs } from './control/Tabs'
 export { Box } from './layout/Box'
 export { Heading } from './type/Heading'
+export { Text } from './type/Text'
 export { Icon } from './visualizations/Icon'
 export type { IconName } from './visualizations/Icon'
 
