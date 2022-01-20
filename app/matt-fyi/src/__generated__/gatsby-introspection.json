@@ -3815,8 +3815,8 @@
       },
       {
         "kind": "SCALAR",
-        "name": "Store_DateTime",
-        "description": null,
+        "name": "Store_Date",
+        "description": "Date custom scalar type",
         "specifiedByUrl": null,
         "fields": null,
         "inputFields": null,
@@ -3871,7 +3871,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Store_DateTime",
+                "name": "Store_Date",
                 "ofType": null
               }
             },
@@ -4040,7 +4040,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Store_DateTime",
+                "name": "Store_Date",
                 "ofType": null
               }
             },
@@ -4334,7 +4334,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Store_DateTime",
+                "name": "Store_Date",
                 "ofType": null
               }
             },
@@ -4427,6 +4427,22 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updated",
+            "description": "Time of last significant update to the risk.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Store_Date",
+                "ofType": null
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,

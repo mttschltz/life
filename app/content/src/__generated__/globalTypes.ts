@@ -22,6 +22,7 @@ export interface CreateRiskInput {
   name: string;
   parentId?: string | null;
   notes?: string | null;
+  updated: Date;
 }
 
 //==============================================================

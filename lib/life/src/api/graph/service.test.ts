@@ -11,7 +11,7 @@ import {
 } from '@life/__generated__/graphql'
 import { Logger } from '@util/logger'
 import { Result, resultError, resultOk, Results, resultsError, resultsOk } from '@util/result'
-import { GraphQLResolveInfo } from 'graphql'
+import { GraphQLResolveInfo, Kind, ValueNode } from 'graphql'
 import { GraphMapper } from './mapper'
 
 import { GraphService, InteractorFactory } from './service'
@@ -642,6 +642,45 @@ describe('GraphService', () => {
             expect(mapper.isUpdatedCategory.mock.calls).toHaveLength(1)
             expect(mapper.isUpdatedCategory.mock.calls[0]).toEqual([obj])
             expect(mapper.isUpdatedCategory.mock.calls[0][0]).toBe(obj)
+          })
+        })
+      })
+    })
+    describe('Date', () => {
+      describe('Given a Date to serialize', () => {
+        describe("When it's valid", () => {
+          test('Then it returns the expected number', () => {
+            const service = new GraphService(factory, mapper, logger)
+            const date = new Date(2022, 0, 20, 20, 52)
+            expect(service.resolvers().Date?.serialize(date)).toEqual(1642674120000)
+          })
+        })
+      })
+      describe('Given a number to parse', () => {
+        describe("When it's valid", () => {
+          test('Then it returns the expected Date', () => {
+            const service = new GraphService(factory, mapper, logger)
+            const date = new Date(2022, 0, 20, 20, 52)
+            expect(service.resolvers().Date?.parseValue(1642674120000)).toEqual(date)
+          })
+        })
+      })
+      describe('Given an ast value', () => {
+        describe("When it's a number", () => {
+          test('Then it returns the expected Date', () => {
+            const service = new GraphService(factory, mapper, logger)
+            const date = new Date(2022, 0, 20, 20, 52)
+            expect(
+              service.resolvers().Date?.parseLiteral({ kind: Kind.INT, value: '1642674120000' } as ValueNode, {}),
+            ).toEqual(date)
+          })
+        })
+        describe("When it's not a number", () => {
+          test('Then it returns null', () => {
+            const service = new GraphService(factory, mapper, logger)
+            expect(
+              service.resolvers().Date?.parseLiteral({ kind: Kind.STRING, value: '1642674120000' } as ValueNode, {}),
+            ).toBeNull()
           })
         })
       })

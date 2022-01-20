@@ -9,3 +9,5 @@ generates:
       - 'typescript-resolvers'
     config:
       noSchemaStitching: true
+      scalars:
+        Date: 'lib/life/src/type/scalars#DateScalar'

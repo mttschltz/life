@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { ApolloError, Config } from 'apollo-server'
 import type { ListCriteria } from '@life/usecase/risk/list'
 import { CategoryTopLevel, Category } from '@life/__generated__/graphql'
@@ -7,6 +8,25 @@ import { InteractorFactory } from '@life/api/interactorFactory'
 import { GraphMapper } from '@life/api/graph/mapper'
 import { Logger } from '@util/logger'
 import { ResultError } from '@util/result'
+import { GraphQLScalarType, Kind } from 'graphql'
+
+// https://www.apollographql.com/docs/apollo-server/schema/custom-scalars/#example-the-date-scalar
+const dateScalar = new GraphQLScalarType({
+  name: 'Date',
+  description: 'Date custom scalar type',
+  serialize(value: Date): number {
+    return value.getTime() // Convert outgoing Date to integer for JSON
+  },
+  parseValue(value: number): Date {
+    return new Date(value) // Convert incoming integer to Date
+  },
+  parseLiteral(ast): Date | null {
+    if (ast.kind === Kind.INT) {
+      return new Date(parseInt(ast.value, 10)) // Convert hard-coded AST string to integer and then to Date
+    }
+    return null // Invalid hard-coded value (not an integer)
+  },
+})
 
 class GraphService {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
@@ -26,7 +46,7 @@ class GraphService {
   // But for now, the benefits don't justify the overhead of adding another layer between resolvers and usecases.
   public resolvers(): Resolvers {
     return {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
+      Date: dateScalar,
       Category: {
         parent: async (category): Promise<Category | null> => {
           const parentResult = await this.#factory.category.fetchParentInteractor().fetchParent(category.id)
@@ -52,9 +72,8 @@ class GraphService {
           return this.#mapper.categoriesFromUsecase(childrenResults.okValues)
         },
       },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       Updated: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/explicit-function-return-type
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         __resolveType: (obj) => {
           if (this.#mapper.isUpdatedCategory(obj)) {
             return 'Category'
@@ -65,7 +84,6 @@ class GraphService {
           return null
         },
       },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       Mutation: {
         // ignore code coverage for risks until they are refactored
         createRisk: /* istanbul ignore next */ async (_, { input }): Promise<Risk> => {
@@ -89,7 +107,7 @@ class GraphService {
             notes: input.notes ?? undefined,
             // TODO: Remove hardcoding
             shortDescription: 'short description',
-            updated: new Date(),
+            updated: input.updated,
           })
           if (!riskResult.ok) {
             this.#logger.result(riskResult)
@@ -104,7 +122,6 @@ class GraphService {
           return mappingResult.value
         },
       },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       Risk: {
         // ignore code coverage for risks until they are refactored
         parent: /* istanbul ignore next */ async (risk): Promise<Risk | null> => {
@@ -128,7 +145,6 @@ class GraphService {
           return mappingResult.value
         },
       },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       Query: {
         categories: async (): Promise<Category[]> => {
           const categoryResults = await this.#factory.category.listInteractor().list()
@@ -210,3 +226,4 @@ class GraphService {
 
 export { GraphService }
 export type { InteractorFactory }
+/* eslint-enable @typescript-eslint/naming-convention */

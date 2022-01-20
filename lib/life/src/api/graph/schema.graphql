@@ -1,4 +1,4 @@
-scalar DateTime
+scalar Date
 
 """
 An Updated entity logs its most recent, user-relevant changes so they can be viewed in order of
@@ -16,7 +16,7 @@ interface Updated {
   """
   Time of last significant update to the entity.
   """
-  updated: DateTime!
+  updated: Date!
   """
   Short description of the updated entity - not a description of what was updated.
   """
@@ -60,7 +60,7 @@ type Category implements Updated {
   """
   Time of last significant update to the category.
   """
-  updated: DateTime!
+  updated: Date!
   """
   Short description of the category.
   """
@@ -141,7 +141,7 @@ type Risk implements Updated {
   """
   Time of last significant update to the risk.
   """
-  updated: DateTime!
+  updated: Date!
 }
 
 type Query {
@@ -187,6 +187,10 @@ input CreateRiskInput {
   Risk notes.
   """
   notes: String
+  """
+  Time of last significant update to the risk.
+  """
+  updated: Date!
 }
 
 type Mutation {

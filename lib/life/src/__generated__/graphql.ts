@@ -1,3 +1,4 @@
+import { DateScalar } from 'lib/life/src/type/scalars';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -11,7 +12,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTime: any;
+  Date: DateScalar;
 };
 
 /** A Category is an ordered collection of Risks or other Categories. */
@@ -33,7 +34,7 @@ export type Category = Updated & {
   /** The parent. */
   parent?: Maybe<Category>;
   /** Time of last significant update to the category. */
-  updated: Scalars['DateTime'];
+  updated: Scalars['Date'];
   /** Short description of the category. */
   shortDescription: Scalars['String'];
 };
@@ -59,6 +60,8 @@ export type CreateRiskInput = {
   parentId?: Maybe<Scalars['ID']>;
   /** Risk notes. */
   notes?: Maybe<Scalars['String']>;
+  /** Time of last significant update to the risk. */
+  updated: Scalars['Date'];
 };
 
 
@@ -120,7 +123,7 @@ export type Risk = Updated & {
   /** Short description of the risk. */
   shortDescription: Scalars['String'];
   /** Time of last significant update to the risk. */
-  updated: Scalars['DateTime'];
+  updated: Scalars['Date'];
 };
 
 export enum RiskType {
@@ -139,7 +142,7 @@ export type Updated = {
   /** The name of the entity. */
   name: Scalars['String'];
   /** Time of last significant update to the entity. */
-  updated: Scalars['DateTime'];
+  updated: Scalars['Date'];
   /** Short description of the updated entity - not a description of what was updated. */
   shortDescription: Scalars['String'];
 };
@@ -219,7 +222,7 @@ export type ResolversTypes = {
   CategoryTopLevel: CategoryTopLevel;
   Concern: ResolversTypes['Category'] | ResolversTypes['Risk'];
   CreateRiskInput: CreateRiskInput;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
   Impact: Impact;
   Likelihood: Likelihood;
   Mutation: ResolverTypeWrapper<{}>;
@@ -237,7 +240,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Concern: ResolversParentTypes['Category'] | ResolversParentTypes['Risk'];
   CreateRiskInput: CreateRiskInput;
-  DateTime: Scalars['DateTime'];
+  Date: Scalars['Date'];
   Mutation: {};
   Query: {};
   Risk: Risk;
@@ -252,7 +255,7 @@ export type CategoryResolvers<ContextType = any, ParentType extends ResolversPar
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   children?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType>;
   parent?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
-  updated?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updated?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   shortDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -261,8 +264,8 @@ export type ConcernResolvers<ContextType = any, ParentType extends ResolversPare
   __resolveType: TypeResolveFn<'Category' | 'Risk', ParentType, ContextType>;
 };
 
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
-  name: 'DateTime';
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -285,7 +288,7 @@ export type RiskResolvers<ContextType = any, ParentType extends ResolversParentT
   parent?: Resolver<Maybe<ResolversTypes['Risk']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['RiskType'], ParentType, ContextType>;
   shortDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updated?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updated?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -293,14 +296,14 @@ export type UpdatedResolvers<ContextType = any, ParentType extends ResolversPare
   __resolveType: TypeResolveFn<'Category' | 'Risk', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updated?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updated?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   shortDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
   Category?: CategoryResolvers<ContextType>;
   Concern?: ConcernResolvers<ContextType>;
-  DateTime?: GraphQLScalarType;
+  Date?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Risk?: RiskResolvers<ContextType>;

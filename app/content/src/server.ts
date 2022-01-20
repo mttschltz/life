@@ -25,6 +25,7 @@ const createRiskMutation = gql`
           name: 'risk parent',
           category: CategoryTopLevel.HEALTH,
           uriPart: 'uri-part-risk-parent',
+          updated: new Date(2022, 0, 17, 6, 49),
           notes: `
 # Heading
 
@@ -42,6 +43,7 @@ const createRiskMutation = gql`
           name: 'risk child x',
           uriPart: 'uri-part-risk-child',
           parentId: parent.data?.createRisk.id,
+          updated: new Date(2022, 0, 17, 7, 49),
           notes: `
 # Heading
 
@@ -55,10 +57,11 @@ const createRiskMutation = gql`
       mutation: createRiskMutation,
       variables: {
         input: {
-          category: CategoryTopLevel.SECURITY,
+          category: CategoryTopLevel.WEALTH,
           name: 'risk child 2',
           uriPart: 'uri-part-risk-child-2',
           parentId: parent.data?.createRisk.id,
+          updated: new Date(2022, 0, 17, 8, 49),
           notes: `
 # Heading
 
@@ -75,6 +78,7 @@ const createRiskMutation = gql`
           category: CategoryTopLevel.WEALTH,
           name: 'risk paent 2',
           uriPart: 'uri-part-risk-parent-2',
+          updated: new Date(2022, 0, 17, 9, 49),
           notes: `
 # Heading
 

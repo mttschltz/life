@@ -19,7 +19,8 @@ type Scalars = {
   Float: number;
   /** A date string, such as 2007-12-03, compliant with the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   Date: string;
-  Store_DateTime: any;
+  /** Date custom scalar type */
+  Store_Date: any;
 };
 
 
@@ -409,7 +410,7 @@ type Store_Updated = {
   /** The name of the entity. */
   readonly name: Scalars['String'];
   /** Time of last significant update to the entity. */
-  readonly updated: Scalars['Store_DateTime'];
+  readonly updated: Scalars['Store_Date'];
   /** Short description of the updated entity - not a description of what was updated. */
   readonly shortDescription: Scalars['String'];
 };
@@ -435,7 +436,7 @@ type Store_Category = Store_Updated & {
   /** The parent. */
   readonly parent: Maybe<Store_Category>;
   /** Time of last significant update to the category. */
-  readonly updated: Scalars['Store_DateTime'];
+  readonly updated: Scalars['Store_Date'];
   /** Short description of the category. */
   readonly shortDescription: Scalars['String'];
 };
@@ -479,7 +480,7 @@ type Store_Risk = Store_Updated & {
   /** Short description of the risk. */
   readonly shortDescription: Scalars['String'];
   /** Time of last significant update to the risk. */
-  readonly updated: Scalars['Store_DateTime'];
+  readonly updated: Scalars['Store_Date'];
 };
 
 /** Create risk input. */
@@ -494,6 +495,8 @@ type Store_CreateRiskInput = {
   readonly parentId: Maybe<Scalars['ID']>;
   /** Risk notes. */
   readonly notes: Maybe<Scalars['String']>;
+  /** Time of last significant update to the risk. */
+  readonly updated: Scalars['Store_Date'];
 };
 
 type Store = {
