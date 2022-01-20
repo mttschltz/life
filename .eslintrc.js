@@ -156,6 +156,10 @@ module.exports = {
           {
             selector: 'memberLike',
             format: ['strictCamelCase'],
+            filter: {
+              regex: '^__typename$',
+              match: false,
+            },
           },
           {
             selector: 'enumMember',
@@ -168,6 +172,10 @@ module.exports = {
           {
             selector: 'property',
             format: ['strictCamelCase'],
+            filter: {
+              regex: '^__typename$',
+              match: false,
+            },
           },
           {
             selector: 'method',

@@ -1,11 +1,25 @@
 import { Box, GatsbyLink, Heading, Text } from '@component'
 import { useTranslate } from '@matt-fyi/util/i18n/translate'
+import { useRoute } from '@matt-fyi/util/route/route'
 import { graphql, PageProps } from 'gatsby'
 import * as React from 'react'
 
 const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuery>> = (props) => {
   const t = useTranslate('page')
   const updates = props.data.store.updated.filter((u): u is NonNullable<typeof u> => !!u)
+  const route = useRoute()
+  const updatedRoute = (updated: NonNullable<GatsbyTypes.CategoryQueryQuery['store']['updated'][number]>): string => {
+    let path: string
+    switch (updated.__typename) {
+      case 'Store_Category':
+        path = route.category.detail(updated)
+        break
+      case 'Store_Risk':
+        path = route.risk.detail(updated)
+        break
+    }
+    return path
+  }
 
   return (
     <main>
@@ -21,7 +35,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
           {updates.map((u) => (
             <Box key={u.id} direction="column" pad={{ bottom: 'large' }}>
               <Box align="baseline" justify="between">
-                <GatsbyLink to={`/${u.id}`}>{u.name}</GatsbyLink>
+                <GatsbyLink to={updatedRoute(u)}>{u.name}</GatsbyLink>
                 <Text size="xsmall">{t('common:date.absolute', { date: new Date(u.updated) })}</Text>
               </Box>
               <Text>{u.shortDescription}</Text>
@@ -43,10 +57,14 @@ export const query = graphql`
         }
       }
       updated {
+        __typename
         id
         name
         updated
         shortDescription
+        ... on Store_Category {
+          path
+        }
       }
     }
   }

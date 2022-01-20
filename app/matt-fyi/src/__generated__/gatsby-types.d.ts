@@ -2633,6 +2633,12 @@ type CategoryQueryQueryVariables = Exact<{ [key: string]: never; }>;
 type CategoryQueryQuery = { readonly store: { readonly categories: ReadonlyArray<Maybe<(
       Pick<Store_Category, 'name'>
       & { readonly children: ReadonlyArray<Maybe<Pick<Store_Category, 'name'>>> }
-    )>>, readonly updated: ReadonlyArray<Maybe<Pick<Store_Category, 'id' | 'name' | 'updated' | 'shortDescription'> | Pick<Store_Risk, 'id' | 'name' | 'updated' | 'shortDescription'>>> } };
+    )>>, readonly updated: ReadonlyArray<Maybe<(
+      { readonly __typename: 'Store_Category' }
+      & Pick<Store_Category, 'path' | 'id' | 'name' | 'updated' | 'shortDescription'>
+    ) | (
+      { readonly __typename: 'Store_Risk' }
+      & Pick<Store_Risk, 'id' | 'name' | 'updated' | 'shortDescription'>
+    )>> } };
 
 }
