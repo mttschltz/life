@@ -21,7 +21,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
           {updates.map((u) => (
             <Box key={u.id} direction="column" pad={{ bottom: 'large' }}>
               <GatsbyLink to={`/${u.id}`}>{u.name}</GatsbyLink>
-              <Text size="xsmall">{u.updated}</Text>
+              <Text size="xsmall">{new Date(u.updated).toLocaleDateString('en-US')}</Text>
               <Text>{u.shortDescription}</Text>
             </Box>
           ))}

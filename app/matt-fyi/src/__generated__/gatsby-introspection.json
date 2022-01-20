@@ -3101,6 +3101,18 @@
             "deprecationReason": null
           },
           {
+            "name": "scalars",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "SitePluginPluginOptionsScalars",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "component",
             "description": null,
             "args": [],
@@ -3191,6 +3203,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SitePluginPluginOptionsScalars",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": [
+          {
+            "name": "Store_Date",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -13728,6 +13764,18 @@
             "deprecationReason": null
           },
           {
+            "name": "scalars",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "SitePluginPluginOptionsScalarsFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "component",
             "description": null,
             "type": {
@@ -13817,6 +13865,30 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BooleanQueryOperatorInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "SitePluginPluginOptionsScalarsFilterInput",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "Store_Date",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringQueryOperatorInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -15309,6 +15381,12 @@
             "deprecationReason": null
           },
           {
+            "name": "pluginCreator___pluginOptions___scalars___Store_Date",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pluginCreator___pluginOptions___component",
             "description": null,
             "isDeprecated": false,
@@ -16705,6 +16783,12 @@
           },
           {
             "name": "pluginOptions___emitSchema___src___generated___gatsby_introspection_json",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pluginOptions___scalars___Store_Date",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

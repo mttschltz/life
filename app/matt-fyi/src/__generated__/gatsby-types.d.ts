@@ -20,7 +20,7 @@ type Scalars = {
   /** A date string, such as 2007-12-03, compliant with the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   Date: string;
   /** Date custom scalar type */
-  Store_Date: any;
+  Store_Date: string;
 };
 
 
@@ -326,6 +326,7 @@ type SitePluginPluginOptions = {
   readonly url: Maybe<Scalars['String']>;
   readonly outputPath: Maybe<Scalars['String']>;
   readonly emitSchema: Maybe<SitePluginPluginOptionsEmitSchema>;
+  readonly scalars: Maybe<SitePluginPluginOptionsScalars>;
   readonly component: Maybe<Scalars['String']>;
   readonly path: Maybe<Scalars['String']>;
   readonly pathCheck: Maybe<Scalars['Boolean']>;
@@ -336,6 +337,10 @@ type SitePluginPluginOptions = {
 
 type SitePluginPluginOptionsEmitSchema = {
   readonly src___generated___gatsby_introspection_json: Maybe<Scalars['Boolean']>;
+};
+
+type SitePluginPluginOptionsScalars = {
+  readonly Store_Date: Maybe<Scalars['String']>;
 };
 
 type SitePluginPackageJson = {
@@ -1660,6 +1665,7 @@ type SitePluginPluginOptionsFilterInput = {
   readonly url: Maybe<StringQueryOperatorInput>;
   readonly outputPath: Maybe<StringQueryOperatorInput>;
   readonly emitSchema: Maybe<SitePluginPluginOptionsEmitSchemaFilterInput>;
+  readonly scalars: Maybe<SitePluginPluginOptionsScalarsFilterInput>;
   readonly component: Maybe<StringQueryOperatorInput>;
   readonly path: Maybe<StringQueryOperatorInput>;
   readonly pathCheck: Maybe<BooleanQueryOperatorInput>;
@@ -1670,6 +1676,10 @@ type SitePluginPluginOptionsFilterInput = {
 
 type SitePluginPluginOptionsEmitSchemaFilterInput = {
   readonly src___generated___gatsby_introspection_json: Maybe<BooleanQueryOperatorInput>;
+};
+
+type SitePluginPluginOptionsScalarsFilterInput = {
+  readonly Store_Date: Maybe<StringQueryOperatorInput>;
 };
 
 type SitePluginPackageJsonFilterInput = {
@@ -1896,6 +1906,7 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.url'
   | 'pluginCreator.pluginOptions.outputPath'
   | 'pluginCreator.pluginOptions.emitSchema.src___generated___gatsby_introspection_json'
+  | 'pluginCreator.pluginOptions.scalars.Store_Date'
   | 'pluginCreator.pluginOptions.component'
   | 'pluginCreator.pluginOptions.path'
   | 'pluginCreator.pluginOptions.pathCheck'
@@ -2093,6 +2104,7 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.url'
   | 'pluginOptions.outputPath'
   | 'pluginOptions.emitSchema.src___generated___gatsby_introspection_json'
+  | 'pluginOptions.scalars.Store_Date'
   | 'pluginOptions.component'
   | 'pluginOptions.path'
   | 'pluginOptions.pathCheck'

@@ -22,6 +22,9 @@ module.exports = {
           // Used by eslint-plugin-graphql
           'src/__generated__/gatsby-introspection.json': true,
         },
+        scalars: {
+          Store_Date: 'string',
+        },
       },
     },
     {

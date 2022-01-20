@@ -648,38 +648,42 @@ describe('GraphService', () => {
     })
     describe('Date', () => {
       describe('Given a Date to serialize', () => {
-        describe("When it's valid", () => {
-          test('Then it returns the expected number', () => {
+        describe("When it's a valid", () => {
+          test('Then it returns the expected ISO 8601 string', () => {
             const service = new GraphService(factory, mapper, logger)
             const date = new Date('2022-01-20T10:41:00+0000')
-            expect(service.resolvers().Date?.serialize(date)).toEqual(1642675260000)
+            expect(service.resolvers().Date?.serialize(date)).toEqual('2022-01-20T10:41:00.000Z')
           })
         })
       })
-      describe('Given a number to parse', () => {
+      describe('Given an ISO 8601 string to parse', () => {
         describe("When it's valid", () => {
           test('Then it returns the expected Date', () => {
             const service = new GraphService(factory, mapper, logger)
             const date = new Date('2022-01-20T10:41:00+0000')
-            expect(service.resolvers().Date?.parseValue(1642675260000)).toEqual(date)
+            expect(service.resolvers().Date?.parseValue('2022-01-20T10:41:00.000Z')).toEqual(date)
           })
         })
       })
       describe('Given an ast value', () => {
-        describe("When it's a number", () => {
+        describe("When it's a string", () => {
           test('Then it returns the expected Date', () => {
             const service = new GraphService(factory, mapper, logger)
             const date = new Date('2022-01-20T10:41:00+0000')
             expect(
-              service.resolvers().Date?.parseLiteral({ kind: Kind.INT, value: '1642675260000' } as ValueNode, {}),
+              service
+                .resolvers()
+                .Date?.parseLiteral({ kind: Kind.STRING, value: '2022-01-20T10:41:00.000Z' } as ValueNode, {}),
             ).toEqual(date)
           })
         })
-        describe("When it's not a number", () => {
+        describe("When it's not a string", () => {
           test('Then it returns null', () => {
             const service = new GraphService(factory, mapper, logger)
             expect(
-              service.resolvers().Date?.parseLiteral({ kind: Kind.STRING, value: '1642675260000' } as ValueNode, {}),
+              service
+                .resolvers()
+                .Date?.parseLiteral({ kind: Kind.INT, value: '2022-01-20T10:41:00.000Z' } as ValueNode, {}),
             ).toBeNull()
           })
         })
