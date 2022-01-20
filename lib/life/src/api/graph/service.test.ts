@@ -651,8 +651,8 @@ describe('GraphService', () => {
         describe("When it's valid", () => {
           test('Then it returns the expected number', () => {
             const service = new GraphService(factory, mapper, logger)
-            const date = new Date(2022, 0, 20, 20, 52)
-            expect(service.resolvers().Date?.serialize(date)).toEqual(1642674120000)
+            const date = new Date('2022-01-20T10:41:00+0000')
+            expect(service.resolvers().Date?.serialize(date)).toEqual(1642675260000)
           })
         })
       })
@@ -660,8 +660,8 @@ describe('GraphService', () => {
         describe("When it's valid", () => {
           test('Then it returns the expected Date', () => {
             const service = new GraphService(factory, mapper, logger)
-            const date = new Date(2022, 0, 20, 20, 52)
-            expect(service.resolvers().Date?.parseValue(1642674120000)).toEqual(date)
+            const date = new Date('2022-01-20T10:41:00+0000')
+            expect(service.resolvers().Date?.parseValue(1642675260000)).toEqual(date)
           })
         })
       })
@@ -669,9 +669,9 @@ describe('GraphService', () => {
         describe("When it's a number", () => {
           test('Then it returns the expected Date', () => {
             const service = new GraphService(factory, mapper, logger)
-            const date = new Date(2022, 0, 20, 20, 52)
+            const date = new Date('2022-01-20T10:41:00+0000')
             expect(
-              service.resolvers().Date?.parseLiteral({ kind: Kind.INT, value: '1642674120000' } as ValueNode, {}),
+              service.resolvers().Date?.parseLiteral({ kind: Kind.INT, value: '1642675260000' } as ValueNode, {}),
             ).toEqual(date)
           })
         })
@@ -679,7 +679,7 @@ describe('GraphService', () => {
           test('Then it returns null', () => {
             const service = new GraphService(factory, mapper, logger)
             expect(
-              service.resolvers().Date?.parseLiteral({ kind: Kind.STRING, value: '1642674120000' } as ValueNode, {}),
+              service.resolvers().Date?.parseLiteral({ kind: Kind.STRING, value: '1642675260000' } as ValueNode, {}),
             ).toBeNull()
           })
         })
