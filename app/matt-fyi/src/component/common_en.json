@@ -1,5 +1,8 @@
 {
   "error": {
     "not_found": "Not found"
+  },
+  "date": {
+    "absolute": "{{date, datetime}}"
   }
 }

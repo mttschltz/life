@@ -20,8 +20,10 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
           <Heading level={2}>{t('page:home.heading_updates')}</Heading>
           {updates.map((u) => (
             <Box key={u.id} direction="column" pad={{ bottom: 'large' }}>
-              <GatsbyLink to={`/${u.id}`}>{u.name}</GatsbyLink>
-              <Text size="xsmall">{new Date(u.updated).toLocaleDateString('en-US')}</Text>
+              <Box align="baseline" justify="between">
+                <GatsbyLink to={`/${u.id}`}>{u.name}</GatsbyLink>
+                <Text size="xsmall">{t('common:date.absolute', { date: new Date(u.updated) })}</Text>
+              </Box>
               <Text>{u.shortDescription}</Text>
             </Box>
           ))}
