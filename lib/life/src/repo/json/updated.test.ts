@@ -53,8 +53,8 @@ describe('UpdatedRepoJson', () => {
 
           const repo = newUpdatedRepoJson(categoryRepo, riskRepo)
           const updatedResults = await repo.list({ count: 2 })
-          expect(updatedResults.firstErrorResult).not.toBeUndefined()
-          expect(updatedResults.firstErrorResult?.message).toEqual('error listing categories')
+          expect(updatedResults.firstErrorResult).toBeDefined()
+          expect(updatedResults.firstErrorResult?.message).toBe('error listing categories')
         })
       })
       describe('When listing risks errors', () => {
@@ -64,8 +64,8 @@ describe('UpdatedRepoJson', () => {
 
           const repo = newUpdatedRepoJson(categoryRepo, riskRepo)
           const updatedResults = await repo.list({ count: 2 })
-          expect(updatedResults.firstErrorResult).not.toBeUndefined()
-          expect(updatedResults.firstErrorResult?.message).toEqual('error listing risks')
+          expect(updatedResults.firstErrorResult).toBeDefined()
+          expect(updatedResults.firstErrorResult?.message).toBe('error listing risks')
         })
       })
     })

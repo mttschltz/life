@@ -34,8 +34,8 @@ describe('Risk', () => {
         expect(risk.category).toEqual(CategoryTopLevel.Health)
         expect(risk.impact).toEqual(Impact.High)
         expect(risk.likelihood).toEqual(Likelihood.High)
-        expect(risk.name).toEqual('name')
-        expect(risk.shortDescription).toEqual('short description')
+        expect(risk.name).toBe('name')
+        expect(risk.shortDescription).toBe('short description')
         expect(risk.notes).toBeUndefined()
         expect(risk.parent).toBeUndefined()
         expect(risk.type).toEqual(RiskType.Condition)
@@ -51,9 +51,9 @@ describe('Risk', () => {
         expect(risk.category).toEqual(CategoryTopLevel.Health)
         expect(risk.impact).toEqual(Impact.High)
         expect(risk.likelihood).toEqual(Likelihood.High)
-        expect(risk.name).toEqual('name')
-        expect(risk.shortDescription).toEqual('short description')
-        expect(risk.notes).toEqual('notes')
+        expect(risk.name).toBe('name')
+        expect(risk.shortDescription).toBe('short description')
+        expect(risk.notes).toBe('notes')
         expect(risk.parent).toBeUndefined()
         expect(risk.type).toEqual(RiskType.Condition)
         expect(risk.updated).toEqual(updated)
@@ -86,13 +86,13 @@ describe('Risk', () => {
 
         // Validate parent risk
         const risk = riskResult.value
-        expect(risk.parent).not.toBeUndefined()
+        expect(risk.parent).toBeDefined()
         expect(risk.parent?.category).toEqual(CategoryTopLevel.Security)
         expect(risk.parent?.impact).toEqual(Impact.Normal)
         expect(risk.parent?.likelihood).toEqual(Likelihood.Normal)
-        expect(risk.parent?.name).toEqual('parent name')
-        expect(risk.parent?.shortDescription).toEqual('parent short description')
-        expect(risk.parent?.notes).toEqual('parent notes')
+        expect(risk.parent?.name).toBe('parent name')
+        expect(risk.parent?.shortDescription).toBe('parent short description')
+        expect(risk.parent?.notes).toBe('parent notes')
         expect(risk.parent?.parent).toBeUndefined()
         expect(risk.parent?.type).toEqual(RiskType.Goal)
         expect(risk.parent?.updated).toEqual(parentUpdated)
@@ -106,7 +106,7 @@ describe('Risk', () => {
         // @ts-expect-error: In the domain we want to protect against runtime type errors
         const riskResult = newRisk('id', {})
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('category must be a valid enum value')
+        expect(riskResult.message).toBe('category must be a valid enum value')
       })
     })
     describe('Given an invalid id', () => {
@@ -114,16 +114,16 @@ describe('Risk', () => {
         // @ts-expect-error: In the domain we want to protect against runtime type errors
         let riskResult = newRisk(undefined, createDetails)
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('id must be a string')
+        expect(riskResult.message).toBe('id must be a string')
 
         riskResult = newRisk('', createDetails)
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('id must be longer than or equal to 1 characters')
+        expect(riskResult.message).toBe('id must be longer than or equal to 1 characters')
 
         // @ts-expect-error: In the domain we want to protect against runtime type errors
         riskResult = newRisk(5, createDetails)
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('id must be a string')
+        expect(riskResult.message).toBe('id must be a string')
       })
     })
     describe('Given an invalid category', () => {
@@ -134,7 +134,7 @@ describe('Risk', () => {
           category: undefined,
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('category must be a valid enum value')
+        expect(riskResult.message).toBe('category must be a valid enum value')
 
         riskResult = newRisk('id', {
           ...createDetails,
@@ -142,7 +142,7 @@ describe('Risk', () => {
           category: 'invalid category',
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('category must be a valid enum value')
+        expect(riskResult.message).toBe('category must be a valid enum value')
       })
     })
     describe('Given an invalid impact', () => {
@@ -153,7 +153,7 @@ describe('Risk', () => {
           impact: undefined,
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('impact must be a valid enum value')
+        expect(riskResult.message).toBe('impact must be a valid enum value')
 
         riskResult = newRisk('id', {
           ...createDetails,
@@ -161,7 +161,7 @@ describe('Risk', () => {
           impact: 'invalid impact',
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('impact must be a valid enum value')
+        expect(riskResult.message).toBe('impact must be a valid enum value')
       })
     })
     describe('Given an invalid likelihood', () => {
@@ -172,7 +172,7 @@ describe('Risk', () => {
           likelihood: undefined,
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('likelihood must be a valid enum value')
+        expect(riskResult.message).toBe('likelihood must be a valid enum value')
 
         riskResult = newRisk('id', {
           ...createDetails,
@@ -180,7 +180,7 @@ describe('Risk', () => {
           likelihood: 'invalid likelihood',
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('likelihood must be a valid enum value')
+        expect(riskResult.message).toBe('likelihood must be a valid enum value')
       })
     })
     describe('Given an invalid name', () => {
@@ -191,14 +191,14 @@ describe('Risk', () => {
           name: undefined,
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('name must be a string')
+        expect(riskResult.message).toBe('name must be a string')
 
         riskResult = newRisk('id', {
           ...createDetails,
           name: 'x',
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('name must be longer than or equal to 2 characters')
+        expect(riskResult.message).toBe('name must be longer than or equal to 2 characters')
       })
     })
     describe('Given an invalid notes', () => {
@@ -209,7 +209,7 @@ describe('Risk', () => {
           notes: 5,
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('notes must be a string')
+        expect(riskResult.message).toBe('notes must be a string')
       })
     })
     describe('Given a short description', () => {
@@ -221,7 +221,7 @@ describe('Risk', () => {
             shortDescription: undefined,
           })
           assertResultError(riskResult)
-          expect(riskResult.message).toEqual('shortDescription must be a string')
+          expect(riskResult.message).toBe('shortDescription must be a string')
         })
       })
       describe('When its not long enough', () => {
@@ -231,7 +231,7 @@ describe('Risk', () => {
             shortDescription: 'x',
           })
           assertResultError(riskResult)
-          expect(riskResult.message).toEqual('shortDescription must be longer than or equal to 2 characters')
+          expect(riskResult.message).toBe('shortDescription must be longer than or equal to 2 characters')
         })
       })
     })
@@ -243,7 +243,7 @@ describe('Risk', () => {
           parent: 'parent',
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('parent must be instance of Risk')
+        expect(riskResult.message).toBe('parent must be instance of Risk')
       })
     })
     describe('Given an invalid risk type', () => {
@@ -254,7 +254,7 @@ describe('Risk', () => {
           type: undefined,
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('type must be a valid enum value')
+        expect(riskResult.message).toBe('type must be a valid enum value')
 
         riskResult = newRisk('id', {
           ...createDetails,
@@ -262,7 +262,7 @@ describe('Risk', () => {
           type: 'x',
         })
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('type must be a valid enum value')
+        expect(riskResult.message).toBe('type must be a valid enum value')
       })
     })
     describe('Given an invalid updated', () => {
@@ -274,7 +274,7 @@ describe('Risk', () => {
             updated: undefined,
           })
           assertResultError(riskResult)
-          expect(riskResult.message).toEqual('updated must be a Date instance')
+          expect(riskResult.message).toBe('updated must be a Date instance')
         })
       })
       describe('and updated is not a Date', () => {
@@ -285,7 +285,7 @@ describe('Risk', () => {
             updated: '',
           })
           assertResultError(riskResult)
-          expect(riskResult.message).toEqual('updated must be a Date instance')
+          expect(riskResult.message).toBe('updated must be a Date instance')
         })
       })
     })
@@ -294,7 +294,7 @@ describe('Risk', () => {
         // @ts-expect-error: In the domain we want to protect against runtime type errors
         const riskResult = newRisk('id', {})
         assertResultError(riskResult)
-        expect(riskResult.message).toEqual('category must be a valid enum value')
+        expect(riskResult.message).toBe('category must be a valid enum value')
       })
     })
   })

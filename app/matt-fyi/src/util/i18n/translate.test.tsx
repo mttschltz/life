@@ -15,7 +15,7 @@ describe('useTranslate', () => {
           { wrapper },
         )
         expect(result.all).toHaveLength(1)
-        expect(result.current).toEqual('Not found')
+        expect(result.current).toBe('Not found')
       })
     })
     describe('When the translate hook is called with a non-existing key', () => {
@@ -30,7 +30,7 @@ describe('useTranslate', () => {
           { wrapper },
         )
         expect(result.all).toHaveLength(1)
-        expect(result.current).toEqual('invalid key')
+        expect(result.current).toBe('invalid key')
       })
     })
   })

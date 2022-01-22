@@ -90,7 +90,6 @@ module.exports = {
         ],
         '@typescript-eslint/method-signature-style': ['error', 'property'],
         '@typescript-eslint/no-dynamic-delete': ['error'],
-        '@typescript-eslint/no-implicit-any-catch': ['error'],
         '@typescript-eslint/no-require-imports': ['error'],
         '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['error'],
         '@typescript-eslint/no-unnecessary-condition': ['error'],

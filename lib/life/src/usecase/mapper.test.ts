@@ -366,8 +366,8 @@ describe('UpdatedMapper', () => {
 
           const mapper = newUpdatedMapper(categoryMapper, riskMapper)
           const results = mapper.updated(updated)
-          expect(results.firstErrorResult).not.toBeUndefined()
-          expect(results.firstErrorResult?.message).toEqual('Unhandled Updated type')
+          expect(results.firstErrorResult).toBeDefined()
+          expect(results.firstErrorResult?.message).toBe('Unhandled Updated type')
         })
       })
     })
@@ -397,7 +397,7 @@ describe('isUpdatedCategory', () => {
           shortDescription: 'short description',
           updated: new Date(),
         }
-        expect(isUpdatedCategory(category)).toEqual(true)
+        expect(isUpdatedCategory(category)).toBe(true)
       })
     })
     describe('When it contains all optional properties', () => {
@@ -428,7 +428,7 @@ describe('isUpdatedCategory', () => {
             updated: new Date(),
           },
         }
-        expect(isUpdatedCategory(category)).toEqual(true)
+        expect(isUpdatedCategory(category)).toBe(true)
       })
     })
   })
@@ -457,7 +457,7 @@ describe('isUpdatedCategory', () => {
             notes: 'notes',
           },
         }
-        expect(isUpdatedCategory(risk)).toEqual(false)
+        expect(isUpdatedCategory(risk)).toBe(false)
       })
     })
   })
@@ -477,7 +477,7 @@ describe('isUpdatedRisk', () => {
           type: 'Condition',
           updated: new Date(),
         }
-        expect(isUpdatedRisk(risk)).toEqual(true)
+        expect(isUpdatedRisk(risk)).toBe(true)
       })
     })
     describe('When it contains all optional properties', () => {
@@ -504,7 +504,7 @@ describe('isUpdatedRisk', () => {
             notes: 'notes',
           },
         }
-        expect(isUpdatedRisk(risk)).toEqual(true)
+        expect(isUpdatedRisk(risk)).toBe(true)
       })
     })
   })
@@ -537,7 +537,7 @@ describe('isUpdatedRisk', () => {
             updated: new Date(),
           },
         }
-        expect(isUpdatedRisk(category)).toEqual(false)
+        expect(isUpdatedRisk(category)).toBe(false)
       })
     })
   })

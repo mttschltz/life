@@ -9,7 +9,7 @@ describe('useRoute', () => {
           __typename: 'Store_Category',
           path: 'category-path',
         }
-        expect(route.category.detail(category)).toEqual('/category-path')
+        expect(route.category.detail(category)).toBe('/category-path')
       })
     })
   })
@@ -21,7 +21,7 @@ describe('useRoute', () => {
           __typename: 'Store_Risk',
           id: 'risk-id',
         }
-        expect(route.risk.detail(risk)).toEqual('/risk/risk-id')
+        expect(route.risk.detail(risk)).toBe('/risk/risk-id')
       })
     })
   })

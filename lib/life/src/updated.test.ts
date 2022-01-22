@@ -25,7 +25,7 @@ describe('domain>updated', () => {
           },
         })
         assertResultOk(category)
-        expect(isUpdatedCategory(category.value)).toEqual(true)
+        expect(isUpdatedCategory(category.value)).toBe(true)
       })
     })
     describe('Given a Risk', () => {
@@ -40,7 +40,7 @@ describe('domain>updated', () => {
           type: RiskType.Condition,
         })
         assertResultOk(risk)
-        expect(isUpdatedCategory(risk.value)).toEqual(false)
+        expect(isUpdatedCategory(risk.value)).toBe(false)
       })
     })
   })
@@ -57,7 +57,7 @@ describe('domain>updated', () => {
           type: RiskType.Condition,
         })
         assertResultOk(risk)
-        expect(isUpdatedRisk(risk.value)).toEqual(true)
+        expect(isUpdatedRisk(risk.value)).toBe(true)
       })
     })
     describe('Given a Category', () => {
@@ -80,7 +80,7 @@ describe('domain>updated', () => {
           },
         })
         assertResultOk(category)
-        expect(isUpdatedRisk(category.value)).toEqual(false)
+        expect(isUpdatedRisk(category.value)).toBe(false)
       })
     })
   })

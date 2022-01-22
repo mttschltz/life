@@ -612,7 +612,7 @@ describe('GraphMapper', () => {
           const results = mapper.updatedFromUsecase(updated)
           expect(results.firstErrorResult).toBeUndefined()
           expect(results.okValues).toHaveLength(1)
-          expect((results.okValues[0] as Risk).notes).toEqual('transpiled source notes')
+          expect((results.okValues[0] as Risk).notes).toBe('transpiled source notes')
         })
       })
     })
@@ -631,7 +631,7 @@ describe('GraphMapper', () => {
         const mapper = newMapper(jest.fn())
         // @ts-expect-error: We're testing for future types of Updatable
         const results = mapper.updatedFromUsecase([unknownUpdated])
-        expect(results.firstErrorResult).not.toBeUndefined()
+        expect(results.firstErrorResult).toBeDefined()
         expect(results.firstErrorResult).toEqualResultError({
           message: 'Unhandled Updated usecase type',
         })
@@ -651,7 +651,7 @@ describe('GraphMapper', () => {
             updated: new Date('2022-01-15'),
             children: [],
           }
-          expect(mapper.isUpdatedCategory(category)).toEqual(true)
+          expect(mapper.isUpdatedCategory(category)).toBe(true)
         })
       })
       describe('When it has all properties', () => {
@@ -675,7 +675,7 @@ describe('GraphMapper', () => {
             },
           }
           const mapper = newMapper(jest.fn())
-          expect(mapper.isUpdatedCategory(category)).toEqual(true)
+          expect(mapper.isUpdatedCategory(category)).toBe(true)
         })
       })
     })
@@ -693,7 +693,7 @@ describe('GraphMapper', () => {
             updated: new Date('2022-01-15'),
           }
           const mapper = newMapper(jest.fn())
-          expect(mapper.isUpdatedCategory(risk)).toEqual(false)
+          expect(mapper.isUpdatedCategory(risk)).toBe(false)
         })
       })
       describe('When it has all properties', () => {
@@ -721,7 +721,7 @@ describe('GraphMapper', () => {
             },
           }
           const mapper = newMapper(jest.fn())
-          expect(mapper.isUpdatedCategory(risk)).toEqual(false)
+          expect(mapper.isUpdatedCategory(risk)).toBe(false)
         })
       })
     })
@@ -741,7 +741,7 @@ describe('GraphMapper', () => {
             updated: new Date('2022-01-15'),
           }
           const mapper = newMapper(jest.fn())
-          expect(mapper.isUpdatedRisk(risk)).toEqual(true)
+          expect(mapper.isUpdatedRisk(risk)).toBe(true)
         })
       })
       describe('When it has all properties', () => {
@@ -769,7 +769,7 @@ describe('GraphMapper', () => {
             },
           }
           const mapper = newMapper(jest.fn())
-          expect(mapper.isUpdatedRisk(risk)).toEqual(true)
+          expect(mapper.isUpdatedRisk(risk)).toBe(true)
         })
       })
     })
@@ -785,7 +785,7 @@ describe('GraphMapper', () => {
             updated: new Date('2022-01-15'),
             children: [],
           }
-          expect(mapper.isUpdatedRisk(category)).toEqual(false)
+          expect(mapper.isUpdatedRisk(category)).toBe(false)
         })
       })
       describe('When it has all properties', () => {
@@ -809,7 +809,7 @@ describe('GraphMapper', () => {
             },
           }
           const mapper = newMapper(jest.fn())
-          expect(mapper.isUpdatedRisk(category)).toEqual(false)
+          expect(mapper.isUpdatedRisk(category)).toBe(false)
         })
       })
     })

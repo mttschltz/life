@@ -596,7 +596,7 @@ describe('GraphService', () => {
           test("Then it returns 'Risk'", () => {
             const service = new GraphService(factory, mapper, logger)
             const obj = {} as Category
-            expect(service.resolvers().Updated?.__resolveType(obj, undefined, {} as GraphQLResolveInfo)).toEqual(
+            expect(service.resolvers().Updated?.__resolveType(obj, undefined, {} as GraphQLResolveInfo)).toBe(
               'Category',
             )
             expect(mapper.isUpdatedCategory.mock.calls).toHaveLength(1)
@@ -616,7 +616,7 @@ describe('GraphService', () => {
           test("Then it returns 'Risk'", () => {
             const service = new GraphService(factory, mapper, logger)
             const obj = {} as Risk
-            expect(service.resolvers().Updated?.__resolveType(obj, undefined, {} as GraphQLResolveInfo)).toEqual('Risk')
+            expect(service.resolvers().Updated?.__resolveType(obj, undefined, {} as GraphQLResolveInfo)).toBe('Risk')
             expect(mapper.isUpdatedRisk.mock.calls).toHaveLength(1)
             expect(mapper.isUpdatedRisk.mock.calls[0]).toEqual([obj])
             expect(mapper.isUpdatedRisk.mock.calls[0][0]).toBe(obj)
@@ -652,7 +652,7 @@ describe('GraphService', () => {
           test('Then it returns the expected ISO 8601 string', () => {
             const service = new GraphService(factory, mapper, logger)
             const date = new Date('2022-01-20T10:41:00+0000')
-            expect(service.resolvers().Date?.serialize(date)).toEqual('2022-01-20T10:41:00.000Z')
+            expect(service.resolvers().Date?.serialize(date)).toBe('2022-01-20T10:41:00.000Z')
           })
         })
       })

@@ -29,11 +29,11 @@ describe('Category', () => {
           assertResultOk(categoryResult)
 
           const category = categoryResult.value
-          expect(category.id).toEqual('id')
-          expect(category.path).toEqual('path')
-          expect(category.name).toEqual('name')
+          expect(category.id).toBe('id')
+          expect(category.path).toBe('path')
+          expect(category.name).toBe('name')
           expect(category.description).toBeUndefined()
-          expect(category.shortDescription).toEqual('short description')
+          expect(category.shortDescription).toBe('short description')
           expect(category.parent).toBeUndefined()
           expect(category.children).toHaveLength(0)
           expect(category.updated).toEqual(updated)
@@ -69,11 +69,11 @@ describe('Category', () => {
         assertResultOk(categoryResult)
 
         const category = categoryResult.value
-        expect(category.id).toEqual('id')
-        expect(category.path).toEqual('path')
-        expect(category.name).toEqual('name')
-        expect(category.description).toEqual('description')
-        expect(category.shortDescription).toEqual('short description')
+        expect(category.id).toBe('id')
+        expect(category.path).toBe('path')
+        expect(category.name).toBe('name')
+        expect(category.description).toBe('description')
+        expect(category.shortDescription).toBe('short description')
         expect(category.parent).toBe(parent)
         expect(category.children).toBe(children)
         expect(category.updated).toBe(updated)
@@ -87,7 +87,7 @@ describe('Category', () => {
         // @ts-expect-error: In the domain we want to protect against runtime type errors
         const categoryResult = newCategory('id', {})
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('children must be an array of Categorys')
+        expect(categoryResult.message).toBe('children must be an array of Categorys')
       })
     })
     describe('Given an invalid id', () => {
@@ -95,16 +95,16 @@ describe('Category', () => {
         // @ts-expect-error: In the domain we want to protect against runtime type errors
         let categoryResult = newCategory(undefined, createDetails)
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('id must be a string')
+        expect(categoryResult.message).toBe('id must be a string')
 
         categoryResult = newCategory('', createDetails)
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('id must be longer than or equal to 1 characters')
+        expect(categoryResult.message).toBe('id must be longer than or equal to 1 characters')
 
         // @ts-expect-error: In the domain we want to protect against runtime type errors
         categoryResult = newCategory(5, createDetails)
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('id must be a string')
+        expect(categoryResult.message).toBe('id must be a string')
       })
     })
     describe('Given an invalid path', () => {
@@ -115,14 +115,14 @@ describe('Category', () => {
           path: undefined,
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('path must be a string')
+        expect(categoryResult.message).toBe('path must be a string')
 
         categoryResult = newCategory('id', {
           ...createDetails,
           path: '',
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('path must be longer than or equal to 1 characters')
+        expect(categoryResult.message).toBe('path must be longer than or equal to 1 characters')
 
         categoryResult = newCategory('id', {
           ...createDetails,
@@ -130,7 +130,7 @@ describe('Category', () => {
           path: 5,
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('path must be a string')
+        expect(categoryResult.message).toBe('path must be a string')
       })
     })
     describe('Given an invalid name', () => {
@@ -141,14 +141,14 @@ describe('Category', () => {
           name: undefined,
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('name must be a string')
+        expect(categoryResult.message).toBe('name must be a string')
 
         categoryResult = newCategory('id', {
           ...createDetails,
           name: 'x',
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('name must be longer than or equal to 2 characters')
+        expect(categoryResult.message).toBe('name must be longer than or equal to 2 characters')
 
         categoryResult = newCategory('id', {
           ...createDetails,
@@ -156,7 +156,7 @@ describe('Category', () => {
           name: 5,
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('name must be a string')
+        expect(categoryResult.message).toBe('name must be a string')
       })
     })
     describe('Given an invalid description', () => {
@@ -167,7 +167,7 @@ describe('Category', () => {
             description: 'x',
           })
           assertResultError(categoryResult)
-          expect(categoryResult.message).toEqual('description must be longer than or equal to 2 characters')
+          expect(categoryResult.message).toBe('description must be longer than or equal to 2 characters')
         })
       })
       describe('and the description is not a string', () => {
@@ -178,7 +178,7 @@ describe('Category', () => {
             description: 5,
           })
           assertResultError(categoryResult)
-          expect(categoryResult.message).toEqual('description must be a string')
+          expect(categoryResult.message).toBe('description must be a string')
         })
       })
     })
@@ -191,7 +191,7 @@ describe('Category', () => {
             shortDescription: undefined,
           })
           assertResultError(categoryResult)
-          expect(categoryResult.message).toEqual('shortDescription must be a string')
+          expect(categoryResult.message).toBe('shortDescription must be a string')
         })
       })
       describe('and the short description is too short', () => {
@@ -201,7 +201,7 @@ describe('Category', () => {
             shortDescription: 'x',
           })
           assertResultError(categoryResult)
-          expect(categoryResult.message).toEqual('shortDescription must be longer than or equal to 2 characters')
+          expect(categoryResult.message).toBe('shortDescription must be longer than or equal to 2 characters')
         })
       })
     })
@@ -213,7 +213,7 @@ describe('Category', () => {
           children: undefined,
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('children must be an array of Categorys')
+        expect(categoryResult.message).toBe('children must be an array of Categorys')
 
         categoryResult = newCategory('id', {
           ...createDetails,
@@ -221,7 +221,7 @@ describe('Category', () => {
           children: [{ other: 'object' }],
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('children must be an array of Categorys')
+        expect(categoryResult.message).toBe('children must be an array of Categorys')
       })
     })
     describe('Given an invalid parent', () => {
@@ -232,7 +232,7 @@ describe('Category', () => {
           parent: { other: 'object' },
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toEqual('parent must be a Category')
+        expect(categoryResult.message).toBe('parent must be a Category')
       })
     })
     describe('Given an invalid updated', () => {
@@ -244,7 +244,7 @@ describe('Category', () => {
             updated: undefined,
           })
           assertResultError(categoryResult)
-          expect(categoryResult.message).toEqual('updated must be a Date instance')
+          expect(categoryResult.message).toBe('updated must be a Date instance')
         })
       })
       describe('and updated is not a Date', () => {
@@ -255,7 +255,7 @@ describe('Category', () => {
             updated: '',
           })
           assertResultError(categoryResult)
-          expect(categoryResult.message).toEqual('updated must be a Date instance')
+          expect(categoryResult.message).toBe('updated must be a Date instance')
         })
       })
     })

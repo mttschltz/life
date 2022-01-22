@@ -518,12 +518,12 @@ describe('CategoryRepoJson', () => {
         test('Then an error result is returned', async () => {
           const result = await repo.fetchParent('non existent child id')
           assertResultError(result)
-          expect(result.message).toEqual(`Could not find category 'non existent child id'`)
+          expect(result.message).toBe(`Could not find category 'non existent child id'`)
         })
         test('Then fetch is not called', async () => {
           const result = await repo.fetchParent('non existent child id')
           assertResultError(result)
-          expect(result.message).toEqual(`Could not find category 'non existent child id'`)
+          expect(result.message).toBe(`Could not find category 'non existent child id'`)
           expect(fetchCategory.mock.calls).toHaveLength(0)
         })
       })
@@ -650,9 +650,7 @@ describe('CategoryRepoJson', () => {
       describe('When the category ID does not exist', () => {
         test('Then a results error is returned', async () => {
           const childrenResults = await repo.fetchChildren('non existent category id')
-          expect(childrenResults.firstErrorResult?.message).toEqual(
-            `Could not find category 'non existent category id'`,
-          )
+          expect(childrenResults.firstErrorResult?.message).toBe(`Could not find category 'non existent category id'`)
           expect(childrenResults.okValues).toEqual([])
         })
         test('Then fetch is not called', async () => {

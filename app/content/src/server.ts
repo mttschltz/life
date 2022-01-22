@@ -87,7 +87,7 @@ const createRiskMutation = gql`
         },
       },
     })
-  } catch (e: unknown) {
+  } catch (e) {
     console.log(`error=${JSON.stringify(e)}`)
     process.exitCode = 1
     throw new Error(JSON.stringify(e))

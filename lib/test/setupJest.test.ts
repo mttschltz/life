@@ -15,8 +15,8 @@ describe('toEqualResultError', () => {
 
       const result = toEqualResultError.call({ equals }, received as ResultError, expected)
 
-      expect(result.pass).toEqual(false)
-      expect(result.message()).toEqual(`expected error to have property 'ok: true'`)
+      expect(result.pass).toBe(false)
+      expect(result.message()).toBe(`expected error to have property 'ok: true'`)
       expect(equals.mock.calls).toHaveLength(0)
     })
     test('Then it passes as a Jest matcher with called with .not', () => {
@@ -41,8 +41,8 @@ describe('toEqualResultError', () => {
 
           const result = toEqualResultError.call({ equals }, received, expected)
 
-          expect(result.pass).toEqual(true)
-          expect(result.message()).toEqual(`expected error result not to equal error result`)
+          expect(result.pass).toBe(true)
+          expect(result.message()).toBe(`expected error result not to equal error result`)
           expect(equals.mock.calls).toHaveLength(1)
           expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
         })
@@ -67,8 +67,8 @@ describe('toEqualResultError', () => {
 
           const result = toEqualResultError.call({ equals }, received, expected)
 
-          expect(result.pass).toEqual(false)
-          expect(result.message()).toEqual(
+          expect(result.pass).toBe(false)
+          expect(result.message()).toBe(
             `expected messages to match\n\nexpected message: "expected"\nreceived message: "received"`,
           )
           expect(equals.mock.calls).toHaveLength(0)
@@ -97,8 +97,8 @@ describe('toEqualResultError', () => {
 
           const result = toEqualResultError.call({ equals }, received, expected)
 
-          expect(result.pass).toEqual(true)
-          expect(result.message()).toEqual(`expected error result not to equal error result`)
+          expect(result.pass).toBe(true)
+          expect(result.message()).toBe(`expected error result not to equal error result`)
           expect(equals.mock.calls).toHaveLength(1)
           expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
         })
@@ -126,8 +126,8 @@ describe('toEqualResultError', () => {
 
         const result = toEqualResultError.call({ equals }, received, expected)
 
-        expect(result.pass).toEqual(false)
-        expect(result.message()).toEqual(`expected errors to match`)
+        expect(result.pass).toBe(false)
+        expect(result.message()).toBe(`expected errors to match`)
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
       })
@@ -156,8 +156,8 @@ describe('toEqualResultError', () => {
 
         const result = toEqualResultError.call({ equals }, received, expected)
 
-        expect(result.pass).toEqual(false)
-        expect(result.message()).toEqual(`expected errors to match`)
+        expect(result.pass).toBe(false)
+        expect(result.message()).toBe(`expected errors to match`)
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('expected error')])
       })
@@ -184,8 +184,8 @@ describe('toEqualResultError', () => {
 
         const result = toEqualResultError.call({ equals }, received, expected)
 
-        expect(result.pass).toEqual(true)
-        expect(result.message()).toEqual(`expected error result not to equal error result`)
+        expect(result.pass).toBe(true)
+        expect(result.message()).toBe(`expected error result not to equal error result`)
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('an error')])
       })
@@ -212,8 +212,8 @@ describe('toEqualResultError', () => {
 
         const result = toEqualResultError.call({ equals }, received, expected)
 
-        expect(result.pass).toEqual(false)
-        expect(result.message()).toEqual(`expected errors to match`)
+        expect(result.pass).toBe(false)
+        expect(result.message()).toBe(`expected errors to match`)
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('expected error')])
       })
