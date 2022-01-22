@@ -4,6 +4,7 @@
       "target": "es6",
       "jsx": "preserve",
       "lib": ["es2020"],
+      "types": ["jest"], // might need to add all @types/* packages here: https://www.typescriptlang.org/tsconfig#types
       "strict": true,
       "noEmit": true,
       "isolatedModules": true, // disabled because gatsby-plugin-typegen exports global types
@@ -25,5 +26,7 @@
         "@store/*": ["./app/store/src/*"],
         "@util/*": ["./lib/util/*"],
       }
-    }
+    },
+    "include": ["lib/life/src/**/*", "lib/test/**/*"],
+    // "exclude": ["lib/life/src/**/*.test.ts"]
   }

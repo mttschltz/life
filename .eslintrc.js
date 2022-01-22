@@ -14,7 +14,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  ignorePatterns: ['coverage/**/*'],
+  ignorePatterns: ['coverage/**/*', 'lib/life/src/__generated__/**/*'],
 
   extends: [
     'plugin:react/recommended',
@@ -49,6 +49,7 @@ module.exports = {
 
       parser: '@typescript-eslint/parser',
       parserOptions: {
+        // TODO: might need to remove this, maybe that's what they mean by "IDE config, without type information, which is the default root config"
         // `tsconfigRootDir` and `project` enable type aware linting rules for @typescript-eslint
         tsconfigRootDir: __dirname,
         project: ['./tsconfig.json'],

@@ -36,7 +36,8 @@ export default {
     '\\.graphql$',
   ],
 
-  // Indicates which provider should be used to instrument code for coverage
+  // Previously used v8 but coverage results then differed on Github Actions vs locally, so reverted
+  // to babel.
   coverageProvider: 'babel',
 
   // A list of reporter names that Jest uses when writing coverage reports
@@ -134,9 +135,7 @@ export default {
   // rootDir: undefined,
 
   // A list of paths to directories that Jest should use to search for files in
-  // roots: [
-  //   "<rootDir>"
-  // ],
+  roots: ['<rootDir>/lib/life/src'],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
