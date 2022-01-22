@@ -90,7 +90,7 @@ jobs:
       - name: Use Node.js version
         uses: actions/setup-node@v2
         with:
-          node-version: '14.16.1'
+          node-version: '14.18.3'
           cache: 'yarn'
 
       - name: Install dependencies
@@ -195,7 +195,7 @@ jobs:
       - name: Use Node.js version
         uses: actions/setup-node@v2
         with:
-          node-version: '14.16.1'
+          node-version: '14.18.3'
           cache: 'yarn'
 
       - name: Install dependencies
@@ -305,7 +305,7 @@ jobs:
       - name: Use Node.js version
         uses: actions/setup-node@v2
         with:
-          node-version: '14.16.1'
+          node-version: '14.18.3'
           cache: 'yarn'
 
       - name: Install dependencies
