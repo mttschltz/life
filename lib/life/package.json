@@ -15,7 +15,6 @@
     "lint:types": "tsc"
   },
   "devDependencies": {
-    "@types/jest": "26.0.23",
-    "util": "0.0.1"
+    "@types/jest": "26.0.23"
   }
 }
