@@ -9,7 +9,7 @@ import {
 import { Updated as UpdatedDomain } from '@life/updated'
 import { newCategoryMapper, newUpdatedMapper, Category, isUpdatedCategory, isUpdatedRisk } from './mapper'
 import type { CategoryMapper, Risk, RiskMapper } from './mapper'
-import { mockThrows } from '@util/testing'
+import { mockThrows } from '@helper/testing'
 
 describe('CategoryMapper', () => {
   describe('category', () => {

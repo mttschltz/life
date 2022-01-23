@@ -1,5 +1,5 @@
 import { Category, CategoryMapper } from '@life/usecase/mapper'
-import { Results, resultsOk } from '@util/result'
+import { Results, resultsOk } from '@helper/result'
 import { CategoryRepo } from '@life/repo'
 
 type ListRepo = Pick<CategoryRepo, 'list'>

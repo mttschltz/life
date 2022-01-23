@@ -1,4 +1,4 @@
-import type { Result, ResultError, ResultOk } from '@util/result'
+import type { Result, ResultError, ResultOk } from '@helper/result'
 
 function assertResultError<T>(result: Result<T>): asserts result is ResultError {
   if (result.ok) {

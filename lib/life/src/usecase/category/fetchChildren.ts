@@ -1,6 +1,6 @@
 import { CategoryRepo } from '@life/repo'
 import { Category, CategoryMapper } from '@life/usecase/mapper'
-import { Results, resultsOk } from '@util/result'
+import { Results, resultsOk } from '@helper/result'
 
 type FetchChildrenRepo = Pick<CategoryRepo, 'fetchChildren'>
 type FetchChildrenMapper = Pick<CategoryMapper, 'categories'>

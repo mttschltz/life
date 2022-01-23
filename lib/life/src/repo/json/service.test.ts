@@ -1,8 +1,8 @@
-import { Result, resultError, resultOk } from '@util/result'
+import { Result, resultError, resultOk } from '@helper/result'
 import { CategoryJson, CategoryMapper } from '@life/repo/json/mapper'
 import { Category } from '@life/category'
-import { assertResultError, assertResultOk } from '@util/testing'
-import { mockDeep, Mocked } from '@util/mock'
+import { assertResultError, assertResultOk } from '@helper/testing'
+import { mockDeep, Mocked } from '@helper/mock'
 import { CategoryRepo } from '@life/repo'
 import { newCategoryRepoJson } from './category'
 

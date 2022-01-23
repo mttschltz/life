@@ -1,4 +1,4 @@
-import { ResultError } from '@util/result'
+import { ResultError } from '@helper/result'
 
 function toEqualResultError(
   this: Pick<jest.MatcherContext, 'equals'>,

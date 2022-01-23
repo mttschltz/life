@@ -1,6 +1,6 @@
 import { Category, CreateDetails as CategoryCreateDetails, newCategory } from '@life/category'
 import { Risk, newRisk } from '@life/risk'
-import { Result } from '@util/result'
+import { Result } from '@helper/result'
 
 type RiskJson = Omit<Risk, 'mitigations' | 'parent'> & { parentId?: string }
 type CategoryJson = Omit<Category, 'children' | 'parent'> & { parentId?: string; children: string[] }

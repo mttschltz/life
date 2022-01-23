@@ -1,5 +1,5 @@
-import { ResultError, resultError, resultOk } from '@util/result'
-import { assertResultError } from '@util/testing'
+import { ResultError, resultError, resultOk } from '@helper/result'
+import { assertResultError } from '@helper/testing'
 import { toEqualResultError } from './setupJest'
 
 type Expected = Parameters<typeof toEqualResultError>[1]

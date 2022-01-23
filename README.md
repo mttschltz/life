@@ -50,7 +50,7 @@ Configure Docker to [run as non-root user](https://docs.docker.com/engine/instal
 ## Codebase quality
 
 - [ ] **Re-enable `tsconfig.json->isolatedModules`.** Requires graphql types to not be exported globally, which `gatsby-plugin-typegen` does.
-- [ ] Move `lib/util/test.ts` to somewhere more relevant to unit testing utilities
+- [ ] Move `lib/helper/src/test.ts` to somewhere more relevant to unit testing utilities
 - [ ] ESLint rules: No relative imports (tried this but didn't work: https://github.com/import-js/eslint-plugin-import/blob/HEAD/docs/rules/no-relative-packages.md)
 - [ ] Less tsconfig duplication
 

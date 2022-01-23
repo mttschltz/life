@@ -7,8 +7,8 @@ import {
   Risk as RiskDomain,
   RiskType as RiskTypeDomain,
 } from '@life/risk'
-import { assertResultError, assertResultOk, mockThrows } from '@util/testing'
-import { Result, ResultError } from '@util/result'
+import { assertResultError, assertResultOk, mockThrows } from '@helper/testing'
+import { Result, ResultError } from '@helper/result'
 import { CreateRiskInteractor, CreateRiskRepo, CreateRiskRequest } from '@life/usecase/risk/createRisk'
 import { Risk, RiskMapper } from '@life/usecase/mapper'
 

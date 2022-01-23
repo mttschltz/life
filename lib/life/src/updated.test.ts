@@ -1,4 +1,4 @@
-import { assertResultOk } from '@util/testing'
+import { assertResultOk } from '@helper/testing'
 import { newCategory } from './category'
 import { CategoryTopLevel, Impact, Likelihood, newRisk, RiskType } from './risk'
 import { isUpdatedCategory, isUpdatedRisk } from './updated'

@@ -6,8 +6,8 @@ import type { QueryRisksArgs, RequireFields, Resolvers, Risk } from '@life/__gen
 import * as typeDefs from '@life/api/graph/schema.graphql'
 import { InteractorFactory } from '@life/api/interactorFactory'
 import { GraphMapper } from '@life/api/graph/mapper'
-import { Logger } from '@util/logger'
-import { ResultError } from '@util/result'
+import { Logger } from '@helper/logger'
+import { ResultError } from '@helper/result'
 import { GraphQLScalarType, Kind } from 'graphql'
 
 // https://www.apollographql.com/docs/apollo-server/schema/custom-scalars/#example-the-date-scalar

@@ -4,7 +4,7 @@
 // ignore code coverage for risks until they are refactored
 /* istanbul ignore file */
 import { CategoryTopLevel, Risk } from '@life/risk'
-import { Result, resultError, resultOk, results, Results, resultsOk } from '@util/result'
+import { Result, resultError, resultOk, results, Results, resultsOk } from '@helper/result'
 import { RiskRepo as RiskRepoDomain } from '@life/repo'
 import { RiskMapper } from '@life/repo/json/mapper'
 import { JsonStore } from './service'

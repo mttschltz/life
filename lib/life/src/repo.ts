@@ -1,4 +1,4 @@
-import { Result, Results } from 'util/result'
+import { Result, Results } from '@helper/result'
 import { CategoryTopLevel, Risk } from '@life/risk'
 import { Category } from '@life/category'
 import { Updated } from './updated'

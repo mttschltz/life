@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 import { Risk, RiskMapper } from '@life/usecase/mapper'
 import { CategoryTopLevel as CategoryTopLevelDomain } from '@life/risk'
-import { Results, resultsOk } from '@util/result'
+import { Results, resultsOk } from '@helper/result'
 import { RiskRepo } from '@life/repo'
 
 type ListRepo = Pick<RiskRepo, 'list'>

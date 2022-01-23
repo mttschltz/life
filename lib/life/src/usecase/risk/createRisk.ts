@@ -1,6 +1,6 @@
 import { newRisk } from '@life/risk'
 import { Risk, RiskMapper, CategoryTopLevel, Impact, Likelihood, RiskType } from '@life/usecase/mapper'
-import { Result, resultError, resultOk } from '@util/result'
+import { Result, resultError, resultOk } from '@helper/result'
 import { RiskRepo } from '@life/repo'
 
 interface CreateRiskRequest {

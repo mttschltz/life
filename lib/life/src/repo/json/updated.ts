@@ -1,6 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Results, resultsOk } from '@util/result'
+import { Results, resultsOk } from '@helper/result'
 import { UpdatedRepo as UpdatedRepoDomain } from '@life/repo'
 import { Updated } from '@life/updated'
 import { RiskRepoJson } from './risk'

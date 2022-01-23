@@ -12,7 +12,7 @@ import {
   isUpdatedRisk as isUpdatedRiskDomain,
   Updated as UpdatedDomain,
 } from '@life/updated'
-import { Result, resultError, resultOk, results, Results } from '@util/result'
+import { Result, resultError, resultOk, results, Results } from '@helper/result'
 import { CreateRiskRequest } from './risk/createRisk'
 
 type RiskType = 'Condition' | 'Goal' | 'Risk'

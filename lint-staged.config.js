@@ -16,7 +16,7 @@ module.exports = {
       return 'yarn lint'
     },
   ],
-  'lib/component/**/*.{ts,tsx}': [
+  'lib/component/src/**/*.{ts,tsx}': [
     () => {
       return 'yarn test:visreg'
     },

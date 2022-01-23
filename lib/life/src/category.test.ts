@@ -1,7 +1,7 @@
 import { newCategory, Category } from '@life/category'
 import type { CreateDetails } from '@life/category'
 import { describe, expect, test } from '@jest/globals'
-import { assertResultError, assertResultOk } from '@util/testing'
+import { assertResultError, assertResultOk } from '@helper/testing'
 
 describe('Category', () => {
   describe('Create', () => {

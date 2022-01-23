@@ -1,7 +1,7 @@
 import { Category, newCategory } from '@life/category'
 import { CategoryJson, newCategoryMapper } from '@life/repo/json/mapper'
-import { resultError, resultOk } from '@util/result'
-import { assertResultError, assertResultOk } from '@util/testing'
+import { resultError, resultOk } from '@helper/result'
+import { assertResultError, assertResultOk } from '@helper/testing'
 
 jest.mock('@life/category')
 

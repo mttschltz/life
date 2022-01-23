@@ -31,7 +31,7 @@ export default {
     '/node_modules/',
     // Branches with throw aren't counted despite being entered in tests, and using
     // 'istanbul ignore next' seems to increase test coverage for other files to 100%.
-    'lib/util/testing.ts',
+    'lib/helper/src/testing.ts',
     'lib/life/src/__generated__',
     '\\.graphql$',
   ],
@@ -97,7 +97,7 @@ export default {
   moduleNameMapper: {
     '@life/(.*)': ['<rootDir>/lib/life/src/$1'],
     '@matt-fyi/(.*)': ['<rootDir>/app/matt-fyi/src/$1'],
-    '@util/(.*)': ['<rootDir>/lib/util/$1'],
+    '@helper/(.*)': ['<rootDir>/lib/helper/src/$1'],
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -134,9 +134,7 @@ export default {
   // rootDir: undefined,
 
   // A list of paths to directories that Jest should use to search for files in
-  // roots: [
-  //   "<rootDir>"
-  // ],
+  // roots: ['<rootDir>/lib/life/src'],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
@@ -145,7 +143,7 @@ export default {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ['./lib/test/setupJest.ts'],
+  setupFilesAfterEnv: ['./lib/helper/src/test/setupJest.ts'],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,

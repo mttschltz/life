@@ -1,4 +1,4 @@
-import { assertResultError, assertResultOk, mockThrows } from '@util/testing'
+import { assertResultError, assertResultOk, mockThrows } from '@helper/testing'
 import { ResultError, ResultOk } from './result'
 
 interface OkType {

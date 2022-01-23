@@ -8,8 +8,8 @@ import {
   newRiskInteractorFactory,
   newUpdatedInteractorFactory,
 } from '@life/api/interactorFactory'
-import { newLogger } from '@util/logger'
-import { transpile } from '@util/mdx'
+import { newLogger } from '@helper/logger'
+import { transpile } from '@helper/mdx'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import { gql } from '@apollo/client/core'
 import { CategoryRepoJson, newCategoryRepoJson } from '@life/repo/json/category'

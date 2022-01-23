@@ -1,4 +1,4 @@
-import { ResultError } from '@util/result'
+import { ResultError } from '@helper/result'
 
 declare global {
   namespace jest {

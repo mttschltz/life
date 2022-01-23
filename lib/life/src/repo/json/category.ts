@@ -1,6 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Result, resultError, resultOk, Results, results, resultsError, resultsErrorResult } from '@util/result'
+import { Result, resultError, resultOk, Results, results, resultsError, resultsErrorResult } from '@helper/result'
 import { CategoryRepo, CategoryRepo as CategoryRepoDomain } from '@life/repo'
 import { CategoryJson, CategoryMapper } from '@life/repo/json/mapper'
 import { Category } from '@life/category'

@@ -1,5 +1,5 @@
-import { Logger, newLogger } from '@util/logger'
-import { ResultError, ResultOk } from './result'
+import { Logger, newLogger } from '@helper/logger'
+import { ResultError, ResultOk } from '@helper/result'
 
 describe('Logger', () => {
   describe('Given a logger', () => {

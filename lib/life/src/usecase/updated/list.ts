@@ -1,5 +1,5 @@
 import { Updated, UpdatedMapper } from '@life/usecase/mapper'
-import { Results } from '@util/result'
+import { Results } from '@helper/result'
 import { UpdatedRepo } from '@life/repo'
 
 type ListRepo = Pick<UpdatedRepo, 'list'>

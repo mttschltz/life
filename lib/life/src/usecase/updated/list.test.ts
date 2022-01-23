@@ -1,5 +1,5 @@
 import { Updated as UpdatedDomain } from '@life/updated'
-import { ResultError, Results, results, resultsOk } from '@util/result'
+import { ResultError, Results, results, resultsOk } from '@helper/result'
 import { ListInteractor, ListMapper, newListInteractor } from '@life/usecase/updated/list'
 import type { ListRepo } from '@life/usecase/updated/list'
 import { Updated, Category, Risk } from '@life/usecase/mapper'

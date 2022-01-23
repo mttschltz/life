@@ -11,7 +11,7 @@ import {
   resultsError,
   resultsErrorResult,
   resultsOk,
-} from '@util/result'
+} from '@helper/result'
 import { assertResultError, assertResultOk } from './testing'
 
 interface OkType {

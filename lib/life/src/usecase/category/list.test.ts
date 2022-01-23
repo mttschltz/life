@@ -1,5 +1,5 @@
 import { Category as CategoryDomain } from '@life/category'
-import { ResultError, results, Results } from '@util/result'
+import { ResultError, results, Results } from '@helper/result'
 import { ListInteractor, newListInteractor } from '@life/usecase/category/list'
 import type { ListRepo } from '@life/usecase/category/list'
 import { Category } from '@life/usecase/mapper'

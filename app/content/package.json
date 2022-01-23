@@ -15,6 +15,8 @@
     "codegen": "yarn apollo codegen:generate src/__generated__ --outputFlat --localSchemaFile=../../lib/life/src/api/graph/schema.graphql --target=typescript --tagName=gql --passthroughCustomScalars",
     "codegen:watch": "yarn apollo codegen:generate src/__generated__ --outputFlat --localSchemaFile=../../lib/life/src/api/graph/schema.graphql --target=typescript --tagName=gql --passthroughCustomScalars --watch",
     "develop": "yarn build:dev && concurrently \"yarn build:dev-watch\" \"yarn start\"",
+    "lint:eslint": "eslint 'src/**/*.{js,ts,tsx}' --max-warnings 0 --fix",
+    "lint:types": "tsc",
     "start": "cross-env NODE_ENV=production node dist/server"
   },
   "devDependencies": {

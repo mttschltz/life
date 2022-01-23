@@ -1,7 +1,7 @@
 // ignore code coverage while not implemented
 /* istanbul ignore file */
 import { Category } from '@life/usecase/mapper'
-import { Result, resultError } from '@util/result'
+import { Result, resultError } from '@helper/result'
 
 interface FetchInteractor {
   fetch: (id: string) => Promise<Result<Category>>

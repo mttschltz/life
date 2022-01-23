@@ -4,5 +4,5 @@
     "outDir": "dist",
     "noEmit": false,
   },
-  "include": ["src/**/*.ts", "../../lib/life/src/api/graph/types/*.d.ts"]
+  "include": ["src/**/*.ts", "../../lib/helper/src/types/**/*", "../../lib/life/src/api/graph/types/*.d.ts"]
 }

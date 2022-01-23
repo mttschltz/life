@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, isInstance, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
-import { Result, resultError, resultOk } from '@util/result'
+import { Result, resultError, resultOk } from '@helper/result'
 import { Updatable } from './updated'
 
 enum RiskType {

@@ -1,8 +1,8 @@
-import { mock, Mocked } from '@util/mock'
+import { mock, Mocked } from '@helper/mock'
 import { FetchChildrenMapper, FetchChildrenRepo, newFetchChildrenInteractor } from './fetchChildren'
 import { Category } from '@life/usecase/mapper'
 import { Category as CategoryDomain } from '@life/category'
-import { Results, resultsError, resultsOk } from '@util/result'
+import { Results, resultsError, resultsOk } from '@helper/result'
 
 describe('fetchChildren', () => {
   describe('Given a category id that has children', () => {

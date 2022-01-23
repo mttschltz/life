@@ -1,29 +1,30 @@
 {
-    "compilerOptions": {
-      "module": "commonjs",
-      "target": "es6",
-      "jsx": "preserve",
-      "lib": ["es2020"],
-      "strict": true,
-      "noEmit": true,
-      "isolatedModules": true, // disabled because gatsby-plugin-typegen exports global types
-      "resolveJsonModule": true,
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "noUnusedLocals": true,
-      "alwaysStrict": true,
-      "noUnusedParameters": true,
-      "forceConsistentCasingInFileNames": true,
-      "removeComments": false,
-      "experimentalDecorators": true,
-      "baseUrl": ".",
-      "paths": {
-        "@component/*": ["./lib/component/*"],
-        "@component": ["./lib/component/index.ts"],
-        "@life/*": ["./lib/life/src/*"],
-        "@matt-fyi/*": ["./app/matt-fyi/src/*"],
-        "@store/*": ["./app/store/src/*"],
-        "@util/*": ["./lib/util/*"],
-      }
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "preserve",
+    "lib": ["es2020"],
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true, // disabled because gatsby-plugin-typegen exports global types
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "alwaysStrict": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": false,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@component/*": ["./lib/component/src/*"],
+      "@component": ["./lib/component/src/index.ts"],
+      "@life/*": ["./lib/life/src/*"],
+      "@matt-fyi/*": ["./app/matt-fyi/src/*"],
+      "@store/*": ["./app/store/src/*"],
+      "@helper/*": ["./lib/helper/src/*"],
     }
-  }
+  },
+  "include": ["lib/component/src/**/*", "lib/life/src/**/*", "lib/helper/src/**/*", "app/matt-fyi/src/**/*", "app/content/src/**/*", "app/store/src/**/*"]
+}

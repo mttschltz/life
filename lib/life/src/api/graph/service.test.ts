@@ -9,13 +9,13 @@ import {
   Likelihood,
   RiskType,
 } from '@life/__generated__/graphql'
-import { Logger } from '@util/logger'
-import { Result, resultError, resultOk, Results, resultsError, resultsOk } from '@util/result'
+import { Logger } from '@helper/logger'
+import { Result, resultError, resultOk, Results, resultsError, resultsOk } from '@helper/result'
 import { GraphQLResolveInfo, Kind, ValueNode } from 'graphql'
 import { GraphMapper } from './mapper'
 
 import { GraphService, InteractorFactory } from './service'
-import { mockDeep, MockedDeep } from '@util/mock'
+import { mockDeep, MockedDeep } from '@helper/mock'
 import { FetchParentInteractor } from '@life/usecase/category/fetchParent'
 import { FetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
 import { ListInteractor as ListCategoriesInteractor } from '@life/usecase/category/list'

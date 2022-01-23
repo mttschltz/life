@@ -1,7 +1,7 @@
 import { Category as CategoryDomain } from '@life/category'
-import { mockDeep, Mocked } from '@util/mock'
-import { Result, resultError, resultOk } from '@util/result'
-import { assertResultError, assertResultOk } from '@util/testing'
+import { mockDeep, Mocked } from '@helper/mock'
+import { Result, resultError, resultOk } from '@helper/result'
+import { assertResultError, assertResultOk } from '@helper/testing'
 import { FetchParentMapper, FetchParentRepo, newFetchParentInteractor } from './fetchParent'
 import { Category } from '@life/usecase/mapper'
 

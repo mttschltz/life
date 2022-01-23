@@ -13,6 +13,8 @@
     "build:dev": "webpack --config webpack.development.js",
     "build:dev-watch": "webpack --env watch=true --config webpack.development.js",
     "develop": "yarn build:dev && concurrently \"yarn build:dev-watch\" \"yarn start:dev\"",
+    "lint:eslint": "eslint 'src/**/*.{js,ts,tsx}' --max-warnings 0 --fix",
+    "lint:types": "tsc",
     "start": "cross-env NODE_ENV=production node dist/server",
     "start:dev": "cross-env NODE_ENV=development node dist/server"
   },

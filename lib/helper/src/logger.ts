@@ -1,4 +1,4 @@
-import { Result } from '@util/result'
+import { Result } from '@helper/result'
 
 interface Details {
   msg: string

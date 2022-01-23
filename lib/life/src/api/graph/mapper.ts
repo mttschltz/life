@@ -10,7 +10,7 @@ import {
   RiskType as RiskTypeUsecase,
 } from '@life/usecase/mapper'
 import { Category, CategoryTopLevel, Impact, Likelihood, Risk, RiskType } from '@life/__generated__/graphql'
-import { Result, resultError, resultOk, results, Results } from '@util/result'
+import { Result, resultError, resultOk, results, Results } from '@helper/result'
 
 type MdxTranspiler = (mdx?: string) => string | undefined
 
