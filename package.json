@@ -6,7 +6,8 @@
     "app/store",
     "lib/component",
     "lib/helper",
-    "lib/life"
+    "lib/life",
+    "cypress"
   ],
   "scripts": {
     "build:matt-fyi": "start-server-and-test 'yarn workspace store build && yarn workspace store start' http-get://localhost:4000 'yarn workspace content build && yarn workspace content start && yarn workspace matt-fyi build'",
@@ -66,8 +67,10 @@
     "class-validator": "0.13.1",
     "clean-webpack-plugin": "4.0.0-alpha.0",
     "cross-env": "7.0.3",
+    "cypress": "^9.3.1",
     "eslint": "8.7.0",
     "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-jest": "25.7.0",

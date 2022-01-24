@@ -1,0 +1,15 @@
+{
+  "name": "cypress",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Cypress End to End tests",
+  "author": {
+    "name": "Matt Schultz",
+    "email": "hey@matt.fyi",
+    "url": "https://www.matt.fyi"
+  },
+  "scripts": {
+    "lint:eslint": "eslint 'integration/**/*.{js,ts,tsx}' --max-warnings 0 --fix",
+    "lint:types": "tsc"
+  }
+}
