@@ -9,7 +9,7 @@
     "url": "https://www.matt.fyi"
   },
   "scripts": {
-    "lint:eslint": "eslint 'integration/**/*.{js,ts,tsx}' --max-warnings 0 --fix",
+    "lint:eslint": "eslint '**/*.{js,ts,tsx}' --max-warnings 0 --fix",
     "lint:types": "tsc"
   }
 }
