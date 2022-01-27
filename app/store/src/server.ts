@@ -2,6 +2,8 @@ import { ApolloServer } from 'apollo-server'
 import { environment } from '@store/environment'
 import { GraphService } from '@life/api/graph/service'
 import { newMapper } from '@life/api/graph/mapper'
+import yargs from 'yargs/yargs'
+import { hideBin } from 'yargs/helpers'
 import {
   newCategoryInteractorFactory,
   newRiskInteractorFactory,
@@ -15,41 +17,52 @@ import { RiskMapper as RiskJsonMapper, newCategoryMapper } from '@life/repo/json
 import { newCategoryRepoJson } from '@life/repo/json/category'
 import { newUpdatedRepoJson } from '@life/repo/json/updated'
 import { newRiskRepoJson } from '@life/repo/json/risk'
+import jsonfile from 'jsonfile'
 
-// Store/repo
-const jsonStore: JsonStore = {
-  // TODO: Move to content app when createCategory mutation is available.
-  category: {
-    1: {
-      id: '1',
-      name: 'Health',
-      path: 'health',
-      shortDescription: 'A long, healthy life from now until your later years.',
-      updated: new Date(2022, 0, 19, 6, 46),
-      description: 'A long, healthy life from now until your later years.',
-      children: [],
+const argv = yargs(hideBin(process.argv))
+  .options({
+    seed: {
+      type: 'string',
+      default: '',
+      describe: 'path to JSON file containing seed data for the database JSON store',
     },
-    2: {
-      id: '2',
-      name: 'Wealth',
-      path: 'wealth',
-      shortDescription: 'Building and maintaining a strong and ongoing financial foundation.',
-      updated: new Date(2022, 0, 19, 6, 48),
-      description: 'Building and maintaining a strong and ongoing financial foundation.',
-      children: [],
-    },
-    3: {
-      id: '3',
-      name: 'Security',
-      path: 'security',
-      shortDescription: 'Being prepared for risks to your safety and security.',
-      updated: new Date(2022, 0, 19, 6, 49),
-      description: 'Being prepared for risks to your safety and security.',
-      children: [],
-    },
-  },
-  risk: {},
+  })
+  .parseSync()
+
+const isIsoDate = (str: string): boolean => {
+  try {
+    return str === new Date(str).toISOString()
+  } catch (e) {
+    return false
+  }
 }
+
+type JsonPropValue = bigint | boolean | number | object | string | null | undefined
+
+const isRecord = (val: JsonPropValue): val is Record<string, JsonPropValue> => {
+  return typeof val === 'object' && val !== null && !Array.isArray(val)
+}
+
+/* eslint-disable no-param-reassign */
+const convertDates = (obj: Record<string, JsonPropValue>): void => {
+  for (const key in obj) {
+    const val = obj[key]
+    if (typeof val === 'string') {
+      obj[key] = isIsoDate(val) ? new Date(val) : val
+    } else if (isRecord(val)) {
+      convertDates(val)
+    }
+  }
+}
+/* eslint-enable no-param-reassign */
+
+let jsonStore: JsonStore = { risk: {}, category: {} }
+if (argv.seed) {
+  console.info(`Using seed data from path: \'${argv.seed}\'`)
+  jsonStore = jsonfile.readFileSync(argv.seed) as JsonStore
+  convertDates(jsonStore as unknown as Record<string, JsonPropValue>)
+}
+
 const categoryRepo = newCategoryRepoJson(jsonStore, newCategoryMapper())
 const riskRepo = newRiskRepoJson(jsonStore, new RiskJsonMapper())
 const updatedRepo = newUpdatedRepoJson(categoryRepo, riskRepo)

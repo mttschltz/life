@@ -25,6 +25,7 @@ build:matt-fyi
 Install VSCode with the following extensions:
 
 - [GraphQL](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql)
+- [Sort package.json](https://marketplace.visualstudio.com/items?itemName=unional.vscode-sort-package-json)
 
 ### Environment
 

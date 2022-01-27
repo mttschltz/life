@@ -1,0 +1,138 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "CategoryTopLevel": {
+            "enum": [
+                "Health",
+                "Security",
+                "Wealth"
+            ],
+            "type": "string"
+        },
+        "Impact": {
+            "enum": [
+                "High",
+                "Normal"
+            ],
+            "type": "string"
+        },
+        "Likelihood": {
+            "enum": [
+                "High",
+                "Normal"
+            ],
+            "type": "string"
+        },
+        "Omit<Category,\"children\"|\"parent\">": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "shortDescription": {
+                    "type": "string"
+                },
+                "updated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Omit<Risk,\"parent\"|\"mitigations\">": {
+            "properties": {
+                "category": {
+                    "$ref": "#/definitions/CategoryTopLevel"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "impact": {
+                    "$ref": "#/definitions/Impact"
+                },
+                "likelihood": {
+                    "$ref": "#/definitions/Likelihood"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "shortDescription": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/RiskType"
+                },
+                "updated": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "RiskType": {
+            "enum": [
+                "Condition",
+                "Goal",
+                "Risk"
+            ],
+            "type": "string"
+        }
+    },
+    "properties": {
+        "category": {
+            "additionalProperties": {
+                "allOf": [
+                    {
+                        "$ref": "#/definitions/Omit<Category,\"children\"|\"parent\">"
+                    },
+                    {
+                        "properties": {
+                            "children": {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "parentId": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "type": "object"
+        },
+        "risk": {
+            "additionalProperties": {
+                "allOf": [
+                    {
+                        "$ref": "#/definitions/Omit<Risk,\"parent\"|\"mitigations\">"
+                    },
+                    {
+                        "properties": {
+                            "parentId": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "type": "object"
+        }
+    },
+    "type": "object"
+}
+

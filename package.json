@@ -10,9 +10,9 @@
     "cypress"
   ],
   "scripts": {
-    "build:matt-fyi": "start-server-and-test 'yarn workspace store build && yarn workspace store start' http-get://localhost:4000 'yarn workspace content build && yarn workspace content start && yarn workspace matt-fyi build'",
-    "develop:matt-fyi": "start-server-and-test 'yarn workspace store develop' http-get://localhost:4000 'yarn workspace content build && yarn workspace content start && yarn workspace matt-fyi develop'",
-    "develop:store": "yarn workspace store develop",
+    "build:matt-fyi": "start-server-and-test 'yarn workspace store build && yarn workspace store start --seed \"../../cypress/fixtures/store.json\"' http-get://localhost:4000 'yarn workspace content build && yarn workspace content start && yarn workspace matt-fyi build'",
+    "develop:matt-fyi": "start-server-and-test 'yarn workspace store build:dev && yarn workspace store start:dev  --seed \"../../cypress/fixtures/store.json\"' http-get://localhost:4000 'yarn workspace content build && yarn workspace content start && yarn workspace matt-fyi develop'",
+    "develop:store": "yarn workspace store build:dev && yarn workspace store start:dev --seed \"../../cypress/fixtures/store.json\"",
     "lint": "yarn lint:types && yarn lint:eslint",
     "lint:eslint": "yarn workspaces run lint:eslint",
     "lint:types": "yarn workspaces run lint:types",
@@ -50,10 +50,12 @@
     "@storybook/react": "^6.4.9",
     "@testing-library/react-hooks": "7.0.2",
     "@types/jest": "26.0.23",
+    "@types/jsonfile": "^6.0.1",
     "@types/mdx-js__react": "^1.5.4",
     "@types/react": "17.0.11",
     "@types/react-dom": "17.0.7",
     "@types/styled-components": "5.1.18",
+    "@types/yargs": "17.0.8",
     "@typescript-eslint/eslint-plugin": "5.10.0",
     "@typescript-eslint/parser": "5.10.0",
     "apollo": "^2.33.4",
@@ -86,6 +88,7 @@
     "jest": "27.4.7",
     "jest-mock-extended": "2.0.4",
     "jest-transform-graphql": "2.1.0",
+    "jsonfile": "^6.1.0",
     "lint-staged": "11.0.0",
     "loki": "0.28.1",
     "prettier": "2.5.1",
@@ -100,7 +103,8 @@
     "webpack": "5.42.0",
     "webpack-cli": "4.7.2",
     "webpack-merge": "5.8.0",
-    "webpack-node-externals": "3.0.0"
+    "webpack-node-externals": "3.0.0",
+    "yargs": "17.3.1"
   },
   "loki": {
     "configurations": {

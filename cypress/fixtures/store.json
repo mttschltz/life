@@ -1,0 +1,33 @@
+{
+  "$schema": "./JsonStoreSchema.json",
+  "category": {
+    "1": {
+      "id": "1",
+      "name": "Health",
+      "path": "health",
+      "shortDescription": "A long, healthy life from now until your later years.",
+      "updated": "2022-01-18T20:16:00.000Z",
+      "description": "A long, healthy life from now until your later years.",
+      "children": []
+    },
+    "2": {
+      "id": "2",
+      "name": "Wealth",
+      "path": "wealth",
+      "shortDescription": "Building and maintaining a strong and ongoing financial foundation.",
+      "updated": "2022-01-18T20:18:00.000Z",
+      "description": "Building and maintaining a strong and ongoing financial foundation.",
+      "children": []
+    },
+    "3": {
+      "id": "3",
+      "name": "Security",
+      "path": "security",
+      "shortDescription": "Being prepared for risks to your safety and security.",
+      "updated": "2022-01-18T20:19:00.000Z",
+      "description": "Being prepared for risks to your safety and security.",
+      "children": []
+    }
+  },
+  "risk": {}
+}
