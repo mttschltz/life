@@ -293,10 +293,93 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/github-script@v5.0.0
+        name: Get start time
+        id: start-time
+        with:
+          script: |
+            return new Date().getTime()
+          result-encoding: string
+
       - name: Cypress run
         uses: cypress-io/github-action@v2.11.7
         with:
           command: yarn test:e2e
+
+      - uses: actions/github-script@v5.0.0
+        name: Get job duration
+        id: get-job-duration
+        with:
+          script: |
+            const started = new Date(${{ steps.start-time.outputs.result }})
+            const completed = new Date()
+            const durationSeconds = Math.floor((completed - started)/1000)
+            if (durationSeconds > 60) {
+              const m = Math.floor(durationSeconds/60)
+              const s = durationSeconds % 60
+              return `${m}m${s}s`
+            } else if (durationSeconds === 60) {
+              return '1m'
+            } else {
+              return `${durationSeconds % 60}s`
+            }
+          result-encoding: string
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Send success message to Slack
+        if: success()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "text": "✔ End-to-end tests completed",
+              "blocks": [
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "✔ End-to-end tests completed in ${{ steps.get-job-duration.outputs.result }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - uses: slackapi/slack-github-action@v1.16.0
+        name: Send failure message to Slack
+        if: failure()
+        with:
+          channel-id: 'C01CTC53XGT' # #deploys-matt-fyi
+          payload: |
+            {
+              "text": "💥 End-to-end tests failed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "💥 End-to-end tests *failed*. <!here>"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View",
+                      "emoji": true
+                    },
+                    "value": "click_me_123",
+                    "url": "${{ env.RUN_URL }}",
+                    "action_id": "button-action"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
   build:
     name: 'Build'
