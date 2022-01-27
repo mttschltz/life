@@ -296,7 +296,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2.11.7
         with:
-          build: yarn test:e2e
+          command: yarn test:e2e
 
   build:
     name: 'Build'
