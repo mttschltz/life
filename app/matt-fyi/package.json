@@ -14,7 +14,7 @@
     "develop": "yarn clean && gatsby develop",
     "lint:eslint": "eslint 'src/**/*.{js,ts,tsx}' --max-warnings 0 --fix",
     "lint:types": "tsc",
-    "serve": "gatsby serve"
+    "serve": "gatsby serve -p 8000"
   },
   "devDependencies": {
     "babel-preset-gatsby": "1.8.0",
