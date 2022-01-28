@@ -1,6 +1,6 @@
 import React from 'react'
 import { TranslationProvider, useTranslate } from '@matt-fyi/util/i18n/translate'
-import { Box, ThemeProvider, THEME } from '@component'
+import { Box, ThemeProvider, THEME, Header, Heading, Text } from '@component'
 
 const Layout: React.FC = (props) => {
   const t = useTranslate('page')
@@ -10,10 +10,10 @@ const Layout: React.FC = (props) => {
       <TranslationProvider>
         <Box width="100%" direction="column" align="center">
           <Box width={{ width: '100%', max: 'large' }} direction="column">
-            <Box width="100%" justify="between">
-              <Box>{t('page:home.title')}</Box>
-              <Box>{t('page:home.subtitle')}</Box>
-            </Box>
+            <Header background="brand" pad="small" align="baseline">
+              <Heading level={1}>{t('page:home.title')}</Heading>
+              <Text>{t('page:home.subtitle')}</Text>
+            </Header>
             <Box direction="column">{props.children}</Box>
           </Box>
         </Box>
