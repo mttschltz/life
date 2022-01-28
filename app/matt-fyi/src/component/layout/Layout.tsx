@@ -8,11 +8,15 @@ const Layout: React.FC = (props) => {
   return (
     <ThemeProvider theme={THEME}>
       <TranslationProvider>
-        <Box width="100%" justify="between">
-          <Box>{t('page:home.title')}</Box>
-          <Box>{t('page:home.subtitle')}</Box>
+        <Box width="100%" direction="column" align="center">
+          <Box width={{ width: '100%', max: 'large' }} direction="column">
+            <Box width="100%" justify="between">
+              <Box>{t('page:home.title')}</Box>
+              <Box>{t('page:home.subtitle')}</Box>
+            </Box>
+            <Box direction="column">{props.children}</Box>
+          </Box>
         </Box>
-        <div>{props.children}</div>
       </TranslationProvider>
     </ThemeProvider>
   )
