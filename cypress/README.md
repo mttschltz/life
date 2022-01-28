@@ -11,10 +11,10 @@
 2.  From the workspace root, generate an updated schema for the store
 
     ```
-    typescript-json-schema -o cypress/fixtures/JsonStoreSchema.json tsconfig.json JsonStore
+    typescript-json-schema -o data/JsonStoreSchema.json tsconfig.json JsonStore
     ```
 
-3.  Modify the data in `cypress/fixtures/store.json` as you wish, ensuring the following property remains.
+3.  Modify the data in `data/store.json` as you wish, ensuring the following property remains.
 
         ```
         "$schema": "./JsonStoreSchema.json"
