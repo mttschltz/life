@@ -1,6 +1,6 @@
 import React from 'react'
 import { TranslationProvider, useTranslate } from '@matt-fyi/util/i18n/translate'
-import { Box, ThemeProvider, THEME, Header, Heading, Text } from '@component'
+import { Box, ThemeProvider, THEME, Header, Heading, Text, Main } from '@component'
 
 const Layout: React.FC = (props) => {
   const t = useTranslate('page')
@@ -14,7 +14,7 @@ const Layout: React.FC = (props) => {
               <Heading level={1}>{t('page:home.title')}</Heading>
               <Text>{t('page:home.subtitle')}</Text>
             </Header>
-            <Box direction="column">{props.children}</Box>
+            <Main direction="column">{props.children}</Main>
           </Box>
         </Box>
       </TranslationProvider>

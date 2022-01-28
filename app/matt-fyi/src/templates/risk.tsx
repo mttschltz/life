@@ -7,7 +7,7 @@ import { MDXProvider } from '@mdx-js/react'
 
 const IndexPage: FunctionComponent<PageProps<GatsbyTypes.RisksQueryQuery>> = ({ data }): JSX.Element => {
   return (
-    <main>
+    <>
       <MDXProvider components={{}}>
         {data.store.risks.map((r) => (
           <>
@@ -20,7 +20,7 @@ const IndexPage: FunctionComponent<PageProps<GatsbyTypes.RisksQueryQuery>> = ({ 
           </>
         ))}
       </MDXProvider>
-    </main>
+    </>
   )
 }
 

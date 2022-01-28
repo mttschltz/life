@@ -22,7 +22,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
   }
 
   return (
-    <main>
+    <>
       Top level categories:
       <ul>
         {props.data.store.categories.map((c, i) => (
@@ -43,7 +43,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
           ))}
         </>
       )}
-    </main>
+    </>
   )
 }
 
