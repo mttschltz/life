@@ -4,7 +4,9 @@ import React from 'react'
 
 // https://icons.grommet.io
 const ICONS_MAP = { plan: Plan, 'checkbox-selected': CheckboxSelected } as const
+
 type IconName = keyof typeof ICONS_MAP
+
 const ICON_NAMES: IconName[] = Object.keys(ICONS_MAP).sort((a, b) => a.localeCompare(b)) as Array<
   keyof typeof ICONS_MAP
 >
