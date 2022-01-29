@@ -2,6 +2,8 @@
   "home": {
     "title": "systemized.blog",
     "subtitle": "How to thrive, long-term",
-    "heading_updates": "Updates"
+    "heading_updates": "Updates",
+    "nav_plan": "Plan",
+    "nav_action": "Action"
   }
 }
