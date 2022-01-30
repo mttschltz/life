@@ -2631,7 +2631,7 @@ type CategoryQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type CategoryQueryQuery = { readonly store: { readonly categories: ReadonlyArray<Maybe<(
-      Pick<Store_Category, 'name'>
+      Pick<Store_Category, 'id' | 'name'>
       & { readonly children: ReadonlyArray<Maybe<Pick<Store_Category, 'name'>>> }
     )>>, readonly updated: ReadonlyArray<Maybe<(
       { readonly __typename: 'Store_Category' }

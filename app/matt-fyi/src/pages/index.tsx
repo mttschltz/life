@@ -1,8 +1,17 @@
 import { Box, GatsbyLink, Heading, Text } from '@component'
+import { BoxProps } from '@component/layout/Box'
 import { useTranslate } from '@matt-fyi/util/i18n/translate'
 import { useRoute } from '@matt-fyi/util/route/route'
 import { graphql, PageProps } from 'gatsby'
 import * as React from 'react'
+
+/* eslint-disable @typescript-eslint/naming-convention */
+const CATEGORY_NAME_COLOR_MAP: Record<string, BoxProps['background']> = {
+  Health: 'health',
+  Wealth: 'wealth',
+  Security: 'security',
+}
+/* eslint-enable @typescript-eslint/naming-convention */
 
 const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuery>> = (props) => {
   const t = useTranslate('page')
@@ -23,12 +32,21 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
 
   return (
     <>
-      Top level categories:
-      <ul>
-        {props.data.store.categories.map((c, i) => (
-          <li key={i}>{c?.name}</li>
-        ))}
-      </ul>
+      <Box direction="column">
+        {props.data.store.categories
+          .filter((c): c is NonNullable<typeof c> => !!c)
+          .map((c) => (
+            <Box
+              key={c.id}
+              align="center"
+              justify="center"
+              height={{ min: 'xsmall' }}
+              background={CATEGORY_NAME_COLOR_MAP[c.name] ?? 'border'}
+            >
+              {c.name}
+            </Box>
+          ))}
+      </Box>
       {!!updates.length && (
         <>
           <Heading level={2}>{t('page:home.heading_updates')}</Heading>
@@ -55,6 +73,7 @@ export const query = graphql`
   query CategoryQuery {
     store {
       categories {
+        id
         name
         children {
           name
