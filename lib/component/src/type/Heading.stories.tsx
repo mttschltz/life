@@ -19,56 +19,6 @@ const Simple: ComponentStory<typeof Heading> = () => {
         <Heading level={4}>Level 4</Heading>
       </Divider>
       <Divider>
-        <Heading level={1} size="small">
-          Level 1, size small
-        </Heading>
-        <Heading level={2} size="small">
-          Level 2, size small
-        </Heading>
-        <Heading level={3} size="small">
-          Level 3, size small
-        </Heading>
-        <Heading level={4} size="small">
-          Level 4, size small
-        </Heading>
-        <Heading level={1} size="medium">
-          Level 1, size medium
-        </Heading>
-        <Heading level={2} size="medium">
-          Level 2, size medium
-        </Heading>
-        <Heading level={3} size="medium">
-          Level 3, size medium
-        </Heading>
-        <Heading level={4} size="medium">
-          Level 4, size medium
-        </Heading>
-        <Heading level={1} size="large">
-          Level 1, size large
-        </Heading>
-        <Heading level={2} size="large">
-          Level 2, size large
-        </Heading>
-        <Heading level={3} size="large">
-          Level 3, size large
-        </Heading>
-        <Heading level={4} size="large">
-          Level 4, size large
-        </Heading>
-        <Heading level={1} size="xlarge">
-          Level 1, size xlarge
-        </Heading>
-        <Heading level={2} size="xlarge">
-          Level 2, size xlarge
-        </Heading>
-        <Heading level={3} size="xlarge">
-          Level 3, size xlarge
-        </Heading>
-        <Heading level={4} size="xlarge">
-          Level 4, size xlarge
-        </Heading>
-      </Divider>
-      <Divider>
         <Box background="brand">
           <Heading level={4}>Heading default margin</Heading>
         </Box>

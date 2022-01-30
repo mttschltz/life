@@ -16,9 +16,7 @@ const Layout: React.FC = (props) => {
         <Box width="100%" direction="column" align="center">
           <Box width={{ width: '100%', max: 'large' }} direction="column">
             <Header background="brand" pad="small" align="baseline" direction="row-responsive">
-              <Heading level={1} size={'small'}>
-                {t('page:home.title')}
-              </Heading>
+              <Heading level={1}>{t('page:home.title')}</Heading>
               <Text>{t('page:home.subtitle')}</Text>
             </Header>
             <Box as="nav" align="start" margin={{ vertical: 'medium' }}>
