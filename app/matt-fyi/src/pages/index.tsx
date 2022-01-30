@@ -36,7 +36,11 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
             <Box key={u.id} direction="column" pad={{ bottom: 'large' }}>
               <Box align="baseline" justify="between">
                 <GatsbyLink to={updatedRoute(u)}>{u.name}</GatsbyLink>
-                <Text size="xsmall">{t('common:date.absolute', { date: new Date(u.updated) })}</Text>
+                <Text size="xsmall">
+                  {t('common:date.absolute', {
+                    date: new Date(u.updated),
+                  })}
+                </Text>
               </Box>
               <Text>{u.shortDescription}</Text>
             </Box>

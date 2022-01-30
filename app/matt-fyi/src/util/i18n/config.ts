@@ -29,4 +29,12 @@ void i18n.use(initReactI18next).init({
   },
 })
 
+/* istanbul ignore next */
+i18n.services.formatter?.add('datetime', (value, lng) => {
+  if (value instanceof Date) {
+    return value.toLocaleDateString(lng, { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+  return typeof value === 'string' ? value : ''
+})
+
 export { resources, i18n }
