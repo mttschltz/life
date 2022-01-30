@@ -68,6 +68,9 @@ const THEME_UNTYPED = {
         light: '#8CB06A',
         dark: '#E8D064',
       },
+      health: 'status-ok',
+      wealth: '#0AA1C7',
+      security: '#f9db6d',
     },
     font: {
       family: '"Montserrat"',
