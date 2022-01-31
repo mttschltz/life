@@ -1,5 +1,6 @@
 import { Box, GatsbyLink, Heading, Text } from '@component'
 import { BoxProps } from '@component/layout/Box'
+import { filterNonNullish } from '@matt-fyi/util/graph/graph'
 import { useTranslate } from '@matt-fyi/util/i18n/translate'
 import { useRoute } from '@matt-fyi/util/route/route'
 import { graphql, PageProps } from 'gatsby'
@@ -33,19 +34,24 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
   return (
     <>
       <Box direction="column">
-        {props.data.store.categories
-          .filter((c): c is NonNullable<typeof c> => !!c)
-          .map((c) => (
-            <Box
-              key={c.id}
-              align="center"
-              justify="center"
-              height={{ min: 'xsmall' }}
-              background={CATEGORY_NAME_COLOR_MAP[c.name] ?? 'border'}
-            >
+        {props.data.store.categories.filter(filterNonNullish).map((c) => (
+          <Box
+            key={c.id}
+            align="center"
+            justify="center"
+            pad={'large'}
+            height={{ min: 'xsmall' }}
+            direction="column"
+            background={CATEGORY_NAME_COLOR_MAP[c.name] ?? 'border'}
+          >
+            <Heading level={3} margin={{ bottom: 'medium', top: 'none', horizontal: 'none' }}>
               {c.name}
-            </Box>
-          ))}
+            </Heading>
+            {c.children.filter(filterNonNullish).map((child) => (
+              <Text key={child.id}>{child.name}</Text>
+            ))}
+          </Box>
+        ))}
       </Box>
       {!!updates.length && (
         <>
@@ -76,6 +82,7 @@ export const query = graphql`
         id
         name
         children {
+          id
           name
         }
       }
