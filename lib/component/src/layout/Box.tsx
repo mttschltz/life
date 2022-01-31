@@ -55,7 +55,9 @@ type Edge =
       vertical?: EdgeSize | 'none'
     }
 
-interface BoxProps {
+type DivProps = Pick<JSX.IntrinsicElements['div'], 'id'>
+
+interface BoxProps extends DivProps {
   // Reference Grommet Box property types directly where possible. In cases where this results in
   // no useful intellisense suggestions, instead reconstruct the property types in the simplest
   // way possible to allow those suggestions. This problem occurs when Grommet types are unioned
