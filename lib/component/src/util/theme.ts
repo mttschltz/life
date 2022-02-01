@@ -523,10 +523,12 @@ const THEME_UNTYPED = {
     },
   },
 }
-
 const THEME = THEME_UNTYPED as ThemeType
 
 type Color = keyof typeof THEME_UNTYPED['global']['colors']
 
-export type { Color }
-export { THEME }
+type Breakpoint = keyof typeof THEME_UNTYPED['global']['breakpoints']
+const BREAKPOINTS = Object.keys(THEME_UNTYPED.global.breakpoints)
+
+export type { Color, Breakpoint }
+export { BREAKPOINTS, THEME }

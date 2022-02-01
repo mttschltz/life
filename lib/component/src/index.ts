@@ -1,3 +1,4 @@
+export { Button } from './control/Button'
 export { GatsbyLink, Link } from './control/Link'
 export { Tab, Tabs } from './control/Tabs'
 export { Box } from './layout/Box'
