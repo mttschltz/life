@@ -79,6 +79,8 @@ interface BoxProps extends DivProps {
   fill?: Exclude<BoxPropsGrommet['fill'], boolean> | 'both'
   pad?: Edge
   margin?: Edge
+  // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
+  basis?: '1/2' | '1/3' | '2/3' | '1/4' | '2/4' | '3/4'
 }
 
 const Box: React.FC<BoxProps> = (props) => {

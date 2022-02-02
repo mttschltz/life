@@ -567,7 +567,63 @@ const Width: ComponentStory<typeof Box> = () => {
   )
 }
 
-export { Simple, Align, Background, Height, Margin, Padding, Width }
+// Test all possible `width` values as it does not directly point to the Grommet type and, thus, is
+// more fragile to bugs when updating Grommet.
+const Basis: ComponentStory<typeof Box> = () => {
+  return (
+    <>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box background="border">Default</Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box basis="1/2" background="border">
+            1/2
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box basis="1/3" background="border">
+            1/3
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box basis="2/3" background="border">
+            2/3
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box basis="1/4" background="border">
+            1/4
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box basis="2/4" background="border">
+            2/4
+          </Box>
+        </Box>
+      </DividerNoWidth>
+      <DividerNoWidth>
+        <Box background="brand">
+          <Box basis="3/4" background="border">
+            3/4
+          </Box>
+        </Box>
+      </DividerNoWidth>
+    </>
+  )
+}
+
+export { Simple, Align, Background, Height, Margin, Padding, Width, Basis }
 
 // eslint-disable-next-line import/no-default-export
 export default {
