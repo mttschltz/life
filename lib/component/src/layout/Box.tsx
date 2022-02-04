@@ -3,6 +3,7 @@ import { Box as BoxGrommet } from 'grommet'
 import type { BoxProps as BoxPropsGrommet } from 'grommet'
 import type { EdgeSizeType } from 'grommet/utils'
 import { Color } from '@component'
+import { BaseProps, setTestId } from '@component/Base'
 
 type BackgroundGrommet = Exclude<BoxPropsGrommet['background'], string | undefined>
 type Background = {
@@ -55,9 +56,7 @@ type Edge =
       vertical?: EdgeSize | 'none'
     }
 
-type DivProps = Pick<JSX.IntrinsicElements['div'], 'id'>
-
-interface BoxProps extends DivProps {
+interface BoxProps extends BaseProps {
   // Reference Grommet Box property types directly where possible. In cases where this results in
   // no useful intellisense suggestions, instead reconstruct the property types in the simplest
   // way possible to allow those suggestions. This problem occurs when Grommet types are unioned
@@ -84,10 +83,15 @@ interface BoxProps extends DivProps {
 }
 
 const Box: React.FC<BoxProps> = (props) => {
-  const { children, fill, direction = 'row', ...forwardedProps } = props
+  const { children, fill, direction = 'row', testId, ...forwardedProps } = props
 
   return (
-    <BoxGrommet fill={fill === 'both' ? true : fill} direction={direction} {...forwardedProps}>
+    <BoxGrommet
+      {...forwardedProps}
+      fill={fill === 'both' ? true : fill}
+      direction={direction}
+      {...setTestId('Box', testId)}
+    >
       {children}
     </BoxGrommet>
   )

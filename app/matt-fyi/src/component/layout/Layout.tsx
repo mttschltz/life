@@ -23,8 +23,12 @@ const Layout: React.FC = (props) => {
             </Header>
             <Box as="nav" align="start" margin={{ vertical: 'medium' }}>
               <Tabs>
-                <Tab title={t('page:home.nav_plan')} icon="plan"></Tab>
-                <Tab title={t('page:home.nav_action')} icon="checkbox-selected"></Tab>
+                <Tab title={t('page:home.nav_plan')} icon="plan" testId={`layout--nav--tab--plan`}></Tab>
+                <Tab
+                  title={t('page:home.nav_action')}
+                  icon="checkbox-selected"
+                  testId={`layout--nav--tab--action`}
+                ></Tab>
               </Tabs>
             </Box>
             <Main direction="column">{props.children}</Main>

@@ -1,6 +1,7 @@
 import { Diagram as GrommetDiagram, DiagramExtendedProps as GrommetDiagramExtendedProps } from 'grommet'
 import React from 'react'
 import { Color } from '@component'
+import { BaseProps, setTestId } from '@component/Base'
 
 type GrommetConnection = GrommetDiagramExtendedProps['connections'][number]
 
@@ -13,12 +14,13 @@ type Connection = Omit<GrommetConnection, 'color' | 'label' | 'offset' | 'thickn
   thickness: Thickness
 }
 
-interface DiagramProps {
+interface DiagramProps extends BaseProps {
   connections: Connection[]
 }
 
 const Diagram: React.FC<DiagramProps> = (props) => {
-  return <GrommetDiagram connections={props.connections} />
+  const { testId, connections, ...forwardedProps } = props
+  return <GrommetDiagram {...forwardedProps} connections={connections} {...setTestId('Text', testId)} />
 }
 
 export type { DiagramProps }

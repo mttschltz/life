@@ -10,7 +10,12 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add('getTestId', (testId, tagName) => {
+  if (tagName) {
+    return cy.get(`${tagName}[data-testid=myi--${testId}]`)
+  }
+  return cy.get(`[data-testid=myi--${testId}]`)
+})
 //
 //
 // -- This is a child command --

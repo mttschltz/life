@@ -15,7 +15,9 @@ const Simple: ComponentStory<typeof Link> = () => {
         <Link href="https://www.wikipedia.org">Wikipedia</Link>
       </Divider>
       <Divider>
-        <GatsbyLink to="/internal-link">Internal Link</GatsbyLink>
+        <GatsbyLink testId="testId" to="/internal-link">
+          Internal Link
+        </GatsbyLink>
       </Divider>
     </>
   )

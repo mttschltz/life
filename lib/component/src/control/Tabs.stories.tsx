@@ -15,10 +15,10 @@ const Simple: ComponentStory<typeof Tabs> = () => {
       <Divider>
         Simple:
         <Tabs>
-          <Tab title="Tab title 1">
+          <Tab testId="testId" title="Tab title 1">
             <Box background="brand">Tab 1 content</Box>
           </Tab>
-          <Tab title="Tab title 2">
+          <Tab testId="testId" title="Tab title 2">
             <Box background="brand">Tab 2 content</Box>
           </Tab>
         </Tabs>
@@ -26,10 +26,10 @@ const Simple: ComponentStory<typeof Tabs> = () => {
       <Divider>
         With Icons:
         <Tabs>
-          <Tab title="Tab title 1" icon="checkbox-selected">
+          <Tab testId="testId" title="Tab title 1" icon="checkbox-selected">
             <Box background="brand">Tab 1 content</Box>
           </Tab>
-          <Tab title="Tab title 2" icon="plan">
+          <Tab testId="testId" title="Tab title 2" icon="plan">
             <Box background="brand">Tab 2 content</Box>
           </Tab>
         </Tabs>

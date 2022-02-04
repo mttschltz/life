@@ -21,8 +21,8 @@
     "storybook:build": "build-storybook",
     "storybook:start": "start-storybook -p 6006",
     "test:unit": "jest",
-    "test:e2e": "start-server-and-test 'yarn workspace store build && yarn workspace store start --seed \"../../data/store.json\"' http-get://localhost:4000 'yarn workspace matt-fyi build && yarn workspace matt-fyi serve' 8000 'cypress run'",
-    "test:e2e:dev": "start-server-and-test 'yarn workspace store build:dev && yarn workspace store start:dev --seed \"../../data/store.json\"' http-get://localhost:4000 'yarn workspace matt-fyi develop' 8000 'cypress open'",
+    "test:e2e": "start-server-and-test 'yarn workspace store build && yarn workspace store start --seed \"../../data/store.json\"' http-get://localhost:4000 'yarn workspace matt-fyi build && yarn workspace matt-fyi serve' 8000 'TZ=UTC cypress run'",
+    "test:e2e:dev": "start-server-and-test 'yarn workspace store build:dev && yarn workspace store start:dev --seed \"../../data/store.json\"' http-get://localhost:4000 'yarn workspace matt-fyi develop' 8000 'TZ=UTC cypress open'",
     "test:visreg": "build-storybook --quiet && loki --requireReference --reactUri file:./storybook-static",
     "test:visreg:update": "build-storybook --quiet && loki update --requireReference --reactUri file:./storybook-static"
   },

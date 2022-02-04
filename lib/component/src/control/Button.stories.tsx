@@ -15,15 +15,19 @@ const Simple: ComponentStory<typeof Button> = () => {
       <Divider>
         <Text>Default size:</Text>
         <Box gap="small" direction="row-responsive">
-          <Button>Default</Button>
-          <Button context="primary">Primary</Button>
+          <Button testId="testId">Default</Button>
+          <Button testId="testId" context="primary">
+            Primary
+          </Button>
         </Box>
       </Divider>
       <Divider>
         <Text>Small size:</Text>
         <Box gap="small" direction="row-responsive">
-          <Button size="small">Default</Button>
-          <Button size="small" context="primary">
+          <Button testId="testId" size="small">
+            Default
+          </Button>
+          <Button testId="testId" size="small" context="primary">
             Primary
           </Button>
         </Box>
@@ -31,8 +35,10 @@ const Simple: ComponentStory<typeof Button> = () => {
       <Divider>
         <Text>Medium size:</Text>
         <Box gap="small" direction="row-responsive">
-          <Button size="medium">Default</Button>
-          <Button size="medium" context="primary">
+          <Button testId="testId" size="medium">
+            Default
+          </Button>
+          <Button testId="testId" size="medium" context="primary">
             Primary
           </Button>
         </Box>
@@ -40,15 +46,19 @@ const Simple: ComponentStory<typeof Button> = () => {
       <Divider>
         <Text>Large size:</Text>
         <Box gap="small" direction="row-responsive">
-          <Button size="large">Default</Button>
-          <Button size="large" context="primary">
+          <Button testId="testId" size="large">
+            Default
+          </Button>
+          <Button testId="testId" size="large" context="primary">
             Primary
           </Button>
         </Box>
       </Divider>
       <Divider>
         <Box gap="small" direction="row-responsive">
-          <Button href="https://www.matt.fyi">With href</Button>
+          <Button testId="testId" href="https://www.matt.fyi">
+            With href
+          </Button>
         </Box>
       </Divider>
       <Divider>
@@ -56,7 +66,9 @@ const Simple: ComponentStory<typeof Button> = () => {
         <Box width="small" height="small" background="graph-1">
           <Stack fill="both" anchor="top-right">
             <Box fill="both" justify="start" align="start">
-              <Button href="https://www.matt.fyi">Without raisePosition</Button>
+              <Button testId="testId" href="https://www.matt.fyi">
+                Without raisePosition
+              </Button>
             </Box>
             <Box width="small" height="small" background="border">
               Covering box
@@ -69,7 +81,7 @@ const Simple: ComponentStory<typeof Button> = () => {
         <Box width="small" height="small" background="graph-1">
           <Stack fill="both" anchor="top-right">
             <Box fill="both" justify="start" align="start">
-              <Button raisePosition={true} href="https://www.matt.fyi">
+              <Button testId="testId" raisePosition={true} href="https://www.matt.fyi">
                 With raisePosition
               </Button>
             </Box>
