@@ -14,7 +14,8 @@ type Connection = Omit<GrommetConnection, 'color' | 'label' | 'offset' | 'thickn
   thickness: Thickness
 }
 
-interface DiagramProps extends BaseProps {
+// Grommet doesn't forward `id`
+interface DiagramProps extends Omit<BaseProps, 'id'> {
   connections: Connection[]
 }
 

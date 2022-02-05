@@ -118,6 +118,10 @@ describe('index', () => {
       specify('Category items are navigable and not overlayed by Diagrams', () => {
         cy.visit('')
 
+        // Guard until SVG from Diagram is rendered because the links we want to click will be
+        // removed and re-mounted, which can cause a race condition.
+        cy.getTestId('Box--index--category-nav').find('svg > g > path').should('have.length.at.least', 1)
+
         cy.getTestId('Button--index--category-nav--1', 'a')
           .click()
           .location('pathname')
