@@ -127,6 +127,11 @@ describe('index', () => {
           .location('pathname')
           .should('equal', '/health')
           .go('back')
+
+        // Guard until SVG from Diagram is rendered because the links we want to click will be
+        // removed and re-mounted, which can cause a race condition.
+        cy.getTestId('Box--index--category-nav').find('svg > g > path').should('have.length.at.least', 1)
+
         cy.getTestId('Button--index--category-nav--4', 'a')
           .click()
           .location('pathname')
