@@ -1,4 +1,4 @@
-import { Box, Button, Diagram, GatsbyLink, Heading, ResponsiveConsumer, Stack, Text } from '@component'
+import { Box, Button, Diagram, GatsbyLink, Heading, ResponsiveConsumer, Position, Text } from '@component'
 import { BoxProps } from '@component/layout/Box'
 import { filterNonNullish } from '@matt-fyi/util/graph/graph'
 import { useTranslate } from '@matt-fyi/util/i18n/translate'
@@ -69,7 +69,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                 {(size): ReactNode => (
                   <>
                     {size === 'small' && (
-                      <Stack fill="horizontal">
+                      <Position fill="horizontal">
                         <Box>
                           <Box basis="1/2" align="center">
                             <Button
@@ -110,10 +110,10 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                             color: 'graph-0',
                           }))}
                         />
-                      </Stack>
+                      </Position>
                     )}
                     {size !== 'small' && (
-                      <Stack fill="horizontal">
+                      <Position fill="horizontal">
                         <Box direction="column" gap="large">
                           <Box id={`index-category-${rootCategory.id}`} justify="center">
                             <Button
@@ -157,7 +157,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                             color: 'graph-0',
                           }))}
                         />
-                      </Stack>
+                      </Position>
                     )}
                   </>
                 )}

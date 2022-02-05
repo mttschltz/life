@@ -1,7 +1,7 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import styled from 'styled-components'
-import { Box, Button, Stack, Text } from '@component'
+import { Box, Button, Position, Text } from '@component'
 
 const Divider = styled.div`
   max-width: 30rem;
@@ -64,7 +64,7 @@ const Simple: ComponentStory<typeof Button> = () => {
       <Divider>
         <Text>Behind stacked Box without raisePosition</Text>
         <Box width="small" height="small" background="graph-1">
-          <Stack fill="both" anchor="top-right">
+          <Position fill="both" anchor="top-right">
             <Box fill="both" justify="start" align="start">
               <Button testId="testId" href="https://www.matt.fyi">
                 Without raisePosition
@@ -73,13 +73,13 @@ const Simple: ComponentStory<typeof Button> = () => {
             <Box width="small" height="small" background="border">
               Covering box
             </Box>
-          </Stack>
+          </Position>
         </Box>
       </Divider>
       <Divider>
         <Text>Behind stacked Box with raisePosition</Text>
         <Box width="small" height="small" background="graph-1">
-          <Stack fill="both" anchor="top-right">
+          <Position fill="both" anchor="top-right">
             <Box fill="both" justify="start" align="start">
               <Button testId="testId" raisePosition={true} href="https://www.matt.fyi">
                 With raisePosition
@@ -88,7 +88,7 @@ const Simple: ComponentStory<typeof Button> = () => {
             <Box width="small" height="small" background="border">
               Covering box
             </Box>
-          </Stack>
+          </Position>
         </Box>
       </Divider>
     </>

@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import styled from 'styled-components'
 import { Diagram } from './Diagram'
 import { Box } from '@component/layout/Box'
-import { Stack } from '@component'
+import { Position } from '@component'
 
 const Divider = styled.div`
   max-width: 50rem;
@@ -18,7 +18,7 @@ const Simple: ComponentStory<typeof Diagram> = () => {
   return (
     <>
       <Divider>
-        <Stack>
+        <Position>
           <Box direction="column">
             <Box>
               <Box id={id('rect-top')} background="brand" pad="xsmall">
@@ -65,10 +65,10 @@ const Simple: ComponentStory<typeof Diagram> = () => {
               },
             ]}
           />
-        </Stack>
+        </Position>
       </Divider>
       <Divider>
-        <Stack>
+        <Position>
           <Box direction="column">
             <Box>
               <Box id={id('curved-top')} background="brand" pad="xsmall">
@@ -115,10 +115,10 @@ const Simple: ComponentStory<typeof Diagram> = () => {
               },
             ]}
           />
-        </Stack>
+        </Position>
       </Divider>
       <Divider>
-        <Stack>
+        <Position>
           <Box width="100%" justify="between">
             <Box align="center">
               <Box id={id('direct-top')} background="brand" pad="xsmall">
@@ -165,7 +165,7 @@ const Simple: ComponentStory<typeof Diagram> = () => {
               },
             ]}
           />
-        </Stack>
+        </Position>
       </Divider>
     </>
   )
