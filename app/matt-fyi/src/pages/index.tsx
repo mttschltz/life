@@ -70,8 +70,8 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                   <>
                     {size === 'small' && (
                       <Stack fill="horizontal">
-                        <Box direction={'row'} justify="between">
-                          <Box basis="1/2" justify="start" align="center">
+                        <Box>
+                          <Box basis="1/2" align="center">
                             <Button
                               id={`index-category-${rootCategory.id}`}
                               href={route.category.detail(rootCategory)}
@@ -81,7 +81,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                               <Text as="h2">{rootCategory.name}</Text>
                             </Button>
                           </Box>
-                          <Box direction={'column'} gap={'medium'} align="start" basis="1/2">
+                          <Box direction="column" gap="medium" basis="1/2">
                             {children.map((childCategory) => (
                               <Box key={childCategory.id}>
                                 <Box id={`index-category-${childCategory.id}`}>
@@ -126,7 +126,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                               </Heading>
                             </Button>
                           </Box>
-                          <Box width="100%" justify="between">
+                          <Box justify="between">
                             {children.map((childCategory, index) => (
                               <Box
                                 key={childCategory.id}
