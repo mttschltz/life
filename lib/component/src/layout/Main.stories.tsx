@@ -15,13 +15,13 @@ const Simple: ComponentStory<typeof Main> = () => {
   return (
     <>
       <Divider>
-        <Main background="brand">
+        <Main>
           <Box>Text one</Box>
           <Box>Text two</Box>
         </Main>
       </Divider>
       <Divider>
-        <Main background="border" direction="column">
+        <Main>
           <Text>
             Sing, O goddess, the anger of Achilles son of Peleus, that brought countless ills upon the Achaeans. Many a
             brave soul did it send hurrying down to Hades, and many a hero did it yield a prey to dogs and vultures, for
