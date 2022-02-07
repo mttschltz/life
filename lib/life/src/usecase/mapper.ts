@@ -37,6 +37,8 @@ interface RiskMapper {
   createDetails: (request: RiskCreateDetails) => CreateDetailsDomain
 }
 
+// no need for risk tests until they are refactored
+/* istanbul ignore next */
 function newRiskMapper(): RiskMapper {
   return new RiskMapperImpl()
 }

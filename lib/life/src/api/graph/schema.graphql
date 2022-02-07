@@ -193,9 +193,83 @@ input CreateRiskInput {
   updated: Date!
 }
 
+"""
+Create category input.
+"""
+input CreateCategoryInput {
+  """
+  Category path for navigation.
+  """
+  path: String
+
+  """
+  Description.
+  """
+  description: String
+
+  """
+  Category name.
+  """
+  name: String!
+
+  """
+  Category parent ID.
+  """
+  parentId: ID
+
+  """
+  Short description of the category.
+  """
+  shortDescription: String
+
+  """
+  Time of last significant update to the category.
+  """
+  updated: Date!
+}
+
+"""
+Create risk input.
+"""
+input CreateRiskInput {
+  """
+  URI part.
+  """
+  uriPart: String!
+
+  """
+  Risk category.
+  """
+  category: CategoryTopLevel!
+
+  """
+  Risk name.
+  """
+  name: String!
+
+  """
+  Risk parent ID.
+  """
+  parentId: ID
+
+  """
+  Risk notes.
+  """
+  notes: String
+  """
+  Time of last significant update to the risk.
+  """
+  updated: Date!
+}
+
 type Mutation {
   """
   Create a risk.
   """
   createRisk(input: CreateRiskInput!): Risk!
+
+  """
+  Create a category.
+  """
+  createCategory(input: CreateCategoryInput!): Category!
 }

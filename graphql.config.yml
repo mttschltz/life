@@ -5,7 +5,7 @@
 # Seems like it may be fixed in an upcoming release of vscode-graphql extension (current: 0.3.16).
 # Possibly related issues: https://github.com/dotansimha/graphql-eslint/issues/526, https://github.com/graphql/vscode-graphql/issues/316, https://github.com/cometkim/gatsby-plugin-typegen/issues/113
 projects:
-  # life:
-  #   schema: lib/life/src/api/graph/schema.graphql
-  matt-fyi:
-    schema: app/matt-fyi/src/__generated__/gatsby-introspection.json
+  life:
+    schema: lib/life/src/api/graph/schema.graphql
+  # matt-fyi:
+  #   schema: app/matt-fyi/src/__generated__/gatsby-introspection.json

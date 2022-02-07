@@ -48,20 +48,36 @@ export enum CategoryTopLevel {
 /** A Concern needs addressing. It can be a single Risk or group (Category) of Risks. */
 export type Concern = Category | Risk;
 
+/** Create category input. */
+export type CreateCategoryInput = {
+  /** Category path for navigation. */
+  path?: Maybe<Scalars['String']>;
+  /** Description. */
+  description?: Maybe<Scalars['String']>;
+  /** Category name. */
+  name: Scalars['String'];
+  /** Category parent ID. */
+  parentId?: Maybe<Scalars['ID']>;
+  /** Short description of the category. */
+  shortDescription?: Maybe<Scalars['String']>;
+  /** Time of last significant update to the category. */
+  updated: Scalars['Date'];
+};
+
 /** Create risk input. */
 export type CreateRiskInput = {
-  /** URI part. */
-  uriPart: Scalars['String'];
   /** Risk category. */
   category: CategoryTopLevel;
   /** Risk name. */
   name: Scalars['String'];
-  /** Risk parent ID. */
-  parentId?: Maybe<Scalars['ID']>;
   /** Risk notes. */
   notes?: Maybe<Scalars['String']>;
+  /** Risk parent ID. */
+  parentId?: Maybe<Scalars['ID']>;
   /** Time of last significant update to the risk. */
   updated: Scalars['Date'];
+  /** URI part. */
+  uriPart: Scalars['String'];
 };
 
 
@@ -79,11 +95,18 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Create a risk. */
   createRisk: Risk;
+  /** Create a category. */
+  createCategory: Category;
 };
 
 
 export type MutationCreateRiskArgs = {
   input: CreateRiskInput;
+};
+
+
+export type MutationCreateCategoryArgs = {
+  input: CreateCategoryInput;
 };
 
 export type Query = {
@@ -221,6 +244,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   CategoryTopLevel: CategoryTopLevel;
   Concern: ResolversTypes['Category'] | ResolversTypes['Risk'];
+  CreateCategoryInput: CreateCategoryInput;
   CreateRiskInput: CreateRiskInput;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   Impact: Impact;
@@ -239,6 +263,7 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   String: Scalars['String'];
   Concern: ResolversParentTypes['Category'] | ResolversParentTypes['Risk'];
+  CreateCategoryInput: CreateCategoryInput;
   CreateRiskInput: CreateRiskInput;
   Date: Scalars['Date'];
   Mutation: {};
@@ -270,6 +295,7 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createRisk?: Resolver<ResolversTypes['Risk'], ParentType, ContextType, RequireFields<MutationCreateRiskArgs, 'input'>>;
+  createCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
