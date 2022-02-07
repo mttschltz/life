@@ -2,6 +2,7 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import styled from 'styled-components'
 import { Text } from './Text'
+import { Box } from '@component/layout/Box'
 
 const Divider = styled.div`
   max-width: 30rem;
@@ -61,6 +62,26 @@ const Simple: ComponentStory<typeof Text> = () => {
       </Divider>
       <Divider>
         <Text weight="normal">weight normal</Text>
+      </Divider>
+      <Divider>
+        <Text weight="normal">Default color</Text>
+      </Divider>
+      <Divider>
+        <Text weight="normal" color="text">
+          Text color
+        </Text>
+      </Divider>
+      <Divider>
+        <Text weight="normal" color="brand">
+          Custom color
+        </Text>
+      </Divider>
+      <Divider>
+        <Box background="text">
+          <Text weight="normal" color="brand">
+            Custom color on dark background
+          </Text>
+        </Box>
       </Divider>
     </>
   )

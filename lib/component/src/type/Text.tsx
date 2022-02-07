@@ -3,6 +3,7 @@ import { Text as GrommetText } from 'grommet'
 import type { TextType as GrommetTextType } from 'grommet'
 import { BaseProps, setTestId } from '@component/Base'
 import { BoxProps } from '@component/layout/Box'
+import { Color } from '@component/util/theme'
 
 // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
 type Size = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl'
@@ -11,6 +12,7 @@ interface TextProps extends BaseProps {
   size?: Size
   weight?: Exclude<GrommetTextType['weight'], number>
   as?: GrommetTextType['as']
+  color?: Color
 }
 
 const Text: React.FC<TextProps> = (props) => {

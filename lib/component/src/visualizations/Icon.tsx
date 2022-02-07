@@ -1,10 +1,10 @@
-import { CheckboxSelected, Plan } from 'grommet-icons'
+import { CheckboxSelected, Plan, Twitter } from 'grommet-icons'
 import { Color } from '@component/util/theme'
 import React from 'react'
 import { BaseProps, setTestId } from '@component/Base'
 
 // https://icons.grommet.io
-const ICONS_MAP = { plan: Plan, 'checkbox-selected': CheckboxSelected } as const
+const ICONS_MAP = { plan: Plan, 'checkbox-selected': CheckboxSelected, twitter: Twitter } as const
 
 type IconName = keyof typeof ICONS_MAP
 

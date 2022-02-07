@@ -1,7 +1,7 @@
 import React from 'react'
 import { TranslationProvider, useTranslate } from '@matt-fyi/util/i18n/translate'
 import { useRoute } from '@matt-fyi/util/route/route'
-import { Box, ThemeProvider, THEME, Header, Heading, Text, Main, Tabs, Tab, Stack } from '@component'
+import { Box, ThemeProvider, THEME, Header, Heading, Text, Main, Tabs, Tab, Stack, Icon, Link } from '@component'
 import { filterNonNullish } from '@matt-fyi/util/graph/graph'
 
 const Layout: React.FC = (props) => {
@@ -33,6 +33,14 @@ const Layout: React.FC = (props) => {
                 </Tabs>
               </Box>
               <Main>{props.children}</Main>
+              <Box as="footer" background="brand" justify="center">
+                <Link href="https://twitter.com/mttschltz">
+                  <Box pad="small" gap="xsmall">
+                    <Icon name="twitter" color="text" />
+                    <Text color="text">@mttschltz</Text>
+                  </Box>
+                </Link>
+              </Box>
             </Stack>
           </Box>
         </Box>
