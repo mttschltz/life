@@ -129,6 +129,7 @@ describe('usecase>category>list', () => {
           ok: false,
           error: new Error('repo error'),
           message: 'repo error message',
+          metadata: {},
         }
         repoList.mockReturnValueOnce(
           Promise.resolve(

@@ -4,6 +4,7 @@ import {
   Result,
   ResultError,
   resultError,
+  ResultMetadata,
   ResultOk,
   resultOk,
   Results,
@@ -36,7 +37,7 @@ describe('Result', () => {
   })
   describe('Given an error Result', () => {
     describe('When resultError is called', () => {
-      describe('And an Error is not provided', () => {
+      describe('And only a message is provided', () => {
         let result: Result<string>
         beforeEach(() => {
           result = resultError('an error message')
@@ -61,17 +62,39 @@ describe('Result', () => {
           expect(result.error).toBe(error)
         })
       })
+      describe('And metadata is provided', () => {
+        let result: Result<string>
+        let metadata: ResultMetadata
+        beforeEach(() => {
+          metadata = {
+            string: 'a string',
+            boolean: true,
+            date: new Date('2022-01-02'),
+            number: 1,
+            nested: {
+              string: 'nested string',
+            },
+          }
+          result = resultError('an error message', undefined, metadata)
+        })
+        test('Then it returns the expected values', () => {
+          expect(result.ok).toBe(false)
+          assertResultError(result)
+          expect(result.metadata).toBe(metadata)
+        })
+      })
     })
   })
   describe('resultsError', () => {
     describe('Given an error message', () => {
-      describe('When no error object is provided', () => {
+      describe('When only a message provided', () => {
         test('Then Results is returned with the expected single error', () => {
           const r = resultsError('error message')
           expect(r.firstErrorResult).toMatchObject({
             message: 'error message',
             error: new Error('Result error'),
             ok: false,
+            metadata: {},
           })
           expect(r.okValues).toEqual([])
           expect(r.values).toEqual([undefined])
@@ -85,8 +108,32 @@ describe('Result', () => {
             message: 'error message',
             error: new Error('error object'),
             ok: false,
+            metadata: {},
           })
           expect(r.firstErrorResult?.error).toBe(error)
+          expect(r.okValues).toEqual([])
+          expect(r.values).toEqual([undefined])
+        })
+      })
+      describe('When metadata is provided', () => {
+        test('Then Results is returned with the metadata', () => {
+          const metadata: ResultMetadata = {
+            string: 'a string',
+            boolean: true,
+            date: new Date('2022-01-02'),
+            number: 1,
+            nested: {
+              string: 'nested string',
+            },
+          }
+          const r = resultsError('error message', undefined, metadata)
+          expect(r.firstErrorResult).toMatchObject({
+            message: 'error message',
+            error: new Error('Result error'),
+            ok: false,
+            metadata,
+          })
+          expect(r.firstErrorResult?.metadata).toBe(metadata)
           expect(r.okValues).toEqual([])
           expect(r.values).toEqual([undefined])
         })
@@ -95,12 +142,21 @@ describe('Result', () => {
   })
   describe('resultsErrorResult', () => {
     describe('Given an error result', () => {
-      describe('When no error object is provided', () => {
+      describe('When called', () => {
         test('Then Results is returned with the expected single error', () => {
-          const err = {
+          const err: ResultError = {
             error: new Error('error object'),
             message: 'error message',
             ok: false as const,
+            metadata: {
+              string: 'a string',
+              boolean: true,
+              date: new Date('2022-01-02'),
+              number: 1,
+              nested: {
+                string: 'nested string',
+              },
+            },
           }
           const r = resultsErrorResult(err)
           expect(r.firstErrorResult).toBe(err)
@@ -138,6 +194,15 @@ describe('Result', () => {
           ok: false,
           message: 'an error message',
           error: new Error('an error'),
+          metadata: {
+            string: 'a string',
+            boolean: true,
+            date: new Date('2022-01-02'),
+            number: 1,
+            nested: {
+              string: 'nested string',
+            },
+          },
         }
         result3 = {
           ok: true,
@@ -149,6 +214,7 @@ describe('Result', () => {
           ok: false,
           message: 'an error message 2',
           error: new Error('an error 2'),
+          metadata: {},
         }
         inputResults = [result1, result2, result3, result4]
       })

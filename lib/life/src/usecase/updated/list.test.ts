@@ -96,6 +96,7 @@ describe('usecase>updated>list', () => {
           ok: false,
           error: new Error('repo error'),
           message: 'repo error message',
+          metadata: {},
         }
         repoList.mockReturnValueOnce(
           Promise.resolve(
@@ -142,6 +143,7 @@ describe('usecase>updated>list', () => {
           ok: false,
           error: new Error('repo error'),
           message: 'repo error message',
+          metadata: {},
         }
         mapperUpdated.mockReset().mockReturnValueOnce(
           results<Updated>([

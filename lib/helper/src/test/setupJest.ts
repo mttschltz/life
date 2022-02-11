@@ -3,7 +3,7 @@ import { ResultError } from '@helper/result'
 function toEqualResultError(
   this: Pick<jest.MatcherContext, 'equals'>,
   received: ResultError,
-  expected: Omit<ResultError, 'error' | 'ok'> & Partial<Pick<ResultError, 'error'>>,
+  expected: Omit<ResultError, 'error' | 'metadata' | 'ok'> & Partial<Pick<ResultError, 'error' | 'metadata'>>,
 ): jest.CustomMatcherResult {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (received.ok) {
@@ -22,6 +22,13 @@ function toEqualResultError(
   if (!this.equals(received.error, expected.error || new Error('Result error'))) {
     return {
       message: (): string => `expected errors to match`,
+      pass: false,
+    }
+  }
+
+  if (!this.equals(received.metadata, expected.metadata ?? {})) {
+    return {
+      message: (): string => `expected metadata to match`,
       pass: false,
     }
   }

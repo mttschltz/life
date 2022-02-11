@@ -13,6 +13,7 @@ describe('testing', () => {
         ok: false,
         error: new Error('an error'),
         message: 'an error message',
+        metadata: {},
       }
     })
     test('Then calling assertResultError does not error', () => {

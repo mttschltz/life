@@ -28,7 +28,7 @@ describe('toEqualResultError', () => {
       expect(received).not.toEqualResultError(expected)
     })
   })
-  describe('Given an expected error result without an error', () => {
+  describe('Given an expected error result with only a message', () => {
     describe('When the received error result is initialized without an error', () => {
       describe('and the messages match', () => {
         test('Then it passes', () => {
@@ -37,14 +37,15 @@ describe('toEqualResultError', () => {
           }
           const received = resultError('message')
           assertResultError(received)
-          const equals = jest.fn().mockReturnValueOnce(true)
+          const equals = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(true)
 
           const result = toEqualResultError.call({ equals }, received, expected)
 
           expect(result.pass).toBe(true)
           expect(result.message()).toBe(`expected error result not to equal error result`)
-          expect(equals.mock.calls).toHaveLength(1)
+          expect(equals.mock.calls).toHaveLength(2)
           expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
+          expect(equals.mock.calls[1]).toEqual([received.metadata, {}])
         })
         test('Then it passes as a Jest matcher', () => {
           const expected: Expected = {
@@ -93,14 +94,15 @@ describe('toEqualResultError', () => {
           }
           const received = resultError('message')
           assertResultError(received)
-          const equals = jest.fn().mockReturnValueOnce(true)
+          const equals = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(true)
 
           const result = toEqualResultError.call({ equals }, received, expected)
 
           expect(result.pass).toBe(true)
           expect(result.message()).toBe(`expected error result not to equal error result`)
-          expect(equals.mock.calls).toHaveLength(1)
+          expect(equals.mock.calls).toHaveLength(2)
           expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
+          expect(equals.mock.calls[1]).toEqual([received.metadata, {}])
         })
         test('Then it passes as a Jest matcher', () => {
           const expected: Expected = {
@@ -180,14 +182,15 @@ describe('toEqualResultError', () => {
         }
         const received = resultError('message', new Error('an error'))
         assertResultError(received)
-        const equals = jest.fn().mockReturnValueOnce(true)
+        const equals = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(true)
 
         const result = toEqualResultError.call({ equals }, received, expected)
 
         expect(result.pass).toBe(true)
         expect(result.message()).toBe(`expected error result not to equal error result`)
-        expect(equals.mock.calls).toHaveLength(1)
+        expect(equals.mock.calls).toHaveLength(2)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('an error')])
+        expect(equals.mock.calls[1]).toEqual([received.metadata, {}])
       })
       test('Then it passes as a Jest matcher', () => {
         const expected: Expected = {
@@ -223,6 +226,184 @@ describe('toEqualResultError', () => {
           error: new Error('expected error'),
         }
         const received = resultError('message', new Error('received error'))
+        assertResultError(received)
+
+        expect(received).not.toEqualResultError(expected)
+      })
+    })
+  })
+  describe('Given an expected error result with metadata', () => {
+    describe('When the received error result is initialized without metadata', () => {
+      test('Then it fails', () => {
+        const expected: Expected = {
+          message: 'message',
+          metadata: {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        }
+        const received = resultError('message')
+        assertResultError(received)
+        const equals = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false)
+
+        const result = toEqualResultError.call({ equals }, received, expected)
+
+        expect(result.pass).toBe(false)
+        expect(result.message()).toBe(`expected metadata to match`)
+        expect(equals.mock.calls).toHaveLength(2)
+        expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
+        expect(equals.mock.calls[1]).toEqual([
+          received.metadata,
+          {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        ])
+      })
+      test('Then it passes as a Jest matcher when called with .not', () => {
+        const expected: Expected = {
+          message: 'message',
+          metadata: {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        }
+        const received = resultError('message')
+        assertResultError(received)
+
+        expect(received).not.toEqualResultError(expected)
+      })
+    })
+    describe('When the received error result is initialized with matching metadata', () => {
+      test('Then it passes', () => {
+        const expected: Expected = {
+          message: 'message',
+          metadata: {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        }
+        const received = resultError('message', undefined, {
+          string: 'a string',
+          number: 1,
+          nested: {
+            string: 'a nested string',
+          },
+        })
+        assertResultError(received)
+        const equals = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(true)
+
+        const result = toEqualResultError.call({ equals }, received, expected)
+
+        expect(result.pass).toBe(true)
+        expect(result.message()).toBe(`expected error result not to equal error result`)
+        expect(equals.mock.calls).toHaveLength(2)
+        expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
+        expect(equals.mock.calls[1]).toEqual([
+          received.metadata,
+          {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        ])
+      })
+      test('Then it passes as a Jest matcher', () => {
+        const expected: Expected = {
+          message: 'message',
+          metadata: {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        }
+        const received = resultError('message', undefined, {
+          string: 'a string',
+          number: 1,
+          nested: {
+            string: 'a nested string',
+          },
+        })
+        assertResultError(received)
+
+        expect(received).toEqualResultError(expected)
+      })
+    })
+    describe('When the received error result is initialized with non-matching metadata', () => {
+      test('Then it fails', () => {
+        const expected: Expected = {
+          message: 'message',
+          metadata: {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        }
+        const received = resultError('message', undefined, {
+          string: 'a string',
+          number: 1,
+          nested: {
+            string: 'a nested string',
+            nonMatching: 'nonMatching',
+          },
+        })
+        assertResultError(received)
+        const equals = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false)
+
+        const result = toEqualResultError.call({ equals }, received, expected)
+
+        expect(result.pass).toBe(false)
+        expect(result.message()).toBe(`expected metadata to match`)
+        expect(equals.mock.calls).toHaveLength(2)
+        expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
+        expect(equals.mock.calls[1]).toEqual([
+          received.metadata,
+          {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        ])
+      })
+      test('Then it passes as a Jest matcher when called with .not', () => {
+        const expected: Expected = {
+          message: 'message',
+          metadata: {
+            string: 'a string',
+            number: 1,
+            nested: {
+              string: 'a nested string',
+            },
+          },
+        }
+        const received = resultError('message', undefined, {
+          string: 'a string',
+          number: 1,
+          nested: {
+            string: 'a nested string',
+            nonMatching: 'nonMatching',
+          },
+        })
         assertResultError(received)
 
         expect(received).not.toEqualResultError(expected)

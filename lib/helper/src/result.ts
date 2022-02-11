@@ -25,17 +25,24 @@ interface ResultError {
   readonly ok: false
   readonly error: Error
   readonly message: string
+  readonly metadata: Record<string, unknown>
+}
+
+interface ResultMetadata {
+  [key: string]: Date | ResultMetadata | boolean | number | string
 }
 
 class ResultErrorImpl implements ResultError {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #message: string
   #error: Error
+  #metadata: ResultMetadata
   /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
-  public constructor(message: string, error?: Error) {
+  public constructor(message: string, error?: Error, metadata: ResultMetadata = {}) {
     this.#message = message
     this.#error = error ?? new Error('Result error')
+    this.#metadata = metadata
   }
 
   public get ok(): false {
@@ -49,6 +56,10 @@ class ResultErrorImpl implements ResultError {
   public get error(): Error {
     return this.#error
   }
+
+  public get metadata(): ResultMetadata {
+    return this.#metadata
+  }
 }
 
 type Result<T> = ResultError | ResultOk<T>
@@ -57,8 +68,8 @@ function resultOk<T>(value: T): Result<T> {
   return new ResultOkImpl<T>(value)
 }
 
-function resultError<T>(message: string, error?: Error): Result<T> {
-  return new ResultErrorImpl(message, error)
+function resultError<T>(message: string, error?: Error, metadata?: ResultMetadata): Result<T> {
+  return new ResultErrorImpl(message, error, metadata)
 }
 
 function isResultOk<T>(result: Result<T>): result is ResultOk<T> {
@@ -114,13 +125,13 @@ function resultsOk<T>(values: T[]): Results<T> {
   return new ResultsImpl(values.map((v) => resultOk(v)))
 }
 
-function resultsError<T>(message: string, error?: Error): Results<T> {
-  return new ResultsImpl([resultError(message, error)])
+function resultsError<T>(message: string, error?: Error, metadata?: ResultMetadata): Results<T> {
+  return new ResultsImpl([resultError(message, error, metadata)])
 }
 
 function resultsErrorResult<T>(err: ResultError): Results<T> {
   return new ResultsImpl([err])
 }
 
-export type { Result, ResultError, ResultOk, Results }
+export type { Result, ResultError, ResultOk, Results, ResultMetadata }
 export { resultOk, resultError, resultsError, resultsErrorResult, results, resultsOk, isResultOk, isResultError }
