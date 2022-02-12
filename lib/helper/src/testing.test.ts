@@ -1,5 +1,6 @@
-import { assertResultError, assertResultOk, mockThrows } from '@helper/testing'
+import { assertResultError, assertResultOk, assertZodParseError, mockThrows } from '@helper/testing'
 import { ResultError, ResultOk } from './result'
+import { z } from 'zod'
 
 interface OkType {
   cat: string
@@ -47,6 +48,24 @@ describe('jestFnThrows', () => {
       const mock = mockThrows('error msg')
       expect(mock).toThrow('error msg')
       expect(mock).toThrow('error msg')
+    })
+  })
+})
+describe('assertZodParseError', () => {
+  describe('Given a parse error', () => {
+    describe('When called', () => {
+      test('Then it returns true', () => {
+        const result = z.string().safeParse(1)
+        expect(() => assertZodParseError(result)).not.toThrow()
+      })
+    })
+  })
+  describe('Given a parse success', () => {
+    describe('When called', () => {
+      test('Then it returns false', () => {
+        const result = z.string().safeParse('kaboom')
+        expect(() => assertZodParseError(result)).toThrow('Not a Zod parse error')
+      })
     })
   })
 })

@@ -1,6 +1,7 @@
 import { ResultError, resultError, resultOk } from '@helper/result'
 import { assertResultError } from '@helper/testing'
 import { toEqualResultError } from './setupJest'
+import { diff } from 'jest-diff'
 
 type Expected = Parameters<typeof toEqualResultError>[1]
 
@@ -129,7 +130,9 @@ describe('toEqualResultError', () => {
         const result = toEqualResultError.call({ equals }, received, expected)
 
         expect(result.pass).toBe(false)
-        expect(result.message()).toBe(`expected errors to match`)
+        expect(result.message()).toBe(
+          `expected errors to match\n\n${diff(new Error('different error'), new Error('Result error')) ?? ''}`,
+        )
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
       })
@@ -159,7 +162,9 @@ describe('toEqualResultError', () => {
         const result = toEqualResultError.call({ equals }, received, expected)
 
         expect(result.pass).toBe(false)
-        expect(result.message()).toBe(`expected errors to match`)
+        expect(result.message()).toBe(
+          `expected errors to match\n\n${diff(new Error('Result error'), new Error('expected error')) ?? ''}`,
+        )
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('expected error')])
       })
@@ -216,7 +221,9 @@ describe('toEqualResultError', () => {
         const result = toEqualResultError.call({ equals }, received, expected)
 
         expect(result.pass).toBe(false)
-        expect(result.message()).toBe(`expected errors to match`)
+        expect(result.message()).toBe(
+          `expected errors to match\n\n${diff(new Error('received error'), new Error('expected error')) ?? ''}`,
+        )
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('expected error')])
       })
@@ -252,7 +259,20 @@ describe('toEqualResultError', () => {
         const result = toEqualResultError.call({ equals }, received, expected)
 
         expect(result.pass).toBe(false)
-        expect(result.message()).toBe(`expected metadata to match`)
+        expect(result.message()).toBe(
+          `expected metadata to match\n\n${
+            diff(
+              {},
+              {
+                string: 'a string',
+                number: 1,
+                nested: {
+                  string: 'a nested string',
+                },
+              },
+            ) ?? ''
+          }`,
+        )
         expect(equals.mock.calls).toHaveLength(2)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
         expect(equals.mock.calls[1]).toEqual([
@@ -371,7 +391,27 @@ describe('toEqualResultError', () => {
         const result = toEqualResultError.call({ equals }, received, expected)
 
         expect(result.pass).toBe(false)
-        expect(result.message()).toBe(`expected metadata to match`)
+        expect(result.message()).toBe(
+          `expected metadata to match\n\n${
+            diff(
+              {
+                string: 'a string',
+                number: 1,
+                nested: {
+                  string: 'a nested string',
+                  nonMatching: 'nonMatching',
+                },
+              },
+              {
+                string: 'a string',
+                number: 1,
+                nested: {
+                  string: 'a nested string',
+                },
+              },
+            ) ?? ''
+          }`,
+        )
         expect(equals.mock.calls).toHaveLength(2)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
         expect(equals.mock.calls[1]).toEqual([

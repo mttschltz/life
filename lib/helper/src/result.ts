@@ -25,11 +25,17 @@ interface ResultError {
   readonly ok: false
   readonly error: Error
   readonly message: string
-  readonly metadata: Record<string, unknown>
+  readonly metadata: ResultMetadata
 }
 
 interface ResultMetadata {
-  [key: string]: Date | ResultMetadata | boolean | number | string
+  [key: string]:
+    | (Date | ResultMetadata | boolean | number | string)[]
+    | Date
+    | ResultMetadata
+    | boolean
+    | number
+    | string
 }
 
 class ResultErrorImpl implements ResultError {

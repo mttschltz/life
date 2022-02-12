@@ -1,4 +1,5 @@
 import { ResultError } from '@helper/result'
+import { diff } from 'jest-diff'
 
 function toEqualResultError(
   this: Pick<jest.MatcherContext, 'equals'>,
@@ -21,14 +22,15 @@ function toEqualResultError(
   }
   if (!this.equals(received.error, expected.error || new Error('Result error'))) {
     return {
-      message: (): string => `expected errors to match`,
+      message: (): string =>
+        `expected errors to match\n\n${diff(received.error, expected.error ?? new Error('Result error')) ?? ''}`,
       pass: false,
     }
   }
 
   if (!this.equals(received.metadata, expected.metadata ?? {})) {
     return {
-      message: (): string => `expected metadata to match`,
+      message: (): string => `expected metadata to match\n\n${diff(received.metadata, expected.metadata) ?? ''}`,
       pass: false,
     }
   }
