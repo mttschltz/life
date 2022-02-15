@@ -23,14 +23,14 @@ function toEqualResultError(
   if (!this.equals(received.error, expected.error || new Error('Result error'))) {
     return {
       message: (): string =>
-        `expected errors to match\n\n${diff(received.error, expected.error ?? new Error('Result error')) ?? ''}`,
+        `expected errors to match\n\n${diff(expected.error ?? new Error('Result error'), received.error) ?? ''}`,
       pass: false,
     }
   }
 
   if (!this.equals(received.metadata, expected.metadata ?? {})) {
     return {
-      message: (): string => `expected metadata to match\n\n${diff(received.metadata, expected.metadata) ?? ''}`,
+      message: (): string => `expected metadata to match\n\n${diff(expected.metadata, received.metadata) ?? ''}`,
       pass: false,
     }
   }

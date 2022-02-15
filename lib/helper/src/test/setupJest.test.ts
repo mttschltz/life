@@ -131,7 +131,7 @@ describe('toEqualResultError', () => {
 
         expect(result.pass).toBe(false)
         expect(result.message()).toBe(
-          `expected errors to match\n\n${diff(new Error('different error'), new Error('Result error')) ?? ''}`,
+          `expected errors to match\n\n${diff(new Error('Result error'), new Error('different error')) ?? ''}`,
         )
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('Result error')])
@@ -163,7 +163,7 @@ describe('toEqualResultError', () => {
 
         expect(result.pass).toBe(false)
         expect(result.message()).toBe(
-          `expected errors to match\n\n${diff(new Error('Result error'), new Error('expected error')) ?? ''}`,
+          `expected errors to match\n\n${diff(new Error('expected error'), new Error('Result error')) ?? ''}`,
         )
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('expected error')])
@@ -222,7 +222,7 @@ describe('toEqualResultError', () => {
 
         expect(result.pass).toBe(false)
         expect(result.message()).toBe(
-          `expected errors to match\n\n${diff(new Error('received error'), new Error('expected error')) ?? ''}`,
+          `expected errors to match\n\n${diff(new Error('expected error'), new Error('received error')) ?? ''}`,
         )
         expect(equals.mock.calls).toHaveLength(1)
         expect(equals.mock.calls[0]).toEqual([received.error, new Error('expected error')])
@@ -262,7 +262,6 @@ describe('toEqualResultError', () => {
         expect(result.message()).toBe(
           `expected metadata to match\n\n${
             diff(
-              {},
               {
                 string: 'a string',
                 number: 1,
@@ -270,6 +269,7 @@ describe('toEqualResultError', () => {
                   string: 'a nested string',
                 },
               },
+              {},
             ) ?? ''
           }`,
         )
@@ -399,7 +399,6 @@ describe('toEqualResultError', () => {
                 number: 1,
                 nested: {
                   string: 'a nested string',
-                  nonMatching: 'nonMatching',
                 },
               },
               {
@@ -407,6 +406,7 @@ describe('toEqualResultError', () => {
                 number: 1,
                 nested: {
                   string: 'a nested string',
+                  nonMatching: 'nonMatching',
                 },
               },
             ) ?? ''

@@ -156,7 +156,7 @@ module.exports = {
             selector: 'memberLike',
             format: ['strictCamelCase'],
             filter: {
-              regex: '^__typename$',
+              regex: '^(__typename|__entity)$',
               match: false,
             },
           },
@@ -172,7 +172,7 @@ module.exports = {
             selector: 'property',
             format: ['strictCamelCase'],
             filter: {
-              regex: '^__typename$',
+              regex: '^(__typename|__entity)$',
               match: false,
             },
           },
