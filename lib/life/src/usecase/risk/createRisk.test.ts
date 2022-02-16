@@ -11,8 +11,10 @@ import { assertResultError, assertResultOk, mockThrows } from '@helper/testing'
 import { Result, ResultError } from '@helper/result'
 import { CreateRiskInteractor, CreateRiskRepo, CreateRiskRequest } from '@life/usecase/risk/createRisk'
 import { Risk, RiskMapper } from '@life/usecase/mapper'
+import { Identifier, newIdentifier } from '@helper/identifier'
 
 jest.mock('@life/risk')
+jest.mock('@helper/identifier')
 
 describe('createRisk', () => {
   describe('Given a CreateRiskInteractor', () => {
@@ -27,6 +29,7 @@ describe('createRisk', () => {
       let mappedRisk: Risk
 
       let newRiskMock: jest.MockedFunction<typeof newRisk>
+      let newIdentifierMock: jest.MockedFunction<typeof newIdentifier>
       let risk: RiskDomain
 
       let interactor: CreateRiskInteractor
@@ -49,7 +52,10 @@ describe('createRisk', () => {
           } as Result<undefined>),
         )
         parentRisk = {
-          id: 'parent id',
+          id: {
+            __entity: 'Identifier',
+            val: 'parent id',
+          },
           category: CategoryTopLevelDomain.Health,
           impact: ImpactDomain.High,
           likelihood: LikelihoodDomain.High,
@@ -88,7 +94,10 @@ describe('createRisk', () => {
 
         // Factory
         risk = {
-          id: 'uri-part',
+          id: {
+            __entity: 'Identifier',
+            val: 'uri-part',
+          },
           category: CategoryTopLevelDomain.Health,
           impact: ImpactDomain.High,
           likelihood: LikelihoodDomain.High,
@@ -99,6 +108,14 @@ describe('createRisk', () => {
           shortDescription: 'short description',
           updated: new Date(),
         }
+        newIdentifierMock = newIdentifier as jest.MockedFunction<typeof newIdentifier>
+        newIdentifierMock.mockImplementation(
+          () =>
+            ({
+              value: { __entity: 'Identifier', val: 'the id' },
+              ok: true,
+            } as Result<Identifier>),
+        )
         newRiskMock = newRisk as jest.MockedFunction<typeof newRisk>
         newRiskMock.mockImplementation(
           () =>
@@ -148,7 +165,7 @@ describe('createRisk', () => {
           expect(mapCreateDetails.mock.calls).toHaveLength(1)
           expect(mapCreateDetails.mock.calls[0]).toEqual([{ ...request, parent: parentRisk }])
           expect(newRiskMock).toHaveBeenCalledTimes(1)
-          expect(newRiskMock.mock.calls[0]).toEqual(['uri-part', mappedCreateDetails])
+          expect(newRiskMock.mock.calls[0]).toEqual([{ __entity: 'Identifier', val: 'the id' }, mappedCreateDetails])
           expect(mapRisk.mock.calls).toHaveLength(1)
           expect(mapRisk.mock.calls[0]).toEqual([risk])
 
@@ -187,6 +204,21 @@ describe('createRisk', () => {
           const riskResult = await interactor.createRisk({ ...request })
           assertResultError(riskResult)
           expect(riskResult.message).toBe('fetch repo error')
+        })
+      })
+      describe('When creating the ID fails', () => {
+        beforeEach(() => {
+          newIdentifierMock.mockImplementationOnce(
+            () =>
+              ({
+                message: 'create identifier error',
+              } as ResultError),
+          )
+        })
+        test('Then an error is returned', async () => {
+          const riskResult = await interactor.createRisk({ ...request })
+          assertResultError(riskResult)
+          expect(riskResult.message).toBe('create identifier error')
         })
       })
       describe('When creating the risk fails', () => {
@@ -268,7 +300,7 @@ describe('createRisk', () => {
 
         // Factory
         risk = {
-          id: 'uri-part',
+          id: { __entity: 'Identifier', val: 'uri-part' },
           category: CategoryTopLevelDomain.Health,
           impact: ImpactDomain.High,
           likelihood: LikelihoodDomain.High,
@@ -319,7 +351,7 @@ describe('createRisk', () => {
           expect(mapCreateDetails.mock.calls).toHaveLength(1)
           expect(mapCreateDetails.mock.calls[0]).toEqual([request])
           expect(newRiskMock).toHaveBeenCalledTimes(1)
-          expect(newRiskMock.mock.calls[0]).toEqual(['uri-part-1', mappedCreateDetails])
+          expect(newRiskMock.mock.calls[0]).toEqual([{ __entity: 'Identifier', val: 'the id' }, mappedCreateDetails])
           expect(mapRisk.mock.calls).toHaveLength(1)
           expect(mapRisk.mock.calls[0]).toEqual([risk])
 

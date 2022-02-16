@@ -3,7 +3,7 @@ import { ResultError, Results, results, resultsOk } from '@helper/result'
 import { ListInteractor, ListMapper, newListInteractor } from '@life/usecase/updated/list'
 import type { ListRepo } from '@life/usecase/updated/list'
 import { Updated, Category, Risk } from '@life/usecase/mapper'
-import { Category as CategoryDomain } from '@life/category'
+import { newCategory } from '@life/category'
 import {
   CategoryTopLevel as CategoryTopLevelDomain,
   Impact as ImpactDomain,
@@ -11,6 +11,8 @@ import {
   Risk as RiskDomain,
   RiskType as RiskTypeDomain,
 } from '@life/risk'
+import { newIdentifier } from '@helper/identifier'
+import { assertResultOk } from '@helper/testing'
 
 describe('usecase>updated>list', () => {
   describe('Given a ListInteractor', () => {
@@ -22,8 +24,11 @@ describe('usecase>updated>list', () => {
     let categoryMapped: Category
     let riskMapped: Risk
     beforeEach(() => {
-      const category: CategoryDomain = {
-        id: 'id 1',
+      const idResult = newIdentifier('id 1')
+      assertResultOk(idResult)
+
+      const categoryResult = newCategory({
+        id: idResult.value,
         name: 'name 1',
         path: 'path 1',
         description: 'description 1',
@@ -31,9 +36,15 @@ describe('usecase>updated>list', () => {
         children: [],
         parent: undefined,
         updated: new Date(),
-      }
+      })
+      assertResultOk(categoryResult)
+      const category = categoryResult.value
+
       const testUpdated: RiskDomain = {
-        id: 'id 1',
+        id: {
+          __entity: 'Identifier',
+          val: 'id 1',
+        },
         name: 'name 1',
         category: CategoryTopLevelDomain.Health,
         impact: ImpactDomain.High,
@@ -44,7 +55,14 @@ describe('usecase>updated>list', () => {
       }
       repoUpdated = [category, testUpdated]
       categoryMapped = {
-        ...category,
+        id: 'id 1',
+        name: 'name 1',
+        path: 'path 1',
+        description: 'description 1',
+        shortDescription: 'short description 1',
+        children: [],
+        parent: undefined,
+        updated: new Date(),
       }
       riskMapped = {
         id: 'id 1',
@@ -105,7 +123,11 @@ describe('usecase>updated>list', () => {
               {
                 ok: true,
                 value: {
-                  id: 'id',
+                  __entity: 'Category',
+                  id: {
+                    __entity: 'Identifier',
+                    val: 'id',
+                  },
                   name: 'name',
                   path: 'path',
                   shortDescription: 'short description',

@@ -76,7 +76,8 @@ describe('UpdatedRepoJson', () => {
       let category4: Category
       beforeEach(() => {
         category1 = {
-          id: 'id 1',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id 1' },
           name: 'name 1',
           path: 'path 1',
           shortDescription: 'short desc',
@@ -84,7 +85,8 @@ describe('UpdatedRepoJson', () => {
           children: [],
         }
         category2 = {
-          id: 'id 2',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id 2' },
           name: 'name 2',
           path: 'path 2',
           shortDescription: 'short desc',
@@ -92,7 +94,8 @@ describe('UpdatedRepoJson', () => {
           children: [],
         }
         category3 = {
-          id: 'id 3',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id 3' },
           name: 'name 3',
           path: 'path 3',
           shortDescription: 'short desc',
@@ -100,7 +103,8 @@ describe('UpdatedRepoJson', () => {
           children: [],
         }
         category4 = {
-          id: 'id 4',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id 4' },
           name: 'name 4',
           path: 'path 4',
           shortDescription: 'short desc',
@@ -146,7 +150,7 @@ describe('UpdatedRepoJson', () => {
       let risk4: Risk
       beforeEach(() => {
         risk1 = {
-          id: 'id 1',
+          id: { __entity: 'Identifier', val: 'id 1' },
           name: 'name 1',
           shortDescription: 'short desc 1',
           category: CategoryTopLevel.Health,
@@ -156,7 +160,7 @@ describe('UpdatedRepoJson', () => {
           updated: new Date('2022-01-10 08:00'),
         }
         risk2 = {
-          id: 'id 2',
+          id: { __entity: 'Identifier', val: 'id 2' },
           name: 'name 2',
           shortDescription: 'short desc 2',
           category: CategoryTopLevel.Health,
@@ -166,7 +170,7 @@ describe('UpdatedRepoJson', () => {
           updated: new Date('2022-01-10 09:00'),
         }
         risk3 = {
-          id: 'id 3',
+          id: { __entity: 'Identifier', val: 'id 3' },
           name: 'name 3',
           shortDescription: 'short desc 3',
           category: CategoryTopLevel.Health,
@@ -176,7 +180,7 @@ describe('UpdatedRepoJson', () => {
           updated: new Date('2022-01-10 11:00'),
         }
         risk4 = {
-          id: 'id 4',
+          id: { __entity: 'Identifier', val: 'id 4' },
           name: 'name 4',
           shortDescription: 'short desc 4',
           category: CategoryTopLevel.Health,
@@ -224,7 +228,7 @@ describe('UpdatedRepoJson', () => {
       let category4: Category
       beforeEach(() => {
         risk1 = {
-          id: 'id 1',
+          id: { __entity: 'Identifier', val: 'id 1' },
           name: 'name 1',
           shortDescription: 'short desc 1',
           category: CategoryTopLevel.Health,
@@ -234,7 +238,8 @@ describe('UpdatedRepoJson', () => {
           updated: new Date('2022-01-10 08:00'),
         }
         category2 = {
-          id: 'id 2',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id 2' },
           name: 'name 2',
           path: 'path 2',
           shortDescription: 'short desc',
@@ -242,7 +247,7 @@ describe('UpdatedRepoJson', () => {
           children: [],
         }
         risk3 = {
-          id: 'id 3',
+          id: { __entity: 'Identifier', val: 'id 3' },
           name: 'name 3',
           shortDescription: 'short desc 3',
           category: CategoryTopLevel.Health,
@@ -252,7 +257,8 @@ describe('UpdatedRepoJson', () => {
           updated: new Date('2022-01-10 11:00'),
         }
         category4 = {
-          id: 'id 4',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id 4' },
           name: 'name 4',
           path: 'path 4',
           shortDescription: 'short desc',

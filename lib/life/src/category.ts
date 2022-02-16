@@ -1,137 +1,92 @@
-import { IsArray, IsDate, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
-import { Result, resultError, resultOk } from '@helper/result'
+import { Result, resultOk } from '@helper/result'
 import { Updatable } from './updated'
+import { z } from 'zod'
+import { Identifier } from '@helper/identifier'
+import { resultZodError } from '@helper/zod'
+import { EntitySchema } from '@helper/entity'
 
 // TODO: children can also be risks (Concerns)
 
 interface Category extends Updatable {
-  id: string
+  __entity: 'Category'
+  id: Identifier
   path: string
   name: string
   description?: string
   children: Category[]
   parent?: Category
+  updated: Date
+  shortDescription: string
 }
 
-type CreateDetails = Pick<
-  Category,
-  'children' | 'description' | 'name' | 'parent' | 'path' | 'shortDescription' | 'updated'
->
+type CategoryValidationSchema = EntitySchema<Category>
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isCategory(category: any): category is Category {
-  return (
-    !!category &&
-    /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-    category.id !== undefined &&
-    category.path !== undefined &&
-    category.name !== undefined &&
-    category.children instanceof Array
-    /* eslint-enable @typescript-eslint/no-unsafe-member-access */
-  )
+const CATEGORY_SCHEMA: z.ZodSchema<CategoryValidationSchema> = z.lazy(() =>
+  z
+    .object({
+      __entity: z.literal('Category'),
+      id: z.object({ __entity: z.literal('Identifier') }),
+      path: z.string().min(2),
+      name: z.string().min(2),
+      description: z.string().min(2).optional(),
+      children: z.array(z.object({ __entity: z.literal('Category') })),
+      parent: z.object({ __entity: z.literal('Category') }).optional(),
+      updated: z.date(),
+      shortDescription: z.string().min(2),
+    })
+    .strict(),
+)
+
+function isCategory(category: unknown): category is Category {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  return (category as Category)?.__entity === 'Category'
 }
 
-function newCategory(id: string, details: CreateDetails): Result<Category> {
-  // Parent
-  if (typeof details.parent !== 'undefined' && !isCategory(details.parent)) {
-    return resultError('parent must be a Category')
+type CreateDetails = Omit<Category, '__entity'>
+
+function newCategory(details: CreateDetails): Result<Category> {
+  const category: Category = {
+    get __entity() {
+      return 'Category' as const
+    },
+    get children() {
+      return details.children
+    },
+    get id() {
+      return details.id
+    },
+    get path() {
+      return details.path
+    },
+    get name() {
+      return details.name
+    },
+    get description() {
+      return details.description
+    },
+    get parent() {
+      return details.parent
+    },
+    get updated() {
+      return details.updated
+    },
+    get shortDescription() {
+      return details.shortDescription
+    },
   }
 
-  // Children
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (!((details.children as any) instanceof Array) || details.children.some((c) => !isCategory(c))) {
-    return resultError('children must be an array of Categorys')
-  }
-  const category = new CategoryImpl(details, id)
-
-  // Primatives
-  const errors = validateSync(category)
-  if (errors.length > 0) {
-    const constraints = errors[0].constraints
-    /* istanbul ignore if */
-    if (!constraints) {
-      return resultError('Validation failed')
-    }
-    return resultError(Object.values(constraints)[0])
+  const parseResult = CATEGORY_SCHEMA.safeParse(category)
+  if (!parseResult.success) {
+    return resultZodError('category', parseResult.error, {
+      category: {
+        id: category.id.val,
+        name: category.name,
+      },
+    })
   }
 
   return resultOk(category)
 }
 
-class CategoryImpl implements Category {
-  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-  #id: string
-
-  #path: string
-  #name: string
-  #description?: string
-  #shortDescription: string
-  #parent?: Category
-  #children: Category[]
-  #updated: Date
-  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
-
-  public constructor(details: CreateDetails, id: string) {
-    this.#id = id
-
-    this.#path = details.path
-    this.#name = details.name
-    this.#description = details.description
-    this.#shortDescription = details.shortDescription
-    this.#parent = details.parent
-    this.#children = details.children
-    this.#updated = details.updated
-  }
-
-  @MinLength(1)
-  @IsString()
-  public get id(): string {
-    return this.#id
-  }
-
-  // Details
-
-  @MinLength(1)
-  @IsString()
-  public get path(): string {
-    return this.#path
-  }
-
-  @MinLength(2)
-  @IsString()
-  public get name(): string {
-    return this.#name
-  }
-
-  @MinLength(2)
-  @IsString()
-  @IsOptional()
-  public get description(): string | undefined {
-    return this.#description
-  }
-
-  @MinLength(2)
-  @IsString()
-  public get shortDescription(): string {
-    return this.#shortDescription
-  }
-
-  @IsOptional()
-  public get parent(): Category | undefined {
-    return this.#parent
-  }
-
-  @IsOptional()
-  @IsArray()
-  public get children(): Category[] {
-    return this.#children
-  }
-
-  @IsDate()
-  public get updated(): Date {
-    return this.#updated
-  }
-}
-
 export type { Category, CreateDetails }
-export { newCategory }
+export { newCategory, isCategory }

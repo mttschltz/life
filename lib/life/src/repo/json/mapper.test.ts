@@ -1,9 +1,11 @@
 import { Category, newCategory } from '@life/category'
 import { CategoryJson, newCategoryMapper } from '@life/repo/json/mapper'
-import { resultError, resultOk } from '@helper/result'
+import { Result, resultError, resultOk } from '@helper/result'
 import { assertResultError, assertResultOk } from '@helper/testing'
+import { Identifier, newIdentifier } from '@helper/identifier'
 
 jest.mock('@life/category')
+jest.mock('@helper/identifier')
 
 describe('CategoryMapper', () => {
   describe('Given a domain category', () => {
@@ -12,7 +14,8 @@ describe('CategoryMapper', () => {
         const mapper = newCategoryMapper()
         const updated = new Date()
         const category: Category = {
-          id: 'id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id' },
           name: 'name',
           path: 'path',
           shortDescription: 'short description',
@@ -33,7 +36,8 @@ describe('CategoryMapper', () => {
       test('Then it maps to JSON correctly', () => {
         const mapper = newCategoryMapper()
         const parent: Category = {
-          id: 'parent id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'parent id' },
           name: 'parent name',
           path: 'parent path',
           shortDescription: 'parent short description',
@@ -41,7 +45,8 @@ describe('CategoryMapper', () => {
           updated: new Date(),
         }
         const child1: Category = {
-          id: 'child1 id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'child1 id' },
           name: 'child1 name',
           path: 'child1 path',
           shortDescription: 'child1 short description',
@@ -49,7 +54,8 @@ describe('CategoryMapper', () => {
           updated: new Date(),
         }
         const child2: Category = {
-          id: 'child2 id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'child2 id' },
           name: 'child2 name',
           path: 'child2 path',
           shortDescription: 'child2 short description',
@@ -58,7 +64,8 @@ describe('CategoryMapper', () => {
         }
         const updated = new Date()
         const category: Category = {
-          id: 'id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id' },
           name: 'name',
           path: 'path',
           description: 'description',
@@ -81,19 +88,34 @@ describe('CategoryMapper', () => {
     })
   })
   describe('Given a JSON category', () => {
+    let newIdentifierMock: jest.MockedFunction<typeof newIdentifier>
+    let newCategoryMock: jest.MockedFunction<typeof newCategory>
+    beforeEach(() => {
+      newIdentifierMock = newIdentifier as jest.MockedFunction<typeof newIdentifier>
+      newCategoryMock = newCategory as jest.MockedFunction<typeof newCategory>
+    })
+
     describe('When it has only optional properties', () => {
-      test('Then it creates and returns the expected domain object', () => {
-        const newCategoryMock = newCategory as jest.MockedFunction<typeof newCategory>
-        const newCategoryResult = resultOk<Category>({
-          id: 'id',
+      let newIdentifierResult: Result<Identifier>
+      let newCategoryResult: Result<Category>
+      beforeEach(() => {
+        newIdentifierResult = resultOk<Identifier>({ __entity: 'Identifier', val: 'id' })
+        newIdentifierMock.mockReset()
+        newIdentifierMock.mockReturnValueOnce(newIdentifierResult)
+
+        newCategoryResult = resultOk<Category>({
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id' },
           name: 'name',
           path: 'path',
           shortDescription: 'short description',
           children: [],
           updated: new Date(),
         })
+        newCategoryMock.mockReset()
         newCategoryMock.mockReturnValueOnce(newCategoryResult)
-
+      })
+      test('Then it creates and returns the expected domain object', () => {
         const categoryUpdated = new Date()
         const mapper = newCategoryMapper()
         const category: CategoryJson = {
@@ -110,8 +132,8 @@ describe('CategoryMapper', () => {
         expect(result).toBe(newCategoryResult)
         expect(newCategoryMock.mock.calls).toHaveLength(1)
         expect(newCategoryMock.mock.calls[0]).toEqual([
-          'id',
           {
+            id: { __entity: 'Identifier', val: 'id' },
             name: 'name',
             path: 'path',
             shortDescription: 'short description',
@@ -122,18 +144,27 @@ describe('CategoryMapper', () => {
       })
     })
     describe('When it has all properties', () => {
-      test('Then it creates and returns the expected domain object', () => {
-        const newCategoryMock = newCategory as jest.MockedFunction<typeof newCategory>
-        const newCategoryResult = resultOk<Category>({
-          id: 'id',
+      let newIdentifierResult: Result<Identifier>
+      let newCategoryResult: Result<Category>
+      beforeEach(() => {
+        newIdentifierResult = resultOk<Identifier>({ __entity: 'Identifier', val: 'id' })
+        newIdentifierMock.mockReset()
+        newIdentifierMock.mockReturnValueOnce(newIdentifierResult)
+
+        newCategoryResult = resultOk<Category>({
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id' },
           name: 'name',
           path: 'path',
           shortDescription: 'short description',
           children: [],
           updated: new Date(),
         })
+        newCategoryMock.mockReset()
         newCategoryMock.mockReturnValueOnce(newCategoryResult)
+      })
 
+      test('Then it creates and returns the expected domain object', () => {
         const mapper = newCategoryMapper()
         const categoryUpdated = new Date()
         const category: CategoryJson = {
@@ -145,7 +176,8 @@ describe('CategoryMapper', () => {
           updated: categoryUpdated,
         }
         const parent: Category = {
-          id: 'parent id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'parent id' },
           name: 'parent name',
           path: 'parent path',
           shortDescription: 'parent short description',
@@ -154,7 +186,8 @@ describe('CategoryMapper', () => {
         }
         const children: Category[] = [
           {
-            id: 'child1 id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'child1 id' },
             name: 'child1 name',
             path: 'child1 path',
             shortDescription: 'child1 short description',
@@ -162,7 +195,8 @@ describe('CategoryMapper', () => {
             updated: new Date(),
           },
           {
-            id: 'child2 id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'child2 id' },
             name: 'child2 name',
             path: 'child2 path',
             shortDescription: 'child2 short description',
@@ -176,8 +210,8 @@ describe('CategoryMapper', () => {
         expect(result).toBe(newCategoryResult)
         expect(newCategoryMock.mock.calls).toHaveLength(1)
         expect(newCategoryMock.mock.calls[0]).toEqual([
-          'id',
           {
+            id: { __entity: 'Identifier', val: 'id' },
             name: 'name',
             path: 'path',
             shortDescription: 'short description',
@@ -188,12 +222,56 @@ describe('CategoryMapper', () => {
         ] as Parameters<typeof newCategory>)
       })
     })
-    describe('When newCategory returns an error result', () => {
-      test('Then it returns the same error result', () => {
-        const newCategoryMock = newCategory as jest.MockedFunction<typeof newCategory>
-        const newCategoryResult = resultError<Category>('error')
-        newCategoryMock.mockReturnValueOnce(newCategoryResult)
+    describe('When newIdentity returns an error result', () => {
+      let newIdentifierResult: Result<Identifier>
+      let newCategoryResult: Result<Category>
+      beforeEach(() => {
+        newIdentifierResult = resultError<Identifier>('error')
+        newIdentifierMock.mockReset()
+        newIdentifierMock.mockReturnValueOnce(newIdentifierResult)
 
+        newCategoryResult = resultOk<Category>({
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id' },
+          name: 'name',
+          path: 'path',
+          shortDescription: 'short description',
+          children: [],
+          updated: new Date(),
+        })
+        newCategoryMock.mockReset()
+        newCategoryMock.mockReturnValueOnce(newCategoryResult)
+      })
+
+      test('Then it returns the same error result', () => {
+        const mapper = newCategoryMapper()
+        const category: CategoryJson = {
+          id: 'id',
+          name: 'name',
+          path: 'path',
+          shortDescription: 'short description',
+          children: [],
+          updated: new Date(),
+        }
+
+        const result = mapper.fromJson(category, undefined, [])
+        assertResultError(result)
+        expect(result).toBe(newIdentifierResult)
+      })
+    })
+    describe('When newCategory returns an error result', () => {
+      let newIdentifierResult: Result<Identifier>
+      let newCategoryResult: Result<Category>
+      beforeEach(() => {
+        newIdentifierResult = resultOk<Identifier>({ __entity: 'Identifier', val: 'id' })
+        newIdentifierMock.mockReset()
+        newIdentifierMock.mockReturnValueOnce(newIdentifierResult)
+
+        newCategoryResult = resultError<Category>('error')
+        newCategoryMock.mockReset()
+        newCategoryMock.mockReturnValueOnce(newCategoryResult)
+      })
+      test('Then it returns the same error result', () => {
         const mapper = newCategoryMapper()
         const category: CategoryJson = {
           id: 'id',

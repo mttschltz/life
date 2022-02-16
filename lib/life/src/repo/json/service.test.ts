@@ -12,7 +12,8 @@ describe('CategoryRepoJson', () => {
       describe('When everything succeeds', () => {
         test('Then the mapped result is returned', async () => {
           const mapped: Category = {
-            id: 'mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'mapped id' },
             name: 'mapped name',
             path: 'mapped path',
             shortDescription: 'mapped short description',
@@ -128,7 +129,8 @@ describe('CategoryRepoJson', () => {
       describe('When mapping the parent errors', () => {
         test('Then the mapped error result is returned', async () => {
           const mapped: Category = {
-            id: 'mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'mapped id' },
             name: 'mapped name',
             path: 'mapped path',
             shortDescription: 'mapped short description',
@@ -188,7 +190,8 @@ describe('CategoryRepoJson', () => {
       describe('When everything succeeds', () => {
         test('Then the mapped result is returned', async () => {
           const categoryMapped: Category = {
-            id: 'mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'mapped id' },
             name: 'mapped name',
             path: 'mapped path',
             shortDescription: 'mapped short description',
@@ -196,7 +199,8 @@ describe('CategoryRepoJson', () => {
             updated: new Date(),
           }
           const parentMapped: Category = {
-            id: 'parent mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'parent mapped id' },
             name: 'parent mapped name',
             path: 'parent mapped path',
             shortDescription: 'parent mapped short description',
@@ -204,7 +208,8 @@ describe('CategoryRepoJson', () => {
             updated: new Date(),
           }
           const child1Mapped: Category = {
-            id: 'child1 mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'child1 mapped id' },
             name: 'child1 mapped name',
             path: 'child1 mapped path',
             shortDescription: 'child1 mapped short description',
@@ -212,7 +217,8 @@ describe('CategoryRepoJson', () => {
             updated: new Date(),
           }
           const child2Mapped: Category = {
-            id: 'child2 mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'child2 mapped id' },
             name: 'child2 mapped name',
             path: 'child2 mapped path',
             shortDescription: 'child2 mapped short description',
@@ -330,7 +336,8 @@ describe('CategoryRepoJson', () => {
       describe('When a child is not found', () => {
         test('Then an error result is returned', async () => {
           const parentMapped: Category = {
-            id: 'parent mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'parent mapped id' },
             name: 'parent mapped name',
             path: 'parent mapped path',
             shortDescription: 'parent mapped short description',
@@ -422,7 +429,8 @@ describe('CategoryRepoJson', () => {
             mapper,
           )
           fetchedCategoryResult = resultOk({
-            id: 'fetched id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'fetched id' },
             name: 'fetched name',
             path: 'fetched path',
             shortDescription: 'fetched short description',
@@ -581,7 +589,8 @@ describe('CategoryRepoJson', () => {
       beforeEach(() => {
         mapper = mockDeep<CategoryMapper>()
         child1 = {
-          id: 'child1 id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'child1 id' },
           name: 'child1 name',
           path: 'child1 path',
           shortDescription: 'child1 short description',
@@ -589,7 +598,8 @@ describe('CategoryRepoJson', () => {
           updated: new Date(),
         }
         child2 = {
-          id: 'child2 id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'child2 id' },
           name: 'child2 name',
           path: 'child2 path',
           shortDescription: 'child2 short description',
@@ -597,7 +607,8 @@ describe('CategoryRepoJson', () => {
           updated: new Date(),
         }
         child3 = {
-          id: 'child3 id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'child3 id' },
           name: 'child3 name',
           path: 'child3 path',
           shortDescription: 'child3 short description',
@@ -741,7 +752,8 @@ describe('CategoryRepoJson', () => {
         describe('and everything succeeds', () => {
           test('Then the root mapped categories are returned', async () => {
             const root1Mapped: Category = {
-              id: 'root1 mapped id',
+              __entity: 'Category',
+              id: { __entity: 'Identifier', val: 'root1 mapped id' },
               name: 'root1 mapped name',
               path: 'root1 mapped path',
               shortDescription: 'root1 short description',
@@ -749,7 +761,8 @@ describe('CategoryRepoJson', () => {
               updated: new Date(),
             }
             const child1Mapped: Category = {
-              id: 'child1 mapped id',
+              __entity: 'Category',
+              id: { __entity: 'Identifier', val: 'child1 mapped id' },
               name: 'child1 mapped name',
               path: 'child1 mapped path',
               shortDescription: 'child1 short description',
@@ -757,7 +770,8 @@ describe('CategoryRepoJson', () => {
               updated: new Date(),
             }
             const root2Mapped: Category = {
-              id: 'root2 mapped id',
+              __entity: 'Category',
+              id: { __entity: 'Identifier', val: 'root2 mapped id' },
               name: 'root2 mapped name',
               path: 'root2 mapped path',
               shortDescription: 'root2 short description',
@@ -765,7 +779,8 @@ describe('CategoryRepoJson', () => {
               updated: new Date(),
             }
             const child2Mapped: Category = {
-              id: 'child2 mapped id',
+              __entity: 'Category',
+              id: { __entity: 'Identifier', val: 'child2 mapped id' },
               name: 'child2 mapped name',
               path: 'child2 mapped path',
               shortDescription: 'child2 short description',
@@ -900,7 +915,8 @@ describe('CategoryRepoJson', () => {
       describe('When onlyRoot is false', () => {
         test('Then all mapped categories are returned', async () => {
           const root1Mapped: Category = {
-            id: 'root1 mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'root1 mapped id' },
             name: 'root1 mapped name',
             path: 'root1 mapped path',
             shortDescription: 'root1 short description',
@@ -908,7 +924,8 @@ describe('CategoryRepoJson', () => {
             updated: new Date(),
           }
           const child1Mapped: Category = {
-            id: 'child1 mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'child1 mapped id' },
             name: 'child1 mapped name',
             path: 'child1 mapped path',
             shortDescription: 'child1 short description',
@@ -916,7 +933,8 @@ describe('CategoryRepoJson', () => {
             updated: new Date(),
           }
           const root2Mapped: Category = {
-            id: 'root2 mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'root2 mapped id' },
             name: 'root2 mapped name',
             path: 'root2 mapped path',
             shortDescription: 'root2 short description',
@@ -924,7 +942,8 @@ describe('CategoryRepoJson', () => {
             updated: new Date(),
           }
           const child2Mapped: Category = {
-            id: 'child2 mapped id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'child2 mapped id' },
             name: 'child2 mapped name',
             path: 'child2 mapped path',
             shortDescription: 'child2 short description',

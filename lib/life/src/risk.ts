@@ -1,6 +1,7 @@
 import { IsDate, IsEnum, isInstance, IsOptional, IsString, MinLength, validateSync } from 'class-validator'
 import { Result, resultError, resultOk } from '@helper/result'
 import { Updatable } from './updated'
+import { Identifier } from '@helper/identifier'
 
 enum RiskType {
   Risk = 'Risk',
@@ -31,7 +32,7 @@ type CreateDetails = Pick<
 >
 
 interface Risk extends Updatable {
-  id: string
+  id: Identifier
   category: CategoryTopLevel
   impact: Impact
   likelihood: Likelihood
@@ -42,7 +43,7 @@ interface Risk extends Updatable {
   type: RiskType
 }
 
-function newRisk(id: string, details: CreateDetails): Result<Risk> {
+function newRisk(id: Identifier, details: CreateDetails): Result<Risk> {
   // Manual check as @IsInstance(RiskImpl) will result in "Cannot access before initialization" error
   if (typeof details.parent !== 'undefined' && !isInstance(details.parent, RiskImpl)) {
     return resultError('parent must be instance of Risk')
@@ -65,7 +66,7 @@ function newRisk(id: string, details: CreateDetails): Result<Risk> {
 
 class RiskImpl implements Risk {
   /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-  #id: string
+  #id: Identifier
 
   #category: CategoryTopLevel
   #impact: Impact
@@ -82,7 +83,7 @@ class RiskImpl implements Risk {
 
   public constructor(
     { category, impact, likelihood, name, notes, parent, shortDescription, type, updated }: CreateDetails,
-    id: string,
+    id: Identifier,
   ) {
     this.#id = id
 
@@ -97,9 +98,7 @@ class RiskImpl implements Risk {
     this.#updated = updated
   }
 
-  @MinLength(1)
-  @IsString()
-  public get id(): string {
+  public get id(): Identifier {
     return this.#id
   }
 

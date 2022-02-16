@@ -14,7 +14,8 @@ describe('usecase>category>list', () => {
       repoList = jest.fn()
       repoCategories = [
         {
-          id: 'id 1',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id 1' },
           name: 'name 1',
           path: 'path 1',
           description: 'description 1',
@@ -24,13 +25,15 @@ describe('usecase>category>list', () => {
           updated: new Date(),
         },
         {
-          id: 'id 2',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'id 2' },
           name: 'name 2',
           path: 'path 2',
           description: 'description 2',
           shortDescription: 'short description 2',
           parent: {
-            id: 'id parent',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'id parent' },
             name: 'name parent',
             path: 'path parent',
             description: 'description parent',
@@ -40,7 +43,8 @@ describe('usecase>category>list', () => {
           },
           children: [
             {
-              id: 'id child',
+              __entity: 'Category',
+              id: { __entity: 'Identifier', val: 'id child' },
               name: 'name child',
               path: 'path child',
               description: 'description child',
@@ -138,7 +142,8 @@ describe('usecase>category>list', () => {
               {
                 ok: true,
                 value: {
-                  id: 'id',
+                  __entity: 'Category',
+                  id: { __entity: 'Identifier', val: 'id' },
                   name: 'name',
                   path: 'path',
                   shortDescription: 'short description',

@@ -1,8 +1,9 @@
+import { Identifier } from '@helper/identifier'
 import { Category } from './category'
 import { Risk } from './risk'
 
 interface Updatable {
-  id: string
+  id: Identifier
   name: string
   updated: Date
   shortDescription: string

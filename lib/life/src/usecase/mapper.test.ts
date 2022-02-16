@@ -1,4 +1,4 @@
-import { Category as CategoryDomain } from '@life/category'
+import { Category as CategoryDomain, newCategory } from '@life/category'
 import {
   CategoryTopLevel as CategoryTopLevelDomain,
   Impact as ImpactDomain,
@@ -9,7 +9,8 @@ import {
 import { Updated as UpdatedDomain } from '@life/updated'
 import { newCategoryMapper, newUpdatedMapper, Category, isUpdatedCategory, isUpdatedRisk } from './mapper'
 import type { CategoryMapper, Risk, RiskMapper } from './mapper'
-import { mockThrows } from '@helper/testing'
+import { assertResultOk, mockThrows } from '@helper/testing'
+import { newIdentifier } from '@helper/identifier'
 
 describe('CategoryMapper', () => {
   describe('category', () => {
@@ -17,15 +18,21 @@ describe('CategoryMapper', () => {
       describe('When there are no parents and children', () => {
         test('Then it is mapped correctly', () => {
           const categoryUpdated = new Date()
-          const categoryDomain: CategoryDomain = {
-            id: 'id',
+          const idResult = newIdentifier('id')
+          assertResultOk(idResult)
+
+          const categoryResult = newCategory({
+            id: idResult.value,
             name: 'name',
             path: 'path',
             description: 'description',
             shortDescription: 'short description',
             children: [],
             updated: categoryUpdated,
-          }
+          })
+          assertResultOk(categoryResult)
+          const categoryDomain = categoryResult.value
+
           const mapper = newCategoryMapper()
           expect(mapper.category(categoryDomain)).toEqual({
             id: 'id',
@@ -33,9 +40,10 @@ describe('CategoryMapper', () => {
             path: 'path',
             description: 'description',
             shortDescription: 'short description',
+            parent: undefined,
             children: [],
             updated: categoryUpdated,
-          } as CategoryDomain)
+          } as Category)
         })
       })
       describe('When there are recursive parents and children', () => {
@@ -46,26 +54,30 @@ describe('CategoryMapper', () => {
           const childUpdated = new Date()
           const grandchildUpdated = new Date()
           const categoryDomain: CategoryDomain = {
-            id: 'id',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'id' },
             name: 'name',
             path: 'path',
             description: 'description',
             shortDescription: 'short description',
             parent: {
-              id: 'parent id',
+              __entity: 'Category',
+              id: { __entity: 'Identifier', val: 'parent id' },
               name: 'parent name',
               path: 'parent path',
               description: 'parent description',
               shortDescription: 'parent short description',
               parent: {
-                id: 'grandparent id',
+                __entity: 'Category',
+                id: { __entity: 'Identifier', val: 'grandparent id' },
                 name: 'grandparent name',
                 path: 'grandparent path',
                 description: 'grandparent description',
                 shortDescription: 'grandparent short description',
                 children: [
                   {
-                    id: 'parent id',
+                    __entity: 'Category',
+                    id: { __entity: 'Identifier', val: 'parent id' },
                     name: 'parent name',
                     path: 'parent path',
                     description: 'parent description',
@@ -78,7 +90,8 @@ describe('CategoryMapper', () => {
               },
               children: [
                 {
-                  id: 'id',
+                  __entity: 'Category',
+                  id: { __entity: 'Identifier', val: 'id' },
                   name: 'name',
                   path: 'path',
                   description: 'description',
@@ -91,13 +104,15 @@ describe('CategoryMapper', () => {
             },
             children: [
               {
-                id: 'child id',
+                __entity: 'Category',
+                id: { __entity: 'Identifier', val: 'child id' },
                 name: 'child name',
                 path: 'child path',
                 description: 'child description',
                 shortDescription: 'child short description',
                 parent: {
-                  id: 'id',
+                  __entity: 'Category',
+                  id: { __entity: 'Identifier', val: 'id' },
                   name: 'name',
                   path: 'path',
                   description: 'description',
@@ -107,7 +122,8 @@ describe('CategoryMapper', () => {
                 },
                 children: [
                   {
-                    id: 'grandchild id',
+                    __entity: 'Category',
+                    id: { __entity: 'Identifier', val: 'grandchild id' },
                     name: 'grandchild name',
                     path: 'grandchild path',
                     description: 'grandchild description',
@@ -197,7 +213,7 @@ describe('CategoryMapper', () => {
               },
             ],
             updated: categoryUpdated,
-          } as CategoryDomain)
+          } as Category)
         })
       })
     })
@@ -215,7 +231,8 @@ describe('CategoryMapper', () => {
         const updated2 = new Date()
         const categoryDomains: CategoryDomain[] = [
           {
-            id: 'id 1',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'id 1' },
             name: 'name 1',
             path: 'path 1',
             description: 'description 1',
@@ -224,7 +241,8 @@ describe('CategoryMapper', () => {
             updated: updated1,
           },
           {
-            id: 'id 2',
+            __entity: 'Category',
+            id: { __entity: 'Identifier', val: 'id 2' },
             name: 'name 2',
             path: 'path 2',
             description: 'description 2',
@@ -284,7 +302,8 @@ describe('UpdatedMapper', () => {
         beforeEach(() => {
           updated = [
             {
-              id: 'id',
+              __entity: 'Category',
+              id: { __entity: 'Identifier', val: 'id' },
               name: 'name',
               path: 'path',
               shortDescription: 'short description',
@@ -292,7 +311,7 @@ describe('UpdatedMapper', () => {
               updated: new Date(),
             } as CategoryDomain,
             {
-              id: 'id',
+              id: { __entity: 'Identifier', val: 'id' },
               category: CategoryTopLevelDomain.Health,
               impact: ImpactDomain.High,
               likelihood: LikelihoodDomain.High,
@@ -352,7 +371,8 @@ describe('UpdatedMapper', () => {
         test('Then it returns an error', () => {
           const updated: UpdatedDomain[] = [
             {
-              id: 'id',
+              __entity: 'Category',
+              id: { __entity: 'Identifier', val: 'id' },
               name: 'name',
               path: 'path',
               shortDescription: 'short description',

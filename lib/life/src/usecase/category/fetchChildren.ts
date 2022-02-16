@@ -1,6 +1,6 @@
 import { CategoryRepo } from '@life/repo'
 import { Category, CategoryMapper } from '@life/usecase/mapper'
-import { Results, resultsOk } from '@helper/result'
+import { Results, resultsErrorResult, resultsOk } from '@helper/result'
 
 type FetchChildrenRepo = Pick<CategoryRepo, 'fetchChildren'>
 type FetchChildrenMapper = Pick<CategoryMapper, 'categories'>
@@ -28,7 +28,7 @@ class FetchChildrenInteractorImpl implements FetchChildrenInteractor {
   public async fetchChildren(id: string): Promise<Results<Category>> {
     const childrenResults = await this.#repo.fetchChildren(id)
     if (childrenResults.firstErrorResult) {
-      return childrenResults
+      return resultsErrorResult(childrenResults.firstErrorResult)
     }
 
     return resultsOk(this.#mapper.categories(childrenResults.okValues))

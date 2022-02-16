@@ -17,7 +17,8 @@ describe('fetchParent', () => {
     let mappedParent: Category
     beforeEach(() => {
       fetchedParent = {
-        id: 'fetched id',
+        __entity: 'Category',
+        id: { __entity: 'Identifier', val: 'fetched id' },
         name: 'fetched name',
         path: 'fetched path',
         shortDescription: 'fetched short description',

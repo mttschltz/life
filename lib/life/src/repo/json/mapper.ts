@@ -1,9 +1,14 @@
 import { Category, CreateDetails as CategoryCreateDetails, newCategory } from '@life/category'
 import { Risk, newRisk } from '@life/risk'
 import { Result } from '@helper/result'
+import { newIdentifier } from '@helper/identifier'
 
-type RiskJson = Omit<Risk, 'mitigations' | 'parent'> & { parentId?: string }
-type CategoryJson = Omit<Category, 'children' | 'parent'> & { parentId?: string; children: string[] }
+type RiskJson = Omit<Risk, '__entity' | 'id' | 'mitigations' | 'parent'> & { id: string; parentId?: string }
+type CategoryJson = Omit<Category, '__entity' | 'children' | 'id' | 'parent'> & {
+  id: string
+  parentId?: string
+  children: string[]
+}
 
 class RiskMapper {
   // ignore code coverage for risks until they are refactored
@@ -22,13 +27,13 @@ class RiskMapper {
   }: Risk): RiskJson {
     return {
       category,
-      id,
+      id: id.val,
       impact,
       likelihood,
       name,
       notes,
       type,
-      parentId: parent?.id,
+      parentId: parent?.id.val,
       shortDescription,
       updated,
     }
@@ -51,7 +56,13 @@ class RiskMapper {
       shortDescription,
       updated,
     }
-    return newRisk(id, createDetails)
+
+    const idResult = newIdentifier(id)
+    if (!idResult.ok) {
+      return idResult
+    }
+
+    return newRisk(idResult.value, createDetails)
   }
 }
 
@@ -67,32 +78,35 @@ function newCategoryMapper(): CategoryMapper {
 class CategoryMapperImpl implements CategoryMapper {
   public toJson({ id, name, parent, path, description, shortDescription, children, updated }: Category): CategoryJson {
     return {
-      id,
+      id: id.val,
       name,
-      parentId: parent?.id,
+      parentId: parent?.id.val,
       path,
       description,
       shortDescription,
-      children: children.map((c) => c.id),
+      children: children.map((c) => c.id.val),
       updated,
     }
   }
 
-  public fromJson(
-    { id, name, description, path, shortDescription, updated }: CategoryJson,
-    parent: Category | undefined,
-    children: Category[],
-  ): Result<Category> {
+  public fromJson(category: CategoryJson, parent: Category | undefined, children: Category[]): Result<Category> {
+    const idResult = newIdentifier(category.id)
+    if (!idResult.ok) {
+      return idResult
+    }
+
     const createDetails: CategoryCreateDetails = {
-      name,
+      id: idResult.value,
+      name: category.name,
       parent,
       children,
-      path,
-      description,
-      shortDescription,
-      updated,
+      path: category.path,
+      description: category.description,
+      shortDescription: category.shortDescription,
+      updated: category.updated,
     }
-    return newCategory(id, createDetails)
+    const result = newCategory(createDetails)
+    return result
   }
 }
 

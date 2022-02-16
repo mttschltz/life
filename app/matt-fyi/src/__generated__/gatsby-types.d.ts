@@ -504,6 +504,22 @@ type Store_CreateRiskInput = {
   readonly updated: Scalars['Store_Date'];
 };
 
+/** Create category input. */
+type Store_CreateCategoryInput = {
+  /** Category path for navigation. */
+  readonly path: Maybe<Scalars['String']>;
+  /** Description. */
+  readonly description: Maybe<Scalars['String']>;
+  /** Category name. */
+  readonly name: Scalars['String'];
+  /** Category parent ID. */
+  readonly parentId: Maybe<Scalars['ID']>;
+  /** Short description of the category. */
+  readonly shortDescription: Maybe<Scalars['String']>;
+  /** Time of last significant update to the category. */
+  readonly updated: Scalars['Store_Date'];
+};
+
 type Store = {
   /** Get all risks. */
   readonly risks: ReadonlyArray<Maybe<Store_Risk>>;

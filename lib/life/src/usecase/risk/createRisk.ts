@@ -2,6 +2,7 @@ import { newRisk } from '@life/risk'
 import { Risk, RiskMapper, CategoryTopLevel, Impact, Likelihood, RiskType } from '@life/usecase/mapper'
 import { Result, resultError, resultOk } from '@helper/result'
 import { RiskRepo } from '@life/repo'
+import { newIdentifier } from '@helper/identifier'
 
 interface CreateRiskRequest {
   uriPart: string
@@ -44,7 +45,12 @@ class CreateRiskInteractor {
     }
 
     const createDetails = this.#mapper.createDetails({ ...request, parent })
-    const riskResult = newRisk(request.uriPart, createDetails)
+    const idResult = newIdentifier(request.uriPart)
+    if (!idResult.ok) {
+      return idResult
+    }
+
+    const riskResult = newRisk(idResult.value, createDetails)
     if (!riskResult.ok) {
       return riskResult
     }

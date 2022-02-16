@@ -28,17 +28,17 @@ class RiskRepoJsonImpl implements RiskRepoJson {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   public async createRisk(risk: Risk): Promise<Result<void>> {
-    if (this.#store.risk[risk.id]) {
-      return resultError(`Risk with id '${risk.id}' already exists`)
+    if (this.#store.risk[risk.id.val]) {
+      return resultError(`Risk with id '${risk.id.val}' already exists`)
     }
 
     if (risk.parent) {
-      if (!this.#store.risk[risk.parent.id]) {
-        return resultError(`Could not find parent with id ${risk.parent.id} for risk with id ${risk.id}`)
+      if (!this.#store.risk[risk.parent.id.val]) {
+        return resultError(`Could not find parent with id ${risk.parent.id.val} for risk with id ${risk.id.val}`)
       }
     }
 
-    this.#store.risk[risk.id] = this.#mapper.toJson(risk)
+    this.#store.risk[risk.id.val] = this.#mapper.toJson(risk)
     return resultOk(undefined)
   }
 

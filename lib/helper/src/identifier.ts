@@ -1,6 +1,6 @@
+import { Result, resultOk } from '@helper/result'
+import { resultZodError } from '@helper/zod'
 import { z } from 'zod'
-import { Result, resultOk } from './result'
-import { resultZodError } from './zod'
 
 const IDENTIFIER_SCHEMA = z.object({
   __entity: z.literal('Identifier'),

@@ -622,7 +622,7 @@ describe('GraphMapper', () => {
           prop: string
         }
         const unknownUpdated: UnknownUpdated = {
-          id: 'id',
+          id: { __entity: 'Identifier', val: 'id' },
           name: 'name',
           prop: 'value',
           shortDescription: 'short description',

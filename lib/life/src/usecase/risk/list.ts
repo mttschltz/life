@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 import { Risk, RiskMapper } from '@life/usecase/mapper'
 import { CategoryTopLevel as CategoryTopLevelDomain } from '@life/risk'
-import { Results, resultsOk } from '@helper/result'
+import { Results, resultsErrorResult, resultsOk } from '@helper/result'
 import { RiskRepo } from '@life/repo'
 
 type ListRepo = Pick<RiskRepo, 'list'>
@@ -38,7 +38,7 @@ class ListInteractor {
     }
     const risksResults = await this.#repo.list(category, !!criteria.includeDescendents)
     if (risksResults.firstErrorResult) {
-      return risksResults
+      return resultsErrorResult(risksResults.firstErrorResult)
     }
 
     return resultsOk(risksResults.okValues.map((risk) => this.#mapper.risk(risk)))

@@ -23,7 +23,8 @@ type Likelihood = 'High' | 'Normal'
 
 type CategoryTopLevel = 'Health' | 'Security' | 'Wealth'
 
-type Risk = Pick<RiskDomain, 'id' | 'name' | 'notes' | 'shortDescription' | 'updated'> & {
+type Risk = Pick<RiskDomain, 'name' | 'notes' | 'shortDescription' | 'updated'> & {
+  id: string
   category: CategoryTopLevel
   impact: Impact
   likelihood: Likelihood
@@ -163,7 +164,7 @@ class RiskMapperImpl implements RiskMapper {
     }
 
     return {
-      id: risk.id,
+      id: risk.id.val,
       category,
       impact,
       likelihood,
@@ -183,7 +184,8 @@ class RiskMapperImpl implements RiskMapper {
   }
 }
 
-type Category = Pick<CategoryDomain, 'description' | 'id' | 'name' | 'path' | 'shortDescription' | 'updated'> & {
+type Category = Pick<CategoryDomain, 'description' | 'name' | 'path' | 'shortDescription' | 'updated'> & {
+  id: string
   children: Category[]
   parent?: Category
 }
@@ -205,7 +207,7 @@ class CategoryMapperImpl implements CategoryMapper {
     }
 
     return {
-      id: c.id,
+      id: c.id.val,
       name: c.name,
       path: c.path,
       description: c.description,

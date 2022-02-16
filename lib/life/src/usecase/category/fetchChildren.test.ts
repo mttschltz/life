@@ -13,7 +13,8 @@ describe('fetchChildren', () => {
     beforeEach(() => {
       fetchedChildren = [
         {
-          id: 'fetched child1 id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'fetched child1 id' },
           name: 'fetched child1 id',
           path: 'fetched child1 path',
           shortDescription: 'fetched child1 short description',
@@ -21,7 +22,8 @@ describe('fetchChildren', () => {
           updated: new Date(),
         },
         {
-          id: 'fetched child2 id',
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'fetched child2 id' },
           name: 'fetched child2 id',
           path: 'fetched child2 path',
           shortDescription: 'fetched child2 short description',
