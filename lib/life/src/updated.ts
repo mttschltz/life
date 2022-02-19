@@ -3,10 +3,10 @@ import { Category } from './category'
 import { Risk } from './risk'
 
 interface Updatable {
-  id: Identifier
-  name: string
-  updated: Date
-  shortDescription: string
+  readonly id: Identifier
+  readonly name: string
+  readonly updated: Date
+  readonly shortDescription: string
 }
 
 type Updated = Category | Risk

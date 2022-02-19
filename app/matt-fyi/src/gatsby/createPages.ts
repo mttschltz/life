@@ -2,6 +2,7 @@ import path from 'path'
 import type { CreatePagesArgs } from 'gatsby'
 import { gql } from '@apollo/client/core'
 import { print } from 'graphql'
+import { RiskPageContext } from '@matt-fyi/templates/risk'
 
 // Use these types rather than GatsbyTypes, which aren't available at this point on a clean build.
 // GatsbyTypes are built by gatsby-plugin-typegen on build.
@@ -17,7 +18,7 @@ interface Result {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const createPages = async ({ graphql, actions }: CreatePagesArgs): Promise<void> => {
   // eslint-disable-next-line @typescript-eslint/unbound-method
-  const { createPage } = actions
+  const { createPage, createRedirect } = actions
   // Query for markdown nodes to use in creating pages.
   // You can query for whatever data you want to create pages for e.g.
   // products, portfolio items, landing pages, etc.
@@ -30,6 +31,9 @@ const createPages = async ({ graphql, actions }: CreatePagesArgs): Promise<void>
       store {
         risks {
           id
+          parent {
+            id
+          }
         }
       }
     }
@@ -40,11 +44,16 @@ const createPages = async ({ graphql, actions }: CreatePagesArgs): Promise<void>
     }
 
     // Create blog post pages.
-    const risk = result.data?.store.risks[0]
-    if (risk) {
-      createPage({
+    const risks = result.data?.store.risks ?? []
+    for (const risk of risks) {
+      createRedirect({
+        fromPath: `/${risk.id}-redirect`,
+        toPath: `/${risk.id}`,
+        isPermanent: true,
+      })
+      createPage<RiskPageContext>({
         // Path for this page — required
-        path: `/risk`,
+        path: `/${risk.id}`,
         component: path.resolve('src/templates/risk.tsx'),
         context: {
           id: risk.id,

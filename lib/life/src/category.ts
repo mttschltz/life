@@ -8,15 +8,15 @@ import { EntitySchema } from '@helper/entity'
 // TODO: children can also be risks (Concerns)
 
 interface Category extends Updatable {
-  __entity: 'Category'
-  id: Identifier
-  path: string
-  name: string
-  description?: string
-  children: Category[]
-  parent?: Category
-  updated: Date
-  shortDescription: string
+  readonly __entity: 'Category'
+  readonly id: Identifier
+  readonly path: string
+  readonly name: string
+  readonly description?: string
+  readonly children: Category[]
+  readonly parent?: Category
+  readonly updated: Date
+  readonly shortDescription: string
 }
 
 type CategoryValidationSchema = EntitySchema<Category>
