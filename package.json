@@ -29,7 +29,8 @@
     "test:visreg:update": "build-storybook --quiet && loki update --requireReference --reactUri file:./storybook-static"
   },
   "resolutions": {
-    "graphql": "15.5.1"
+    "graphql": "15.5.1",
+    "webpack": "5.42.0"
   },
   "dependencies": {},
   "devDependencies": {
