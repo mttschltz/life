@@ -23,6 +23,7 @@
     "gatsby-plugin-layout": "2.14.0",
     "gatsby-plugin-mdx": "2.13.0",
     "gatsby-plugin-typegen": "2.2.4",
+    "gatsby-plugin-netlify": "4.1.0",
     "life": "0.0.1",
     "rimraf": "3.0.2",
     "source-map-support": "0.5.19",

@@ -27,6 +27,7 @@ module.exports = {
         },
       },
     },
+    `gatsby-plugin-netlify`,
     {
       resolve: `gatsby-plugin-layout`,
       options: {
