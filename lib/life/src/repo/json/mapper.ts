@@ -76,12 +76,23 @@ function newCategoryMapper(): CategoryMapper {
 }
 
 class CategoryMapperImpl implements CategoryMapper {
-  public toJson({ id, name, parent, path, description, shortDescription, children, updated }: Category): CategoryJson {
+  public toJson({
+    id,
+    name,
+    parent,
+    slug,
+    previousSlugs,
+    description,
+    shortDescription,
+    children,
+    updated,
+  }: Category): CategoryJson {
     return {
       id: id.val,
       name,
       parentId: parent?.id.val,
-      path,
+      slug,
+      previousSlugs: [...previousSlugs],
       description,
       shortDescription,
       children: children.map((c) => c.id.val),
@@ -100,7 +111,8 @@ class CategoryMapperImpl implements CategoryMapper {
       name: category.name,
       parent,
       children,
-      path: category.path,
+      slug: category.slug,
+      previousSlugs: [...category.previousSlugs],
       description: category.description,
       shortDescription: category.shortDescription,
       updated: category.updated,

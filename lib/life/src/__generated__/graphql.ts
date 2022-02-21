@@ -20,8 +20,10 @@ export type Category = Updated & {
   __typename?: 'Category';
   /** The id. */
   id: Scalars['ID'];
-  /** The path used in the first URL segment. */
-  path: Scalars['String'];
+  /** The slug used in the URL path. */
+  slug: Scalars['String'];
+  /** The slugs previously used in the URL path. */
+  previousSlugs: Array<Scalars['String']>;
   /** The name. */
   name: Scalars['String'];
   /** The description. */
@@ -50,8 +52,10 @@ export type Concern = Category | Risk;
 
 /** Create category input. */
 export type CreateCategoryInput = {
-  /** Category path for navigation. */
-  path?: Maybe<Scalars['String']>;
+  /** Category slug used in the URL path. */
+  slug: Scalars['String'];
+  /** The slugs previously used in the URL path. */
+  previousSlugs?: Maybe<Array<Scalars['String']>>;
   /** Description. */
   description?: Maybe<Scalars['String']>;
   /** Category name. */
@@ -275,7 +279,8 @@ export type ResolversParentTypes = {
 
 export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  previousSlugs?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   children?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType>;

@@ -10,7 +10,8 @@ import { EntitySchema } from '@helper/entity'
 interface Category extends Updatable {
   readonly __entity: 'Category'
   readonly id: Identifier
-  readonly path: string
+  readonly slug: string
+  readonly previousSlugs: string[]
   readonly name: string
   readonly description?: string
   readonly children: Category[]
@@ -26,7 +27,8 @@ const CATEGORY_SCHEMA: z.ZodSchema<CategoryValidationSchema> = z.lazy(() =>
     .object({
       __entity: z.literal('Category'),
       id: z.object({ __entity: z.literal('Identifier') }),
-      path: z.string().min(2),
+      slug: z.string().min(1),
+      previousSlugs: z.array(z.string().min(1)),
       name: z.string().min(2),
       description: z.string().min(2).optional(),
       children: z.array(z.object({ __entity: z.literal('Category') })),
@@ -55,8 +57,11 @@ function newCategory(details: CreateDetails): Result<Category> {
     get id() {
       return details.id
     },
-    get path() {
-      return details.path
+    get slug() {
+      return details.slug
+    },
+    get previousSlugs() {
+      return details.previousSlugs
     },
     get name() {
       return details.name

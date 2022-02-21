@@ -43,7 +43,8 @@ class GraphMapperImpl implements GraphMapper {
     return {
       id: category.id,
       name: category.name,
-      path: category.path,
+      slug: category.slug,
+      previousSlugs: [...category.previousSlugs],
       description: category.description ?? undefined,
       shortDescription: category.shortDescription,
       parent,
@@ -157,7 +158,7 @@ class GraphMapperImpl implements GraphMapper {
   }
 
   public isUpdatedCategory(u: Category | Risk): u is Category {
-    return 'children' in u && 'path' in u
+    return 'children' in u && 'slug' in u && 'previousSlugs' in u
   }
   public isUpdatedRisk(u: Category | Risk): u is Risk {
     return 'category' in u && 'impact' in u && 'likelihood' in u && 'type' in u

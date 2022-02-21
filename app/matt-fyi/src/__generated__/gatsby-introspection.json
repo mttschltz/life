@@ -3992,8 +3992,8 @@
             "deprecationReason": null
           },
           {
-            "name": "path",
-            "description": "The path used in the first URL segment.",
+            "name": "slug",
+            "description": "The slug used in the URL path.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -4002,6 +4002,30 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "previousSlugs",
+            "description": "The slugs previously used in the URL path.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
               }
             },
             "isDeprecated": false,
@@ -4497,12 +4521,36 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "path",
-            "description": "Category path for navigation.",
+            "name": "slug",
+            "description": "Category slug used in the URL path.",
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "previousSlugs",
+            "description": "The slugs previously used in the URL path.",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,

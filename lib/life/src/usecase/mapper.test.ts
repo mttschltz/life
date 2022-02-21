@@ -24,7 +24,8 @@ describe('CategoryMapper', () => {
           const categoryResult = newCategory({
             id: idResult.value,
             name: 'name',
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
             description: 'description',
             shortDescription: 'short description',
             children: [],
@@ -37,7 +38,8 @@ describe('CategoryMapper', () => {
           expect(mapper.category(categoryDomain)).toEqual({
             id: 'id',
             name: 'name',
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
             description: 'description',
             shortDescription: 'short description',
             parent: undefined,
@@ -46,6 +48,7 @@ describe('CategoryMapper', () => {
           } as Category)
         })
       })
+
       describe('When there are recursive parents and children', () => {
         test('Then it is mapped correctly', () => {
           const categoryUpdated = new Date()
@@ -57,21 +60,24 @@ describe('CategoryMapper', () => {
             __entity: 'Category',
             id: { __entity: 'Identifier', val: 'id' },
             name: 'name',
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
             description: 'description',
             shortDescription: 'short description',
             parent: {
               __entity: 'Category',
               id: { __entity: 'Identifier', val: 'parent id' },
               name: 'parent name',
-              path: 'parent path',
+              slug: 'parent slug',
+              previousSlugs: ['parent prev', 'parent ious'],
               description: 'parent description',
               shortDescription: 'parent short description',
               parent: {
                 __entity: 'Category',
                 id: { __entity: 'Identifier', val: 'grandparent id' },
                 name: 'grandparent name',
-                path: 'grandparent path',
+                slug: 'grandparent slug',
+                previousSlugs: ['grandparent prev', 'grandparent ious'],
                 description: 'grandparent description',
                 shortDescription: 'grandparent short description',
                 children: [
@@ -79,7 +85,8 @@ describe('CategoryMapper', () => {
                     __entity: 'Category',
                     id: { __entity: 'Identifier', val: 'parent id' },
                     name: 'parent name',
-                    path: 'parent path',
+                    slug: 'parent slug',
+                    previousSlugs: ['parent prev', 'parent ious'],
                     description: 'parent description',
                     shortDescription: 'parent short description',
                     children: [],
@@ -93,7 +100,8 @@ describe('CategoryMapper', () => {
                   __entity: 'Category',
                   id: { __entity: 'Identifier', val: 'id' },
                   name: 'name',
-                  path: 'path',
+                  slug: 'slug',
+                  previousSlugs: ['prev', 'ious'],
                   description: 'description',
                   shortDescription: 'short description',
                   children: [],
@@ -107,14 +115,16 @@ describe('CategoryMapper', () => {
                 __entity: 'Category',
                 id: { __entity: 'Identifier', val: 'child id' },
                 name: 'child name',
-                path: 'child path',
+                slug: 'child slug',
+                previousSlugs: ['child prev', 'child ious'],
                 description: 'child description',
                 shortDescription: 'child short description',
                 parent: {
                   __entity: 'Category',
                   id: { __entity: 'Identifier', val: 'id' },
                   name: 'name',
-                  path: 'path',
+                  slug: 'slug',
+                  previousSlugs: ['prev', 'ious'],
                   description: 'description',
                   shortDescription: 'short description',
                   children: [],
@@ -125,7 +135,8 @@ describe('CategoryMapper', () => {
                     __entity: 'Category',
                     id: { __entity: 'Identifier', val: 'grandchild id' },
                     name: 'grandchild name',
-                    path: 'grandchild path',
+                    slug: 'grandchild slug',
+                    previousSlugs: ['grandchild prev', 'grandchild ious'],
                     description: 'grandchild description',
                     shortDescription: 'grandchild short description',
                     children: [],
@@ -141,26 +152,30 @@ describe('CategoryMapper', () => {
           expect(mapper.category(categoryDomain)).toEqual({
             id: 'id',
             name: 'name',
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
             description: 'description',
             shortDescription: 'short description',
             parent: {
               id: 'parent id',
               name: 'parent name',
-              path: 'parent path',
+              slug: 'parent slug',
+              previousSlugs: ['parent prev', 'parent ious'],
               description: 'parent description',
               shortDescription: 'parent short description',
               parent: {
                 id: 'grandparent id',
                 name: 'grandparent name',
-                path: 'grandparent path',
+                slug: 'grandparent slug',
+                previousSlugs: ['grandparent prev', 'grandparent ious'],
                 description: 'grandparent description',
                 shortDescription: 'grandparent short description',
                 children: [
                   {
                     id: 'parent id',
                     name: 'parent name',
-                    path: 'parent path',
+                    slug: 'parent slug',
+                    previousSlugs: ['parent prev', 'parent ious'],
                     description: 'parent description',
                     shortDescription: 'parent short description',
                     children: [],
@@ -173,7 +188,8 @@ describe('CategoryMapper', () => {
                 {
                   id: 'id',
                   name: 'name',
-                  path: 'path',
+                  slug: 'slug',
+                  previousSlugs: ['prev', 'ious'],
                   description: 'description',
                   shortDescription: 'short description',
                   children: [],
@@ -186,13 +202,15 @@ describe('CategoryMapper', () => {
               {
                 id: 'child id',
                 name: 'child name',
-                path: 'child path',
+                slug: 'child slug',
+                previousSlugs: ['child prev', 'child ious'],
                 description: 'child description',
                 shortDescription: 'child short description',
                 parent: {
                   id: 'id',
                   name: 'name',
-                  path: 'path',
+                  slug: 'slug',
+                  previousSlugs: ['prev', 'ious'],
                   description: 'description',
                   shortDescription: 'short description',
                   children: [],
@@ -202,7 +220,8 @@ describe('CategoryMapper', () => {
                   {
                     id: 'grandchild id',
                     name: 'grandchild name',
-                    path: 'grandchild path',
+                    slug: 'grandchild slug',
+                    previousSlugs: ['grandchild prev', 'grandchild ious'],
                     description: 'grandchild description',
                     shortDescription: 'grandchild short description',
                     children: [],
@@ -212,6 +231,72 @@ describe('CategoryMapper', () => {
                 updated: childUpdated,
               },
             ],
+            updated: categoryUpdated,
+          } as Category)
+        })
+      })
+      describe('When there are no previous slugs', () => {
+        test('Then it is mapped correctly', () => {
+          const categoryUpdated = new Date()
+          const idResult = newIdentifier('id')
+          assertResultOk(idResult)
+
+          const categoryResult = newCategory({
+            id: idResult.value,
+            name: 'name',
+            slug: 'slug',
+            previousSlugs: [],
+            description: 'description',
+            shortDescription: 'short description',
+            children: [],
+            updated: categoryUpdated,
+          })
+          assertResultOk(categoryResult)
+          const categoryDomain = categoryResult.value
+
+          const mapper = newCategoryMapper()
+          expect(mapper.category(categoryDomain)).toEqual({
+            id: 'id',
+            name: 'name',
+            slug: 'slug',
+            previousSlugs: [],
+            description: 'description',
+            shortDescription: 'short description',
+            parent: undefined,
+            children: [],
+            updated: categoryUpdated,
+          } as Category)
+        })
+      })
+      describe('When there are previous slugs', () => {
+        test('Then it is mapped correctly', () => {
+          const categoryUpdated = new Date()
+          const idResult = newIdentifier('id')
+          assertResultOk(idResult)
+
+          const categoryResult = newCategory({
+            id: idResult.value,
+            name: 'name',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
+            description: 'description',
+            shortDescription: 'short description',
+            children: [],
+            updated: categoryUpdated,
+          })
+          assertResultOk(categoryResult)
+          const categoryDomain = categoryResult.value
+
+          const mapper = newCategoryMapper()
+          expect(mapper.category(categoryDomain)).toEqual({
+            id: 'id',
+            name: 'name',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
+            description: 'description',
+            shortDescription: 'short description',
+            parent: undefined,
+            children: [],
             updated: categoryUpdated,
           } as Category)
         })
@@ -234,7 +319,8 @@ describe('CategoryMapper', () => {
             __entity: 'Category',
             id: { __entity: 'Identifier', val: 'id 1' },
             name: 'name 1',
-            path: 'path 1',
+            slug: 'slug 1',
+            previousSlugs: ['prev 1', 'ious 1'],
             description: 'description 1',
             shortDescription: 'short description 1',
             children: [],
@@ -244,7 +330,8 @@ describe('CategoryMapper', () => {
             __entity: 'Category',
             id: { __entity: 'Identifier', val: 'id 2' },
             name: 'name 2',
-            path: 'path 2',
+            slug: 'slug 2',
+            previousSlugs: [],
             description: 'description 2',
             shortDescription: 'short description 2',
             children: [],
@@ -256,7 +343,8 @@ describe('CategoryMapper', () => {
           {
             id: 'id 1',
             name: 'name 1',
-            path: 'path 1',
+            slug: 'slug 1',
+            previousSlugs: ['prev 1', 'ious 1'],
             description: 'description 1',
             shortDescription: 'short description 1',
             children: [],
@@ -265,7 +353,8 @@ describe('CategoryMapper', () => {
           {
             id: 'id 2',
             name: 'name 2',
-            path: 'path 2',
+            slug: 'slug 2',
+            previousSlugs: [],
             description: 'description 2',
             shortDescription: 'short description 2',
             children: [],
@@ -305,7 +394,8 @@ describe('UpdatedMapper', () => {
               __entity: 'Category',
               id: { __entity: 'Identifier', val: 'id' },
               name: 'name',
-              path: 'path',
+              slug: 'slug',
+              previousSlugs: ['prev', 'ious'],
               shortDescription: 'short description',
               children: [],
               updated: new Date(),
@@ -329,7 +419,8 @@ describe('UpdatedMapper', () => {
             id: 'id',
             name: 'name',
             children: [],
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
             shortDescription: 'short description',
             updated: new Date(),
           }
@@ -374,7 +465,8 @@ describe('UpdatedMapper', () => {
               __entity: 'Category',
               id: { __entity: 'Identifier', val: 'id' },
               name: 'name',
-              path: 'path',
+              slug: 'slug',
+              previousSlugs: ['prev', 'ious'],
               shortDescription: 'short description',
               children: [],
               updated: new Date(),
@@ -412,7 +504,8 @@ describe('isUpdatedCategory', () => {
         const category: Category = {
           id: 'id',
           name: 'name',
-          path: 'path',
+          slug: 'slug',
+          previousSlugs: [],
           children: [],
           shortDescription: 'short description',
           updated: new Date(),
@@ -425,12 +518,14 @@ describe('isUpdatedCategory', () => {
         const category: Category = {
           id: 'id',
           name: 'name',
-          path: 'path',
+          slug: 'slug',
+          previousSlugs: ['prev', 'ious'],
           children: [
             {
               id: 'id',
               name: 'name',
-              path: 'path',
+              slug: 'slug',
+              previousSlugs: ['prev', 'ious'],
               children: [],
               shortDescription: 'short description',
               updated: new Date(),
@@ -442,7 +537,8 @@ describe('isUpdatedCategory', () => {
           parent: {
             id: 'id',
             name: 'name',
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
             children: [],
             shortDescription: 'short description',
             updated: new Date(),
@@ -534,12 +630,14 @@ describe('isUpdatedRisk', () => {
         const category: Category = {
           id: 'id',
           name: 'name',
-          path: 'path',
+          slug: 'slug',
+          previousSlugs: ['prev', 'ious'],
           children: [
             {
               id: 'id',
               name: 'name',
-              path: 'path',
+              slug: 'slug',
+              previousSlugs: ['prev', 'ious'],
               children: [],
               shortDescription: 'short description',
               updated: new Date(),
@@ -551,7 +649,8 @@ describe('isUpdatedRisk', () => {
           parent: {
             id: 'id',
             name: 'name',
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: ['prev', 'ious'],
             children: [],
             shortDescription: 'short description',
             updated: new Date(),

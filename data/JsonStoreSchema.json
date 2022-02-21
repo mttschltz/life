@@ -23,21 +23,24 @@
             ],
             "type": "string"
         },
-        "Omit<Category,\"children\"|\"parent\">": {
+        "Omit<Category,\"id\"|\"children\"|\"parent\"|\"__entity\">": {
             "properties": {
                 "description": {
-                    "type": "string"
-                },
-                "id": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
                 },
-                "path": {
-                    "type": "string"
+                "previousSlugs": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 },
                 "shortDescription": {
+                    "type": "string"
+                },
+                "slug": {
                     "type": "string"
                 },
                 "updated": {
@@ -47,13 +50,10 @@
             },
             "type": "object"
         },
-        "Omit<Risk,\"parent\"|\"mitigations\">": {
+        "Omit<Risk,\"id\"|\"parent\"|\"__entity\"|\"mitigations\">": {
             "properties": {
                 "category": {
                     "$ref": "#/definitions/CategoryTopLevel"
-                },
-                "id": {
-                    "type": "string"
                 },
                 "impact": {
                     "$ref": "#/definitions/Impact"
@@ -94,7 +94,7 @@
             "additionalProperties": {
                 "allOf": [
                     {
-                        "$ref": "#/definitions/Omit<Category,\"children\"|\"parent\">"
+                        "$ref": "#/definitions/Omit<Category,\"id\"|\"children\"|\"parent\"|\"__entity\">"
                     },
                     {
                         "properties": {
@@ -103,6 +103,9 @@
                                     "type": "string"
                                 },
                                 "type": "array"
+                            },
+                            "id": {
+                                "type": "string"
                             },
                             "parentId": {
                                 "type": "string"
@@ -118,10 +121,13 @@
             "additionalProperties": {
                 "allOf": [
                     {
-                        "$ref": "#/definitions/Omit<Risk,\"parent\"|\"mitigations\">"
+                        "$ref": "#/definitions/Omit<Risk,\"id\"|\"parent\"|\"__entity\"|\"mitigations\">"
                     },
                     {
                         "properties": {
+                            "id": {
+                                "type": "string"
+                            },
                             "parentId": {
                                 "type": "string"
                             }

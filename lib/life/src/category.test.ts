@@ -18,7 +18,8 @@ describe('Category', () => {
       }
       createDetails = {
         id,
-        path: 'path',
+        slug: 'slug',
+        previousSlugs: [],
         name: 'name',
         description: undefined,
         shortDescription: 'short description',
@@ -40,7 +41,32 @@ describe('Category', () => {
           expect(category).toEqual({
             __entity: 'Category',
             id,
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: [],
+            name: 'name',
+            description: undefined,
+            shortDescription: 'short description',
+            parent: undefined,
+            children: [],
+            updated,
+          })
+        })
+      })
+      describe('When the slugs are 1 character in length', () => {
+        test('Then it successfully creates a Category', () => {
+          const categoryResult = newCategory({
+            ...createDetails,
+            slug: 's',
+            previousSlugs: ['a'],
+          })
+          assertResultOk(categoryResult)
+
+          const category = categoryResult.value
+          expect(category).toEqual({
+            __entity: 'Category',
+            id,
+            slug: 's',
+            previousSlugs: ['a'],
             name: 'name',
             description: undefined,
             shortDescription: 'short description',
@@ -61,7 +87,8 @@ describe('Category', () => {
           },
           children: [],
           name: 'parent name',
-          path: 'parent path',
+          slug: 'parent slug',
+          previousSlugs: ['slug 1', 'slug 2'],
           shortDescription: 'parent short description',
           updated: new Date(),
         }
@@ -74,7 +101,8 @@ describe('Category', () => {
             },
             children: [],
             name: 'child name',
-            path: 'child path',
+            slug: 'child slug',
+            previousSlugs: ['slug 1', 'slug 2'],
             shortDescription: 'child short description',
             updated: new Date(),
           },
@@ -91,7 +119,8 @@ describe('Category', () => {
         expect(category).toEqual({
           __entity: 'Category',
           id,
-          path: 'path',
+          slug: 'slug',
+          previousSlugs: [],
           name: 'name',
           description: 'description',
           shortDescription: 'short description',
@@ -109,7 +138,7 @@ describe('Category', () => {
         // @ts-expect-error: In the domain we want to protect against runtime type errors
         const categoryResult = newCategory({ id })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toBe("Invalid prop path in category: 'Required' (invalid_type).")
+        expect(categoryResult.message).toBe("Invalid prop slug in category: 'Required' (invalid_type).")
       })
     })
     describe('Given an invalid id', () => {
@@ -129,33 +158,63 @@ describe('Category', () => {
         )
       })
     })
-    describe('Given an invalid path', () => {
+    describe('Given an invalid slug', () => {
       test('Then an error result is returned', () => {
         let categoryResult = newCategory({
           ...createDetails,
           // @ts-expect-error: In the domain we want to protect against runtime type errors
-          path: undefined,
+          slug: undefined,
         })
         assertResultError(categoryResult)
-        expect(categoryResult.message).toBe("Invalid prop path in category: 'Required' (invalid_type).")
+        expect(categoryResult.message).toBe("Invalid prop slug in category: 'Required' (invalid_type).")
 
         categoryResult = newCategory({
           ...createDetails,
-          path: '',
+          slug: '',
         })
         assertResultError(categoryResult)
         expect(categoryResult.message).toBe(
-          "Invalid prop path in category: 'Should be at least 2 characters' (too_small).",
+          "Invalid prop slug in category: 'Should be at least 1 characters' (too_small).",
         )
 
         categoryResult = newCategory({
           ...createDetails,
           // @ts-expect-error: In the domain we want to protect against runtime type errors
-          path: 5,
+          slug: 5,
         })
         assertResultError(categoryResult)
         expect(categoryResult.message).toBe(
-          "Invalid prop path in category: 'Expected string, received number' (invalid_type).",
+          "Invalid prop slug in category: 'Expected string, received number' (invalid_type).",
+        )
+      })
+    })
+    describe('Given an invalid previous slugs', () => {
+      test('Then an error result is returned', () => {
+        let categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          previousSlugs: undefined,
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe("Invalid prop previousSlugs in category: 'Required' (invalid_type).")
+
+        categoryResult = newCategory({
+          ...createDetails,
+          previousSlugs: [''],
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe(
+          "Invalid prop previousSlugs.0 in category: 'Should be at least 1 characters' (too_small).",
+        )
+
+        categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          previousSlugs: [5],
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe(
+          "Invalid prop previousSlugs.0 in category: 'Expected string, received number' (invalid_type).",
         )
       })
     })
@@ -316,7 +375,8 @@ describe('isCategory', () => {
       }
       createDetails = {
         id,
-        path: 'path',
+        slug: 'slug',
+        previousSlugs: [],
         name: 'name',
         description: undefined,
         shortDescription: 'short description',
@@ -338,7 +398,8 @@ describe('isCategory', () => {
           const category: Category = {
             __entity: 'Category',
             id,
-            path: 'path',
+            slug: 'slug',
+            previousSlugs: [],
             name: 'name',
             description: undefined,
             shortDescription: 'short description',
@@ -355,7 +416,7 @@ describe('isCategory', () => {
             // @ts-expect-error: In the domain we want to protect against runtime type errors
             const category: Category = {
               id,
-              path: 'path',
+              slug: 'slug',
               name: 'name',
               description: undefined,
               shortDescription: 'short description',

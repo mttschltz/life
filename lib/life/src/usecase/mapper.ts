@@ -184,7 +184,10 @@ class RiskMapperImpl implements RiskMapper {
   }
 }
 
-type Category = Pick<CategoryDomain, 'description' | 'name' | 'path' | 'shortDescription' | 'updated'> & {
+type Category = Pick<
+  CategoryDomain,
+  'description' | 'name' | 'previousSlugs' | 'shortDescription' | 'slug' | 'updated'
+> & {
   id: string
   children: Category[]
   parent?: Category
@@ -209,7 +212,8 @@ class CategoryMapperImpl implements CategoryMapper {
     return {
       id: c.id.val,
       name: c.name,
-      path: c.path,
+      slug: c.slug,
+      previousSlugs: [...c.previousSlugs],
       description: c.description,
       shortDescription: c.shortDescription,
       parent: parent,
@@ -258,7 +262,7 @@ function newUpdatedMapper(categoryMapper: CategoryMapper, riskMapper: RiskMapper
 }
 
 function isUpdatedCategory(u: Updated): u is Category {
-  return 'children' in u && 'path' in u
+  return 'children' in u && 'slug' in u && 'previousSlugs' in u
 }
 
 function isUpdatedRisk(u: Updated): u is Risk {

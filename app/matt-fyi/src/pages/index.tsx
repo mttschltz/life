@@ -40,16 +40,16 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
   const updates = props.data.store.updated.filter((u): u is NonNullable<typeof u> => !!u)
   const route = useRoute()
   const updatedRoute = (updated: NonNullable<GatsbyTypes.CategoryQueryQuery['store']['updated'][number]>): string => {
-    let path: string
+    let url: string
     switch (updated.__typename) {
       case 'Store_Category':
-        path = route.category.detail(updated)
+        url = route.category.detail(updated)
         break
       case 'Store_Risk':
-        path = route.risk.detail(updated)
+        url = route.risk.detail(updated)
         break
     }
-    return path
+    return url
   }
 
   return (
@@ -208,12 +208,12 @@ export const query = graphql`
         __typename
         id
         name
-        path
+        slug
         children {
           __typename
           id
           name
-          path
+          slug
         }
       }
       updated {
@@ -223,7 +223,7 @@ export const query = graphql`
         updated
         shortDescription
         ... on Store_Category {
-          path
+          slug
         }
       }
     }

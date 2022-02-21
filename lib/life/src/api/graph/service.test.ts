@@ -69,7 +69,8 @@ describe('GraphService', () => {
             categoryWithParent = {
               id: 'the id',
               name: 'the name',
-              path: 'the path',
+              slug: 'the slug',
+              previousSlugs: ['the', 'previous', 'slugs'],
               description: 'the description',
               shortDescription: 'the short description',
               parent: undefined, // Hasn't been loaded yet
@@ -79,7 +80,8 @@ describe('GraphService', () => {
             fetchedParent = {
               id: 'fetch id',
               name: 'fetch name',
-              path: 'fetch path',
+              slug: 'fetch slug',
+              previousSlugs: [],
               shortDescription: 'fetch short description',
               children: [],
               updated: new Date(),
@@ -88,7 +90,8 @@ describe('GraphService', () => {
             mappedParent = {
               id: 'mapped id',
               name: 'mapped name',
-              path: 'mapped path',
+              slug: 'mapped slug',
+              previousSlugs: [],
               shortDescription: 'mapped short description',
               children: [],
               updated: new Date(),
@@ -171,7 +174,8 @@ describe('GraphService', () => {
             categoryWithoutParent = {
               id: 'the id',
               name: 'the name',
-              path: 'the path',
+              slug: 'the slug',
+              previousSlugs: ['the', 'previous', 'slugs'],
               description: 'the description',
               shortDescription: 'the short description',
               parent: undefined, // Hasn't been loaded yet
@@ -201,7 +205,8 @@ describe('GraphService', () => {
             categoryWithChildren = {
               id: 'the id',
               name: 'the name',
-              path: 'the path',
+              slug: 'the slug',
+              previousSlugs: ['the', 'previous', 'slugs'],
               description: 'the description',
               shortDescription: 'the short description',
               parent: undefined,
@@ -212,7 +217,8 @@ describe('GraphService', () => {
               {
                 id: 'fetch id',
                 name: 'fetch name',
-                path: 'fetch path',
+                slug: 'fetch slug',
+                previousSlugs: [],
                 shortDescription: 'fetch short description',
                 children: [],
                 updated: new Date(),
@@ -220,7 +226,8 @@ describe('GraphService', () => {
               {
                 id: 'fetch id 2',
                 name: 'fetch name 2',
-                path: 'fetch path 2',
+                slug: 'fetch slug 2',
+                previousSlugs: [],
                 shortDescription: 'fetch short description 2',
                 children: [],
                 updated: new Date(),
@@ -231,7 +238,8 @@ describe('GraphService', () => {
               {
                 id: 'mapped id',
                 name: 'mapped name',
-                path: 'mapped path',
+                slug: 'mapped slug',
+                previousSlugs: [],
                 shortDescription: 'mapped short description',
                 children: [],
                 updated: new Date(),
@@ -239,7 +247,8 @@ describe('GraphService', () => {
               {
                 id: 'mapped id 2',
                 name: 'mapped name 2',
-                path: 'mapped path 2',
+                slug: 'mapped slug 2',
+                previousSlugs: [],
                 shortDescription: 'mapped short description 2',
                 children: [],
                 updated: new Date(),
@@ -304,7 +313,8 @@ describe('GraphService', () => {
             categoryWithoutChildren = {
               id: 'the id',
               name: 'the name',
-              path: 'the path',
+              slug: 'the slug',
+              previousSlugs: ['the', 'previous', 'slugs'],
               description: 'the description',
               shortDescription: 'the short description',
               parent: undefined,
@@ -359,7 +369,8 @@ describe('GraphService', () => {
               {
                 id: 'fetch id 1',
                 name: 'fetch name 1',
-                path: 'fetch path 1',
+                slug: 'fetch slug 1',
+                previousSlugs: [],
                 shortDescription: 'fetch short description 1',
                 children: [],
                 updated: new Date(),
@@ -367,7 +378,8 @@ describe('GraphService', () => {
               {
                 id: 'fetch id 2',
                 name: 'fetch name 2',
-                path: 'fetch path 2',
+                slug: 'fetch slug 2',
+                previousSlugs: [],
                 shortDescription: 'fetch short description 2',
                 children: [],
                 updated: new Date(),
@@ -378,7 +390,8 @@ describe('GraphService', () => {
               {
                 id: 'mapped id 1',
                 name: 'mapped name 1',
-                path: 'mapped path 1',
+                slug: 'mapped slug 1',
+                previousSlugs: [],
                 shortDescription: 'mapped short description 1',
                 children: [],
                 updated: new Date(),
@@ -386,7 +399,8 @@ describe('GraphService', () => {
               {
                 id: 'mapped id 2',
                 name: 'mapped name 2',
-                path: 'mapped path 2',
+                slug: 'mapped slug 2',
+                previousSlugs: [],
                 shortDescription: 'mapped short description 2',
                 children: [],
                 updated: new Date(),
@@ -495,7 +509,8 @@ describe('GraphService', () => {
               fetchedCategory = {
                 id: 'category id',
                 name: 'category name',
-                path: 'category path',
+                slug: 'category slug',
+                previousSlugs: [],
                 shortDescription: 'category short description',
                 children: [],
                 updated: new Date(),
@@ -515,7 +530,8 @@ describe('GraphService', () => {
               mappedCategory = {
                 id: 'mapped category id',
                 name: 'mapped category name',
-                path: 'mapped category path',
+                slug: 'mapped category slug',
+                previousSlugs: [],
                 shortDescription: 'mapped category short description',
                 children: [],
                 updated: new Date(),

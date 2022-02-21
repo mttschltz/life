@@ -427,8 +427,10 @@ type Store_Concern = Store_Category | Store_Risk;
 type Store_Category = Store_Updated & {
   /** The id. */
   readonly id: Scalars['ID'];
-  /** The path used in the first URL segment. */
-  readonly path: Scalars['String'];
+  /** The slug used in the URL path. */
+  readonly slug: Scalars['String'];
+  /** The slugs previously used in the URL path. */
+  readonly previousSlugs: ReadonlyArray<Scalars['String']>;
   /** The name. */
   readonly name: Scalars['String'];
   /** The description. */
@@ -506,8 +508,10 @@ type Store_CreateRiskInput = {
 
 /** Create category input. */
 type Store_CreateCategoryInput = {
-  /** Category path for navigation. */
-  readonly path: Maybe<Scalars['String']>;
+  /** Category slug used in the URL path. */
+  readonly slug: Scalars['String'];
+  /** The slugs previously used in the URL path. */
+  readonly previousSlugs: Maybe<ReadonlyArray<Scalars['String']>>;
   /** Description. */
   readonly description: Maybe<Scalars['String']>;
   /** Category name. */
@@ -2648,14 +2652,14 @@ type CategoryQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 type CategoryQueryQuery = { readonly store: { readonly categories: ReadonlyArray<Maybe<(
       { readonly __typename: 'Store_Category' }
-      & Pick<Store_Category, 'id' | 'name' | 'path'>
+      & Pick<Store_Category, 'id' | 'name' | 'slug'>
       & { readonly children: ReadonlyArray<Maybe<(
         { readonly __typename: 'Store_Category' }
-        & Pick<Store_Category, 'id' | 'name' | 'path'>
+        & Pick<Store_Category, 'id' | 'name' | 'slug'>
       )>> }
     )>>, readonly updated: ReadonlyArray<Maybe<(
       { readonly __typename: 'Store_Category' }
-      & Pick<Store_Category, 'path' | 'id' | 'name' | 'updated' | 'shortDescription'>
+      & Pick<Store_Category, 'slug' | 'id' | 'name' | 'updated' | 'shortDescription'>
     ) | (
       { readonly __typename: 'Store_Risk' }
       & Pick<Store_Risk, 'id' | 'name' | 'updated' | 'shortDescription'>

@@ -13,7 +13,7 @@ type Updated = Category | Risk
 
 function isUpdatedCategory(u: Updated): u is Category {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  return (u as Category).path !== undefined
+  return (u as Category).slug !== undefined
 }
 
 function isUpdatedRisk(u: Updated): u is Risk {

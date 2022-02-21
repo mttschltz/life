@@ -23,7 +23,8 @@ const jsonStore: JsonStore = {
     1: {
       id: '1',
       name: 'root category 1',
-      path: '/root-category-1',
+      slug: 'root-category-1',
+      previousSlugs: ['old-root-category-1'],
       description: 'root category 1 with child',
       shortDescription: 'rc1 with child',
       children: ['3'],
@@ -32,7 +33,8 @@ const jsonStore: JsonStore = {
     2: {
       id: '2',
       name: 'root category 2',
-      path: '/root-category-2',
+      slug: 'root-category-2',
+      previousSlugs: [],
       description: 'root category 2 no children',
       shortDescription: 'rc2 with child',
       children: [],
@@ -41,7 +43,8 @@ const jsonStore: JsonStore = {
     3: {
       id: '3',
       name: 'child category 3',
-      path: '/child-category-3',
+      slug: 'child-category-3',
+      previousSlugs: ['old-child-category-3'],
       description: 'child category 3 with child',
       shortDescription: 'cc3 with child',
       children: ['4'],
@@ -51,7 +54,8 @@ const jsonStore: JsonStore = {
     4: {
       id: '4',
       name: 'grandchild category 4',
-      path: '/grandchild-category-4',
+      slug: 'grandchild-category-4',
+      previousSlugs: [],
       description: 'grandchild category 4 with child',
       shortDescription: 'gc4 with child',
       children: ['5'],
@@ -61,7 +65,8 @@ const jsonStore: JsonStore = {
     5: {
       id: '5',
       name: 'greatgrandchild category 5',
-      path: '/greatgrandchild-category-5',
+      slug: 'greatgrandchild-category-5',
+      previousSlugs: [],
       description: 'greatgrandchild category 5 no children',
       shortDescription: 'ggc4 with child',
       children: [],
@@ -136,19 +141,22 @@ describe('GraphServiceIntegration', () => {
         query getCategories {
           categories {
             id
-            path
+            slug
+            previousSlugs
             name
             description
             shortDescription
             children {
               id
-              path
+              slug
+              previousSlugs
               name
               description
               shortDescription
               parent {
                 id
-                path
+                slug
+                previousSlugs
                 name
                 description
                 shortDescription
@@ -178,11 +186,13 @@ describe('GraphServiceIntegration', () => {
             shortDescription
             updated
             ... on Category {
-              path
+              slug
+              previousSlugs
               description
               parent {
                 id
-                path
+                slug
+                previousSlugs
                 name
                 description
                 shortDescription
@@ -190,14 +200,16 @@ describe('GraphServiceIntegration', () => {
               }
               children {
                 id
-                path
+                slug
+                previousSlugs
                 name
                 description
                 shortDescription
                 updated
                 parent {
                   id
-                  path
+                  slug
+                  previousSlugs
                   name
                   description
                   shortDescription

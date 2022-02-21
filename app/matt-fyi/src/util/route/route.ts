@@ -1,6 +1,6 @@
 interface Routes {
   category: {
-    detail: (c: { __typename: 'Store_Category'; path: string }) => string
+    detail: (c: { __typename: 'Store_Category'; slug: string }) => string
   }
   risk: {
     detail: (r: { __typename: 'Store_Risk'; id: string }) => string
@@ -10,7 +10,7 @@ interface Routes {
 const useRoute = (): Routes => {
   return {
     category: {
-      detail: (c): string => `/${c.path}`,
+      detail: (c): string => `/${c.slug}`,
     },
     risk: {
       detail: (r): string => `/risk/${r.id}`,

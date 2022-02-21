@@ -37,9 +37,13 @@ type Category implements Updated {
   """
   id: ID!
   """
-  The path used in the first URL segment.
+  The slug used in the URL path.
   """
-  path: String!
+  slug: String!
+  """
+  The slugs previously used in the URL path.
+  """
+  previousSlugs: [String!]!
   """
   The name.
   """
@@ -198,9 +202,14 @@ Create category input.
 """
 input CreateCategoryInput {
   """
-  Category path for navigation.
+  Category slug used in the URL path.
   """
-  path: String
+  slug: String!
+
+  """
+  The slugs previously used in the URL path.
+  """
+  previousSlugs: [String!]
 
   """
   Description.
