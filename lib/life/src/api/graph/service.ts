@@ -63,7 +63,7 @@ class GraphService {
           return this.#mapper.categoryFromUsecase(parent)
         },
         children: async (category): Promise<Category[]> => {
-          const childrenResults = await this.#factory.category.fetchChildrenInteractor().fetchChildren(category.id)
+          const childrenResults = await this.#factory.category.listChildrenInteractor().listChildren(category.id)
           if (childrenResults.firstErrorResult) {
             this.#logger.result(childrenResults.firstErrorResult)
             throw this.resultError(childrenResults.firstErrorResult)

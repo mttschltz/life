@@ -16,7 +16,7 @@ import {
 import { CategoryRepo, RiskRepo, UpdatedRepo } from '@life/repo'
 import { FetchInteractor, newFetchInteractor } from '@life/usecase/category/fetch'
 import { FetchParentInteractor, newFetchParentInteractor } from '@life/usecase/category/fetchParent'
-import { FetchChildrenInteractor, newFetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
+import { ListChildrenInteractor, newListChildrenInteractor } from '@life/usecase/category/listChildren'
 import { ListInteractor, newListInteractor as newListUpdatedInteractor } from '@life/usecase/updated/list'
 
 interface RiskInteractorFactory {
@@ -60,7 +60,7 @@ interface CategoryInteractorFactory {
   listInteractor: () => ListCategoryInteractor
   fetchInteractor: () => FetchInteractor
   fetchParentInteractor: () => FetchParentInteractor
-  fetchChildrenInteractor: () => FetchChildrenInteractor
+  listChildrenInteractor: () => ListChildrenInteractor
 }
 
 function newCategoryInteractorFactory(repo: CategoryRepo): CategoryInteractorFactory {
@@ -88,8 +88,8 @@ class CategoryInteractorFactoryImpl implements CategoryInteractorFactory {
     return newFetchParentInteractor(this.#repo, newCategoryMapperUsecase())
   }
 
-  public fetchChildrenInteractor(): FetchChildrenInteractor {
-    return newFetchChildrenInteractor(this.#repo, newCategoryMapperUsecase())
+  public listChildrenInteractor(): ListChildrenInteractor {
+    return newListChildrenInteractor(this.#repo, newCategoryMapperUsecase())
   }
 }
 

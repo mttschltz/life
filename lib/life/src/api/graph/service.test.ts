@@ -17,7 +17,7 @@ import { GraphMapper } from './mapper'
 import { GraphService, InteractorFactory } from './service'
 import { mockDeep, MockedDeep } from '@helper/mock'
 import { FetchParentInteractor } from '@life/usecase/category/fetchParent'
-import { FetchChildrenInteractor } from '@life/usecase/category/fetchChildren'
+import { ListChildrenInteractor } from '@life/usecase/category/listChildren'
 import { ListInteractor as ListCategoriesInteractor } from '@life/usecase/category/list'
 import { ListInteractor as ListUpdatedInteractor } from '@life/usecase/updated/list'
 
@@ -35,7 +35,7 @@ describe('GraphService', () => {
     let logger: MockedDeep<Logger>
     let mapper: MockedDeep<GraphMapper>
     let fetchParent: jest.MockedFunction<FetchParentInteractor['fetchParent']>
-    let fetchChildren: jest.MockedFunction<FetchChildrenInteractor['fetchChildren']>
+    let listChildren: jest.MockedFunction<ListChildrenInteractor['listChildren']>
     let listCategories: jest.MockedFunction<ListCategoriesInteractor['list']>
     let listUpdated: jest.MockedFunction<ListUpdatedInteractor['list']>
     beforeEach(() => {
@@ -44,9 +44,9 @@ describe('GraphService', () => {
       factory.category.fetchParentInteractor.mockReturnValue({
         fetchParent,
       })
-      fetchChildren = jest.fn()
-      factory.category.fetchChildrenInteractor.mockReturnValue({
-        fetchChildren,
+      listChildren = jest.fn()
+      factory.category.listChildrenInteractor.mockReturnValue({
+        listChildren: listChildren,
       })
       listCategories = jest.fn()
       factory.category.listInteractor.mockReturnValue({
@@ -233,7 +233,7 @@ describe('GraphService', () => {
                 updated: new Date(),
               },
             ]
-            fetchChildren.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>(fetchedChildren)))
+            listChildren.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>(fetchedChildren)))
             mappedChildren = [
               {
                 id: 'mapped id',
@@ -264,13 +264,13 @@ describe('GraphService', () => {
               const result = await children(categoryWithChildren, {}, {}, {} as GraphQLResolveInfo)
               expect(result).toEqual(mappedChildren)
             })
-            test('Then the fetchChildren interactor is called', async () => {
+            test('Then the listChildren interactor is called', async () => {
               const service = new GraphService(factory, mapper, logger)
               const children = service.resolvers().Category?.children
               assertResolverFn(children)
               await children(categoryWithChildren, {}, {}, {} as GraphQLResolveInfo)
-              expect(fetchChildren.mock.calls).toHaveLength(1)
-              expect(fetchChildren.mock.calls[0]).toEqual(['the id'])
+              expect(listChildren.mock.calls).toHaveLength(1)
+              expect(listChildren.mock.calls[0]).toEqual(['the id'])
             })
             test('Then the mapper is called', async () => {
               const service = new GraphService(factory, mapper, logger)
@@ -292,8 +292,8 @@ describe('GraphService', () => {
             let errorResults: Results<CategoryUsecase>
             beforeEach(() => {
               errorResults = resultsError('fetching error')
-              fetchChildren.mockReset()
-              fetchChildren.mockReturnValueOnce(Promise.resolve(errorResults))
+              listChildren.mockReset()
+              listChildren.mockReturnValueOnce(Promise.resolve(errorResults))
             })
             test('Then the error logged and thrown', async () => {
               const service = new GraphService(factory, mapper, logger)
@@ -321,7 +321,7 @@ describe('GraphService', () => {
               children: [],
               updated: new Date(),
             }
-            fetchChildren.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
+            listChildren.mockReturnValueOnce(Promise.resolve(resultsOk<CategoryUsecase>([])))
             mapper.categoriesFromUsecase.mockReturnValueOnce([])
           })
           describe('When everything succeeds', () => {
@@ -332,13 +332,13 @@ describe('GraphService', () => {
               const result = await children(categoryWithoutChildren, {}, {}, {} as GraphQLResolveInfo)
               expect(result).toEqual([])
             })
-            test('Then the fetchChildren interactor is called', async () => {
+            test('Then the listChildren interactor is called', async () => {
               const service = new GraphService(factory, mapper, logger)
               const children = service.resolvers().Category?.children
               assertResolverFn(children)
               await children(categoryWithoutChildren, {}, {}, {} as GraphQLResolveInfo)
-              expect(fetchChildren.mock.calls).toHaveLength(1)
-              expect(fetchChildren.mock.calls[0]).toEqual(['the id'])
+              expect(listChildren.mock.calls).toHaveLength(1)
+              expect(listChildren.mock.calls[0]).toEqual(['the id'])
             })
             test('Then the mapper is called', async () => {
               const service = new GraphService(factory, mapper, logger)

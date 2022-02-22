@@ -605,7 +605,7 @@ describe('CategoryRepoJson', () => {
       })
     })
   })
-  describe('repo>category>fetchChildren', () => {
+  describe('repo>category>listChildren', () => {
     describe('Given a category ID that has children', () => {
       let mapper: Mocked<CategoryMapper>
       let repo: CategoryRepo
@@ -678,12 +678,12 @@ describe('CategoryRepoJson', () => {
       })
       describe('When everything succeeds', () => {
         test('Then the fetch results are returned', async () => {
-          const childrenResults = await repo.fetchChildren('category id')
+          const childrenResults = await repo.listChildren('category id')
           expect(childrenResults.firstErrorResult).toBeUndefined()
           expect(childrenResults.okValues).toEqual([child1, child2, child3])
         })
         test('Then fetch is called for each child', async () => {
-          await repo.fetchChildren('category id')
+          await repo.listChildren('category id')
           expect(fetchCategory.mock.calls).toHaveLength(3)
           expect(fetchCategory.mock.calls[0]).toEqual(['child1 id'])
           expect(fetchCategory.mock.calls[1]).toEqual(['child2 id'])
@@ -692,12 +692,12 @@ describe('CategoryRepoJson', () => {
       })
       describe('When the category ID does not exist', () => {
         test('Then a results error is returned', async () => {
-          const childrenResults = await repo.fetchChildren('non existent category id')
+          const childrenResults = await repo.listChildren('non existent category id')
           expect(childrenResults.firstErrorResult?.message).toBe(`Could not find category 'non existent category id'`)
           expect(childrenResults.okValues).toEqual([])
         })
         test('Then fetch is not called', async () => {
-          await repo.fetchChildren('non existent category id')
+          await repo.listChildren('non existent category id')
           expect(fetchCategory.mock.calls).toHaveLength(0)
         })
       })
@@ -717,7 +717,7 @@ describe('CategoryRepoJson', () => {
                 return Promise.reject()
             }
           })
-          const childrenResults = await repo.fetchChildren('category id')
+          const childrenResults = await repo.listChildren('category id')
           expect(childrenResults.firstErrorResult).toEqual(err)
         })
         test('Then the results includes the fetch successes', async () => {
@@ -735,7 +735,7 @@ describe('CategoryRepoJson', () => {
                 return Promise.reject()
             }
           })
-          const childrenResults = await repo.fetchChildren('category id')
+          const childrenResults = await repo.listChildren('category id')
           expect(childrenResults.okValues).toEqual([child1, child3])
         })
       })
@@ -767,12 +767,12 @@ describe('CategoryRepoJson', () => {
       })
       describe('When everything succeeds', () => {
         test('Then an empty results is returned', async () => {
-          const childrenResults = await repo.fetchChildren('category id')
+          const childrenResults = await repo.listChildren('category id')
           expect(childrenResults.firstErrorResult).toBeUndefined()
           expect(childrenResults.okValues).toEqual([])
         })
         test('Then fetch is not called', async () => {
-          await repo.fetchChildren('category id')
+          await repo.listChildren('category id')
           expect(fetchCategory.mock.calls).toHaveLength(0)
         })
       })

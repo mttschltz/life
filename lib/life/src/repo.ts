@@ -13,7 +13,7 @@ interface RiskRepo {
 
 interface CategoryRepo {
   fetch: (id: string) => Promise<Result<Category>>
-  fetchChildren: (id: string) => Promise<Results<Category>>
+  listChildren: (id: string) => Promise<Results<Category>>
   fetchParent: (childId: string) => Promise<Result<Category | undefined>>
   list: (criteria: { onlyRoot: boolean }) => Promise<Results<Category>>
 }

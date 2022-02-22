@@ -17,7 +17,7 @@ describe('UpdatedRepoJson', () => {
       categoryRepo = {
         list: listCategories,
         fetch: mockThrows('unexpected fetch call'),
-        fetchChildren: mockThrows('unexpected fetchChildren call'),
+        listChildren: mockThrows('unexpected listChildren call'),
         fetchParent: mockThrows('unexpected fetchParent call'),
       }
       listRisks = jest.fn()

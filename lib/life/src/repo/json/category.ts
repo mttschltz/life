@@ -84,7 +84,7 @@ class CategoryRepoJsonImpl implements CategoryRepoJson {
     return this.fetch(jsonCategory.parentId)
   }
 
-  public async fetchChildren(id: string): Promise<Results<Category>> {
+  public async listChildren(id: string): Promise<Results<Category>> {
     const jsonCategory = this.#store.category[id]
     if (!jsonCategory) return resultsError(`Could not find category '${id}'`)
 
