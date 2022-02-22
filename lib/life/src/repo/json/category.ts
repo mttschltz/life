@@ -104,14 +104,36 @@ class CategoryRepoJsonImpl implements CategoryRepoJson {
         continue
       }
 
-      const riskResult = await this.fetch(jsonCategory.id)
-      if (!riskResult.ok) {
-        return resultsErrorResult(riskResult)
+      const categoryResult = await this.fetch(jsonCategory.id)
+      if (!categoryResult.ok) {
+        return resultsErrorResult(categoryResult)
       }
 
-      categoryResults.push(riskResult)
+      categoryResults.push(categoryResult)
     }
     return results(categoryResults)
+  }
+
+  public async listAncestors(id: string): Promise<Results<Category>> {
+    const categoryJson = this.#store.category[id]
+    if (!categoryJson) return resultsError(`Could not find category '${id}'`)
+
+    const categoriesJson: CategoryJson[] = []
+    let parentId = categoryJson.parentId
+    while (parentId) {
+      const parentJson = this.#store.category[parentId]
+      if (!parentJson) return resultsError(`Could not find parent category '${parentId}'`)
+      categoriesJson.push(parentJson)
+      parentId = parentJson.parentId
+    }
+
+    const ancestorsResults = await Promise.all(
+      categoriesJson.map(async (c) => {
+        return this.fetch(c.id)
+      }),
+    )
+
+    return results(ancestorsResults)
   }
 }
 

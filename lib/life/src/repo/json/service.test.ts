@@ -1092,4 +1092,186 @@ describe('CategoryRepoJson', () => {
       })
     })
   })
+
+  describe('repo>category>listAncestors', () => {
+    describe('Given a category ID that has two ancestors', () => {
+      let mapper: Mocked<CategoryMapper>
+      let repo: CategoryRepo
+      let parentJson: CategoryJson
+      let parent: Category
+      let grandparent: Category
+      let grandparentJson: CategoryJson
+
+      let fetchCategory: jest.SpyInstance<Promise<Result<Category>>, [id: string]>
+      beforeEach(() => {
+        mapper = mockDeep<CategoryMapper>()
+        parent = {
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'parent id' },
+          name: 'parent name',
+          slug: 'parent slug',
+          previousSlugs: [],
+          shortDescription: 'parent short description',
+          children: [],
+          updated: new Date(),
+        }
+        parentJson = {
+          id: 'parent id',
+          name: 'parent name',
+          slug: 'parent slug',
+          previousSlugs: [],
+          shortDescription: 'parent short description',
+          children: ['id'],
+          parentId: 'grandparent id',
+          updated: new Date(),
+        }
+        grandparent = {
+          __entity: 'Category',
+          id: { __entity: 'Identifier', val: 'grandparent id' },
+          name: 'grandparent name',
+          slug: 'grandparent slug',
+          previousSlugs: [],
+          shortDescription: 'grandparent short description',
+          children: [],
+          updated: new Date(),
+        }
+        grandparentJson = {
+          id: 'grandparent id',
+          name: 'grandparent name',
+          slug: 'grandparent slug',
+          previousSlugs: [],
+          shortDescription: 'grandparent short description',
+          children: ['parent id'],
+          parentId: undefined,
+          updated: new Date(),
+        }
+        repo = newCategoryRepoJson(
+          {
+            category: {
+              id: {
+                id: 'id',
+                name: 'name',
+                slug: 'slug',
+                previousSlugs: [],
+                shortDescription: 'short description',
+                children: [],
+                parentId: 'parent id',
+                updated: new Date(),
+              },
+              'parent id': parentJson,
+              'grandparent id': grandparentJson,
+            },
+            risk: {},
+          },
+          mapper,
+        )
+        fetchCategory = jest.spyOn(repo, 'fetch').mockImplementation(async (id) => {
+          switch (id) {
+            case 'parent id':
+              return Promise.resolve(resultOk(parent))
+            case 'grandparent id':
+              return Promise.resolve(resultOk(grandparent))
+            default:
+              return Promise.reject()
+          }
+        })
+      })
+      describe('When everything succeeds', () => {
+        test('Then the fetch results are returned', async () => {
+          const ancestorResults = await repo.listAncestors('id')
+          expect(ancestorResults.firstErrorResult).toBeUndefined()
+          expect(ancestorResults.okValues).toEqual([parent, grandparent])
+        })
+        test('Then fetch is called for each ancestor', async () => {
+          await repo.listAncestors('id')
+          expect(fetchCategory.mock.calls).toHaveLength(2)
+          expect(fetchCategory.mock.calls[0]).toEqual(['parent id'])
+          expect(fetchCategory.mock.calls[1]).toEqual(['grandparent id'])
+        })
+      })
+      describe('When the category ID does not exist', () => {
+        test('Then a results error is returned', async () => {
+          const ancestorResults = await repo.listAncestors('non existent category id')
+          expect(ancestorResults.firstErrorResult?.message).toBe(`Could not find category 'non existent category id'`)
+          expect(ancestorResults.okValues).toEqual([])
+        })
+        test('Then fetch is not called', async () => {
+          await repo.listAncestors('non existent category id')
+          expect(fetchCategory.mock.calls).toHaveLength(0)
+        })
+      })
+      describe('When an ancestor ID does not exist', () => {
+        beforeEach(() => {
+          parentJson.parentId = 'non existent parent id'
+        })
+        test('Then a results error is returned', async () => {
+          const ancestorResults = await repo.listAncestors('id')
+          expect(ancestorResults.firstErrorResult?.message).toBe(
+            `Could not find parent category 'non existent parent id'`,
+          )
+          expect(ancestorResults.okValues).toEqual([])
+        })
+        test('Then fetch is not called', async () => {
+          await repo.listAncestors('id')
+          expect(fetchCategory.mock.calls).toHaveLength(0)
+        })
+      })
+      describe('When fetch errors for an ancestor ID', () => {
+        test('Then the results includes the fetch error', async () => {
+          const err = resultError<Category>('fetch error')
+          fetchCategory.mockReset()
+          fetchCategory.mockImplementation(async (id) => {
+            switch (id) {
+              case 'parent id':
+                return Promise.resolve(resultOk(parent))
+              case 'grandparent id':
+                return Promise.resolve(err)
+              default:
+                return Promise.reject()
+            }
+          })
+          const ancestorResults = await repo.listAncestors('category id')
+          expect(ancestorResults.firstErrorResult).toEqual(err)
+          expect(ancestorResults.okValues).toEqual([])
+        })
+      })
+    })
+    describe('Given a category ID that has no ancestors', () => {
+      let mapper: Mocked<CategoryMapper>
+      let repo: CategoryRepo
+      let fetchCategory: jest.SpyInstance<Promise<Result<Category>>, [id: string]>
+      beforeEach(() => {
+        mapper = mockDeep<CategoryMapper>()
+        repo = newCategoryRepoJson(
+          {
+            category: {
+              'category id': {
+                id: 'parent id',
+                name: 'parent name',
+                slug: 'parent slug',
+                previousSlugs: [],
+                shortDescription: 'parent short description',
+                children: [],
+                updated: new Date(),
+              },
+            },
+            risk: {},
+          },
+          mapper,
+        )
+        fetchCategory = jest.spyOn(repo, 'fetch')
+      })
+      describe('When everything succeeds', () => {
+        test('Then an empty results is returned', async () => {
+          const childrenResults = await repo.listAncestors('category id')
+          expect(childrenResults.firstErrorResult).toBeUndefined()
+          expect(childrenResults.okValues).toEqual([])
+        })
+        test('Then fetch is not called', async () => {
+          await repo.listAncestors('category id')
+          expect(fetchCategory.mock.calls).toHaveLength(0)
+        })
+      })
+    })
+  })
 })
