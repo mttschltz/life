@@ -20,6 +20,8 @@ describe('Category', () => {
         id,
         slug: 'slug',
         previousSlugs: [],
+        path: '/path',
+        previousPaths: [],
         name: 'name',
         description: undefined,
         shortDescription: 'short description',
@@ -43,6 +45,8 @@ describe('Category', () => {
             id,
             slug: 'slug',
             previousSlugs: [],
+            path: '/path',
+            previousPaths: [],
             name: 'name',
             description: undefined,
             shortDescription: 'short description',
@@ -52,7 +56,7 @@ describe('Category', () => {
           })
         })
       })
-      describe('When the slugs are 1 character in length', () => {
+      describe('When the slugs and previous slugs are 1 character in length', () => {
         test('Then it successfully creates a Category', () => {
           const categoryResult = newCategory({
             ...createDetails,
@@ -67,6 +71,34 @@ describe('Category', () => {
             id,
             slug: 's',
             previousSlugs: ['a'],
+            path: '/path',
+            previousPaths: [],
+            name: 'name',
+            description: undefined,
+            shortDescription: 'short description',
+            parent: undefined,
+            children: [],
+            updated,
+          })
+        })
+      })
+      describe('When the paths and previous paths are 2 character in length', () => {
+        test('Then it successfully creates a Category', () => {
+          const categoryResult = newCategory({
+            ...createDetails,
+            path: '/p',
+            previousPaths: ['/q'],
+          })
+          assertResultOk(categoryResult)
+
+          const category = categoryResult.value
+          expect(category).toEqual({
+            __entity: 'Category',
+            id,
+            slug: 'slug',
+            previousSlugs: [],
+            path: '/p',
+            previousPaths: ['/q'],
             name: 'name',
             description: undefined,
             shortDescription: 'short description',
@@ -89,6 +121,8 @@ describe('Category', () => {
           name: 'parent name',
           slug: 'parent slug',
           previousSlugs: ['slug 1', 'slug 2'],
+          path: '/parent path',
+          previousPaths: ['/path 1', '/path 2'],
           shortDescription: 'parent short description',
           updated: new Date(),
         }
@@ -103,6 +137,8 @@ describe('Category', () => {
             name: 'child name',
             slug: 'child slug',
             previousSlugs: ['slug 1', 'slug 2'],
+            path: '/child path',
+            previousPaths: ['/path 1', '/path 2'],
             shortDescription: 'child short description',
             updated: new Date(),
           },
@@ -121,6 +157,8 @@ describe('Category', () => {
           id,
           slug: 'slug',
           previousSlugs: [],
+          path: '/path',
+          previousPaths: [],
           name: 'name',
           description: 'description',
           shortDescription: 'short description',
@@ -215,6 +253,108 @@ describe('Category', () => {
         assertResultError(categoryResult)
         expect(categoryResult.message).toBe(
           "Invalid prop previousSlugs.0 in category: 'Expected string, received number' (invalid_type).",
+        )
+      })
+    })
+    describe('Given an invalid path', () => {
+      test('Then an error result is returned', () => {
+        let categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          path: undefined,
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe("Invalid prop path in category: 'Path does not match regexp' (custom).")
+
+        categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          path: '',
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe("Invalid prop path in category: 'Path does not match regexp' (custom).")
+
+        categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          path: 'p',
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe("Invalid prop path in category: 'Path does not match regexp' (custom).")
+
+        categoryResult = newCategory({
+          ...createDetails,
+          path: '/',
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe("Invalid prop path in category: 'Path does not match regexp' (custom).")
+
+        categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          path: 5,
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe("Invalid prop path in category: 'Path does not match regexp' (custom).")
+      })
+    })
+    describe('Given an invalid previous paths', () => {
+      test('Then an error result is returned', () => {
+        let categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          previousPaths: undefined,
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe("Invalid prop previousPaths in category: 'Required' (invalid_type).")
+
+        categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          previousPaths: [''],
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe(
+          "Invalid prop previousPaths.0 in category: 'Path does not match regexp' (custom).",
+        )
+
+        categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          previousPaths: ['p'],
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe(
+          "Invalid prop previousPaths.0 in category: 'Path does not match regexp' (custom).",
+        )
+
+        categoryResult = newCategory({
+          ...createDetails,
+          previousPaths: ['/'],
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe(
+          "Invalid prop previousPaths.0 in category: 'Path does not match regexp' (custom).",
+        )
+
+        categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          previousPaths: [{ an: 'object' }],
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe(
+          "Invalid prop previousPaths.0 in category: 'Path does not match regexp' (custom).",
+        )
+
+        categoryResult = newCategory({
+          ...createDetails,
+          // @ts-expect-error: In the domain we want to protect against runtime type errors
+          previousPaths: [5],
+        })
+        assertResultError(categoryResult)
+        expect(categoryResult.message).toBe(
+          "Invalid prop previousPaths.0 in category: 'Path does not match regexp' (custom).",
         )
       })
     })
@@ -377,6 +517,8 @@ describe('isCategory', () => {
         id,
         slug: 'slug',
         previousSlugs: [],
+        path: '/path',
+        previousPaths: [],
         name: 'name',
         description: undefined,
         shortDescription: 'short description',
@@ -400,6 +542,8 @@ describe('isCategory', () => {
             id,
             slug: 'slug',
             previousSlugs: [],
+            path: '/path',
+            previousPaths: [],
             name: 'name',
             description: undefined,
             shortDescription: 'short description',
@@ -417,6 +561,9 @@ describe('isCategory', () => {
             const category: Category = {
               id,
               slug: 'slug',
+              previousSlugs: [],
+              path: '/path',
+              previousPaths: [],
               name: 'name',
               description: undefined,
               shortDescription: 'short description',

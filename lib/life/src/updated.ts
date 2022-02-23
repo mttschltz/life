@@ -2,6 +2,9 @@ import { Identifier } from '@helper/identifier'
 import { Category } from './category'
 import { Risk } from './risk'
 
+// TODO: When risks are refactored, this should be
+// 1. Renamed to something more meaningful, e.g. BlogFeedEntry
+// 2. Have ID removed. The feed only needs the path.
 interface Updatable {
   readonly id: Identifier
   readonly name: string

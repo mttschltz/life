@@ -186,7 +186,7 @@ class RiskMapperImpl implements RiskMapper {
 
 type Category = Pick<
   CategoryDomain,
-  'description' | 'name' | 'previousSlugs' | 'shortDescription' | 'slug' | 'updated'
+  'description' | 'name' | 'path' | 'previousPaths' | 'previousSlugs' | 'shortDescription' | 'slug' | 'updated'
 > & {
   id: string
   children: Category[]
@@ -203,22 +203,24 @@ function newCategoryMapper(): CategoryMapper {
 }
 
 class CategoryMapperImpl implements CategoryMapper {
-  public category(c: CategoryDomain): Category {
+  public category(category: CategoryDomain): Category {
     let parent
-    if (c.parent) {
-      parent = this.category(c.parent)
+    if (category.parent) {
+      parent = this.category(category.parent)
     }
 
     return {
-      id: c.id.val,
-      name: c.name,
-      slug: c.slug,
-      previousSlugs: [...c.previousSlugs],
-      description: c.description,
-      shortDescription: c.shortDescription,
+      id: category.id.val,
+      name: category.name,
+      slug: category.slug,
+      previousSlugs: [...category.previousSlugs],
+      description: category.description,
+      shortDescription: category.shortDescription,
       parent: parent,
-      children: c.children.map((c2) => this.category(c2)),
-      updated: c.updated,
+      children: category.children.map((c2) => this.category(c2)),
+      updated: category.updated,
+      path: category.path,
+      previousPaths: [...category.previousPaths],
     }
   }
 

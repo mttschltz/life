@@ -4,10 +4,11 @@ import { z } from 'zod'
 import { Identifier } from '@helper/identifier'
 import { resultZodError } from '@helper/zod'
 import { EntitySchema } from '@helper/entity'
+import { PATH_SCHEMA, Routable } from './path'
 
 // TODO: children can also be risks (Concerns)
 
-interface Category extends Updatable {
+interface Category extends Updatable, Routable {
   readonly __entity: 'Category'
   readonly id: Identifier
   readonly slug: string
@@ -16,8 +17,6 @@ interface Category extends Updatable {
   readonly description?: string
   readonly children: Category[]
   readonly parent?: Category
-  readonly updated: Date
-  readonly shortDescription: string
 }
 
 type CategoryValidationSchema = EntitySchema<Category>
@@ -29,6 +28,8 @@ const CATEGORY_SCHEMA: z.ZodSchema<CategoryValidationSchema> = z.lazy(() =>
       id: z.object({ __entity: z.literal('Identifier') }),
       slug: z.string().min(1),
       previousSlugs: z.array(z.string().min(1)),
+      path: PATH_SCHEMA,
+      previousPaths: z.array(PATH_SCHEMA),
       name: z.string().min(2),
       description: z.string().min(2).optional(),
       children: z.array(z.object({ __entity: z.literal('Category') })),
@@ -62,6 +63,12 @@ function newCategory(details: CreateDetails): Result<Category> {
     },
     get previousSlugs() {
       return details.previousSlugs
+    },
+    get path() {
+      return details.path
+    },
+    get previousPaths() {
+      return details.previousPaths
     },
     get name() {
       return details.name
