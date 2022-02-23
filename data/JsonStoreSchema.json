@@ -31,6 +31,21 @@
                 "name": {
                     "type": "string"
                 },
+                "path": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "previousPaths": {
+                    "items": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
                 "previousSlugs": {
                     "items": {
                         "type": "string"
