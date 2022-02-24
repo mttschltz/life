@@ -2,7 +2,6 @@ import { Box, Button, Diagram, GatsbyLink, Heading, ResponsiveConsumer, Position
 import { BoxProps } from '@component/layout/Box'
 import { filterNonNullish } from '@matt-fyi/util/graph/graph'
 import { useTranslate } from '@matt-fyi/util/i18n/translate'
-import { useRoute } from '@matt-fyi/util/route/route'
 import { graphql, PageProps } from 'gatsby'
 import * as React from 'react'
 import { ReactNode } from 'react'
@@ -35,18 +34,23 @@ const verticalCategoryChildrenLayouts = (
   })
 }
 
+const useRiskRoute = (): { detail: (id: string) => string } => {
+  return {
+    detail: (id: string): string => `/risk/${id}`,
+  }
+}
+
 const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuery>> = (props) => {
   const t = useTranslate('page')
   const updates = props.data.store.updated.filter((u): u is NonNullable<typeof u> => !!u)
-  const route = useRoute()
+  const riskRoute = useRiskRoute()
   const updatedRoute = (updated: NonNullable<GatsbyTypes.CategoryQueryQuery['store']['updated'][number]>): string => {
     let url: string
     switch (updated.__typename) {
       case 'Store_Category':
-        url = route.category.detail(updated)
-        break
+        url = updated.path
       case 'Store_Risk':
-        url = route.risk.detail(updated)
+        url = riskRoute.detail(updated.id)
         break
     }
     return url
@@ -76,7 +80,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                               <Box basis="1/2" align="center">
                                 <Button
                                   id={`index-category-${rootCategory.id}`}
-                                  href={route.category.detail(rootCategory)}
+                                  href={rootCategory.path}
                                   raisePosition={true}
                                   testId={`index--category-nav--${rootCategory.id}`}
                                 >
@@ -89,7 +93,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                                     <Box key={childCategory.id}>
                                       <Box id={`index-category-${childCategory.id}`}>
                                         <Button
-                                          href={route.category.detail(childCategory)}
+                                          href={childCategory.path}
                                           raisePosition={true}
                                           size="small"
                                           testId={`index--category-nav--${childCategory.id}`}
@@ -121,7 +125,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                             <Stack gap="large">
                               <Box id={`index-category-${rootCategory.id}`} justify="center">
                                 <Button
-                                  href={route.category.detail(rootCategory)}
+                                  href={rootCategory.path}
                                   raisePosition={true}
                                   testId={`index--category-nav--${rootCategory.id}`}
                                 >
@@ -139,7 +143,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
                                   >
                                     <Box id={`index-category-${childCategory.id}`}>
                                       <Button
-                                        href={route.category.detail(childCategory)}
+                                        href={childCategory.path}
                                         raisePosition={true}
                                         size="small"
                                         testId={`index--category-nav--${childCategory.id}`}
@@ -208,12 +212,12 @@ export const query = graphql`
         __typename
         id
         name
-        slug
+        path
         children {
           __typename
           id
           name
-          slug
+          path
         }
       }
       updated {
@@ -223,7 +227,7 @@ export const query = graphql`
         updated
         shortDescription
         ... on Store_Category {
-          slug
+          path
         }
       }
     }
