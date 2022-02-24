@@ -423,14 +423,25 @@ type Store_Updated = {
 /** A Concern needs addressing. It can be a single Risk or group (Category) of Risks. */
 type Store_Concern = Store_Category | Store_Risk;
 
+type Store_Routable = {
+  /** The full path of the routable entity. */
+  readonly path: Scalars['String'];
+  /** Previous full paths of the routable entity. */
+  readonly previousPaths: Maybe<ReadonlyArray<Scalars['String']>>;
+};
+
 /** A Category is an ordered collection of Risks or other Categories. */
-type Store_Category = Store_Updated & {
+type Store_Category = Store_Updated & Store_Routable & {
   /** The id. */
   readonly id: Scalars['ID'];
   /** The slug used in the URL path. */
   readonly slug: Scalars['String'];
   /** The slugs previously used in the URL path. */
   readonly previousSlugs: ReadonlyArray<Scalars['String']>;
+  /** The full path of the category. */
+  readonly path: Scalars['String'];
+  /** Previous full paths of the category. */
+  readonly previousPaths: Maybe<ReadonlyArray<Scalars['String']>>;
   /** The name. */
   readonly name: Scalars['String'];
   /** The description. */

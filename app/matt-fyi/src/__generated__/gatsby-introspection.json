@@ -3970,6 +3970,60 @@
         ]
       },
       {
+        "kind": "INTERFACE",
+        "name": "Store_Routable",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": [
+          {
+            "name": "path",
+            "description": "The full path of the routable entity.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "previousPaths",
+            "description": "Previous full paths of the routable entity.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "Store_Category",
+            "ofType": null
+          }
+        ]
+      },
+      {
         "kind": "OBJECT",
         "name": "Store_Category",
         "description": "A Category is an ordered collection of Risks or other Categories.",
@@ -4025,6 +4079,42 @@
                     "name": "String",
                     "ofType": null
                   }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "path",
+            "description": "The full path of the category.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "previousPaths",
+            "description": "Previous full paths of the category.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 }
               }
             },
@@ -4129,6 +4219,11 @@
           {
             "kind": "INTERFACE",
             "name": "Store_Updated",
+            "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
+            "name": "Store_Routable",
             "ofType": null
           }
         ],

@@ -28,10 +28,22 @@ A Concern needs addressing. It can be a single Risk or group (Category) of Risks
 """
 union Concern = Category | Risk
 
+interface Routable {
+  """
+  The full path of the routable entity.
+  """
+  path: String!
+
+  """
+  Previous full paths of the routable entity.
+  """
+  previousPaths: [String!]
+}
+
 """
 A Category is an ordered collection of Risks or other Categories.
 """
-type Category implements Updated {
+type Category implements Updated & Routable {
   """
   The id.
   """
@@ -44,6 +56,15 @@ type Category implements Updated {
   The slugs previously used in the URL path.
   """
   previousSlugs: [String!]!
+  """
+  The full path of the category.
+  """
+  path: String!
+
+  """
+  Previous full paths of the category.
+  """
+  previousPaths: [String!]
   """
   The name.
   """

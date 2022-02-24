@@ -45,6 +45,8 @@ class GraphMapperImpl implements GraphMapper {
       name: category.name,
       slug: category.slug,
       previousSlugs: [...category.previousSlugs],
+      path: category.path,
+      previousPaths: [...category.previousPaths],
       description: category.description ?? undefined,
       shortDescription: category.shortDescription,
       parent,

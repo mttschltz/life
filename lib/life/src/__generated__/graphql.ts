@@ -16,7 +16,7 @@ export type Scalars = {
 };
 
 /** A Category is an ordered collection of Risks or other Categories. */
-export type Category = Updated & {
+export type Category = Updated & Routable & {
   __typename?: 'Category';
   /** The id. */
   id: Scalars['ID'];
@@ -159,6 +159,13 @@ export enum RiskType {
   Condition = 'CONDITION'
 }
 
+export type Routable = {
+  /** The full path of the routable entity. */
+  path: Scalars['String'];
+  /** Previous full paths of the routable entity. */
+  previousPaths?: Maybe<Array<Scalars['String']>>;
+};
+
 /**
  * An Updated entity logs its most recent, user-relevant changes so they can be viewed in order of
  * when they were last updated.
@@ -257,6 +264,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Risk: ResolverTypeWrapper<Risk>;
   RiskType: RiskType;
+  Routable: ResolversTypes['Category'];
   Updated: ResolversTypes['Category'] | ResolversTypes['Risk'];
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
@@ -273,6 +281,7 @@ export type ResolversParentTypes = {
   Mutation: {};
   Query: {};
   Risk: Risk;
+  Routable: ResolversParentTypes['Category'];
   Updated: ResolversParentTypes['Category'] | ResolversParentTypes['Risk'];
   Boolean: Scalars['Boolean'];
 };
@@ -323,6 +332,12 @@ export type RiskResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type RoutableResolvers<ContextType = any, ParentType extends ResolversParentTypes['Routable'] = ResolversParentTypes['Routable']> = {
+  __resolveType: TypeResolveFn<'Category', ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  previousPaths?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+};
+
 export type UpdatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['Updated'] = ResolversParentTypes['Updated']> = {
   __resolveType: TypeResolveFn<'Category' | 'Risk', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -338,6 +353,7 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Risk?: RiskResolvers<ContextType>;
+  Routable?: RoutableResolvers<ContextType>;
   Updated?: UpdatedResolvers<ContextType>;
 };
 
