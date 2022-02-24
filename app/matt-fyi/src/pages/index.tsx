@@ -49,6 +49,7 @@ const IndexPage: React.FunctionComponent<PageProps<GatsbyTypes.CategoryQueryQuer
     switch (updated.__typename) {
       case 'Store_Category':
         url = updated.path
+        break
       case 'Store_Risk':
         url = riskRoute.detail(updated.id)
         break
