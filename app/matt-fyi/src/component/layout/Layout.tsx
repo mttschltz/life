@@ -1,6 +1,5 @@
 import React from 'react'
 import { TranslationProvider, useTranslate } from '@matt-fyi/util/i18n/translate'
-import { useRoute } from '@matt-fyi/util/route/route'
 import { Box, ThemeProvider, THEME, Header, Heading, Text, Main, Tabs, Tab, Stack, Icon, Link } from '@component'
 import { filterNonNullish } from '@matt-fyi/util/graph/graph'
 
@@ -9,7 +8,6 @@ const Layout: React.FC = (props) => {
 
   // Hack: These calls fix hot reload in development. If imports in index.tsx (and likely other
   // files) aren't also imported in this file, then hot reload does not work. https://github.com/mttschltz/life/issues/14
-  useRoute()
   filterNonNullish({})
 
   return (

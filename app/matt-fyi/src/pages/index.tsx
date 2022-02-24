@@ -34,6 +34,7 @@ const verticalCategoryChildrenLayouts = (
   })
 }
 
+// TODO: Remove once a path field is added to risks
 const useRiskRoute = (): { detail: (id: string) => string } => {
   return {
     detail: (id: string): string => `/risk/${id}`,
